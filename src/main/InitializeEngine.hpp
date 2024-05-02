@@ -23,8 +23,8 @@
 #define PLATFORM
 
 
-class PLATFORM PhysicsEngine;
-class PLATFORM GraphicsEngine;
+//class PLATFORM PhysicsEngine;
+//class PLATFORM GraphicsEngine;
 
 
 class PLATFORM Engine
