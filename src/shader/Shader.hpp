@@ -22,8 +22,6 @@
 
      Shader(const std::string &vertexShaderPath, const std::string &fragmentShaderPath)
          :
-//           m_vertexShader.path(vertexShaderPath),
-//           m_fragmentShader.path(fragmentShaderePath),
            m_vertexShaderID(glCreateShader(GL_VERTEX_SHADER)),
            m_fragmentShaderID(glCreateShader(GL_FRAGMENT_SHADER)),
            m_shaderProgramID(glCreateProgram())
@@ -41,7 +39,7 @@
      }
 
      void readSources();
-     [[nodiscard]] auto ProgramID()->GLuint;
+     [[nodiscard]] GLuint ProgramID(){return m_shaderProgramID;}
      void setup();
      void link();
      void setupSuccessLog();

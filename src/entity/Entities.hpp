@@ -31,8 +31,11 @@ public:
     [[nodiscard]] inline GLuint totalverticies(){return m_totalVerticies;}
     [[nodiscard]] inline GLuint totalIndicies(){return m_totalIndicies;}
 
-//    void setShader(const std::string &vertexShaderSourcePath,
-//                   const std::string &fragmentShaderSourcePath);
+    void setShader(const std::string &vertexShaderSourcePath,
+                   const std::string &fragmentShaderSourcePath);
+
+    void setVO();
+
     [[nodiscard]] inline Shader& getShader(){return m_shader;}
     [[nodiscard]] inline CoordinateTransformation& getTransformation(){return m_transform;}
 

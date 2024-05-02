@@ -46,7 +46,7 @@ obj/Window.o: ../src/window/Window.cpp ../src/window/Window.hpp ../src/debug/LOG
 obj/Camera.o: ../src/camera/Camera.cpp	../src/camera/Camera.hpp ../src/debug/LOG.hpp ../src/debug/RenderingInfoLog.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/camera/Camera.cpp -o obj/Camera.o
 
-obj/InitializeEngine.o: ../src/main/InitializeEngine.cpp ../src/main/InitializeEngine.hpp ../src/debug/LOG.hpp ../src/entity/Entities.hpp ../src/debug/RenderingInfoLog.hpp ../src/entity/vertexObjects.hpp
+obj/InitializeEngine.o: ../src/main/InitializeEngine.cpp ../src/main/InitializeEngine.hpp ../src/debug/LOG.hpp ../src/entity/Entities.hpp ../src/debug/RenderingInfoLog.hpp ../src/entity/vertexObjects.hpp ../src/shader/Shader.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/main/InitializeEngine.cpp -o obj/InitializeEngine.o
 
 

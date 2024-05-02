@@ -16,6 +16,8 @@ unsigned int size(const GLuint *arr)
     return count;
 }
 
+
+
 Entity::Entity(Vertex *verticiesArr, GLuint totalVerticies,
                GLuint *indiciesArr, GLuint totalIndicies,
                const std::string &vertexShaderSourcePath,
@@ -30,21 +32,26 @@ Entity::Entity(Vertex *verticiesArr, GLuint totalVerticies,
      m_shader(vertexShaderSourcePath, fragmentShaderSourcePath),
      m_VO(m_verticiesSizeBytes, m_verticies, m_indiciesSizeBytes, m_indicies)
 {
-//    //compile, link the vertex and fragment shader
+    //compile, link the vertex and fragment shader
     m_shader.setup();
     m_shader.link();
 }
 
 
 
+void Entity::setShader(const std::string &vertexShaderSourcePath,
+                       const std::string &fragmentShaderSourcePath)
+{
+    m_shader = Shader(vertexShaderSourcePath, fragmentShaderSourcePath);
+    m_shader.setup();
+    m_shader.link();
+}
 
-//void Entity::setShader(const std::string &vertexShaderSourcePath,
-//               const std::string &fragmentShaderSourcePath)
-//{
-//    m_shader = Shader(vertexShaderSourcePath, fragmentShaderSourcePath);
-//    m_shader.setup();
-//    m_shader.link();
-//}
+
+void Entity::setVO()
+{
+    m_VO = VertexObjects(m_verticiesSizeBytes, m_verticies, m_indiciesSizeBytes, m_indicies);
+}
 
 
 

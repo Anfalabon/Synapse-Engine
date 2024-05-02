@@ -7,6 +7,11 @@
 VertexObjects::VertexObjects(GLuint verticiesSizeBytes, const void *verticiesData,
                              GLuint indiciesSizeBytes, const void *indiciesData) noexcept
 {
+    if(verticiesSizeBytes <= 0 || verticiesData == nullptr ||
+       indiciesSizeBytes <= 0 || indiciesData == nullptr)
+    {
+        return;
+    }
 
     //GLuint VBO;
     glGenBuffers(1, &_VBO);

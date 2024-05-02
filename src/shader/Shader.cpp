@@ -8,11 +8,6 @@
 #include <stdlib.h>
 
 
- GLuint Shader::ProgramID()
- {
-     return m_shaderProgramID;
- }
-
 
  void Shader::readSources()
  {
@@ -29,12 +24,14 @@
      {
          std::cout << "didn't find vertex shader file!" << '\n';
          std::cout << "Vertex Shader File name: " << m_vertexShader.path << '\n';
+         return;
      }
 
      if(fragmentShaderFile.fail())
      {
          std::cout << "didn't find fragment shader file!" << '\n';
          std::cout << "Fragment Shader File name: " << m_fragmentShader.path << '\n';
+         return;
      }
 
      std::cout << "Vertex Shader file: " << m_vertexShader.path << '\n';
@@ -47,6 +44,11 @@
      std::string fragmentLine;
      while ( std::getline(fragmentShaderFile, fragmentLine) )
          m_fragmentShader.source += fragmentLine + '\n';
+
+     if(m_vertexShader.source == "" || m_fragmentShader.source == "")
+     {
+         return;
+     }
 
      vertexShaderFile.close();
      fragmentShaderFile.close();

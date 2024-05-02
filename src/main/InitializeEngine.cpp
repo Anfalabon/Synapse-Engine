@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <vector>
+#include <algorithm>
 
 
 
@@ -174,40 +175,62 @@ int8_t Engine::Run()
             3, 7, 5,        //twelfth triangle
     };
 
+#define __DEVELOPMENT__
 
+#ifdef __DEBUG__
+    Entity *cube = new Entity(cubeVerticiesData, cubeTotalVerticies,
+                              cubeIndiciesData, cubeTotalIndicies,
+                              "../src/shader/GLSL/vertexShaderSource1.glslv",
+                              "../src/shader/GLSL/fragmentShaderSource1.glslf");
+
+    cube->setShader("../src/shader/GLSL/vertexShaderSource1.glslv",
+                    "../src/shader/GLSL/fragmentShaderSource1.glslf");
+    cube->setVO();
 
     Entity *ground = new Entity(groundVerticiesData, groundTotalVerticies,
                                 groundIndiciesData, groundTotalIndicies,
                                 "../src/shader/GLSL/vertexShaderSource2.glslv",
                                 "../src/shader/GLSL/fragmentShaderSource2.glslf");
 
-    Entity *cube = new Entity(cubeVerticiesData, cubeTotalVerticies,
-                              cubeIndiciesData, cubeTotalIndicies,
-                              "../src/shader/GLSL/vertexShaderSource1.glslv",
-                              "../src/shader/GLSL/fragmentShaderSource1.glslf");
+    ground->setShader("../src/shader/GLSL/vertexShaderSource2.glslv",
+                      "../src/shader/GLSL/fragmentShaderSource2.glslf");
+    ground->setVO();
+
 
 //    Entity *anotherCube = new Entity(anotherCubeVerticiesData, anotherCubeTotalVerticies,
-//                                     anotherCubeIndiciesData, anotherCubeTotalIndicies,);
+//                                     anotherCubeIndiciesData, anotherCubeTotalIndicies);
 
+#else
 
     std::vector<Entity*> entities;
     entities.reserve(3);
 
-    entities[0] = cube;
-    entities[1] = ground;
-//    entities[2] = anotherCube;
+    entities.push_back(new Entity(cubeVerticiesData, cubeTotalVerticies,
+                                   cubeIndiciesData, cubeTotalIndicies,
+                                   "../src/shader/GLSL/vertexShaderSource1.glslv",
+                                    "../src/shader/GLSL/fragmentShaderSource1.glslf"));
 
+    entities.push_back(new Entity(groundVerticiesData, groundTotalVerticies,
+                                   groundIndiciesData, groundTotalIndicies,
+                                   "../src/shader/GLSL/vertexShaderSource2.glslv",
+                                   "../src/shader/GLSL/fragmentShaderSource2.glslf"));
+
+//    entities.push_back(new Entity(anotherCubeVerticiesData, anotherCubeTotalVerticies,
+//                                  anotherCubeIndiciesData, anotherCubeTotalIndicies));
+
+#endif //__DEBUG__
 
 
 #define INSPECTION_MODE 0
 #define GAME_MODE 1
 
+
     //initial position of the camera
-    cube->getTransformation().translate(glm::vec3(-0.5f, 0.0f, 0.0f));
+    //cube->getTransformation().translate(glm::vec3(-0.5f, 0.0f, 0.0f));
 
     //set the shader program ID for camera
-    camera->setShaderProgramID(cube->getShader().ProgramID());
-    camera->setShaderProgramID(ground->getShader().ProgramID());
+    //camera->setShaderProgramID(cube->getShader().ProgramID());
+    //camera->setShaderProgramID(ground->getShader().ProgramID());
     //camera->setShaderProgramID(anotherCube->getShader().ProgramID());
 
     for(auto entity : entities)
@@ -226,6 +249,7 @@ int8_t Engine::Run()
 
         camera->update();
 
+#ifdef __DEBUG__
         cube->update();
         ground->update();
         //anotherCube->update();
@@ -233,16 +257,19 @@ int8_t Engine::Run()
         cube->render();
         ground->render();
         //anotherCube->render();
+#else
+        for(auto entity : entities)
+        {
+            entity->update();
+            //entity->render();
+        }
 
-//        for(auto entity : entities)
-//        {
-//            entity->update();
-//        }
-//
-//        for(auto entity : entities)
-//        {
-//            entity->render();
-//        }
+        for(auto entity : entities)
+        {
+            entity->render();
+        }
+
+#endif  //__DEBUG__
 
         renderingInfo::framesPerSecond();
 
