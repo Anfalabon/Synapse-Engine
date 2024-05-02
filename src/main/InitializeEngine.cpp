@@ -190,12 +190,12 @@ int8_t Engine::Run()
 //                                     anotherCubeIndiciesData, anotherCubeTotalIndicies,);
 
 
-    //std::vector<Entity*> entities;
-    //entities.reserve(3);
+    std::vector<Entity*> entities;
+    entities.reserve(3);
 
-    //entities[0] = cube;
-    //entities[1] = ground;
-    //entities[2] = anotherCube;
+    entities[0] = cube;
+    entities[1] = ground;
+//    entities[2] = anotherCube;
 
 
 
@@ -210,10 +210,10 @@ int8_t Engine::Run()
     camera->setShaderProgramID(ground->getShader().ProgramID());
     //camera->setShaderProgramID(anotherCube->getShader().ProgramID());
 
-//    for(auto entity : entities)
-//    {
-//        camera->setShaderProgramID(entity->getShader().ProgramID());
-//    }
+    for(auto entity : entities)
+    {
+        camera->setShaderProgramID(entity->getShader().ProgramID());
+    }
 
     //using namespace renderingInfo;
     //main Engine loop
