@@ -206,14 +206,14 @@ int8_t Engine::Run()
     entities.reserve(3);
 
     entities.push_back(new Entity(cubeVerticiesData, cubeTotalVerticies,
-                                   cubeIndiciesData, cubeTotalIndicies,
-                                   "../src/shader/GLSL/vertexShaderSource1.glslv",
-                                    "../src/shader/GLSL/fragmentShaderSource1.glslf"));
+                                  cubeIndiciesData, cubeTotalIndicies,
+                                  "../src/shader/GLSL/vertexShaderSource1.glslv",
+                                  "../src/shader/GLSL/fragmentShaderSource1.glslf"));
 
     entities.push_back(new Entity(groundVerticiesData, groundTotalVerticies,
-                                   groundIndiciesData, groundTotalIndicies,
-                                   "../src/shader/GLSL/vertexShaderSource2.glslv",
-                                   "../src/shader/GLSL/fragmentShaderSource2.glslf"));
+                                  groundIndiciesData, groundTotalIndicies,
+                                  "../src/shader/GLSL/vertexShaderSource2.glslv",
+                                  "../src/shader/GLSL/fragmentShaderSource2.glslf"));
 
 //    entities.push_back(new Entity(anotherCubeVerticiesData, anotherCubeTotalVerticies,
 //                                  anotherCubeIndiciesData, anotherCubeTotalIndicies));
@@ -221,23 +221,29 @@ int8_t Engine::Run()
 #endif //__DEBUG__
 
 
+
 #define INSPECTION_MODE 0
 #define GAME_MODE 1
 
 
+#ifdef __DEBUG__
     //initial position of the camera
-    //cube->getTransformation().translate(glm::vec3(-0.5f, 0.0f, 0.0f));
+    cube->getTransformation().translate(glm::vec3(-0.5f, 0.0f, 0.0f));
 
     //set the shader program ID for camera
-    //camera->setShaderProgramID(cube->getShader().ProgramID());
-    //camera->setShaderProgramID(ground->getShader().ProgramID());
-    //camera->setShaderProgramID(anotherCube->getShader().ProgramID());
+    camera->setShaderProgramID(cube->getShader().ProgramID());
+    camera->setShaderProgramID(ground->getShader().ProgramID());
+    camera->setShaderProgramID(anotherCube->getShader().ProgramID());
+#else
+
+    entities[1]->getTransformation().translate(glm::vec3(-0.5f, 0.0f, 0.0f));
 
     for(auto entity : entities)
     {
         camera->setShaderProgramID(entity->getShader().ProgramID());
     }
 
+#endif
     //using namespace renderingInfo;
     //main Engine loop
     while(window.running())

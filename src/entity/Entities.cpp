@@ -54,16 +54,24 @@ void Entity::setVO()
 }
 
 
+void Entity::printVerticiesData()
+{
+    std::cout << "\n\n\n\n\n\n\n\n\n\n\n";
+    for (std::size_t i = 0; i < m_totalVerticies; ++i)
+    {
+        std::cout << m_verticies[i] << '\n';
+    }
+}
+
 
 void Entity::printIndiciesData()
 {
     std::cout << "\n\n\n\n\n\n\n\n\n\n\n";
-    for (std::size_t i = 0; i < 78; ++i)
+    for (std::size_t i = 0; i < m_totalIndicies; ++i)
     {
         std::cout << m_indicies[i] << '\n';
     }
 }
-
 
 
 void Entity::render()

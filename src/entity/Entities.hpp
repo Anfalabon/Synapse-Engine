@@ -41,7 +41,9 @@ public:
 
     [[nodiscard]] inline VertexObjects& getVertexObjects(){return m_VO;}
 
+    void printVerticiesData();
     void printIndiciesData();
+
     void render();
     void update();
 
