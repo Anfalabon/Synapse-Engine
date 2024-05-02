@@ -1,0 +1,30 @@
+#ifndef RENDERINGINFOLOG_HPP
+#define RENDERINGINFOLOG_HPP
+
+#include <GLFW/glfw3.h>
+
+#include <iostream>
+
+namespace renderingInfo
+{
+
+inline double m_currentTimeSinceInit = glfwGetTime();
+inline double m_previousTimeSinceInit = 0.0f;
+inline std::size_t m_count = 0;
+
+inline void framesPerSecond()
+{
+    if(m_count > 0)
+    {
+        m_currentTimeSinceInit = static_cast<double>(glfwGetTime());
+        double timeDifference = m_currentTimeSinceInit - m_previousTimeSinceInit;
+        m_previousTimeSinceInit = m_currentTimeSinceInit;
+
+        std::clog << "FPS:      " << 1/timeDifference << '\n';
+    }
+    ++m_count;
+}
+
+}
+
+#endif //RENDERINGINFOLOG_HPP

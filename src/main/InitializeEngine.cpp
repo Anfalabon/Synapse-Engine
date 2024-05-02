@@ -1,0 +1,302 @@
+
+
+#include "InitializeEngine.hpp"
+#include "../debug/RenderingInfoLog.hpp"
+
+#include <memory>
+#include <vector>
+
+
+
+//set the background color
+//enable the depth test (z buffer)
+//disable the cull face
+//clear the color buffer bit along with depth buffer bit
+void _zBufferBg(float r, float g, float b, float w)
+{
+    glClearColor(r, g, b, w);
+    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+
+
+//Engine::Engine()
+////    : window(1920.0f, 1080.0f, "Simulation Engine"),
+////      camera(new Camera()),
+////      cubesAndGround(new Entity())
+//{
+//    //initialize the glfw functions and other glfw features
+//    if (!glfwInit())
+//    {
+//        std::cerr << "Falied to initialize glfw!" << '\n';
+//        return;
+//    }
+//
+//    //simulate a camera
+//    //Camera *camera = nullptr; //first time got the nullptr derefrencing bug (it gave segmentation fault (core dump))
+//
+//    //std::unique_ptr<Camera> camera(new Camera());
+//    Camera::setupMouse(window.windowAddress());
+//
+//    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+//    {
+//        std::cerr << "Failed to load GLAD" << '\n';
+//        return;
+//    }
+//
+//    glViewport(0, 0, window.WIDTH(), window.HEIGHT());
+//
+//
+////    std::vector<Entity*> entities;
+////    Entity *cubesAndGround = new Entity();
+//
+//}
+
+
+template<typename T>
+void clean(T *object)
+{
+    delete object;
+}
+
+
+
+int8_t Engine::Run()
+{
+    //initialize the glfw functions and other glfw features
+    if (!glfwInit())
+    {
+        std::cerr << "Falied to initialize glfw!" << '\n';
+        return -1;
+    }
+
+    GLfloat WIDTH = 1920.0f;
+    GLfloat HEIGHT = 1080.0f;
+
+    Window window(WIDTH, HEIGHT,"Simulation Engine");
+
+    //simulate a camera
+    //Camera *camera = nullptr; //first time got the nullptr derefrencing bug (it gave segmentation fault (core dump))
+
+    Camera *camera = new Camera();
+    Camera::setupMouse(window.windowAddress());
+
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cerr << "Failed to load GLAD" << '\n';
+        return -1;
+    }
+
+    glViewport(0, 0, window.WIDTH(), window.HEIGHT());
+
+
+
+    //these verticies and indicies data will be in another file and we will get it by using fstream
+
+    GLuint cubeTotalVerticies = 8;
+    GLuint cubeTotalIndicies = 36;
+
+    Vertex *cubeVerticiesData = new Vertex[cubeTotalVerticies]{
+            //an entity with all unique vertex attributes(shape: cube)
+            {{0.5f,  0.5f,  0.5f},  {1.0f, 1.0f, 1.0f}},
+            {{0.5f,  0.5f,  -0.5f}, {1.0f, 1.0f, 1.0f}},
+            {{0.5f,  -0.5f, 0.5f},  {1.0f, 1.0f, 1.0f}},
+            {{0.5f,  -0.5f, -0.5f}, {1.0f, 1.0f, 1.0f}},
+            {{-0.5f, 0.5f,  0.5f},  {1.0f, 1.0f, 1.0f}},
+            {{-0.5f, 0.5f,  -0.5f}, {1.0f, 1.0f, 1.0f}},
+            {{-0.5f, -0.5f, 0.5f},  {1.0f, 1.0f, 1.0f}},
+            {{-0.5f, -0.5f, -0.5f}, {1.0f, 1.0f, 1.0f}},
+    };
+
+    GLuint *cubeIndiciesData = new GLuint[cubeTotalIndicies]{
+            //twelf triangles to create a cube(as cube has 6 surfaces and each surface is a rectanle itselft which again is made of 2 triangles)
+            0, 1, 2,        //first triangle
+            1, 2, 3,        //second triangle
+            0, 1, 4,        //third triangle
+            1, 4, 5,        //fourth triangle
+            4, 5, 6,        //fifth triangle
+            5, 6, 7,        //sixth triangle
+            2, 3, 6,        //seventh triangle
+            3, 6, 7,        //eight triangle
+            0, 2, 4,        //ninth triangle
+            2, 4, 6,        //tenth triangle
+            1, 3, 5,        //eleventh triangle
+            3, 7, 5,        //twelfth triangle
+    };
+
+
+
+    GLuint groundTotalVerticies = 4;
+    GLuint groundTotalIndicies = 12;
+
+    Vertex *groundVerticiesData = new Vertex[groundTotalVerticies]{
+            {{960.0f,  -10.0f, 540.0f},  {1.0f, 0.0f, 0.0f}},
+            {{-960.0f, -10.0f, 540.0f},  {0.0f, 1.0f, 0.0f}},
+            {{960.0f,  -10.0f, -540.0f}, {0.0f, 0.0f, 1.0f}},
+            {{-960.0f, -10.0f, -540.0f}, {1.0f, 0.0f, 1.0f}},
+    };
+
+    GLuint *groundIndiciesData = new GLuint[groundTotalIndicies]{
+            0, 1, 2,
+            1, 2, 3,
+    };
+
+
+
+    GLuint anotherCubeTotalVerticies = 8;
+    GLuint anotherCubeTotalIndicies = 36;
+
+    Vertex *anotherCubeVerticiesData = new Vertex[anotherCubeTotalVerticies]{
+            {{3.0f, 0.5f, 1.0f},    {1.0f, 0.0f, 0.0f}},
+            {{3.0f, 0.5f, -1.0f},   {0.0f, 1.0f, 0.0f}},
+            {{2.0f, -0.5f, 1.0f},   {0.0f, 0.0f, 1.0f}},
+            {{2.0f, -0.5f, -1.0f},  {0.5f, 1.0f, 0.0f}},
+            {{3.0f, -0.5f, 1.0f},   {0.0f, 1.0f, 0.0f}},
+            {{3.0f, -0.5f, -1.0f},  {0.5f, 0.0f, 1.0f}},
+            {{2.0f, 0.5f, 1.0f},    {0.0f, 0.5f, 0.0f}},
+            {{2.0f, 0.5f, -1.0f},   {0.5f, 0.0f, 0.5f}},
+    };
+
+    GLuint *anotherCubeIndiciesData = new GLuint[anotherCubeTotalIndicies]{
+            0, 1, 2,        //first triangle
+            1, 2, 3,        //second triangle
+            0, 1, 4,        //third triangle
+            1, 4, 5,        //fourth triangle
+            4, 5, 6,        //fifth triangle
+            5, 6, 7,        //sixth triangle
+            2, 3, 6,        //seventh triangle
+            3, 6, 7,        //eight triangle
+            0, 2, 4,        //ninth triangle
+            2, 4, 6,        //tenth triangle
+            1, 3, 5,        //eleventh triangle
+            3, 7, 5,        //twelfth triangle
+    };
+
+
+
+    Entity *ground = new Entity(groundVerticiesData, groundTotalVerticies,
+                                groundIndiciesData, groundTotalIndicies,
+                                "../src/shader/GLSL/vertexShaderSource2.glslv",
+                                "../src/shader/GLSL/fragmentShaderSource2.glslf");
+
+    Entity *cube = new Entity(cubeVerticiesData, cubeTotalVerticies,
+                              cubeIndiciesData, cubeTotalIndicies,
+                              "../src/shader/GLSL/vertexShaderSource1.glslv",
+                              "../src/shader/GLSL/fragmentShaderSource1.glslf");
+
+//    Entity *anotherCube = new Entity(anotherCubeVerticiesData, anotherCubeTotalVerticies,
+//                                     anotherCubeIndiciesData, anotherCubeTotalIndicies,);
+
+
+    //std::vector<Entity*> entities;
+    //entities.reserve(3);
+
+    //entities[0] = cube;
+    //entities[1] = ground;
+    //entities[2] = anotherCube;
+
+
+
+#define INSPECTION_MODE 0
+#define GAME_MODE 1
+
+    //initial position of the camera
+    cube->getTransformation().translate(glm::vec3(-0.5f, 0.0f, 0.0f));
+
+    //set the shader program ID for camera
+    camera->setShaderProgramID(cube->getShader().ProgramID());
+    camera->setShaderProgramID(ground->getShader().ProgramID());
+    //camera->setShaderProgramID(anotherCube->getShader().ProgramID());
+
+//    for(auto entity : entities)
+//    {
+//        camera->setShaderProgramID(entity->getShader().ProgramID());
+//    }
+
+    //using namespace renderingInfo;
+    //main Engine loop
+    while(window.running())
+    {
+        _zBufferBg(0.2f, 0.3f, 0.3f, 1.0f);
+
+        window.getKeyboardInput();
+        camera->getKeyboardInput(window.windowAddress());
+
+        camera->update();
+
+        cube->update();
+        ground->update();
+        //anotherCube->update();
+
+        cube->render();
+        ground->render();
+        //anotherCube->render();
+
+//        for(auto entity : entities)
+//        {
+//            entity->update();
+//        }
+//
+//        for(auto entity : entities)
+//        {
+//            entity->render();
+//        }
+
+        renderingInfo::framesPerSecond();
+
+        window.swapBuffers();
+        window.pollEvents();
+    }
+
+
+    delete camera;
+
+    return 0;
+}
+
+
+
+//~Entity::Entity()
+//{
+//
+//}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
