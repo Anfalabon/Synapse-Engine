@@ -177,8 +177,11 @@ int8_t Engine::Run()
 
 
 
-#define __DEVELOPMENT__
-//#define __DEBUG__
+
+
+
+//#define __DEVELOPMENT__
+#define __DEBUG__
 
 #ifdef __DEBUG__
 
