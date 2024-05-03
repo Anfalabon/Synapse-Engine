@@ -13,6 +13,8 @@ VertexObjects::VertexObjects(GLuint verticiesSizeBytes, const void *verticiesDat
         return;
     }
 
+    std::cout << "Vertex Objects Running!" << '\n';
+
     //GLuint VBO;
     glGenBuffers(1, &_VBO);
     glBindBuffer(GL_ARRAY_BUFFER, _VBO);
@@ -34,6 +36,9 @@ VertexObjects::VertexObjects(GLuint verticiesSizeBytes, const void *verticiesDat
     glGenBuffers(1, &_EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indiciesSizeBytes, indiciesData, GL_STATIC_DRAW);
+
+
+    std::cout << "Finished Running Vertex Objects!" << '\n';
 
 }
 

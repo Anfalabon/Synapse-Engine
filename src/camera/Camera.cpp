@@ -29,6 +29,8 @@ void Camera::perspectiveLocation()
     {
         GLuint perspectiveLocation = glGetUniformLocation(shaderProgramID, "perspective");
         glUniformMatrix4fv(perspectiveLocation, 1, GL_FALSE, glm::value_ptr(m_perspective));
+
+        //glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "perspective", 1, GL_FALSE, glm::value_ptr(m_perspective)));
     }
 }
 
@@ -39,12 +41,22 @@ void Camera::viewLocation()
     {
         GLuint viewLocation = glGetUniformLocation(shaderProgramID, "view");
         glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(m_view));
+
+        //glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "view", 1, GL_FALSE, glm::value_ptr(m_view)));
     }
 }
+
 
 void Camera::updatePerspective()
 {
     m_perspective = glm::perspective(glm::radians(m_zoomValue), 1920.0f/1080.0f, 0.1f, 100.0f);
+}
+
+
+
+void Camera::updateView(glm::mat4 &view)
+{
+    view = m_view;
 }
 
 
@@ -643,6 +655,8 @@ void Camera::lookAtTarget()
 
 
 
+
+
 void Camera::isLookingAtEntity()
 {
 //    glm::vec3 entityPos = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -689,15 +703,19 @@ void Camera::isLookingAtEntity()
 
 
 
+
 void Camera::update()
 {
     //this->getKeyboardInput();
     //this->changeEngineMode();
 
+    std::cout << "Total shader program ID's: " << m_shaderProgramIDs.size() << '\n';
+
     this->applyPhysics();
     this->updatePerspective();
     this->viewLocation();
     this->perspectiveLocation();
+    this->updatePerspective();
     this->lookAtTarget();
     //this->isLookingAtEntity();
 }

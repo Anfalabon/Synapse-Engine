@@ -41,9 +41,10 @@ public:
     void setEngineMode(const uint8_t ENGINE_MODE = 1);
     //void changeEngineMode();
     void setShaderProgramID(GLuint shaderProgramID);
-    void updatePerspective();
     void perspectiveLocation();
     void viewLocation();
+    void updatePerspective();
+    void updateView(glm::mat4 &view);
     void lookAtTarget();   //this is the overloaded function of glm::lookAt(). So the it will return : return glm::lookAt(cameraPos, targetPos, upVecPos)
     void isLookingAtEntity();
     void setCameraSpeed();    

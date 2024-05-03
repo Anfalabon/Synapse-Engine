@@ -34,15 +34,19 @@ public:
     void setShader(const std::string &vertexShaderSourcePath,
                    const std::string &fragmentShaderSourcePath);
 
+    void setShader();
+
     void setVO();
 
     [[nodiscard]] inline Shader& getShader(){return m_shader;}
     [[nodiscard]] inline CoordinateTransformation& getTransformation(){return m_transform;}
-
     [[nodiscard]] inline VertexObjects& getVertexObjects(){return m_VO;}
 
+
+//#ifdef __DEBUG__
     void printVerticiesData();
     void printIndiciesData();
+//#endif
 
     void render();
     void update();

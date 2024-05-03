@@ -136,7 +136,7 @@ int8_t Engine::Run()
             {{960.0f,  -10.0f, 540.0f},  {1.0f, 0.0f, 0.0f}},
             {{-960.0f, -10.0f, 540.0f},  {0.0f, 1.0f, 0.0f}},
             {{960.0f,  -10.0f, -540.0f}, {0.0f, 0.0f, 1.0f}},
-            {{-960.0f, -10.0f, -540.0f}, {1.0f, 0.0f, 1.0f}},
+            {{-960.0f, -10.0f, -540.0f}, {0.5f, 0.5f, 0.5f}},
     };
 
     GLuint *groundIndiciesData = new GLuint[groundTotalIndicies]{
@@ -175,35 +175,33 @@ int8_t Engine::Run()
             3, 7, 5,        //twelfth triangle
     };
 
+
+
 #define __DEVELOPMENT__
+//#define __DEBUG__
 
 #ifdef __DEBUG__
+
     Entity *cube = new Entity(cubeVerticiesData, cubeTotalVerticies,
                               cubeIndiciesData, cubeTotalIndicies,
                               "../src/shader/GLSL/vertexShaderSource1.glslv",
                               "../src/shader/GLSL/fragmentShaderSource1.glslf");
-
-    cube->setShader("../src/shader/GLSL/vertexShaderSource1.glslv",
-                    "../src/shader/GLSL/fragmentShaderSource1.glslf");
-    cube->setVO();
 
     Entity *ground = new Entity(groundVerticiesData, groundTotalVerticies,
                                 groundIndiciesData, groundTotalIndicies,
                                 "../src/shader/GLSL/vertexShaderSource2.glslv",
                                 "../src/shader/GLSL/fragmentShaderSource2.glslf");
 
-    ground->setShader("../src/shader/GLSL/vertexShaderSource2.glslv",
-                      "../src/shader/GLSL/fragmentShaderSource2.glslf");
-    ground->setVO();
-
-
-//    Entity *anotherCube = new Entity(anotherCubeVerticiesData, anotherCubeTotalVerticies,
-//                                     anotherCubeIndiciesData, anotherCubeTotalIndicies);
+    Entity *anotherCube = new Entity(anotherCubeVerticiesData, anotherCubeTotalVerticies,
+                                     anotherCubeIndiciesData, anotherCubeTotalIndicies,
+                                     "../src/shader/GLSL/vertexShaderSource3.glslv",
+                                     "../src/shader/GLSL/fragmentShaderSource3.glslf");
 
 #else
 
     std::vector<Entity*> entities;
     entities.reserve(3);
+
 
     entities.push_back(new Entity(cubeVerticiesData, cubeTotalVerticies,
                                   cubeIndiciesData, cubeTotalIndicies,
@@ -215,8 +213,10 @@ int8_t Engine::Run()
                                   "../src/shader/GLSL/vertexShaderSource2.glslv",
                                   "../src/shader/GLSL/fragmentShaderSource2.glslf"));
 
-//    entities.push_back(new Entity(anotherCubeVerticiesData, anotherCubeTotalVerticies,
-//                                  anotherCubeIndiciesData, anotherCubeTotalIndicies));
+    entities.push_back(new Entity(anotherCubeVerticiesData, anotherCubeTotalVerticies,
+                                  anotherCubeIndiciesData, anotherCubeTotalIndicies,
+                                  "../src/shader/GLSL/vertexShaderSource3.glslv",
+                                  "../src/shader/GLSL/fragmentShaderSource3.glslf"));
 
 #endif //__DEBUG__
 
@@ -236,12 +236,16 @@ int8_t Engine::Run()
     camera->setShaderProgramID(anotherCube->getShader().ProgramID());
 #else
 
-    entities[1]->getTransformation().translate(glm::vec3(-0.5f, 0.0f, 0.0f));
 
     for(auto entity : entities)
     {
         camera->setShaderProgramID(entity->getShader().ProgramID());
     }
+
+    entities[0]->getTransformation().translate(glm::vec3(-0.5, 0.0f, 0.0f));
+    entities[1]->getTransformation().translate(glm::vec3(0.0f, 0.0f, 0.0f));
+    entities[2]->getTransformation().translate(glm::vec3(0.0f, 0.0f, 0.0f));
+
 
 #endif
     //using namespace renderingInfo;
@@ -258,11 +262,11 @@ int8_t Engine::Run()
 #ifdef __DEBUG__
         cube->update();
         ground->update();
-        //anotherCube->update();
+        anotherCube->update();
 
         cube->render();
         ground->render();
-        //anotherCube->render();
+        anotherCube->render();
 #else
         for(auto entity : entities)
         {

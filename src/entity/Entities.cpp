@@ -48,6 +48,12 @@ void Entity::setShader(const std::string &vertexShaderSourcePath,
 }
 
 
+void Entity::setShader()
+{
+    m_shader.setup();
+    m_shader.link();
+}
+
 void Entity::setVO()
 {
     m_VO = VertexObjects(m_verticiesSizeBytes, m_verticies, m_indiciesSizeBytes, m_indicies);
@@ -77,6 +83,7 @@ void Entity::printIndiciesData()
 void Entity::render()
 {
     //glDrawArrays(GL_TRIANGLES, 0, 36)
+    glBindVertexArray(m_VO.getVAO());
     glDrawElements(GL_TRIANGLES, m_totalIndicies, GL_UNSIGNED_INT, 0);
 }
 
