@@ -6,6 +6,7 @@
 #include <memory>
 #include <vector>
 #include <algorithm>
+#include <thread>
 
 
 
@@ -178,10 +179,11 @@ int8_t Engine::Run()
 
 
 
-
-
 #define __DEVELOPMENT__
 //#define __DEBUG__
+
+#define __MULTITHREADING__
+//#define __SINGLETHREADING__
 
 #ifdef __DEBUG__
 
@@ -245,20 +247,37 @@ int8_t Engine::Run()
         camera->setShaderProgramID(entity->getShader().ProgramID());
     }
 
-    entities[0]->getTransformation().translate(glm::vec3(-0.5, 0.0f, 0.0f));
+    entities[0]->getTransformation().translate(glm::vec3(-0.5, 10.0f, 0.0f));
     entities[1]->getTransformation().translate(glm::vec3(0.0f, 0.0f, 0.0f));
     entities[2]->getTransformation().translate(glm::vec3(0.0f, 0.0f, 0.0f));
 
 
 #endif
+
     //using namespace renderingInfo;
     //main Engine loop
     while(window.running())
     {
         _zBufferBg(0.2f, 0.3f, 0.3f, 1.0f);
 
+
+
+#ifdef __MULTITHREADING__
+        std::thread windowKeyInputThread([&window]()->void
+        {
+            window.getKeyboardInput();
+        });
+        std::thread cameraKeyInputThread([&camera, &window]()->void
+        {
+            camera->getKeyboardInput(window.windowAddress());
+        });
+
+        windowKeyInputThread.join();
+        cameraKeyInputThread.join();
+#else
         window.getKeyboardInput();
         camera->getKeyboardInput(window.windowAddress());
+#endif
 
         camera->update();
 
@@ -302,7 +321,6 @@ int8_t Engine::Run()
 //{
 //
 //}
-
 
 
 

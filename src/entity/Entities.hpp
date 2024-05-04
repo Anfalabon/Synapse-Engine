@@ -16,8 +16,8 @@ class Entity
 {
 public:
 
-    explicit Entity(Vertex *verticiesArr, GLuint totalVerticies,
-                    GLuint *indiciesArr, GLuint totalIndicies,
+    explicit Entity(Vertex *verticies, GLuint totalVerticies,
+                    GLuint *indicies, GLuint totalIndicies,
                     const std::string &vertexShaderSourcePath,
                     const std::string &fragmentShaderSourcePath) noexcept;
     ~Entity();

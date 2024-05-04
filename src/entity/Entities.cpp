@@ -17,14 +17,22 @@ unsigned int size(const GLuint *arr)
 }
 
 
+//template<typename T>
+//template<GLuint *buffer> struct Size{ enum{ count = size<buffer+1>::count }; };
+//template<> struct Size<nullptr>{ enum{count = 0}; };
 
-Entity::Entity(Vertex *verticiesArr, GLuint totalVerticies,
-               GLuint *indiciesArr, GLuint totalIndicies,
+//constexpr totalV = size<verticiesArr>::count;
+//constexpr totalI = size<indiciesArr>::count;
+
+
+
+Entity::Entity(Vertex *verticies, GLuint totalVerticies,
+               GLuint *indicies, GLuint totalIndicies,
                const std::string &vertexShaderSourcePath,
                const std::string &fragmentShaderSourcePath) noexcept
     :
-     m_verticies(verticiesArr),
-     m_indicies(indiciesArr),
+     m_verticies(verticies),
+     m_indicies(indicies),
      m_totalVerticies(totalVerticies),
      m_totalIndicies(totalIndicies),
      m_verticiesSizeBytes(sizeof(Vertex)*totalVerticies),
@@ -92,8 +100,8 @@ void Entity::update()
 {
     m_shader.useProgram();
 
-    m_transform.rotate(0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-    m_transform.translate(glm::vec3(0.0f, 0.0f, 0.0f));
+//    m_transform.rotate(0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+//    m_transform.translate(glm::vec3(0.0f, 0.0f, 0.0f));
 
     m_transform.modelLocation(m_shader.ProgramID());
 }

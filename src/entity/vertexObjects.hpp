@@ -31,9 +31,9 @@ public:
                            GLuint indiciesSizeBytes, const void *indiciesData) noexcept;
     ~VertexObjects();
 
-    GLuint &getVBO(){return _VBO;}
-    GLuint &getVAO(){return _VAO;}
-    GLuint &getEBO(){return _EBO;}
+    [[nodiscard]] inline GLuint &getVAO(){return _VAO;}
+    [[nodiscard]] inline GLuint &getEBO(){return _EBO;}
+    [[nodiscard]] inline GLuint &getVBO(){return _VBO;}
 
 private:
     GLuint _VBO;
