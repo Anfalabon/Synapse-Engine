@@ -7,6 +7,7 @@
 #include <vector>
 #include <algorithm>
 #include <thread>
+#include <execution>
 
 
 
@@ -134,10 +135,10 @@ int8_t Engine::Run()
     GLuint groundTotalIndicies = 12;
 
     Vertex *groundVerticiesData = new Vertex[groundTotalVerticies]{
-            {{960.0f,  -10.0f, 540.0f},  {1.0f, 0.0f, 0.0f}},
-            {{-960.0f, -10.0f, 540.0f},  {0.0f, 1.0f, 0.0f}},
-            {{960.0f,  -10.0f, -540.0f}, {0.0f, 0.0f, 1.0f}},
-            {{-960.0f, -10.0f, -540.0f}, {0.5f, 0.5f, 0.5f}},
+            {{960.0f,  -0.5f, 540.0f},  {1.0f, 0.0f, 0.0f}},
+            {{-960.0f, -0.5f, 540.0f},  {0.0f, 1.0f, 0.0f}},
+            {{960.0f,  -0.5f, -540.0f}, {0.0f, 0.0f, 1.0f}},
+            {{-960.0f, -0.5f, -540.0f}, {0.5f, 0.5f, 0.5f}},
     };
 
     GLuint *groundIndiciesData = new GLuint[groundTotalIndicies]{
@@ -215,13 +216,13 @@ int8_t Engine::Run()
 
     entities.push_back(new Entity(groundVerticiesData, groundTotalVerticies,
                                   groundIndiciesData, groundTotalIndicies,
-                                  "../src/shader/GLSL/vertexShaderSource2.glslv",
-                                  "../src/shader/GLSL/fragmentShaderSource2.glslf"));
+                                  "../src/shader/GLSL/vertexShaderSource1.glslv",
+                                  "../src/shader/GLSL/fragmentShaderSource1.glslf"));
 
     entities.push_back(new Entity(anotherCubeVerticiesData, anotherCubeTotalVerticies,
                                   anotherCubeIndiciesData, anotherCubeTotalIndicies,
-                                  "../src/shader/GLSL/vertexShaderSource3.glslv",
-                                  "../src/shader/GLSL/fragmentShaderSource3.glslf"));
+                                  "../src/shader/GLSL/vertexShaderSource1.glslv",
+                                  "../src/shader/GLSL/fragmentShaderSource1.glslf"));
 
 #endif //__DEBUG__
 
@@ -233,7 +234,9 @@ int8_t Engine::Run()
 
 #ifdef __DEBUG__
     //initial position of the camera
-    cube->getTransformation().translate(glm::vec3(-0.5f, 0.0f, 0.0f));
+    cube->getTransformation().translate(glm::vec3(-0.5f, 10.0f, 0.0f));
+    ground->getTransformation().translate(glm::vec3(0.0f, 0.0f, 0.0f));
+    anotherCube->getTransformation().translate(glm::vec3(0.0f, 0.0f, 0.0f));
 
     //set the shader program ID for camera
     camera->setShaderProgramID(cube->getShader().ProgramID());
@@ -247,19 +250,25 @@ int8_t Engine::Run()
         camera->setShaderProgramID(entity->getShader().ProgramID());
     }
 
-    entities[0]->getTransformation().translate(glm::vec3(-0.5, 10.0f, 0.0f));
-    entities[1]->getTransformation().translate(glm::vec3(0.0f, 0.0f, 0.0f));
-    entities[2]->getTransformation().translate(glm::vec3(0.0f, 0.0f, 0.0f));
+//    entities[0]->getTransformation().translate(glm::vec3(0.0, 0.0f, 0.0f));
+//    entities[1]->getTransformation().translate(glm::vec3(0.0f, 0.0f, 0.0f));
+//    entities[2]->getTransformation().translate(glm::vec3(0.0f, 0.0f, 0.0f));
+
+    //entities[0]->m_transform.translate(glm::vec3(1.0f, 0.0f, 0.0f));
+
+
+
 
 
 #endif
+
+
 
     //using namespace renderingInfo;
     //main Engine loop
     while(window.running())
     {
         _zBufferBg(0.2f, 0.3f, 0.3f, 1.0f);
-
 
 
 #ifdef __MULTITHREADING__
@@ -271,6 +280,9 @@ int8_t Engine::Run()
         {
             camera->getKeyboardInput(window.windowAddress());
         });
+
+//        std::thread windowKeyInputThread(&Window::getKeyboardInput, &window);
+//        std::thread cameraKeyInputThread(&Camera::getKeyboardInput, &camera, &window.windowAddress());
 
         windowKeyInputThread.join();
         cameraKeyInputThread.join();
@@ -290,16 +302,37 @@ int8_t Engine::Run()
         ground->render();
         anotherCube->render();
 #else
-        for(auto entity : entities)
+
+
+        entities[0]->getTransformation().translate(glm::vec3(0.0f, -1.0f, 0.0f));
+        entities[0]->getTransformation().modelLocation(entities[0]->getShader().ProgramID());
+
+//        for(auto entity : entities)
+//        {
+//            entity->update();
+//        }
+//
+//        for(auto entity : entities)
+//        {
+//            entity->render();
+//        }
+
+        std::for_each(std::execution::par, entities.begin(), entities.end(), [](auto entity)->void
         {
             entity->update();
             //entity->render();
-        }
+        });
 
-        for(auto entity : entities)
+        std::for_each(std::execution::par, entities.begin(), entities.end(), [](auto entity)->void
         {
+            //entity->update();
             entity->render();
-        }
+        });
+
+
+
+
+
 
 #endif  //__DEBUG__
 

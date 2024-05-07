@@ -14,6 +14,8 @@
 
 struct CoordinateTransformation
 {
+    CoordinateTransformation() = default;
+
     glm::mat4 m_model = glm::mat4(1.0f);
     glm::mat4 m_view = glm::mat4(1.0f);
     glm::mat4 m_perspective = glm::mat4(1.0);
@@ -24,7 +26,7 @@ struct CoordinateTransformation
         GLuint modelLocation = glGetUniformLocation(shaderProgramID, "model");
         glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(m_model));
 
-        //glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "model", 1, GL_FALSE, glm::value_ptr(m_model)));
+        //glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "model"), 1, GL_FALSE, glm::value_ptr(m_model)));
     }
 
     //view and perspective matrix and location finder is going to be in the Camera class
@@ -41,7 +43,7 @@ struct CoordinateTransformation
         glUniformMatrix4fv(perspectiveLocation, 1, GL_FALSE, glm::value_ptr(m_perspective));
     }
 
-    //transform the entity
+    //apply transformation
     inline void rotate(float angleToRotateDegrees, glm::vec3 rotationVec)
     {
         m_model = glm::rotate(m_model, glm::radians(angleToRotateDegrees), rotationVec);

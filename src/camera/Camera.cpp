@@ -25,32 +25,32 @@ void Camera::setShaderProgramID(GLuint shaderProgramID)
 //void Camera::perspectiveLocation(GLuint shaderProgramID)
 void Camera::perspectiveLocation()
 {
-//    for(auto shaderProgramID : m_shaderProgramIDs)
-//    {
-//        GLuint perspectiveLocation = glGetUniformLocation(shaderProgramID, "perspective");
-//        glUniformMatrix4fv(perspectiveLocation, 1, GL_FALSE, glm::value_ptr(m_perspective));
-//
-//        //glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "perspective", 1, GL_FALSE, glm::value_ptr(m_perspective)));
-//    }
+    for(auto shaderProgramID : m_shaderProgramIDs)
+    {
+        GLuint perspectiveLocation = glGetUniformLocation(shaderProgramID, "perspective");
+        glUniformMatrix4fv(perspectiveLocation, 1, GL_FALSE, glm::value_ptr(m_perspective));
 
-    GLuint perspectiveLocation = glGetUniformLocation(m_shaderProgramIDs[0], "perspective");
-    glUniformMatrix4fv(perspectiveLocation, 1, GL_FALSE, glm::value_ptr(m_perspective));
+        //glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "perspective", 1, GL_FALSE, glm::value_ptr(m_perspective)));
+    }
+
+//    GLuint perspectiveLocation = glGetUniformLocation(m_shaderProgramIDs[0], "perspective");
+//    glUniformMatrix4fv(perspectiveLocation, 1, GL_FALSE, glm::value_ptr(m_perspective));
 
 }
 
 //void Camera::viewLocation(GLuint shaderProgramID)
 void Camera::viewLocation()
 {
-//    for(auto shaderProgramID : m_shaderProgramIDs)
-//    {
-//        GLuint viewLocation = glGetUniformLocation(shaderProgramID, "view");
-//        glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(m_view));
-//j
-//        //glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "view", 1, GL_FALSE, glm::value_ptr(m_view)));
-//    }
+    for(auto shaderProgramID : m_shaderProgramIDs)
+    {
+        GLuint viewLocation = glGetUniformLocation(shaderProgramID, "view");
+        glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(m_view));
 
-    GLuint viewLocation = glGetUniformLocation(m_shaderProgramIDs[0], "view");
-    glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(m_view));
+        //glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "view", 1, GL_FALSE, glm::value_ptr(m_view)));
+    }
+
+//    GLuint viewLocation = glGetUniformLocation(m_shaderProgramIDs[0], "view");
+//    glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(m_view));
 
 }
 

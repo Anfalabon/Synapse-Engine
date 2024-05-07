@@ -622,6 +622,46 @@ void updateFrame(Camera *camera,
 
 ///////////////////////////////////////////////////////////////////////////////
 
+//        std::for_each(std::execution::par, entities.begin(), entities.end(), [](auto entity)->void
+//        {
+//            entity->update();
+//            //entity->render();
+//        });
+//
+//        std::for_each(std::execution::par, entities.begin(), entities.end(), [](auto entity)->void
+//        {
+//            //entity->update();
+//            entity->render();
+//        });
+
+///////////////////////////////////////////////////////////////////////////////
+
+    auto updateEntites = [&entities]()->void
+    {
+        for(auto entity : entities)
+        {
+            entity->update();
+            entity->render();
+        }
+    };
+
+    auto renderEntities = [&entities]()->void
+    {
+        for(auto entity : entities)
+        {
+            entity->render();
+        }
+    };
+
+
+    std::thread entityUpdateThread(updateEntites);
+    std::thread entityRenderThread(renderEntities);
+
+    entityUpdateThread.join();
+    entityRenderThread.join();
+
+///////////////////////////////////////////////////////////////////////////////
+
 
 
 

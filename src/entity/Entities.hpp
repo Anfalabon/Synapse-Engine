@@ -71,7 +71,9 @@ private:
     //we can't use this if the Shader() constructor is explicit
     //Shader m_shader = Shader("../src/shader/GLSL/vertexShaderSource1.glslv", "../src/shader/GLSL/fragmentShaderSource1.glslf");
     Shader m_shader;
+public:
     struct CoordinateTransformation m_transform;
+private:
     struct VertexObjects m_VO;
 };
 
