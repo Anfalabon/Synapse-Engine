@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <thread>
 #include <execution>
+#include <iterator>
+#include <new>
 
 
 
@@ -257,10 +259,10 @@ int8_t Engine::Run()
     //entities[0]->m_transform.translate(glm::vec3(1.0f, 0.0f, 0.0f));
 
 
-
-
-
 #endif
+
+    std::vector<std::thread> entitiesThreads;
+
 
 
 
@@ -303,35 +305,52 @@ int8_t Engine::Run()
         anotherCube->render();
 #else
 
-
-        entities[0]->getTransformation().translate(glm::vec3(0.0f, -1.0f, 0.0f));
-        entities[0]->getTransformation().modelLocation(entities[0]->getShader().ProgramID());
+        //this isn't transforming
+        //have to fix it
+//        entities[0]->getTransformation().translate(glm::vec3(0.0f, -1.0f, 0.0f));
+//        entities[0]->getTransformation().modelLocation(entities[0]->getShader().ProgramID());
 
 //        for(auto entity : entities)
 //        {
 //            entity->update();
 //        }
-//
+
 //        for(auto entity : entities)
 //        {
 //            entity->render();
 //        }
 
-        std::for_each(std::execution::par, entities.begin(), entities.end(), [](auto entity)->void
+
+        for(auto entity : entities)
         {
-            entity->update();
-            //entity->render();
-        });
+            entitiesThreads.push_back(std::thread([&entity]()->void
+            {
+                entity->update();
+            }));
+        }
 
-        std::for_each(std::execution::par, entities.begin(), entities.end(), [](auto entity)->void
+        for(auto entityThread : entitiesThreads)
         {
-            //entity->update();
-            entity->render();
-        });
+            entityThread.join();
+        }
+
+        entitiesThreads.clear();
 
 
+        for(auto entity : entities)
+        {
+            entitiesThreads.push_back(std::thread([&entity]()->void
+            {
+                entity->render();
+            }));
+        }
 
+        for(auto entityThread : entitiesThreads)
+        {
+            entityThread.join();
+        }
 
+        entitiesThreads.clear();
 
 
 #endif  //__DEBUG__

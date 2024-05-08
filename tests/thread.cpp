@@ -5,8 +5,10 @@
 #include <array>
 #include <vector>
 #include <algorithm>
+#include <execution>
 
 
+//will use std::for_each() execution policy and keep the logic inside
 
 
 std::size_t sumEvenSin(const std::size_t start, const std::size_t end)
@@ -16,12 +18,13 @@ std::size_t sumEvenSin(const std::size_t start, const std::size_t end)
     {
         if(i%2 != 0)
         {
-            sum += sin(i);
+            sum += sin(i)*cos(i);
             //sum += i;
         }
     }
     return sum;
 }
+
 
 
 std::size_t sumOddSin(const std::size_t start, const std::size_t end)
@@ -31,7 +34,7 @@ std::size_t sumOddSin(const std::size_t start, const std::size_t end)
     {
         if(i%2 != 0)
         {
-            sum += sin(i);
+            sum += sin(i)*cos(i);
             //sum += i;
         }
     }
@@ -41,12 +44,69 @@ std::size_t sumOddSin(const std::size_t start, const std::size_t end)
 
 int main()
 {
-    std::size_t range = 900000000;
-    auto start =std::chrono::high_resolution_clock::now();
+    std::size_t range = 90000000;
+
+//    std::vector<std::size_t> container;
+//    //container.reserve(range);
+//
+//
+////    for(auto &element : container)
+////    {
+////        element = 1;
+////    }
+////
+//
+//    for(std::size_t i=0; i<range; ++i)
+//    {
+//        //container[i] = 1;
+//        container.push_back(1);
+//    }
+//
+//    std::cout << container.size() << '\n';
+//
+//    auto start =std::chrono::high_resolution_clock::now();
+//
+//
+//    float sum1 = 0.0f;
+//    std::for_each(std::execution::par, container.begin(), container.end(), [&sum1](std::size_t element)->void
+//    {
+//        sum1 += sin(element)*cos(element);
+//    });
+//
+//
+//    float sum2 = 0.0f;
+//    std::for_each(std::execution::par, container.begin(), container.end(), [&sum2](std::size_t element)->void
+//    {
+//        sum2 += sin(element)*cos(element);
+//    });
+//
+//
+//    std::cout << sum1 << '\n';
+//    std::cout << sum2 << '\n';
+//
 
 
-//    sumEvenSin(range);
-//    sumOddSin(range);
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//    sumEvenSin(0, range);
+//    sumOddSin(0, range);
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//    std::thread firstThread(sumEvenSin, 0, range);
+//    std::thread secondThread(sumOddSin, 0, range);
+//
+//    firstThread.join();
+//    secondThread.join();
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //    std::thread firstThread(sumEvenSin, 0, range/2);
 //    std::thread secondThread(sumEvenSin, range/2, range);
@@ -57,6 +117,8 @@ int main()
 //    secondThread.join();
 //    thirdThread.join();
 //    fourthThread.join();
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 //    std::thread t1(sumEvenSin, 0, range/4);
@@ -80,7 +142,7 @@ int main()
 //    t8.join();
 
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //    std::thread t1(sumEvenSin, 0, range/8);
 //    std::thread t2(sumEvenSin, range/8, range/4);
@@ -118,6 +180,8 @@ int main()
 //    t14.join();
 //    t15.join();
 //    t16.join();
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 //    std::thread t1(sumEvenSin, 0, range/16);
@@ -160,6 +224,8 @@ int main()
 //    t9.join(); t10.join(); t11.join(); t12.join(); t13.join(); t14.join(); t15.join(); t16.join();
 //    t17.join(); t18.join(); t19.join(); t20.join(); t21.join(); t22.join(); t23.join(); t24.join();
 //    t25.join(); t26.join(); t27.join(); t28.join(); t29.join(); t30.join(); t31.join(); t32.join();
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 //
@@ -244,25 +310,7 @@ int main()
 //
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
