@@ -310,48 +310,48 @@ int8_t Engine::Run()
 //        entities[0]->getTransformation().translate(glm::vec3(0.0f, -1.0f, 0.0f));
 //        entities[0]->getTransformation().modelLocation(entities[0]->getShader().ProgramID());
 
-//        for(auto entity : entities)
-//        {
-//            entity->update();
-//        }
-
-//        for(auto entity : entities)
-//        {
-//            entity->render();
-//        }
-
+        for(auto entity : entities)
+        {
+            entity->update();
+        }
 
         for(auto entity : entities)
         {
-            entitiesThreads.push_back(std::thread([&entity]()->void
-            {
-                entity->update();
-            }));
+            entity->render();
         }
 
-        for(auto entityThread : entitiesThreads)
-        {
-            entityThread.join();
-        }
 
-        entitiesThreads.clear();
-
-
-        for(auto entity : entities)
-        {
-            entitiesThreads.push_back(std::thread([&entity]()->void
-            {
-                entity->render();
-            }));
-        }
-
-        for(auto entityThread : entitiesThreads)
-        {
-            entityThread.join();
-        }
-
-        entitiesThreads.clear();
-
+//        for(auto entity : entities)
+//        {
+//            entitiesThreads.push_back(std::thread([&entity]()->void
+//            {
+//                entity->update();
+//            }));
+//        }
+//
+//        for(auto entityThread : entitiesThreads)
+//        {
+//            entityThread.join();
+//        }
+//
+//        entitiesThreads.clear();
+//
+//
+//        for(auto entity : entities)
+//        {
+//            entitiesThreads.push_back(std::thread([&entity]()->void
+//            {
+//                entity->render();
+//            }));
+//        }
+//
+//        for(auto entityThread : entitiesThreads)
+//        {
+//            entityThread.join();
+//        }
+//
+//        entitiesThreads.clear();
+//
 
 #endif  //__DEBUG__
 
