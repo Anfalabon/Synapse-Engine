@@ -216,10 +216,10 @@ int8_t Engine::Run()
                                   "../src/shader/GLSL/vertexShaderSource1.glslv",
                                   "../src/shader/GLSL/fragmentShaderSource1.glslf"));
 
-//    entities.push_back(new Entity(groundVerticiesData, groundTotalVerticies,
-//                                  groundIndiciesData, groundTotalIndicies,
-//                                  "../src/shader/GLSL/vertexShaderSource1.glslv",
-//                                  "../src/shader/GLSL/fragmentShaderSource1.glslf"));
+    entities.push_back(new Entity(groundVerticiesData, groundTotalVerticies,
+                                  groundIndiciesData, groundTotalIndicies,
+                                  "../src/shader/GLSL/vertexShaderSource1.glslv",
+                                  "../src/shader/GLSL/fragmentShaderSource1.glslf"));
 
     entities.push_back(new Entity(anotherCubeVerticiesData, anotherCubeTotalVerticies,
                                   anotherCubeIndiciesData, anotherCubeTotalIndicies,
@@ -252,11 +252,16 @@ int8_t Engine::Run()
         camera->setShaderProgramID(entity->getShader().ProgramID());
     }
 
+    //camera->setShaderProgramID(entities[1]->getShader().ProgramID());
+
 //    entities[0]->getTransformation().translate(glm::vec3(0.0, 0.0f, 0.0f));
 //    entities[1]->getTransformation().translate(glm::vec3(0.0f, 0.0f, 0.0f));
 //    entities[2]->getTransformation().translate(glm::vec3(0.0f, 0.0f, 0.0f));
 
     //entities[0]->m_transform.translate(glm::vec3(1.0f, 0.0f, 0.0f));
+
+//    entities[0]->getShader().useProgram();
+//    entities[0]->m_transform.m_model = glm::rotate(entities[0]->m_transform.m_model, glm::radians(50.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
 
 #endif
@@ -264,7 +269,9 @@ int8_t Engine::Run()
     std::vector<std::thread> entitiesThreads;
 
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//from here the run function should start and everything before should be inside the Engine constructor or a function named Init()
+//which will initialize the window, glad, camera, scenes, entities, Engine mode etc.
 
     //using namespace renderingInfo;
     //main Engine loop
@@ -283,11 +290,9 @@ int8_t Engine::Run()
             camera->getKeyboardInput(window.windowAddress());
         });
 
-//        std::thread windowKeyInputThread(&Window::getKeyboardInput, &window);
-//        std::thread cameraKeyInputThread(&Camera::getKeyboardInput, &camera, &window.windowAddress());
-
         windowKeyInputThread.join();
         cameraKeyInputThread.join();
+
 #else
         window.getKeyboardInput();
         camera->getKeyboardInput(window.windowAddress());
@@ -305,21 +310,22 @@ int8_t Engine::Run()
         anotherCube->render();
 #else
 
-        //this isn't transforming
-        //have to fix it
-        entities[1]->getTransformation().translate(glm::vec3(0.0f, -1.0f, 0.0f));
-        entities[1]->getTransformation().modelLocation(entities[1]->getShader().ProgramID());
-
         for(auto entity : entities)
         {
             entity->update();
         }
 
+        //make any modification to the entities or entity after running useProgram() and before rendering otherwise it would be TOO bad!
+
+        entities[0]->getTransformation().translate(glm::vec3(0.0f, -0.001f, 0.0f));
+        entities[0]->getTransformation().modelLocation(entities[0]->getShader().ProgramID());
+
+
+
         for(auto entity : entities)
         {
             entity->render();
         }
-
 
 #endif  //__DEBUG__
 

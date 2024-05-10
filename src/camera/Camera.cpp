@@ -7,6 +7,7 @@
 #include <thread>
 
 
+//this should be inside the Engine class
 void Camera::setEngineMode(const uint8_t ENGINE_MODE)
 {
     M_ENGINE_MODE = ENGINE_MODE;

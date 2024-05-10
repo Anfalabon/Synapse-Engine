@@ -99,9 +99,6 @@ void Entity::render()
 void Entity::update()
 {
     m_shader.useProgram();
-
-    //m_transform.rotate(1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-
     m_transform.modelLocation(m_shader.ProgramID());
 }
 
