@@ -69,7 +69,7 @@ T integrate(std::function<T(T)> y,
 }
 
 
-unsigned int factorial(unsigned int x)
+u_int64_t factorial(u_int64_t x)
 {
     return x == 0 ? 1 : x * factorial(x - 1);
 }
@@ -84,8 +84,9 @@ int main()
     };
 
     std::size_t accuracy = 10;
-    float area = Hilbert::integrate<double>(factorial, 0.0f, 3.0f, accuracy);
 
+
+    float area = Hilbert::integrate<double>(factorial, 0.0f, 3.0f, accuracy);
     std::cout << "Area under the curve: " << area << " units." << '\n';
 
 

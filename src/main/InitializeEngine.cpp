@@ -216,10 +216,10 @@ int8_t Engine::Run()
                                   "../src/shader/GLSL/vertexShaderSource1.glslv",
                                   "../src/shader/GLSL/fragmentShaderSource1.glslf"));
 
-    entities.push_back(new Entity(groundVerticiesData, groundTotalVerticies,
-                                  groundIndiciesData, groundTotalIndicies,
-                                  "../src/shader/GLSL/vertexShaderSource1.glslv",
-                                  "../src/shader/GLSL/fragmentShaderSource1.glslf"));
+//    entities.push_back(new Entity(groundVerticiesData, groundTotalVerticies,
+//                                  groundIndiciesData, groundTotalIndicies,
+//                                  "../src/shader/GLSL/vertexShaderSource1.glslv",
+//                                  "../src/shader/GLSL/fragmentShaderSource1.glslf"));
 
     entities.push_back(new Entity(anotherCubeVerticiesData, anotherCubeTotalVerticies,
                                   anotherCubeIndiciesData, anotherCubeTotalIndicies,
@@ -307,8 +307,8 @@ int8_t Engine::Run()
 
         //this isn't transforming
         //have to fix it
-//        entities[0]->getTransformation().translate(glm::vec3(0.0f, -1.0f, 0.0f));
-//        entities[0]->getTransformation().modelLocation(entities[0]->getShader().ProgramID());
+        entities[1]->getTransformation().translate(glm::vec3(0.0f, -1.0f, 0.0f));
+        entities[1]->getTransformation().modelLocation(entities[1]->getShader().ProgramID());
 
         for(auto entity : entities)
         {
@@ -320,38 +320,6 @@ int8_t Engine::Run()
             entity->render();
         }
 
-
-//        for(auto entity : entities)
-//        {
-//            entitiesThreads.push_back(std::thread([&entity]()->void
-//            {
-//                entity->update();
-//            }));
-//        }
-//
-//        for(auto entityThread : entitiesThreads)
-//        {
-//            entityThread.join();
-//        }
-//
-//        entitiesThreads.clear();
-//
-//
-//        for(auto entity : entities)
-//        {
-//            entitiesThreads.push_back(std::thread([&entity]()->void
-//            {
-//                entity->render();
-//            }));
-//        }
-//
-//        for(auto entityThread : entitiesThreads)
-//        {
-//            entityThread.join();
-//        }
-//
-//        entitiesThreads.clear();
-//
 
 #endif  //__DEBUG__
 
