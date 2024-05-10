@@ -4,69 +4,108 @@
 #include <climits>
 #include <type_traits>
 #include <vector>
+#include <optional>
 
 
 //will use Template Metaprogramming to calculate the integration at compile time.
 
 #define PI 3.14159
 
-namespace Hilbert
-{
+//namespace Hilbert
+//{
+//
+//template<typename T> struct Function
+//{
+//public:
+//    Function(std::function<T(T)> function)
+//        : _function(function){}
+//
+//    bool isEven()
+//    {
+//        T x;
+//        return _function((-1)*x)==_function(x);
+//    }
+//
+//    void findRoots();
+//    void findDomain();
+//    void findRange();
+//
+//private:
+//    std::function<T(T)> _function;
+//    std::vector<T> _roots;
+//    T _domain;
+//    T _range;
+//
+//};
+//
+//}
 
-template<typename T> struct Function
-{
-public:
-    Function(std::function<T(T)> function)
-        : _function(function){}
 
-    bool isEven()
-    {
-        T x;
-        return _function((-1)*x)==_function(x);
-    }
-
-    void findRoots();
-    void findDomain();
-    void findRange();
-
-private:
-    std::function<T(T)> _function;
-    std::vector<T> _roots;
-    T _domain;
-    T _range;
-
-};
-
-}
-
-
-namespace Hilbert
-{
+namespace Hilbert {
 
 //accuracy refers to the amount of rectangles created to approximate the area
 template<typename T>
 T integrate(std::function<T(T)> y,
             T lowerLimit,
             T upperLimit,
-            std::size_t accuracy)
-{
-    if(!std::is_floating_point<T>::value)
-    {
+            std::size_t accuracy) {
+    if (!std::is_floating_point<T>::value) {
         std::clog << "Failed to integrate because of incorrect Type!" << '\n';
         return INT_MIN;
     }
 
-    if(lowerLimit==upperLimit)
+    if (lowerLimit == upperLimit)
         return static_cast<T>(0.0f);
 
-    T delX = (upperLimit-lowerLimit)/accuracy;
+    T delX = (upperLimit - lowerLimit) / accuracy;
     T sum = 0;
-    for (std::size_t i=1; i<=accuracy; ++i)
-        sum += y(lowerLimit + i*delX);
-    return sum*delX;
+    for (std::size_t i = 1; i <= accuracy; ++i)
+        sum += y(lowerLimit + i * delX);
+    return sum * delX;
 }
 
 }
+
+//
+//template<std::size_t i>
+//struct Integrate
+//{
+//    Integrate(std::function<float(float)> y, float lowerLimit, float upperLimit, float accuracy)
+//        : m_y(y), m_lowerLimit(lowerLimit), m_upperLimit(upperLimit), m_delX((upperLimit-lowerLimit)/accuracy){}
+//
+//    constexpr std::function<float(float)> m_y;
+//    constexpr float m_lowerLimit;
+//    constexpr float m_upperLimit;
+//    constexpr float m_delX;
+//
+//    static constexpr float sum = y(lowerLimit + i * delX) + Integrate<y, lowerLimit, upperLimit, i - 1, delX>::sum;
+//};
+//
+//
+//template<>
+//struct Integrate<0>
+//{
+//    static constexpr float sum = 0.0f;
+//};
+
+
+namespace Hilbert
+{
+
+template<float (*y)(float),
+        float upperLimit,
+        float lowerLimit,
+        std::size_t accuracy,
+        float delX=(upperLimit-lowerLimit)/accuracy,
+        std::size_t i>
+constexpr float Q_integrate()
+{
+    return (i==0) ? 0 : y(lowerLimit + i*delX) + Q_integrate<y, upperLimit, lowerLimit, accuracy, i-1>();
+}
+
+}
+
+
 
 
 u_int64_t factorial(u_int64_t x)
@@ -83,10 +122,10 @@ int main()
         return std::atan(x)/(1+((1+x*x)*(1+x*x)));
     };
 
-    std::size_t accuracy = 10;
+    constexpr std::size_t accuracy = 10;
 
-
-    float area = Hilbert::integrate<double>(factorial, 0.0f, 3.0f, accuracy);
+    //float area = Hilbert::integrate<double>(factorial, 0.0f, 3.0f, accuracy);
+    constexpr float area = Hilbert::Q_integrate<factorial, 0.0f, 3.0f, accuracy, accuracy>();
     std::cout << "Area under the curve: " << area << " units." << '\n';
 
 

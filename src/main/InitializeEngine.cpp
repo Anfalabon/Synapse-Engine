@@ -317,10 +317,8 @@ int8_t Engine::Run()
 
         //make any modification to the entities or entity after running useProgram() and before rendering otherwise it would be TOO bad!
 
-        entities[0]->getTransformation().translate(glm::vec3(0.0f, -0.001f, 0.0f));
-        entities[0]->getTransformation().modelLocation(entities[0]->getShader().ProgramID());
-
-
+//        entities[0]->getTransformation().translate(glm::vec3(0.0f, -0.001f, 0.0f));
+//        entities[0]->getTransformation().modelLocation(entities[0]->getShader().ProgramID());
 
         for(auto entity : entities)
         {
