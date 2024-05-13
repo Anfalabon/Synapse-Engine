@@ -13,10 +13,11 @@ int main()
 {
     Engine *engine = new Engine();
 
-    bool initSuccess = engine->Run();
-    delete engine;
+    //bool isInitSuccess = engine->Init();
+    int8_t isRunningSuccess = engine->Run();
 
-    return initSuccess;
+    delete engine;
+    return isRunningSuccess;
 }
 
 

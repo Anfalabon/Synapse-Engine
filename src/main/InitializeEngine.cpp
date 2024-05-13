@@ -1,6 +1,6 @@
-
-
+//#include "../entity/entitiesAttributesData.hpp"
 #include "InitializeEngine.hpp"
+#include "../entity/entitiesAttributesData.hpp"
 #include "../debug/RenderingInfoLog.hpp"
 
 #include <memory>
@@ -10,6 +10,20 @@
 #include <execution>
 #include <iterator>
 #include <new>
+
+
+namespace data = entitiesData;
+
+
+
+#define SUCCESS 1
+#define __DEVELOPMENT__
+//#define __DEBUG__
+#define __MULTITHREADING__
+//#define __SINGLETHREADING__
+
+
+
 
 
 
@@ -26,45 +40,142 @@ void _zBufferBg(float r, float g, float b, float w)
 }
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#ifdef STRUCTURED
 
-//Engine::Engine()
-////    : window(1920.0f, 1080.0f, "Simulation Engine"),
-////      camera(new Camera()),
-////      cubesAndGround(new Entity())
-//{
-//    //initialize the glfw functions and other glfw features
-//    if (!glfwInit())
-//    {
-//        std::cerr << "Falied to initialize glfw!" << '\n';
-//        return;
-//    }
-//
-//    //simulate a camera
-//    //Camera *camera = nullptr; //first time got the nullptr derefrencing bug (it gave segmentation fault (core dump))
-//
-//    //std::unique_ptr<Camera> camera(new Camera());
-//    Camera::setupMouse(window.windowAddress());
-//
-//    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-//    {
-//        std::cerr << "Failed to load GLAD" << '\n';
-//        return;
-//    }
-//
-//    glViewport(0, 0, window.WIDTH(), window.HEIGHT());
-//
-//
-////    std::vector<Entity*> entities;
-////    Entity *cubesAndGround = new Entity();
-//
-//}
-
-
-template<typename T>
-void clean(T *object)
+void Engine::setEntities()
 {
-    delete object;
+    entities.reserve(3);
+
+
+    entities.push_back(new Entity(data::cubeVerticiesData, data::cubeTotalVerticies,
+                                  data::cubeIndiciesData, data::cubeTotalIndicies,
+                                  "../src/shader/GLSL/vertexShaderSource1.glslv",
+                                  "../src/shader/GLSL/fragmentShaderSource1.glslf"));
+
+    entities.push_back(new Entity(data::groundVerticiesData, data::groundTotalVerticies,
+                                  data::groundIndiciesData, data::groundTotalIndicies,
+                                  "../src/shader/GLSL/vertexShaderSource1.glslv",
+                                  "../src/shader/GLSL/fragmentShaderSource1.glslf"));
+
+    entities.push_back(new Entity(data::anotherCubeVerticiesData, data::anotherCubeTotalVerticies,
+                                  data::anotherCubeIndiciesData, data::anotherCubeTotalIndicies,
+                                  "../src/shader/GLSL/vertexShaderSource1.glslv",
+                                  "../src/shader/GLSL/fragmentShaderSource1.glslf"));
+
 }
+
+
+
+
+
+int8_t Engine::Init()
+{
+    //initialize the glfw functions and other glfw features
+    if (!glfwInit())
+    {
+        std::cerr << "Falied to initialize glfw!" << '\n';
+        return -1;
+    }
+
+    Window window = Window(1920.0f, 1080.0f, "Simulation Engine");
+
+    camera = new Camera();
+    Camera::setupMouse(window.windowAddress());
+
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cerr << "Failed to load GLAD" << '\n';
+        return -1;
+    }
+
+    //Camera::setupMouse(window.windowAddress());
+
+    glViewport(0, 0, window.WIDTH(), window.HEIGHT());
+
+    this->setEntities();
+
+    for(auto entity : entities)
+    {
+        camera->setShaderProgramID(entity->getShader().ProgramID());
+    }
+
+    return SUCCESS;
+
+}
+
+
+
+
+int8_t Engine::Run()
+{
+    while(window.running())
+    {
+        _zBufferBg(0.2f, 0.3f, 0.3f, 1.0f);
+
+
+#ifdef __MULTITHREADING__
+//        std::thread windowKeyInputThread([&window]()->void
+//        {
+//            window.getKeyboardInput();
+//        });
+//        std::thread cameraKeyInputThread([&camera, &window]()->void
+//        {
+//            camera->getKeyboardInput(window.windowAddress());
+//        });
+//
+//        windowKeyInputThread.join();
+//        cameraKeyInputThread.join();
+
+        window.getKeyboardInput();
+        camera->getKeyboardInput(window.windowAddress());
+
+#else
+        window.getKeyboardInput();
+        camera->getKeyboardInput(window.windowAddress());
+#endif
+
+        camera->update();
+
+#ifdef __DEBUG__
+        cube->update();
+        ground->update();
+        anotherCube->update();
+
+        cube->render();
+        ground->render();
+        anotherCube->render();
+#else
+
+        for(auto entity : entities)
+        {
+            entity->update();
+        }
+
+        //make any modification to the entities or entity after running useProgram() and before rendering otherwise it would be TOO bad!
+
+        entities[0]->getTransformation().translate(glm::vec3(0.0f, -0.01f, 0.0f));
+        entities[0]->getTransformation().modelLocation(entities[0]->getShader().ProgramID());
+
+        for(auto entity : entities)
+        {
+            entity->render();
+        }
+
+#endif  //__DEBUG__
+
+        renderingInfo::framesPerSecond();
+
+        window.swapBuffers();
+        window.pollEvents();
+    }
+
+    return SUCCESS;
+}
+
+#else
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 
@@ -98,87 +209,6 @@ int8_t Engine::Run()
 
 
 
-    //these verticies and indicies data will be in another file and we will get it by using fstream
-
-    GLuint cubeTotalVerticies = 8;
-    GLuint cubeTotalIndicies = 36;
-
-    Vertex *cubeVerticiesData = new Vertex[cubeTotalVerticies]{
-            //an entity with all unique vertex attributes(shape: cube)
-            {{0.5f,  0.5f,  0.5f},  {1.0f, 1.0f, 1.0f}},
-            {{0.5f,  0.5f,  -0.5f}, {1.0f, 1.0f, 1.0f}},
-            {{0.5f,  -0.5f, 0.5f},  {1.0f, 1.0f, 1.0f}},
-            {{0.5f,  -0.5f, -0.5f}, {1.0f, 1.0f, 1.0f}},
-            {{-0.5f, 0.5f,  0.5f},  {1.0f, 1.0f, 1.0f}},
-            {{-0.5f, 0.5f,  -0.5f}, {1.0f, 1.0f, 1.0f}},
-            {{-0.5f, -0.5f, 0.5f},  {1.0f, 1.0f, 1.0f}},
-            {{-0.5f, -0.5f, -0.5f}, {1.0f, 1.0f, 1.0f}},
-    };
-
-    GLuint *cubeIndiciesData = new GLuint[cubeTotalIndicies]{
-            //twelf triangles to create a cube(as cube has 6 surfaces and each surface is a rectanle itselft which again is made of 2 triangles)
-            0, 1, 2,        //first triangle
-            1, 2, 3,        //second triangle
-            0, 1, 4,        //third triangle
-            1, 4, 5,        //fourth triangle
-            4, 5, 6,        //fifth triangle
-            5, 6, 7,        //sixth triangle
-            2, 3, 6,        //seventh triangle
-            3, 6, 7,        //eight triangle
-            0, 2, 4,        //ninth triangle
-            2, 4, 6,        //tenth triangle
-            1, 3, 5,        //eleventh triangle
-            3, 7, 5,        //twelfth triangle
-    };
-
-
-
-    GLuint groundTotalVerticies = 4;
-    GLuint groundTotalIndicies = 12;
-
-    Vertex *groundVerticiesData = new Vertex[groundTotalVerticies]{
-            {{960.0f,  -0.5f, 540.0f},  {1.0f, 0.0f, 0.0f}},
-            {{-960.0f, -0.5f, 540.0f},  {0.0f, 1.0f, 0.0f}},
-            {{960.0f,  -0.5f, -540.0f}, {0.0f, 0.0f, 1.0f}},
-            {{-960.0f, -0.5f, -540.0f}, {0.5f, 0.5f, 0.5f}},
-    };
-
-    GLuint *groundIndiciesData = new GLuint[groundTotalIndicies]{
-            0, 1, 2,
-            1, 2, 3,
-    };
-
-
-
-    GLuint anotherCubeTotalVerticies = 8;
-    GLuint anotherCubeTotalIndicies = 36;
-
-    Vertex *anotherCubeVerticiesData = new Vertex[anotherCubeTotalVerticies]{
-            {{3.0f, 0.5f, 1.0f},    {1.0f, 0.0f, 0.0f}},
-            {{3.0f, 0.5f, -1.0f},   {0.0f, 1.0f, 0.0f}},
-            {{2.0f, -0.5f, 1.0f},   {0.0f, 0.0f, 1.0f}},
-            {{2.0f, -0.5f, -1.0f},  {0.5f, 1.0f, 0.0f}},
-            {{3.0f, -0.5f, 1.0f},   {0.0f, 1.0f, 0.0f}},
-            {{3.0f, -0.5f, -1.0f},  {0.5f, 0.0f, 1.0f}},
-            {{2.0f, 0.5f, 1.0f},    {0.0f, 0.5f, 0.0f}},
-            {{2.0f, 0.5f, -1.0f},   {0.5f, 0.0f, 0.5f}},
-    };
-
-    GLuint *anotherCubeIndiciesData = new GLuint[anotherCubeTotalIndicies]{
-            0, 1, 2,        //first triangle
-            1, 2, 3,        //second triangle
-            0, 1, 4,        //third triangle
-            1, 4, 5,        //fourth triangle
-            4, 5, 6,        //fifth triangle
-            5, 6, 7,        //sixth triangle
-            2, 3, 6,        //seventh triangle
-            3, 6, 7,        //eight triangle
-            0, 2, 4,        //ninth triangle
-            2, 4, 6,        //tenth triangle
-            1, 3, 5,        //eleventh triangle
-            3, 7, 5,        //twelfth triangle
-    };
-
 
 
 
@@ -211,18 +241,18 @@ int8_t Engine::Run()
     entities.reserve(3);
 
 
-    entities.push_back(new Entity(cubeVerticiesData, cubeTotalVerticies,
-                                  cubeIndiciesData, cubeTotalIndicies,
+    entities.push_back(new Entity(data::cubeVerticiesData, data::cubeTotalVerticies,
+                                  data::cubeIndiciesData, data::cubeTotalIndicies,
                                   "../src/shader/GLSL/vertexShaderSource1.glslv",
                                   "../src/shader/GLSL/fragmentShaderSource1.glslf"));
 
-    entities.push_back(new Entity(groundVerticiesData, groundTotalVerticies,
-                                  groundIndiciesData, groundTotalIndicies,
+    entities.push_back(new Entity(data::groundVerticiesData, data::groundTotalVerticies,
+                                  data::groundIndiciesData, data::groundTotalIndicies,
                                   "../src/shader/GLSL/vertexShaderSource1.glslv",
                                   "../src/shader/GLSL/fragmentShaderSource1.glslf"));
 
-    entities.push_back(new Entity(anotherCubeVerticiesData, anotherCubeTotalVerticies,
-                                  anotherCubeIndiciesData, anotherCubeTotalIndicies,
+    entities.push_back(new Entity(data::anotherCubeVerticiesData, data::anotherCubeTotalVerticies,
+                                  data::anotherCubeIndiciesData, data::anotherCubeTotalIndicies,
                                   "../src/shader/GLSL/vertexShaderSource1.glslv",
                                   "../src/shader/GLSL/fragmentShaderSource1.glslf"));
 
@@ -317,8 +347,8 @@ int8_t Engine::Run()
 
         //make any modification to the entities or entity after running useProgram() and before rendering otherwise it would be TOO bad!
 
-//        entities[0]->getTransformation().translate(glm::vec3(0.0f, -0.001f, 0.0f));
-//        entities[0]->getTransformation().modelLocation(entities[0]->getShader().ProgramID());
+        entities[0]->getTransformation().translate(glm::vec3(0.0f, -0.01f, 0.0f));
+        entities[0]->getTransformation().modelLocation(entities[0]->getShader().ProgramID());
 
         for(auto entity : entities)
         {
@@ -339,12 +369,7 @@ int8_t Engine::Run()
     return 0;
 }
 
-
-
-//~Entity::Entity()
-//{
-//
-//}
+#endif //STRUCTURED
 
 
 
