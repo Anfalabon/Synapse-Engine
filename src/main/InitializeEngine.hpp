@@ -1,7 +1,7 @@
 #ifndef INITIALIZEENGINE_HPP
 #define INITIALIZEENGINE_HPP
 
-//#include <shader/Shader.hpp>
+
 
 #include "../shader/Shader.hpp"
 #include "../window/Window.hpp"
@@ -9,6 +9,7 @@
 #include "../entity/Entities.hpp"
 #include "../entity/CoordinateTransformation.hpp"
 #include "../entity/vertexObjects.hpp"
+#include "../render/renderEntity.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -55,13 +56,10 @@ public:
     void setEntities();
 
 private:
-//    Window window = Window(1920.0f, 1080.0f, "Simulation Engine");
-//    Camera *camera = new Camera();
-
     Window window;
     Camera *camera;
     std::vector<Entity*> entities;
-
+    Renderer renderer;
 };
 
 #endif
