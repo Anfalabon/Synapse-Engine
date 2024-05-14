@@ -37,7 +37,7 @@ obj/Entities.o: ../src/entity/Entities.cpp ../src/entity/Entities.hpp ../src/ent
 obj/vertexObjects.o: ../src/entity/vertexObjects.cpp ../src/entity/vertexObjects.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/entity/vertexObjects.cpp -o obj/vertexObjects.o
 
-obj/Shader.o: ../src/shader/Shader.cpp	../src/shader/Shader.hpp ../src/debug/LOG.hpp
+obj/Shader.o: ../src/shader/Shader.cpp	../src/shader/Shader.hpp ../src/debug/LOG.hpp ../src/shader/GLSL/vertexShaderSource1.glslv ../src/shader/GLSL/fragmentShaderSource1.glslf
 		$(CXX) $(CXXFLAGS) -c ../src/shader/Shader.cpp -o obj/Shader.o
 
 obj/Window.o: ../src/window/Window.cpp ../src/window/Window.hpp ../src/debug/LOG.hpp

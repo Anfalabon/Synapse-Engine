@@ -256,6 +256,15 @@ int8_t Engine::Run()
                                   "../src/shader/GLSL/vertexShaderSource1.glslv",
                                   "../src/shader/GLSL/fragmentShaderSource1.glslf"));
 
+    for(const auto entity : entities)
+    {
+        entity->loadShader();
+    }
+
+    //if we try to load only one entity shader then all the other entities will be rendered
+    //but any transformation made to the loaded shader entity will cause change.
+    //entities[2]->loadShader();
+
 #endif //__DEBUG__
 
 
@@ -297,6 +306,21 @@ int8_t Engine::Run()
 #endif
 
     std::vector<std::thread> entitiesThreads;
+
+
+    glm::mat4 transformation = glm::mat4(1.0f);
+
+
+    float timeSinceInit = 0.0f; //this is in seconds
+
+
+    std::array<glm::vec3, 3> vecs{
+                                   glm::vec3(-0.01f, 0.0f, 0.0f),
+                                   glm::vec3(0.0f, -0.01f, 0.0f),
+                                   glm::vec3(0.0f, 0.0f, -0.01)
+    };
+
+    std::size_t i=0;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -347,8 +371,45 @@ int8_t Engine::Run()
 
         //make any modification to the entities or entity after running useProgram() and before rendering otherwise it would be TOO bad!
 
-        entities[0]->getTransformation().translate(glm::vec3(0.0f, -0.01f, 0.0f));
-        entities[0]->getTransformation().modelLocation(entities[0]->getShader().ProgramID());
+//        entities[0]->getTransformation().translate(glm::vec3(0.0f, -0.01f, 0.0f));
+//        entities[0]->getTransformation().modelLocation(entities[0]->getShader().ProgramID());
+
+
+#if 1
+
+        for(const auto entity : entities)
+        {
+            entity->translate(glm::vec3(-0.01f, -0.01f, -0.01f));
+        }
+
+//        std::for_each(std::execution::par, entities.begin(), entities.end(), [&](auto entity)->void
+//        {
+//            entity->getTransformation().translate(vecs[i]);
+//            entity->getTransformation().modelLocation(entity->getShader().ProgramID());
+//            ++i;
+//        });
+//
+//        i=0;
+
+#else
+        entities[0]->translate(glm::vec3(0.0f, -0.01f, 0.0f));
+
+
+#endif
+
+
+#if 0
+        timeSinceInit = static_cast<float>(glfwGetTime());
+
+        GLuint timeUniformLocation = glGetUniformLocation(entities[0]->getShader().ProgramID(), "time");
+        glUniform1f(timeUniformLocation, timeSinceInit);
+#endif
+
+//        GLuint transformationLocation = glGetUniformLocation(entities[0]->getShader().ProgramID(), "transform");
+//        glUniformMatrix4fv(transformationLocation, 1, GL_FALSE, glm::value_ptr(transformation));
+//
+//        transformation = glm::translate(transformation, glm::vec3(0.0f, 1.0f, 0.0f));
+
 
         for(auto entity : entities)
         {

@@ -40,31 +40,19 @@ Entity::Entity(Vertex *verticies, GLuint totalVerticies,
      m_shader(vertexShaderSourcePath, fragmentShaderSourcePath),
      m_VO(m_verticiesSizeBytes, m_verticies, m_indiciesSizeBytes, m_indicies)
 {
-    //compile, link the vertex and fragment shader
-    m_shader.setup();
-    m_shader.link();
+//    compile, link the vertex and fragment shader
+//    m_shader.setup();
+//    m_shader.link();
 }
 
 
 
-void Entity::setShader(const std::string &vertexShaderSourcePath,
-                       const std::string &fragmentShaderSourcePath)
-{
-    m_shader = Shader(vertexShaderSourcePath, fragmentShaderSourcePath);
-    m_shader.setup();
-    m_shader.link();
-}
 
 
-void Entity::setShader()
+void Entity::loadShader()
 {
     m_shader.setup();
     m_shader.link();
-}
-
-void Entity::setVO()
-{
-    m_VO = VertexObjects(m_verticiesSizeBytes, m_verticies, m_indiciesSizeBytes, m_indicies);
 }
 
 
@@ -88,6 +76,27 @@ void Entity::printIndiciesData()
 }
 
 
+
+void Entity::translate(glm::vec3 translationVec)
+{
+    m_coordinateTransform.m_model = glm::translate(m_coordinateTransform.m_model, translationVec);
+    m_coordinateTransform.modelLocation(m_shader.ProgramID());
+}
+
+
+void Entity::rotate(float angleToRotateDegrees, glm::vec3 rotationVec)
+{
+    m_coordinateTransform.m_model = glm::rotate(m_coordinateTransform.m_model, glm::radians(angleToRotateDegrees), rotationVec);
+    m_coordinateTransform.modelLocation(m_shader.ProgramID());
+}
+
+
+void Entity::scale()
+{
+    //scale the entity by parameter amount
+}
+
+
 void Entity::render()
 {
     //glDrawArrays(GL_TRIANGLES, 0, 36)
@@ -96,10 +105,12 @@ void Entity::render()
 }
 
 
+
+
 void Entity::update()
 {
     m_shader.useProgram();
-    m_transform.modelLocation(m_shader.ProgramID());
+    m_coordinateTransform.modelLocation(m_shader.ProgramID());
 }
 
 

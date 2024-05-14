@@ -4,7 +4,9 @@
 
 #include <glad/glad.hpp>
 
-#include "../shader/Shader.hpp"
+
+//pretend like '../shader/Shader.hpp' is an library with '<>' lol
+#include <../shader/Shader.hpp>
 #include "CoordinateTransformation.hpp"
 #include "vertexObjects.hpp"
 
@@ -31,22 +33,23 @@ public:
     [[nodiscard]] inline GLuint totalverticies(){return m_totalVerticies;}
     [[nodiscard]] inline GLuint totalIndicies(){return m_totalIndicies;}
 
-    void setShader(const std::string &vertexShaderSourcePath,
-                   const std::string &fragmentShaderSourcePath);
 
-    void setShader();
-
-    void setVO();
 
     [[nodiscard]] inline Shader& getShader(){return m_shader;}
-    [[nodiscard]] inline CoordinateTransformation& getTransformation(){return m_transform;}
+    [[nodiscard]] inline CoordinateTransformation& getTransformation(){return m_coordinateTransform;}
     [[nodiscard]] inline VertexObjects& getVertexObjects(){return m_VO;}
 
+    void loadShader();
 
 //#ifdef __DEBUG__
     void printVerticiesData();
     void printIndiciesData();
 //#endif
+
+    //apply transformation to the Entity
+    void translate(glm::vec3 translationVec);
+    void rotate(float angleToRotateDegrees, glm::vec3 rotationVec);
+    void scale();
 
     void render();
     void update();
@@ -54,10 +57,6 @@ public:
 private:
 
     const char* m_name = "Cube and cuboid object";
-
-    //there are total of four entity verticies in one single verticies
-    //we need to separate them for different kinds of operations and modularity
-
 
     Vertex *m_verticies = nullptr;
     GLuint *m_indicies = nullptr;
@@ -71,9 +70,7 @@ private:
     //we can't use this if the Shader() constructor is explicit
     //Shader m_shader = Shader("../src/shader/GLSL/vertexShaderSource1.glslv", "../src/shader/GLSL/fragmentShaderSource1.glslf");
     Shader m_shader;
-public:
-    struct CoordinateTransformation m_transform;
-private:
+    struct CoordinateTransformation m_coordinateTransform;
     struct VertexObjects m_VO;
 };
 

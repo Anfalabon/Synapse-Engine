@@ -42,23 +42,6 @@ struct CoordinateTransformation
         GLuint perspectiveLocation = glGetUniformLocation(shaderProgramID, "perspective");
         glUniformMatrix4fv(perspectiveLocation, 1, GL_FALSE, glm::value_ptr(m_perspective));
     }
-
-    //apply transformation
-    inline void rotate(float angleToRotateDegrees, glm::vec3 rotationVec)
-    {
-        m_model = glm::rotate(m_model, glm::radians(angleToRotateDegrees), rotationVec);
-    }
-
-    inline void translate(glm::vec3 translationVec)
-    {
-        m_model = glm::translate(m_model, translationVec);
-    }
-
-    inline void scale()
-    {
-        //scale the model matrix by parameter amount
-    }
-
 };
 
 
