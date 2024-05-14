@@ -12,6 +12,8 @@ Renderer::Renderer()
 }
 
 
+//rendering like this is much faster as we are storing the entities infos' in a contiguous memory.
+//with this CPU's L1 cahce memroy get's more chance to deal with faster accessing
 void Renderer::render()
 {
     for(std::size_t i=0; i<m_totalEntities; ++i)

@@ -63,6 +63,16 @@ void Engine::setEntities()
                                   "../src/shader/GLSL/vertexShaderSource1.glslv",
                                   "../src/shader/GLSL/fragmentShaderSource1.glslf"));
 
+    for(const auto entity : entities)
+    {
+        entity->loadShader();
+    }
+
+    //if we try to load only one entity shader then all the other entities will be rendered
+    //but any transformation made to the loaded shader entity will cause change.
+    //entities[2]->loadShader();
+
+
 }
 
 
