@@ -3,6 +3,7 @@
 #include "../entity/entitiesAttributesData.hpp"
 #include "../debug/RenderingInfoLog.hpp"
 
+#include <iostream>
 #include <memory>
 #include <vector>
 #include <algorithm>
@@ -14,11 +15,11 @@
 
 namespace data = entitiesData;
 
-
-
 #define SUCCESS 1
+
 #define __DEVELOPMENT__
 //#define __DEBUG__
+
 #define __MULTITHREADING__
 //#define __SINGLETHREADING__
 
@@ -31,6 +32,7 @@ namespace data = entitiesData;
 //enable the depth test (z buffer)
 //disable the cull face
 //clear the color buffer bit along with depth buffer bit
+//also the last parameter isn't 'w' (the homogenious coordinate) it's alpha (the opacity)
 void _zBufferBg(float r, float g, float b, float w)
 {
     glClearColor(r, g, b, w);
@@ -40,13 +42,41 @@ void _zBufferBg(float r, float g, float b, float w)
 }
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#ifdef STRUCTURED
 
-void Engine::setEntities()
+
+bool Engine::loadGLFW()
 {
-    entities.reserve(3);
+    if (!glfwInit())
+    {
+        std::cerr << "Falied to initialize glfw!" << '\n';
+        return 0;
+    }
+}
 
+bool Engine::loadGLAD()
+{
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cerr << "Failed to load GLAD" << '\n';
+        return 0;
+    }
+    glViewport(0, 0, window.WIDTH(), window.HEIGHT());
+}
+
+bool Engine::loadCamera()
+{
+    Camera::setupMouse(window.windowAddress());
+    return (camera!=nullptr) ? 1 : 0;
+}
+
+bool Engine::loadEntities()
+{
+
+
+    std::clog << "Constructing the entities!" << '\n';
+    std::clog << "Loading..." << '\n';
+
+    entities.reserve(initialEntities);
 
     entities.push_back(new Entity(data::cubeVerticiesData, data::cubeTotalVerticies,
                                   data::cubeIndiciesData, data::cubeTotalIndicies,
@@ -63,150 +93,48 @@ void Engine::setEntities()
                                   "../src/shader/GLSL/vertexShaderSource1.glslv",
                                   "../src/shader/GLSL/fragmentShaderSource1.glslf"));
 
-    for(const auto entity : entities)
+    std::size_t i=0;
+    while(i!=initialEntities-3)
+    {
+        entities.push_back(new Entity(nullptr, 0, nullptr, 0, "", ""));
+        ++i;
+    }
+
+    for(auto entity : entities)
     {
         entity->loadShader();
     }
 
-    //if we try to load only one entity shader then all the other entities will be rendered
-    //but any transformation made to the loaded shader entity will cause change.
-    //entities[2]->loadShader();
+    for(auto entity : entities)
+    {
+        camera->setShaderProgramID(entity->getShader().ProgramID());
+    }
 
+    return (entities[0]!=nullptr) ? 1 : 0;
 
 }
 
+bool Engine::loadRenderer()
+{
+    renderer = Renderer(entities.size());
+}
 
 
 
 
 int8_t Engine::Init()
 {
-    //initialize the glfw functions and other glfw features
-    if (!glfwInit())
+    if(!isInitSuccess)
     {
-        std::cerr << "Falied to initialize glfw!" << '\n';
-        return -1;
-    }
-
-    Window window = Window(1920.0f, 1080.0f, "Simulation Engine");
-
-    camera = new Camera();
-    Camera::setupMouse(window.windowAddress());
-
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        std::cerr << "Failed to load GLAD" << '\n';
-        return -1;
-    }
-
-    //Camera::setupMouse(window.windowAddress());
-
-    glViewport(0, 0, window.WIDTH(), window.HEIGHT());
-
-    this->setEntities();
-
-    for(auto entity : entities)
-    {
-        camera->setShaderProgramID(entity->getShader().ProgramID());
-    }
-
-    return SUCCESS;
-
-}
-
-
-
-
-int8_t Engine::Run()
-{
-    while(window.running())
-    {
-        _zBufferBg(0.2f, 0.3f, 0.3f, 1.0f);
-
-
-#ifdef __MULTITHREADING__
-//        std::thread windowKeyInputThread([&window]()->void
-//        {
-//            window.getKeyboardInput();
-//        });
-//        std::thread cameraKeyInputThread([&camera, &window]()->void
-//        {
-//            camera->getKeyboardInput(window.windowAddress());
-//        });
-//
-//        windowKeyInputThread.join();
-//        cameraKeyInputThread.join();
-
-        window.getKeyboardInput();
-        camera->getKeyboardInput(window.windowAddress());
-
-#else
-        window.getKeyboardInput();
-        camera->getKeyboardInput(window.windowAddress());
-#endif
-
-        camera->update();
-
-#ifdef __DEBUG__
-        cube->update();
-        ground->update();
-        anotherCube->update();
-
-        cube->render();
-        ground->render();
-        anotherCube->render();
-#else
-
-        for(auto entity : entities)
-        {
-            entity->update();
-        }
-
-        //make any modification to the entities or entity after running useProgram() and before rendering otherwise it would be TOO bad!
-
-        entities[0]->getTransformation().translate(glm::vec3(0.0f, -0.01f, 0.0f));
-        entities[0]->getTransformation().modelLocation(entities[0]->getShader().ProgramID());
-
-        for(auto entity : entities)
-        {
-            entity->render();
-        }
-
-#endif  //__DEBUG__
-
-        renderingInfo::framesPerSecond();
-
-        window.swapBuffers();
-        window.pollEvents();
-    }
-
-    return SUCCESS;
-}
-
-#else
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-int8_t Engine::Run()
-{
-    //initialize the glfw functions and other glfw features
-    if (!glfwInit())
-    {
-        std::cerr << "Falied to initialize glfw!" << '\n';
-        return -1;
+        std::cerr << "Failed to initialize glfw!" << '\n';
+        return isInitSuccess;
     }
 
     GLfloat WIDTH = 1920.0f;
     GLfloat HEIGHT = 1080.0f;
 
-    Window window(WIDTH, HEIGHT,"Simulation Engine");
-
     //simulate a camera
     //Camera *camera = nullptr; //first time got the nullptr derefrencing bug (it gave segmentation fault (core dump))
-
-    Camera *camera = new Camera();
     Camera::setupMouse(window.windowAddress());
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -217,120 +145,109 @@ int8_t Engine::Run()
 
     glViewport(0, 0, window.WIDTH(), window.HEIGHT());
 
-
-
-
-
-
-#define __DEVELOPMENT__
-//#define __DEBUG__
-
-#define __MULTITHREADING__
-//#define __SINGLETHREADING__
-
-#ifdef __DEBUG__
-
-    Entity *cube = new Entity(cubeVerticiesData, cubeTotalVerticies,
-                              cubeIndiciesData, cubeTotalIndicies,
-                              "../src/shader/GLSL/vertexShaderSource1.glslv",
-                              "../src/shader/GLSL/fragmentShaderSource1.glslf");
-
-    Entity *ground = new Entity(groundVerticiesData, groundTotalVerticies,
-                                groundIndiciesData, groundTotalIndicies,
-                                "../src/shader/GLSL/vertexShaderSource2.glslv",
-                                "../src/shader/GLSL/fragmentShaderSource2.glslf");
-
-    Entity *anotherCube = new Entity(anotherCubeVerticiesData, anotherCubeTotalVerticies,
-                                     anotherCubeIndiciesData, anotherCubeTotalIndicies,
-                                     "../src/shader/GLSL/vertexShaderSource3.glslv",
-                                     "../src/shader/GLSL/fragmentShaderSource3.glslf");
-
-#else
-
-    std::vector<Entity*> entities;
-    entities.reserve(3);
-
-
+    entities.reserve(initialEntities);
     entities.push_back(new Entity(data::cubeVerticiesData, data::cubeTotalVerticies,
                                   data::cubeIndiciesData, data::cubeTotalIndicies,
                                   "../src/shader/GLSL/vertexShaderSource1.glslv",
                                   "../src/shader/GLSL/fragmentShaderSource1.glslf"));
 
-    entities.push_back(new Entity(data::groundVerticiesData, data::groundTotalVerticies,
-                                  data::groundIndiciesData, data::groundTotalIndicies,
-                                  "../src/shader/GLSL/vertexShaderSource1.glslv",
-                                  "../src/shader/GLSL/fragmentShaderSource1.glslf"));
+    entities.push_back(new Entity( data::groundVerticiesData, data::groundTotalVerticies,
+                                   data::groundIndiciesData, data::groundTotalIndicies,
+                                   "../src/shader/GLSL/vertexShaderSource1.glslv",
+                                   "../src/shader/GLSL/fragmentShaderSource1.glslf"));
 
     entities.push_back(new Entity(data::anotherCubeVerticiesData, data::anotherCubeTotalVerticies,
                                   data::anotherCubeIndiciesData, data::anotherCubeTotalIndicies,
                                   "../src/shader/GLSL/vertexShaderSource1.glslv",
                                   "../src/shader/GLSL/fragmentShaderSource1.glslf"));
 
-    for(const auto entity : entities)
+#if 0
+    for(std::size_t i=0; i!=initialEntities-3; ++i)
+    {
+        entities.push_back(new Entity(nullptr, 0, nullptr, 0, "", ""));
+    }
+
+    for(auto entity : entities)
     {
         entity->loadShader();
     }
 
-    //if we try to load only one entity shader then all the other entities will be rendered
-    //but any transformation made to the loaded shader entity will cause change.
-    //entities[2]->loadShader();
-
-#endif //__DEBUG__
-
-
-
-#define INSPECTION_MODE 0
-#define GAME_MODE 1
+    for(std::size_t i=0; i<initialEntities; ++i)
+    {
+        renderer.initVAO(entities[i]->getVertexObjects().getVAO());
+        renderer.initIndicies(entities[i]->totalIndicies());
+    }
 
 
-#ifdef __DEBUG__
-    //initial position of the camera
-    cube->getTransformation().translate(glm::vec3(-0.5f, 10.0f, 0.0f));
-    ground->getTransformation().translate(glm::vec3(0.0f, 0.0f, 0.0f));
-    anotherCube->getTransformation().translate(glm::vec3(0.0f, 0.0f, 0.0f));
-
-    //set the shader program ID for camera
-    camera->setShaderProgramID(cube->getShader().ProgramID());
-    camera->setShaderProgramID(ground->getShader().ProgramID());
-    camera->setShaderProgramID(anotherCube->getShader().ProgramID());
-#else
-
-
+    //giving one single shader program id of one entity also renders all the other entities
+    //will see this
+    //camera->setShaderProgramID(entities[0]->getShader().ProgramID());
     for(auto entity : entities)
     {
         camera->setShaderProgramID(entity->getShader().ProgramID());
     }
 
-    //camera->setShaderProgramID(entities[1]->getShader().ProgramID());
 
-//    entities[0]->getTransformation().translate(glm::vec3(0.0, 0.0f, 0.0f));
-//    entities[1]->getTransformation().translate(glm::vec3(0.0f, 0.0f, 0.0f));
-//    entities[2]->getTransformation().translate(glm::vec3(0.0f, 0.0f, 0.0f));
+    //if we try to load only one entity shader then all the other entities will be rendered
+    //but any transformation made to the loaded shader entity will cause change.
+    //entities[2]->loadShader();
+#else
+    //initializing the entities, entities-shader and renderer at the same time
+    //will use execution policy : std::execution::par with the g++ or clang++ + stdlibc++ = libc++ Flag
+    //with this we will be able to have a less loading time
 
-    //entities[0]->m_transform.translate(glm::vec3(1.0f, 0.0f, 0.0f));
+#ifdef __SINGLETHREADING__
+    for(std::size_t i=0; i<initialEntities; ++i)
+    {
+        entities.push_back(new Entity(nullptr, 0, nullptr, 0, "", ""));
 
-//    entities[0]->getShader().useProgram();
-//    entities[0]->m_transform.m_model = glm::rotate(entities[0]->m_transform.m_model, glm::radians(50.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        entities[i]->loadShader();
+
+        renderer.initVAO(entities[i]->getVertexObjects().getVAO());
+        renderer.initIndicies(entities[i]->totalIndicies());
+
+        camera->setShaderProgramID(entities[i]->getShader().ProgramID());
+    }
+#else
+    std::for_each(std::execution::par, entities.begin(), entities.end(), [this](auto &entity)->void
+    {
+        entities.push_back(new Entity(nullptr, 0, nullptr, 0, "", ""));
+
+        entity->loadShader();
+
+        renderer.initVAO(entity->getVertexObjects().getVAO());
+        renderer.initIndicies(entity->totalIndicies());
+
+        camera->setShaderProgramID(entity->getShader().ProgramID());
+    });
+#endif
 
 
 #endif
 
-    std::vector<std::thread> entitiesThreads;
+    //ignoring this returns causes segmentaion fault(core dump)
+    return isInitSuccess;
+
+}
 
 
-    glm::mat4 transformation = glm::mat4(1.0f);
 
 
-    float timeSinceInit = 0.0f; //this is in seconds
 
 
-    std::array<glm::vec3, 3> vecs{
-                                   glm::vec3(-0.01f, 0.0f, 0.0f),
-                                   glm::vec3(0.0f, -0.01f, 0.0f),
-                                   glm::vec3(0.0f, 0.0f, -0.01)
-    };
 
-    std::size_t i=0;
+
+
+
+
+
+
+
+
+
+
+int8_t Engine::Run()
+{
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -345,11 +262,11 @@ int8_t Engine::Run()
 
 
 #ifdef __MULTITHREADING__
-        std::thread windowKeyInputThread([&window]()->void
+        std::thread windowKeyInputThread([this]()->void
         {
             window.getKeyboardInput();
         });
-        std::thread cameraKeyInputThread([&camera, &window]()->void
+        std::thread cameraKeyInputThread([this, this]()->void
         {
             camera->getKeyboardInput(window.windowAddress());
         });
@@ -364,16 +281,6 @@ int8_t Engine::Run()
 
         camera->update();
 
-#ifdef __DEBUG__
-        cube->update();
-        ground->update();
-        anotherCube->update();
-
-        cube->render();
-        ground->render();
-        anotherCube->render();
-#else
-
         for(auto entity : entities)
         {
             entity->update();
@@ -387,10 +294,10 @@ int8_t Engine::Run()
 
 #if 1
 
-        for(const auto entity : entities)
-        {
-            entity->translate(glm::vec3(-0.01f, -0.01f, -0.01f));
-        }
+//        for(const auto entity : entities)
+//        {
+//            entity->translate(glm::vec3(-0.01f, -0.01f, -0.01f));
+//        }
 
 //        std::for_each(std::execution::par, entities.begin(), entities.end(), [&](auto entity)->void
 //        {
@@ -403,44 +310,33 @@ int8_t Engine::Run()
 
 #else
         entities[0]->translate(glm::vec3(0.0f, -0.01f, 0.0f));
-
-
 #endif
 
-
-#if 0
-        timeSinceInit = static_cast<float>(glfwGetTime());
-
-        GLuint timeUniformLocation = glGetUniformLocation(entities[0]->getShader().ProgramID(), "time");
-        glUniform1f(timeUniformLocation, timeSinceInit);
-#endif
 
 //        GLuint transformationLocation = glGetUniformLocation(entities[0]->getShader().ProgramID(), "transform");
 //        glUniformMatrix4fv(transformationLocation, 1, GL_FALSE, glm::value_ptr(transformation));
 //
 //        transformation = glm::translate(transformation, glm::vec3(0.0f, 1.0f, 0.0f));
 
-
+#if 0
         for(auto entity : entities)
         {
             entity->render();
         }
+#else
+        renderer.render();
+#endif
 
-#endif  //__DEBUG__
-
+        //this is definately not for benchmarking
         renderingInfo::framesPerSecond();
 
         window.swapBuffers();
         window.pollEvents();
     }
 
-
-    delete camera;
-
     return 0;
 }
 
-#endif //STRUCTURED
 
 
 

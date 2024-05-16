@@ -1,5 +1,7 @@
 #include "InitializeEngine.hpp"
 
+#include <memory>
+
 //direction vector is also defined as cameraFront
 //extern glm::vec3 directionVector;
 
@@ -12,12 +14,11 @@
 int main()
 {
     Engine *engine = new Engine();
-
-    //bool isInitSuccess = engine->Init();
+    int8_t isInitSuccess = engine->Init();
     int8_t isRunningSuccess = engine->Run();
-
     delete engine;
-    return isRunningSuccess;
+
+    return isInitSuccess && isRunningSuccess;
 }
 
 

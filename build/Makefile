@@ -1,7 +1,7 @@
 
 
-CXX=clang++
-CXX_CUSTOM_INCLUDE_FLAGS=-I../src/main -I../src/window -I../src/entity -I../src/shader -I../src/camera -I../src/debug
+CXX=g++
+CXX_CUSTOM_INCLUDE_FLAGS=-I../src/main -I../src/window -I../src/entity -I../src/shader -I../src/render -I../src/camera -I../src/debug
 CXX_EXTERNAL_INCLUDE_FLAGS=-I../src/external/GLFW/include -I../src/external/glad/include -I../src/external/glm
 CXX_INCLUDE_FLAGS+=$(CXX_CUSTOM_INCLUDE_FLAGS)
 CXX_INCLUDE_FLAGS+=$(CXX_EXTERNAL_INCLUDE_FLAGS)
@@ -11,7 +11,7 @@ CXXFLAGS+=$(CXX_INCLUDE_FLAGS)
 
 #SRC_FILES=../external/glad/src/glad.cpp ../src/Shader.cpp ../src/Window.cpp ../src/Camera.cpp ../src/main.cpp
 
-SRC_FILES=../src/entity/Entities.cpp ../src/entity/vertexObjects.cpp ../src/shader/Shader.cpp ../src/window/Window.cpp ../src/camera/Camera.cpp ../src/main/InitializeEngine.cpp ../src/main/main.cpp
+SRC_FILES=../src/entity/Entities.cpp ../src/entity/vertexObjects.cpp ../src/shader/Shader.cpp ../src/render/renderEntity.cpp ../src/window/Window.cpp ../src/camera/Camera.cpp ../src/main/InitializeEngine.cpp ../src/main/main.cpp
 EXTERNAL_SRC_FILES=../src/external/glad/src/glad.cpp
 OBJ_FILES=$(SRC_FILES:.cpp=.o)
 EXE=start_graphics_engine
@@ -23,8 +23,8 @@ LDFLAGS=-L../src/shader -L../src/external/GLFW/lib -lglfw -L../src/external/glad
 
 
 
-start_graphics_engine: obj/glad.o obj/Entities.o obj/vertexObjects.o obj/Shader.o obj/Window.o obj/Camera.o obj/InitializeEngine.o obj/main.o
-		$(CXX) $(CXXFLAGS) -o start_graphics_engine obj/glad.o obj/Entities.o obj/vertexObjects.o obj/Shader.o obj/Window.o obj/Camera.o obj/InitializeEngine.o obj/main.o $(LDFLAGS)
+start_graphics_engine: obj/glad.o obj/Entities.o obj/vertexObjects.o obj/Shader.o obj/renderEntity.o obj/Window.o obj/Camera.o obj/InitializeEngine.o obj/main.o
+		$(CXX) $(CXXFLAGS) -o start_graphics_engine obj/glad.o obj/Entities.o obj/vertexObjects.o obj/Shader.o obj/renderEntity.o obj/Window.o obj/Camera.o obj/InitializeEngine.o obj/main.o $(LDFLAGS)
 
 
 
@@ -40,13 +40,16 @@ obj/vertexObjects.o: ../src/entity/vertexObjects.cpp ../src/entity/vertexObjects
 obj/Shader.o: ../src/shader/Shader.cpp	../src/shader/Shader.hpp ../src/debug/LOG.hpp ../src/shader/GLSL/vertexShaderSource1.glslv ../src/shader/GLSL/fragmentShaderSource1.glslf
 		$(CXX) $(CXXFLAGS) -c ../src/shader/Shader.cpp -o obj/Shader.o
 
+obj/renderEntity.o: ../src/render/renderEntity.cpp ../src/render/renderEntity.hpp
+		$(CXX) $(CXXFLAGS) -c ../src/render/renderEntity.cpp -o obj/renderEntity.o
+
 obj/Window.o: ../src/window/Window.cpp ../src/window/Window.hpp ../src/debug/LOG.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/window/Window.cpp -o obj/Window.o
 
 obj/Camera.o: ../src/camera/Camera.cpp	../src/camera/Camera.hpp ../src/debug/LOG.hpp ../src/debug/RenderingInfoLog.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/camera/Camera.cpp -o obj/Camera.o
 
-obj/InitializeEngine.o: ../src/main/InitializeEngine.cpp ../src/main/InitializeEngine.hpp ../src/debug/LOG.hpp ../src/entity/Entities.hpp ../src/debug/RenderingInfoLog.hpp ../src/entity/vertexObjects.hpp ../src/shader/Shader.hpp ../src/entity/entitiesAttributesData.hpp
+obj/InitializeEngine.o: ../src/main/InitializeEngine.cpp ../src/main/InitializeEngine.hpp ../src/debug/LOG.hpp ../src/entity/Entities.hpp ../src/debug/RenderingInfoLog.hpp ../src/entity/vertexObjects.hpp ../src/shader/Shader.hpp ../src/render/renderEntity.hpp ../src/entity/entitiesAttributesData.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/main/InitializeEngine.cpp -o obj/InitializeEngine.o
 
 
@@ -65,6 +68,7 @@ clear:
 		 rm -f obj/Entities.o
 		 rm -f obj/vertexObjects.o
 		 rm -f obj/Shader.o
+		 rm -f obj/renderEntity.o
 		 rm -f obj/Window.o
 		 rm -f obj/Camera.o
 		 rm -f obj/InitializeEngine.o

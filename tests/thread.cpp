@@ -44,46 +44,48 @@ std::size_t sumOddSin(const std::size_t start, const std::size_t end)
 
 int main()
 {
-    std::size_t range = 90000000;
+    std::size_t range = 900000000;
 
-//    std::vector<std::size_t> container;
-//    //container.reserve(range);
-//
-//
-////    for(auto &element : container)
-////    {
-////        element = 1;
-////    }
-////
-//
-//    for(std::size_t i=0; i<range; ++i)
+    std::vector<std::size_t> container;
+    //container.reserve(range);
+
+
+//    for(auto &element : container)
 //    {
-//        //container[i] = 1;
-//        container.push_back(1);
+//        element = 1;
 //    }
 //
-//    std::cout << container.size() << '\n';
-//
-//    auto start =std::chrono::high_resolution_clock::now();
-//
-//
-//    float sum1 = 0.0f;
-//    std::for_each(std::execution::par, container.begin(), container.end(), [&sum1](std::size_t element)->void
-//    {
-//        sum1 += sin(element)*cos(element);
-//    });
-//
-//
+
+    for(std::size_t i=0; i<range; ++i)
+    {
+        //container[i] = 1;
+        container.push_back(1);
+    }
+
+    std::cout << container.size() << '\n';
+
+    auto start =std::chrono::high_resolution_clock::now();
+
+
+    float sum1 = 0.0f;
+    float sum2 = 0.0f;
+    std::for_each(container.begin(), container.end(), [&sum1, &sum2](std::size_t element)->void
+    {
+        sum1 += sin(element)*cos(element);
+        sum2 += sin(element)*cos(element);
+    });
+
+
 //    float sum2 = 0.0f;
 //    std::for_each(std::execution::par, container.begin(), container.end(), [&sum2](std::size_t element)->void
 //    {
 //        sum2 += sin(element)*cos(element);
 //    });
-//
-//
-//    std::cout << sum1 << '\n';
-//    std::cout << sum2 << '\n';
-//
+
+
+    std::cout << sum1 << '\n';
+    std::cout << sum2 << '\n';
+
 
 
 

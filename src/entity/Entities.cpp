@@ -31,8 +31,8 @@ Entity::Entity(Vertex *verticies, GLuint totalVerticies,
                const std::string &vertexShaderSourcePath,
                const std::string &fragmentShaderSourcePath) noexcept
     :
-     m_verticies(verticies),
-     m_indicies(indicies),
+     m_verticies(std::move(verticies)),
+     m_indicies(std::move(indicies)),
      m_totalVerticies(totalVerticies),
      m_totalIndicies(totalIndicies),
      m_verticiesSizeBytes(sizeof(Vertex)*totalVerticies),
@@ -43,6 +43,11 @@ Entity::Entity(Vertex *verticies, GLuint totalVerticies,
 //    compile, link the vertex and fragment shader
 //    m_shader.setup();
 //    m_shader.link();
+
+    for(unsigned int i=0; i<totalIndicies; ++i)
+    {
+        std::cout << indicies[i] << '\n';
+    }
 }
 
 
@@ -120,6 +125,9 @@ Entity::~Entity()
     //so now both owns the verticies and indicies data
     //we will delete the verticies and indicies data from the Entity destructor
     //it will prevent us from doing manual deletion in InitializeEngine.cpp where the entities are deleted explicitly at the end of the program
-    delete m_verticies;
-    delete m_indicies;
+    if(m_verticies!=nullptr || m_indicies!=nullptr)
+    {
+        delete m_verticies;
+        delete m_indicies;
+    }
 }

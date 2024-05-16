@@ -14,6 +14,8 @@
      std::ifstream vertexShaderFile(m_vertexShader.path);
      std::ifstream fragmentShaderFile(m_fragmentShader.path);
 
+
+#if 0
      SYSTEM_LOG("if test -e /shader/GLSL/vertesShaderSource.glslv; then\n"
                 "    echo \"File or directory exists.\"\n"
                 "else\n"
@@ -37,6 +39,7 @@
      std::cout << "Vertex Shader file: " << m_vertexShader.path << '\n';
      std::cout << "Fragment Shader file: " << m_fragmentShader.path << '\n';
 
+#endif
      std::string vertexLine;
      while ( std::getline(vertexShaderFile, vertexLine) )
          m_vertexShader.source += vertexLine + '\n';

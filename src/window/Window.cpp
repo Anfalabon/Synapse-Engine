@@ -8,9 +8,6 @@ Window::Window(GLfloat WIDTH, GLfloat HEIGHT, const char* TITLE)
         : m_WIDTH(WIDTH), m_HEIGHT(HEIGHT), m_TITLE(TITLE)
 {
     LOG("Running log from Window::Window()");
-//    m_WIDTH = WIDTH;
-//    m_HEIGHT = HEIGHT;
-//    m_TITLE = TITLE;
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
