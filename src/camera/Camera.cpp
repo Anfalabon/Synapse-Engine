@@ -85,16 +85,16 @@ void Camera::setCameraSpeed()
 namespace Calculate
 {
 
-float m_lastX = 1920.0f/2.0f;
-float m_lastY = 1080.0f/2.0f;
-float m_yaw = -90.0f;
-float m_pitch = 0.0f;
-float m_rightAngleMovingSpeed = 1.0f;
-const float m_sensitivity = 0.1f;
+inline float m_lastX = 1920.0f/2.0f;
+inline float m_lastY = 1080.0f/2.0f;
+inline float m_yaw = -90.0f;
+inline float m_pitch = 0.0f;
+inline float m_rightAngleMovingSpeed = 1.0f;
+inline const float m_sensitivity = 0.1f;
 
-bool m_firstMouse = true;
-bool m_isMouseMoving = false;
-glm::vec3 m_directionVector = glm::vec3(0.0f, 0.0f, 0.0f);
+inline bool m_firstMouse = true;
+inline bool m_isMouseMoving = false;
+inline glm::vec3 m_directionVector = glm::vec3(0.0f, 0.0f, 0.0f);
 
 
 
@@ -160,7 +160,7 @@ void mouseInput(GLFWwindow* window, double xpos, double ypos)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    ///////////////////////will separate this physics part and generalize it for other Entities including Camera/////////////////////
+        //////will separate this physics part and generalize it for other Entities including Camera(maybe in the Physics Engine)//////
 
 
 namespace glm
@@ -181,8 +181,7 @@ namespace glm
 }
 
 
-void Camera::setCurrentObjectInfo(const glm::vec3 &objectMaxSize,
-                                  const glm::vec3 &objectMinSize)
+void Camera::setCurrentObjectInfo(const glm::vec3 &objectMaxSize, const glm::vec3 &objectMinSize)
 {
     //initialize the max and min object range
     m_objectMaxSize = objectMaxSize;
@@ -338,7 +337,7 @@ void Camera::jump()
 
 
 
-void Camera::verticalMotion()
+void Camera::applyVerticalMotions()
 {
 
     std::cout << "Time elapsed: " << m_timeElapsed << '\n';
@@ -386,12 +385,16 @@ void Camera::applyPhysics()
 {
     if(M_CAMERA_MODE == CAMERA_MODES::INSPECTION_MODE)
     {
+        std::cout << "Camera is in now inspection mode" << '\n';
         return;
     }
+    else if(M_CAMERA_MODE == CAMERA_MODES::GAME_MODE)
+    {
+        this->applyVerticalMotions();
+        m_collided = false;
+        m_collided = this->wasCollided();
 
-    this->verticalMotion();
-    m_collided = false;
-    m_collided = this->wasCollided();
+    }
 }
 
 
@@ -400,7 +403,7 @@ void Camera::applyPhysics()
 
 
 
-//void Camera::changeEngineMode()
+//void Camera::changeCameraMode()
 //{
 //    if(glfwGetKey(m_window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS && glfwGetKey(m_window, GLFW_KEY_M) == GLFW_PRESS)
 //    {
@@ -427,25 +430,16 @@ void Camera::getKeyboardInput(GLFWwindow* m_window)
 {
     using namespace Calculate;
 
-    //renderingInfo::framesPerSecond();
-
     this->setCameraSpeed();
 
     //speed up the camera if left shift was pressed
     bool leftShiftPressed = false;
     if(glfwGetKey(m_window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
     {
-        //increase(m_cameraSpeed);
         m_cameraSpeed = m_cameraSpeed * 3.0f;
         leftShiftPressed = true;
     }
 
-
-//    if(glfwGetKey(m_window, GLFW_KEY_SPACE) == GLFW_PRESS)
-//    {
-//        m_jumped = true;
-//        m_initialHeight = m_cameraPos.y;
-//    }
 
     //&& !m_collided
     if(keyPressed(m_window, GLFW_KEY_SPACE) && !m_jumped)
@@ -461,64 +455,40 @@ void Camera::getKeyboardInput(GLFWwindow* m_window)
         m_cameraPos.y = 0.0f;
     }
 
-//    isLookingAtObject = false;
-//    bool shoot = false;
-//    if((m_targetPos.x <= m_objectMaxSize.x && m_targetPos.x >= m_objectMinSize.x) &&
-//       (m_targetPos.z <= m_objectMaxSize.z && m_targetPos.z >= m_objectMinSize.z) &&
-//       (m_targetPos.y <= m_objectMaxSize.y && m_targetPos.y >= m_objectMinSize.y))
-//    {
-//        isLookingAtObject = true;
-//        std::cout << "Camera is looking at Entity!" << '\n';
-//    }
-//
-//    if(isLookingAtObject && glfwGetKey(m_window, GLFW_KEY_O) == GLFW_PRESS)
-//    {
-//        shoot = true;
-//        std::cout << "Shooting!" << '\n';
-//    }
+
+    //this is a problem.
+    //will need to fix it
+    {
+        M_CAMERA_MODE = CAMERA_MODES::GAME_MODE;
+    }
 
 
+    if(glfwGetKey(m_window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS && glfwGetKey(m_window, GLFW_KEY_KP_ADD) == GLFW_PRESS && m_zoomValue > 5.0f)
+    {
+        m_zoomed = true;
+        //m_zoomValue = 30.0f;
+        m_zoomValue -= 5.0f;
+    }
+    else if(glfwGetKey(m_window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS && glfwGetKey(m_window, GLFW_KEY_KP_SUBTRACT) == GLFW_PRESS && m_zoomValue < 150.0f)
+    {
+        //m_zoomed = false;
+        //m_zoomValue = 45.0f;
+        m_zoomValue += 5.0f;
+    }
 
-
-
-    //M_CAMERA_MODE = CAMERA_MODES::GAME_MODE;
-
-
-
-//    if(glfwGetKey(m_window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS && glfwGetKey(m_window, GLFW_KEY_E) == GLFW_PRESS)
-//    {
-//        M_ENGINE_MODE = (M_ENGINE_MODE == GAME_MODE) ? INSPECTION_MODE, m_jumped = false : GAME_MODE;
-//    }
-
-
-
-
-    
-//    if(glfwGetKey(m_window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS && glfwGetKey(m_window, GLFW_KEY_KP_ADD) == GLFW_PRESS && m_zoomValue > 5.0f)
-//    {
-//        m_zoomed = true;
-//        //m_zoomValue = 30.0f;
-//        m_zoomValue -= 5.0f;
-//    }
-//    else if(glfwGetKey(m_window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS && glfwGetKey(m_window, GLFW_KEY_KP_SUBTRACT) == GLFW_PRESS && m_zoomValue < 150.0f)
-//    {
-//        //m_zoomed = false;
-//        //m_zoomValue = 45.0f;
-//        m_zoomValue += 5.0f;
-//    }
-
-//    if(glfwGetKey(m_window, GLFW_KEY_Z) == GLFW_PRESS)
-//    {
-//        m_zoomValue = 45.0f;
-//    }
+    if(glfwGetKey(m_window, GLFW_KEY_Z) == GLFW_PRESS)
+    {
+        m_zoomValue = 45.0f;
+    }
 
     std::clog << "Current Field of view of the Camera: " << m_zoomValue << '\n';
     //will add scrolling for this
-//    if(m_zoomed)
-//    {
-//        --m_zoomValue;
-//    }
-
+#ifdef ZOOM_SCROLLING
+    if(m_zoomed)
+    {
+        --m_zoomValue;
+    }
+#endif
 
     if(glfwGetKey(m_window, GLFW_KEY_C) == GLFW_PRESS)
     {
@@ -537,25 +507,8 @@ void Camera::getKeyboardInput(GLFWwindow* m_window)
     }
 
 
-
-    //bool collided = false;
-
-
-//will use this in the main.cpp main Engine loop    
-// #define INSPECTION_MODE
-// //#define GAME_MODE
-// #ifdef GAME_MODE
-
-//     //this->applyPhysics();
-
-// #endif
-
     m_cameraSpeed = m_cameraSpeed * Calculate::m_rightAngleMovingSpeed;
     std::cout << "Current Camera speed is: " << m_cameraSpeed << '\n';
-
-
-    //std::thread t1(askForSpeedUp, m_cameraSpeed);
-    //t1.join();
 
 
 
@@ -568,11 +521,18 @@ void Camera::getKeyboardInput(GLFWwindow* m_window)
 //            m_cameraPos.z = m_cameraPos.z + m_cameraSpeed * Calculate::m_directionVector.z * Calculate::m_rightAngleMovingSpeed;
 //        }
 
-
-        if(!m_collided && M_CAMERA_MODE == CAMERA_MODES::GAME_MODE)
+        //in game mode it can freely move in the ground plane only(x, z plane) but It can't move vertically.
+        //and in inspection mode it can move in anywhere freely.
+        if(M_CAMERA_MODE == CAMERA_MODES::GAME_MODE)
         {
-            m_cameraPos.x = m_cameraPos.x + m_cameraSpeed * Calculate::m_directionVector.x * Calculate::m_rightAngleMovingSpeed;
-            m_cameraPos.z = m_cameraPos.z + m_cameraSpeed * Calculate::m_directionVector.z * Calculate::m_rightAngleMovingSpeed;
+            //if the camera collided with any object then it can't move further.
+            //doing action on collision detection like this has a lot of problems
+            //wil fix it.
+            if(!m_collided)
+            {
+                m_cameraPos.x = m_cameraPos.x + m_cameraSpeed * Calculate::m_directionVector.x * Calculate::m_rightAngleMovingSpeed;
+                m_cameraPos.z = m_cameraPos.z + m_cameraSpeed * Calculate::m_directionVector.z * Calculate::m_rightAngleMovingSpeed;
+            }
         }
         else if(M_CAMERA_MODE == CAMERA_MODES::INSPECTION_MODE)
         {
@@ -628,12 +588,6 @@ void Camera::getKeyboardInput(GLFWwindow* m_window)
     }
 
 
-//    if(m_collided)
-//    {
-//        m_cameraPos = m_cameraPosWhileCollision;
-//    }
-
-
     //reset the camera speed
     if(leftShiftPressed)
     {
@@ -670,32 +624,6 @@ void Camera::lookAtTarget()
 
 void Camera::isLookingAtEntity()
 {
-//    glm::vec3 entityPos = glm::vec3(0.0f, 0.0f, 0.0f);
-//    glm::vec3 distanceVec = m_cameraPos - entityPos;
-
-//    if(glm::dot(distanceVec, m_targetPos) == glm::magnitude(distanceVec) * glm::magnitude(m_targetPos))
-//    {
-//        std::clog << "Camera looking at Entity!" << '\n';
-//        isLookingAtObject = true;
-//    }
-
-    //glm::vec3 differenceVec = Calculate::m_directionVector - distanceVec;
-
-    //differenceVec = glm::abs(differenceVec);
-
-
-//    bool shoot = false;
-//    if((m_targetPos.x <= m_objectMaxSize.x && m_targetPos.x >= m_objectMinSize.x) &&
-//       (m_targetPos.z <= m_objectMaxSize.z && m_targetPos.z >= m_objectMinSize.z) &&
-//       (m_targetPos.y <= m_objectMaxSize.y && m_targetPos.y >= m_objectMinSize.y))
-//    {
-//        isLookingAtObject = true;
-//        std::cout << "Camera is looking at Entity!" << '\n';
-//    }
-//
-//    if(isLookingAtObject)
-
-
     glm::vec3 entityPos = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 differenceVec = entityPos - Calculate::m_directionVector;
 
@@ -708,8 +636,6 @@ void Camera::isLookingAtEntity()
     {
         std::cout << "Camera looking at cube!" << '\n';
     }
-
-
 }
 
 
@@ -728,7 +654,6 @@ void Camera::update()
     this->perspectiveLocation();
     this->updatePerspective();
     this->lookAtTarget();
-    //this->isLookingAtEntity();
 }
 
 

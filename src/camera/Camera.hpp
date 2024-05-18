@@ -41,13 +41,13 @@ public:
     explicit Camera()
         : m_deltaTime(0.0f),
           m_lastFrame(0.0f),
-          M_CAMERA_MODE(CAMERA_MODES::INSPECTION_MODE){}
+          M_CAMERA_MODE(CAMERA_MODES::GAME_MODE){}
 
     ~Camera() = default;
 
 
     void setCameraMode(CAMERA_MODES M);
-    //void changeEngineMode();
+    void changeCameraMode(){} //will declare it later
     void setShaderProgramID(GLuint shaderProgramID);
     void perspectiveLocation();
     void viewLocation();
@@ -56,16 +56,17 @@ public:
     void lookAtTarget();   //this is the overloaded function of glm::lookAt(). So the it will return : return glm::lookAt(cameraPos, targetPos, upVecPos)
     void isLookingAtEntity();
     void setCameraSpeed();    
-    void setCurrentObjectInfo(const glm::vec3 &maxObjectRange,
-                              const glm::vec3 &minObjectRange);
+    void setCurrentObjectInfo(const glm::vec3 &maxObjectRange, const glm::vec3 &minObjectRange);
+
 
     //this is the physics part
     //will separate this physics part and generalize meaning the physics will work not only for the Camera but also for other Entities
+    //for some general physics stuffs will keep them in the Physics Engine class
     bool wasCollided();
     void initVelocity(const glm::vec3 &velocity); //throw with initial velocity
     void fallDown();
     void jump();
-    void verticalMotion();
+    void applyVerticalMotions();
 
     void applyPhysics();
 

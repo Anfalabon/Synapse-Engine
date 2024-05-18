@@ -662,11 +662,52 @@ void updateFrame(Camera *camera,
 
 ///////////////////////////////////////////////////////////////////////////////
 
+//    isLookingAtObject = false;
+//    bool shoot = false;
+//    if((m_targetPos.x <= m_objectMaxSize.x && m_targetPos.x >= m_objectMinSize.x) &&
+//       (m_targetPos.z <= m_objectMaxSize.z && m_targetPos.z >= m_objectMinSize.z) &&
+//       (m_targetPos.y <= m_objectMaxSize.y && m_targetPos.y >= m_objectMinSize.y))
+//    {
+//        isLookingAtObject = true;
+//        std::cout << "Camera is looking at Entity!" << '\n';
+//    }
+//
+//    if(isLookingAtObject && glfwGetKey(m_window, GLFW_KEY_O) == GLFW_PRESS)
+//    {
+//        shoot = true;
+//        std::cout << "Shooting!" << '\n';
+//    }
 
 
+///////////////////////////////////////////////////////////////////////////////
 
 
+//    glm::vec3 entityPos = glm::vec3(0.0f, 0.0f, 0.0f);
+//    glm::vec3 distanceVec = m_cameraPos - entityPos;
 
+//    if(glm::dot(distanceVec, m_targetPos) == glm::magnitude(distanceVec) * glm::magnitude(m_targetPos))
+//    {
+//        std::clog << "Camera looking at Entity!" << '\n';
+//        isLookingAtObject = true;
+//    }
+
+    //glm::vec3 differenceVec = Calculate::m_directionVector - distanceVec;
+
+    //differenceVec = glm::abs(differenceVec);
+
+
+//    bool shoot = false;
+//    if((m_targetPos.x <= m_objectMaxSize.x && m_targetPos.x >= m_objectMinSize.x) &&
+//       (m_targetPos.z <= m_objectMaxSize.z && m_targetPos.z >= m_objectMinSize.z) &&
+//       (m_targetPos.y <= m_objectMaxSize.y && m_targetPos.y >= m_objectMinSize.y))
+//    {
+//        isLookingAtObject = true;
+//        std::cout << "Camera is looking at Entity!" << '\n';
+//    }
+//
+//    if(isLookingAtObject)
+
+///////////////////////////////////////////////////////////////////////////////
 
 
 
