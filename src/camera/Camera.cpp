@@ -5,12 +5,14 @@
 #include "../debug/RenderingInfoLog.hpp"
 
 #include <thread>
+#include <iostream>
 
+//Camera::CAMERA_MODES
 
 //this should be inside the Engine class
-void Camera::setEngineMode(const uint8_t ENGINE_MODE)
+void Camera::setCameraMode(CAMERA_MODES M)
 {
-    M_ENGINE_MODE = ENGINE_MODE;
+    M_CAMERA_MODE = M;
 }
 
 
@@ -382,7 +384,7 @@ void Camera::verticalMotion()
 
 void Camera::applyPhysics()
 {
-    if(M_ENGINE_MODE == INSPECTION_MODE)
+    if(M_CAMERA_MODE == CAMERA_MODES::INSPECTION_MODE)
     {
         return;
     }
@@ -479,7 +481,7 @@ void Camera::getKeyboardInput(GLFWwindow* m_window)
 
 
 
-    M_ENGINE_MODE = GAME_MODE;
+    //M_CAMERA_MODE = CAMERA_MODES::GAME_MODE;
 
 
 
@@ -567,12 +569,12 @@ void Camera::getKeyboardInput(GLFWwindow* m_window)
 //        }
 
 
-        if(!m_collided && M_ENGINE_MODE == GAME_MODE)
+        if(!m_collided && M_CAMERA_MODE == CAMERA_MODES::GAME_MODE)
         {
             m_cameraPos.x = m_cameraPos.x + m_cameraSpeed * Calculate::m_directionVector.x * Calculate::m_rightAngleMovingSpeed;
             m_cameraPos.z = m_cameraPos.z + m_cameraSpeed * Calculate::m_directionVector.z * Calculate::m_rightAngleMovingSpeed;
         }
-        else if(M_ENGINE_MODE == INSPECTION_MODE)
+        else if(M_CAMERA_MODE == CAMERA_MODES::INSPECTION_MODE)
         {
             m_cameraPos = m_cameraPos + m_cameraSpeed * Calculate::m_directionVector * Calculate::m_rightAngleMovingSpeed;
         }

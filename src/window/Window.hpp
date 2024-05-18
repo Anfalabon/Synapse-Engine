@@ -22,6 +22,7 @@ public:
     
     //void giveHint();
     //bool initSuccessLog();
+    void init();
     void resize();
     void exitOnEscape();
     void keyPressedLog(){LOG("key pressed!");}

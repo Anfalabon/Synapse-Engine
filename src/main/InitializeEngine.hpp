@@ -11,6 +11,7 @@
 #include "../entity/vertexObjects.hpp"
 #include "../render/renderEntity.hpp"
 
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -31,10 +32,10 @@ class PLATFORM Engine
 public:
     Engine()
         :
-        isInitSuccess(glfwInit()),    //initialize the glfw functions and other glfw features
-        initialEntities(30003),
+        //isInitSuccess(glfwInit()),    //initialize the glfw functions and other glfw features
+        initialEntities(303),
         window(1920.0f, 1080.0f, "Simulation Engine"),
-        camera(new Camera()),
+        //camera(new Camera()),
         renderer(Renderer(initialEntities)){}
 
     ~Engine()
@@ -44,23 +45,20 @@ public:
 
     [[nodiscard]] int8_t InitEntities(){}
 
-    bool loadGLFW();
-//    bool loadWindow();
-    bool loadGLAD();
-//    bool initViewPort(){glViewport();}
-    bool loadCamera();
-    bool loadEntities();
-    bool loadRenderer();
+    int8_t loadGLFW();
+    void   loadWindow();
+    int8_t loadGLAD();
+    void   setViewPort();
+    void   loadCamera();
+    void   loadEntities();
+    void   loadRenderer();
 
 
     [[nodiscard]] int8_t Init();
+    [[nodiscard]] int8_t Init(const unsigned int&);
     [[nodiscard]] int8_t Run();
 private:
 
-//#define GAME_MODE 0x1
-//#define INSPECTION_MODE 0x2
-//
-//    uint8_t ENGINE_MODE = GAME_MODE;
 
     bool isInitSuccess;
     std::size_t initialEntities;

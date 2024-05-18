@@ -12,8 +12,10 @@
 #include <vector>
 
 
-#define GAME_MODE 1
-#define INSPECTION_MODE 0
+//#define GAME_MODE 0x1
+//#define INSPECTION_MODE 0x0
+
+
 
 
 //template<std::size_t N>
@@ -30,15 +32,21 @@ class Camera
 {
 public:
 
+    enum class CAMERA_MODES
+    {
+        GAME_MODE = 0X1,
+        INSPECTION_MODE = 0X2
+    };
+
     explicit Camera()
         : m_deltaTime(0.0f),
           m_lastFrame(0.0f),
-          M_ENGINE_MODE(GAME_MODE){}
+          M_CAMERA_MODE(CAMERA_MODES::INSPECTION_MODE){}
 
     ~Camera() = default;
 
 
-    void setEngineMode(const uint8_t ENGINE_MODE = 1);
+    void setCameraMode(CAMERA_MODES M);
     //void changeEngineMode();
     void setShaderProgramID(GLuint shaderProgramID);
     void perspectiveLocation();
@@ -133,7 +141,7 @@ private:
     bool m_addedNewEntityShader = false;
 
 
-    uint8_t M_ENGINE_MODE;
+    CAMERA_MODES M_CAMERA_MODE;
 
 };
 

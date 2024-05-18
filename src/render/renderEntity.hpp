@@ -17,7 +17,7 @@ public:
 
     inline void initVAO(GLuint VAO){m_entitiesVAO.push_back(VAO);}
     inline void initIndicies(GLuint totalEntityIndicies){m_entitiesTotalInidicies.push_back(totalEntityIndicies);}
-    void render();
+    void renderEntities();
 
 private:
     std::size_t m_totalEntities;

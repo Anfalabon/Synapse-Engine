@@ -4,11 +4,34 @@
 
 
 
+//Window::Window(GLfloat WIDTH, GLfloat HEIGHT, const char* TITLE)
+//        : m_WIDTH(WIDTH), m_HEIGHT(HEIGHT), m_TITLE(TITLE)
+//{
+//    LOG("Running log from Window::Window()");
+//
+//    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+//    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+//    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+//
+//    m_window = glfwCreateWindow(m_WIDTH, m_HEIGHT, m_TITLE, NULL, NULL);
+//    if(!m_window)
+//    {
+//        std::cerr << "Failed to initialize window!" << '\n';
+//        terminate();
+//    }
+//    glfwMakeContextCurrent(m_window);
+//}
+//
+
+
 Window::Window(GLfloat WIDTH, GLfloat HEIGHT, const char* TITLE)
         : m_WIDTH(WIDTH), m_HEIGHT(HEIGHT), m_TITLE(TITLE)
 {
-    LOG("Running log from Window::Window()");
+    //m_window = glfwCreateWindow(m_WIDTH, m_HEIGHT, m_TITLE, NULL, NULL);
+}
 
+void Window::init()
+{
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -85,6 +108,8 @@ bool Window::running()
         return false;
     }
     return true;
+
+    //return (glfwWindowShouldClose(m_window)) ? false : true;
 }
 
 
