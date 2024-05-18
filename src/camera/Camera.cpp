@@ -16,7 +16,7 @@ void Camera::setCameraMode(CAMERA_MODES M)
 }
 
 
-void Camera::setShaderProgramID(GLuint shaderProgramID)
+void Camera::addShaderProgramID(GLuint shaderProgramID)
 {
     //m_shaderProgramID = shaderProgramID;
     m_shaderProgramIDs.push_back(shaderProgramID);
@@ -71,7 +71,7 @@ void Camera::updateView(glm::mat4 &view)
 }
 
 
-void Camera::setCameraSpeed()
+void Camera::updateCameraSpeed()
 {
     float currentFrame = glfwGetTime();
     m_deltaTime = currentFrame - m_lastFrame;
@@ -79,6 +79,13 @@ void Camera::setCameraSpeed()
     const float cameraSpeedConstant = 10.0f;
     m_cameraSpeed = cameraSpeedConstant * m_deltaTime;
 }
+
+//float deltaTime()
+//{
+//    float currentFrame = glfwGetTime();
+//    m_deltaTime = currentFrame - m_lastFrame;
+//    m_lastFrame = currentFrame;
+//}
 
 
 
@@ -430,7 +437,7 @@ void Camera::getKeyboardInput(GLFWwindow* m_window)
 {
     using namespace Calculate;
 
-    this->setCameraSpeed();
+    this->updateCameraSpeed();
 
     //speed up the camera if left shift was pressed
     bool leftShiftPressed = false;
@@ -450,6 +457,7 @@ void Camera::getKeyboardInput(GLFWwindow* m_window)
 
     std::cout << "Current Min height: " << m_initialHeight << '\n';
 
+    //reset the camera's vertical position
     if(keyPressed(m_window, GLFW_KEY_LEFT_CONTROL) && keyPressed(m_window, GLFW_KEY_R))
     {
         m_cameraPos.y = 0.0f;
@@ -591,7 +599,7 @@ void Camera::getKeyboardInput(GLFWwindow* m_window)
     //reset the camera speed
     if(leftShiftPressed)
     {
-        setCameraSpeed();
+        updateCameraSpeed();
     }
 
 }
@@ -648,6 +656,7 @@ void Camera::update()
 
     std::cout << "Total shader program ID's: " << m_shaderProgramIDs.size() << '\n';
 
+    this->updateCameraSpeed();
     this->applyPhysics();
     this->updatePerspective();
     this->viewLocation();

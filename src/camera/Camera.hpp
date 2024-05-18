@@ -48,14 +48,14 @@ public:
 
     void setCameraMode(CAMERA_MODES M);
     void changeCameraMode(){} //will declare it later
-    void setShaderProgramID(GLuint shaderProgramID);
+    void addShaderProgramID(GLuint shaderProgramID);
     void perspectiveLocation();
     void viewLocation();
     void updatePerspective();
     void updateView(glm::mat4 &view);
     void lookAtTarget();   //this is the overloaded function of glm::lookAt(). So the it will return : return glm::lookAt(cameraPos, targetPos, upVecPos)
     void isLookingAtEntity();
-    void setCameraSpeed();    
+    void updateCameraSpeed();
     void setCurrentObjectInfo(const glm::vec3 &maxObjectRange, const glm::vec3 &minObjectRange);
 
 

@@ -1,4 +1,7 @@
 #include "renderEntity.hpp"
+//#include "../entity/Entities.hpp"
+
+//#include <type_traits>
 
 
 //rendering like this is much faster as we are storing the entities infos' in a contiguous memory.

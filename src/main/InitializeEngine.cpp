@@ -45,10 +45,12 @@ int8_t Engine::loadGLFW()
         std::cerr << "Falied to initialize glfw!" << '\n';
         return -1;
     }
+    return 0;
 }
 
 void Engine::loadWindow()
 {
+    window = Window(1920.0f, 1080.0f, "Simulation Engine");
     window.init();
 }
 
@@ -60,6 +62,7 @@ int8_t Engine::loadGLAD()
         std::cerr << "Failed to load GLAD" << '\n';
         return -1;
     }
+    return 0;
 }
 
 
@@ -79,7 +82,8 @@ void Engine::loadEntities()
     std::clog << "Constructing the entities!" << '\n';
     std::clog << "Loading..." << '\n';
 
-    entities.reserve(initialEntities);
+    constexpr std::size_t totalEntities = 303;
+    entities.reserve(totalEntities);
 
     entities.push_back(new Entity(data::cubeVerticiesData, data::cubeTotalVerticies,
                                   data::cubeIndiciesData, data::cubeTotalIndicies,
@@ -148,7 +152,17 @@ void Engine::loadEntities()
         renderer.initVAO(entity->getVertexObjects().getVAO());
         renderer.initIndicies(entity->totalIndicies());
 
-        camera->setShaderProgramID(entity->getShader().ProgramID());
+//        renderer.entityRenderer().initVAO();
+//        renderer.entityRenderer().initIndicies();
+
+//        renderer.entityRenderer.render();
+
+
+//        entityRenderer.initVAO();
+//        entityRenderer.initIndicies();
+
+
+        camera->addShaderProgramID(entity->getShader().ProgramID());
     }
 #endif
 
@@ -158,7 +172,10 @@ void Engine::loadEntities()
 
 void Engine::loadRenderer()
 {
+    //this is only for entities renderer.
     renderer = Renderer(entities.size());
+
+    //will add other types of renderers for other Game Engine Objects
 }
 
 
@@ -322,6 +339,7 @@ int8_t Engine::Run()
 
 #else
         renderer.renderEntities();
+        //renderer.render<Entity>();
 #endif
 
         //this is definately not for benchmarking
