@@ -24,18 +24,6 @@ namespace data = entitiesData;
 #define __SINGLETHREADING__
 
 
-//set the background color
-//enable the depth test (z buffer)
-//disable the cull face
-//clear the color buffer bit along with depth buffer bit
-//also the last parameter isn't 'w' (the homogenious coordinate) it's alpha (the opacity)
-void _zBufferBg(float r, float g, float b, float w)
-{
-    glClearColor(r, g, b, w);
-    glEnable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
 
 
 int8_t Engine::loadGLFW()
@@ -82,7 +70,7 @@ void Engine::loadEntities()
     std::clog << "Constructing the entities!" << '\n';
     std::clog << "Loading..." << '\n';
 
-    constexpr std::size_t totalEntities = 303;
+    constexpr std::size_t totalEntities = 4;
     entities.reserve(totalEntities);
 
     entities.push_back(new Entity(data::cubeVerticiesData, data::cubeTotalVerticies,
@@ -101,8 +89,8 @@ void Engine::loadEntities()
                                   "../src/shader/GLSL/fragmentShaderSource1.glslf"));
 
 
-#if 0
-    for(std::size_t i=0; i!=initialEntities-3; ++i)
+#if 1
+    for(std::size_t i=0; i<totalEntities; ++i)
     {
         entities.push_back(new Entity(nullptr, 0, nullptr, 0, "", ""));
     }
@@ -112,26 +100,32 @@ void Engine::loadEntities()
         entity->loadShader();
     }
 
-    for(std::size_t i=0; i<initialEntities; ++i)
+    for(std::size_t i=0; i<totalEntities; ++i)
     {
         renderer.initVAO(entities[i]->getVertexObjects().getVAO());
         renderer.initIndicies(entities[i]->totalIndicies());
     }
 
-
     //giving one single shader program id of one entity also renders all the other entities
     //will see this
     //camera->setShaderProgramID(entities[0]->getShader().ProgramID());
-    for(auto entity : entities)
+//    for(auto entity : entities)
+//    {
+//        camera->addShaderProgramID(entity->getShader().ProgramID());
+//    }
+
+    for(std::size_t i=0; i<totalEntities; ++i)
     {
-        camera->setShaderProgramID(entity->getShader().ProgramID());
+        camera->addShaderProgramID(entities[i]->getShader().ProgramID());
     }
+
+
 #else
 
 
 
-#ifdef __MULTITHREADING__
-    for(std::size_t i=0; i<initialEntities; ++i)
+#if 0
+    for(std::size_t i=0; i<totalEntities; ++i)
     {
         entities.push_back(new Entity(nullptr, 0, nullptr, 0, "", ""));
 
@@ -140,7 +134,7 @@ void Engine::loadEntities()
         renderer.initVAO(entities[i]->getVertexObjects().getVAO());
         renderer.initIndicies(entities[i]->totalIndicies());
 
-        camera->setShaderProgramID(entities[i]->getShader().ProgramID());
+        camera->addShaderProgramID(entities[i]->getShader().ProgramID());
     }
 #else
     for(auto entity : entities)
@@ -151,16 +145,6 @@ void Engine::loadEntities()
 
         renderer.initVAO(entity->getVertexObjects().getVAO());
         renderer.initIndicies(entity->totalIndicies());
-
-//        renderer.entityRenderer().initVAO();
-//        renderer.entityRenderer().initIndicies();
-
-//        renderer.entityRenderer.render();
-
-
-//        entityRenderer.initVAO();
-//        entityRenderer.initIndicies();
-
 
         camera->addShaderProgramID(entity->getShader().ProgramID());
     }
@@ -173,7 +157,7 @@ void Engine::loadEntities()
 void Engine::loadRenderer()
 {
     //this is only for entities renderer.
-    renderer = Renderer(entities.size());
+    renderer = Renderer(entities.size()-2);
 
     //will add other types of renderers for other Game Engine Objects
 }
@@ -246,14 +230,12 @@ int8_t Engine::Run()
 
 #endif
 
-    std::cout << "Log message before running the engine" << '\n';
 
     //using namespace renderingInfo;
     //main Engine loop
     while(window.running())
     {
-        std::cout << "Log message after running the engine" << '\n';
-        _zBufferBg(0.2f, 0.3f, 0.3f, 1.0f);
+        renderer._zBufferBg(0.2f, 0.3f, 0.3f, 1.0f);
 
 
 #ifdef __MULTITHREADING__
@@ -288,8 +270,6 @@ int8_t Engine::Run()
         }
 #endif
 
-
-
         //make any modification to the entities or entity after running useProgram() and before rendering otherwise it would be TOO bad!
 
 //        entities[0]->getTransformation().translate(glm::vec3(0.0f, -0.01f, 0.0f));
@@ -315,7 +295,6 @@ int8_t Engine::Run()
 #else
         entities[0]->translate(glm::vec3(0.0f, -0.01f, 0.0f));
 #endif
-
 
 //        GLuint transformationLocation = glGetUniformLocation(entities[0]->getShader().ProgramID(), "transform");
 //        glUniformMatrix4fv(transformationLocation, 1, GL_FALSE, glm::value_ptr(transformation));

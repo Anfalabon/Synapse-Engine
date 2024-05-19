@@ -12,12 +12,6 @@
 #include <vector>
 
 
-//#define GAME_MODE 0x1
-//#define INSPECTION_MODE 0x0
-
-
-
-
 //template<std::size_t N>
 namespace Tensor
 {
@@ -32,10 +26,10 @@ class Camera
 {
 public:
 
-    enum class CAMERA_MODES
+    enum CAMERA_MODES
     {
-        GAME_MODE = 0X1,
-        INSPECTION_MODE = 0X2
+        GAME_MODE = 0x0,
+        INSPECTION_MODE = 0x1,
     };
 
     explicit Camera()
@@ -49,8 +43,8 @@ public:
     void setCameraMode(CAMERA_MODES M);
     void changeCameraMode(){} //will declare it later
     void addShaderProgramID(GLuint shaderProgramID);
-    void perspectiveLocation();
-    void viewLocation();
+    void getPerspectiveMatrixLocation();
+    void getViewMatrixLocation();
     void updatePerspective();
     void updateView(glm::mat4 &view);
     void lookAtTarget();   //this is the overloaded function of glm::lookAt(). So the it will return : return glm::lookAt(cameraPos, targetPos, upVecPos)
@@ -86,7 +80,7 @@ public:
 
 private:
 
-    
+
     //may initialize these vectors and the matix in the initializer list
     //glm::vec3 m_directionVector = glm::vec3(0.0f, 0.0f, -1.0f);
 
@@ -102,7 +96,7 @@ private:
 
     glm::mat4 m_perspective = glm::mat4(1.0f);
     glm::mat4 m_view = glm::mat4(1.0f);
-    
+
     glm::vec3 m_objectMaxSize = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 m_objectMinSize = glm::vec3(0.0f, 0.0f, 0.0f);
 
@@ -112,7 +106,7 @@ private:
     bool m_collided = false;
 
     float m_initialHeight = 0.0f;    //current initial height before jumping
-    
+
 
     // const float m_jumpMaxHeight;
     // const float m_jumpSpeed;
@@ -123,9 +117,9 @@ private:
     //float alpha = 0.0f;   // timeElapsedSinceJump
     //float beta = 0.455;   // timeElapsedSinceFall
 
-    float m_cameraSpeed;    
+    float m_cameraSpeed;
     float m_deltaTime;
-    float m_lastFrame;    
+    float m_lastFrame;
 
     bool  m_zoomed = false;
     float m_zoomValue = 45.0f;  //this is basically the Field of view of the camera
@@ -142,7 +136,7 @@ private:
     bool m_addedNewEntityShader = false;
 
 
-    CAMERA_MODES M_CAMERA_MODE;
+    const CAMERA_MODES M_CAMERA_MODE;
 
 };
 

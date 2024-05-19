@@ -17,8 +17,8 @@
 //    std::vector <GLuint> m_entitiesVAO;
 //    std::vector <GLuint> m_entitiesTotalInidicies;
 //};
-//
-//
+
+
 //class ImageRenderer
 //{
 //public:
@@ -44,6 +44,7 @@ public:
     inline void initVAO(GLuint VAO){m_entitiesVAO.push_back(VAO);}
     inline void initIndicies(GLuint totalEntityIndicies){m_entitiesTotalInidicies.push_back(totalEntityIndicies);}
 
+    void _zBufferBg(float r, float g, float b, float w);
     void renderEntities();
 //    void renderImage();
 

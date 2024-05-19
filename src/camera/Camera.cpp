@@ -12,7 +12,7 @@
 //this should be inside the Engine class
 void Camera::setCameraMode(CAMERA_MODES M)
 {
-    M_CAMERA_MODE = M;
+   //M_CAMERA_MODE = M;
 }
 
 
@@ -26,7 +26,7 @@ void Camera::addShaderProgramID(GLuint shaderProgramID)
 
 //get the location of perspective matrix uniform in vertex shader
 //void Camera::perspectiveLocation(GLuint shaderProgramID)
-void Camera::perspectiveLocation()
+void Camera::getPerspectiveMatrixLocation()
 {
     for(auto shaderProgramID : m_shaderProgramIDs)
     {
@@ -42,7 +42,7 @@ void Camera::perspectiveLocation()
 }
 
 //void Camera::viewLocation(GLuint shaderProgramID)
-void Camera::viewLocation()
+void Camera::getViewMatrixLocation()
 {
     for(auto shaderProgramID : m_shaderProgramIDs)
     {
@@ -58,10 +58,7 @@ void Camera::viewLocation()
 }
 
 
-void Camera::updatePerspective()
-{
-    m_perspective = glm::perspective(glm::radians(m_zoomValue), 1920.0f/1080.0f, 0.1f, 100.0f);
-}
+
 
 
 
@@ -88,7 +85,7 @@ void Camera::updateCameraSpeed()
 //}
 
 
-
+//will make it a struct called "Calculate and the mouseInput will be inside Calculate::Cursor."
 namespace Calculate
 {
 
@@ -379,7 +376,6 @@ void Camera::applyVerticalMotions()
         }
     }
 
-    
     std::cout << "Camera height: " << m_cameraPos.y << '\n';
 
 }
@@ -390,17 +386,23 @@ void Camera::applyVerticalMotions()
 
 void Camera::applyPhysics()
 {
+    if(M_CAMERA_MODE == CAMERA_MODES::GAME_MODE)
+    {
+        std::cout << "CAMERA MODE: " << static_cast<uint8_t>(M_CAMERA_MODE) << '\n';
+    }
+
+
     if(M_CAMERA_MODE == CAMERA_MODES::INSPECTION_MODE)
     {
-        std::cout << "Camera is in now inspection mode" << '\n';
+        std::cout << "Camera is now in inspection mode" << '\n';
         return;
     }
     else if(M_CAMERA_MODE == CAMERA_MODES::GAME_MODE)
     {
+        std::cout << "Camera is now in game mode" << '\n';
         this->applyVerticalMotions();
         m_collided = false;
         m_collided = this->wasCollided();
-
     }
 }
 
@@ -428,6 +430,14 @@ bool Camera::keyPressed(GLFWwindow *m_window, const uint16_t KEYTOKEN)
 {
     return (glfwGetKey(m_window, KEYTOKEN) == GLFW_PRESS);
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -467,7 +477,8 @@ void Camera::getKeyboardInput(GLFWwindow* m_window)
     //this is a problem.
     //will need to fix it
     {
-        M_CAMERA_MODE = CAMERA_MODES::GAME_MODE;
+        //M_CAMERA_MODE = CAMERA_MODES::GAME_MODE;
+        //M_CAMERA_MODE = CAMERA_MODES::INSPECTION_MODE;
     }
 
 
@@ -606,6 +617,14 @@ void Camera::getKeyboardInput(GLFWwindow* m_window)
 
 
 
+void Camera::updatePerspective()
+{
+    m_perspective = glm::perspective(glm::radians(m_zoomValue), 1920.0f/1080.0f, 0.1f, 100.0f);
+}
+
+
+//updateLookingTarget()
+//updateViewMatrix()
 void Camera::lookAtTarget()
 {
     m_targetPos = m_cameraPos + Calculate::m_directionVector;
@@ -659,8 +678,8 @@ void Camera::update()
     this->updateCameraSpeed();
     this->applyPhysics();
     this->updatePerspective();
-    this->viewLocation();
-    this->perspectiveLocation();
+    this->getViewMatrixLocation();
+    this->getPerspectiveMatrixLocation();
     this->updatePerspective();
     this->lookAtTarget();
 }
