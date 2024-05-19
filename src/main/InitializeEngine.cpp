@@ -59,11 +59,6 @@ void Engine::setViewPort()
     glViewport(0, 0, window.WIDTH(), window.HEIGHT());
 }
 
-void Engine::loadCamera()
-{
-    camera = new Camera();
-    Camera::setupMouse(window.windowAddress());
-}
 
 void Engine::loadEntities()
 {
@@ -106,23 +101,8 @@ void Engine::loadEntities()
         renderer.initIndicies(entities[i]->totalIndicies());
     }
 
-    //giving one single shader program id of one entity also renders all the other entities
-    //will see this
-    //camera->setShaderProgramID(entities[0]->getShader().ProgramID());
-//    for(auto entity : entities)
-//    {
-//        camera->addShaderProgramID(entity->getShader().ProgramID());
-//    }
-
-    for(std::size_t i=0; i<totalEntities; ++i)
-    {
-        camera->addShaderProgramID(entities[i]->getShader().ProgramID());
-    }
-
 
 #else
-
-
 
 #if 0
     for(std::size_t i=0; i<totalEntities; ++i)
@@ -154,6 +134,22 @@ void Engine::loadEntities()
 #endif
 }
 
+
+void Engine::loadCamera()
+{
+    camera = new Camera();
+    Camera::setupMouse(window.windowAddress());
+
+    //giving one single shader program id of one entity also renders all the other entities
+    //will see this
+    //camera->setShaderProgramID(entities[0]->getShader().ProgramID());
+    for(std::size_t i=0; i<entities.size(); ++i)
+    {
+        camera->addShaderProgramID(entities[i]->getShader().ProgramID());
+    }
+}
+
+
 void Engine::loadRenderer()
 {
     //this is only for entities renderer.
@@ -168,10 +164,10 @@ int8_t Engine::Init()
 {
     this->loadGLFW();
     this->loadWindow();
-    this->loadCamera();
     this->loadGLAD();
     this->setViewPort();
     this->loadEntities();
+    this->loadCamera();
     this->loadRenderer();
 
     return isInitSuccess;

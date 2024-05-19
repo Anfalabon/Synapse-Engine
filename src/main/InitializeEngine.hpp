@@ -48,8 +48,8 @@ public:
     void   loadWindow();
     int8_t loadGLAD();
     void   setViewPort();
-    void   loadCamera();
     void   loadEntities();
+    void   loadCamera();
     void   loadRenderer();
 
 
