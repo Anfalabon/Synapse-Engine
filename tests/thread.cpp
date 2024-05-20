@@ -6,6 +6,8 @@
 #include <vector>
 #include <algorithm>
 #include <execution>
+#include <mutex>
+#include <future>
 
 
 //will use std::for_each() execution policy and keep the logic inside
@@ -46,45 +48,7 @@ int main()
 {
     std::size_t range = 900000000;
 
-    std::vector<std::size_t> container;
-    //container.reserve(range);
-
-
-//    for(auto &element : container)
-//    {
-//        element = 1;
-//    }
-//
-
-    for(std::size_t i=0; i<range; ++i)
-    {
-        //container[i] = 1;
-        container.push_back(1);
-    }
-
-    std::cout << container.size() << '\n';
-
     auto start =std::chrono::high_resolution_clock::now();
-
-
-    float sum1 = 0.0f;
-    float sum2 = 0.0f;
-    std::for_each(container.begin(), container.end(), [&sum1, &sum2](std::size_t element)->void
-    {
-        sum1 += sin(element)*cos(element);
-        sum2 += sin(element)*cos(element);
-    });
-
-
-//    float sum2 = 0.0f;
-//    std::for_each(std::execution::par, container.begin(), container.end(), [&sum2](std::size_t element)->void
-//    {
-//        sum2 += sin(element)*cos(element);
-//    });
-
-
-    std::cout << sum1 << '\n';
-    std::cout << sum2 << '\n';
 
 
 
@@ -314,6 +278,10 @@ int main()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
+    std::future<std::size_t> sum1 = std::async(std::launch::async, sumEvenSin, 0, range);
+    std::future<std::size_t> sum2 = std::async(std::launch::async, sumOddSin, 0, range);
 
 
 

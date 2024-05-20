@@ -89,22 +89,22 @@ void Camera::updateCameraSpeed()
 namespace Calculate
 {
 
-inline float m_lastX = 1920.0f/2.0f;
-inline float m_lastY = 1080.0f/2.0f;
-inline float m_yaw = -90.0f;
-inline float m_pitch = 0.0f;
-inline float m_rightAngleMovingSpeed = 1.0f;
-inline const float m_sensitivity = 0.1f;
+float m_lastX = 1920.0f/2.0f;
+float m_lastY = 1080.0f/2.0f;
+float m_yaw = -90.0f;
+float m_pitch = 0.0f;
+float m_rightAngleMovingSpeed = 1.0f;
+const float m_sensitivity = 0.1f;
 
-inline bool m_firstMouse = true;
-inline bool m_isMouseMoving = false;
-inline glm::vec3 m_directionVector = glm::vec3(0.0f, 0.0f, 0.0f);
+bool m_firstMouse = true;
+bool m_isMouseMoving = false;
+glm::vec3 m_directionVector = glm::vec3(0.0f, 0.0f, 0.0f);
 
 
 
 //calculate the direction where the mouse/cursor is pointing to
 //this calculates the vector where the camera will look at after certain changes in mouse input
-void calculateDirectionVector()
+static void calculateDirectionVector()
 {
     glm::vec3 direction;
     direction.x = glm::cos(glm::radians(m_yaw)) * glm::cos(glm::radians(m_pitch));
@@ -114,7 +114,7 @@ void calculateDirectionVector()
 }
 
 
-void mouseInput(GLFWwindow* window, double xpos, double ypos)
+static void mouseInput(GLFWwindow* window, double xpos, double ypos)
 {
     m_isMouseMoving = true;
     if(m_firstMouse)

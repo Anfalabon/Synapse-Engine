@@ -8,9 +8,7 @@
 #include <vector>
 #include <algorithm>
 #include <thread>
-#include <execution>
-#include <iterator>
-#include <new>
+#include <omp.h>
 
 
 namespace data = entitiesData;
@@ -20,8 +18,8 @@ namespace data = entitiesData;
 #define __DEVELOPMENT__
 //#define __DEBUG__
 
-//#define __MULTITHREADING__
-#define __SINGLETHREADING__
+#define __MULTITHREADING__
+//#define __SINGLETHREADING__
 
 
 
@@ -38,8 +36,8 @@ int8_t Engine::loadGLFW()
 
 void Engine::loadWindow()
 {
-    window = Window(1920.0f, 1080.0f, "Simulation Engine");
-    window.init();
+    window = new Window(1920.0f, 1080.0f, "Simulation Engine");
+    window->init();
 }
 
 
@@ -56,8 +54,12 @@ int8_t Engine::loadGLAD()
 
 void Engine::setViewPort()
 {
-    glViewport(0, 0, window.WIDTH(), window.HEIGHT());
+    glViewport(0, 0, window->WIDTH(), window->HEIGHT());
 }
+
+
+std::mutex m;
+
 
 
 void Engine::loadEntities()
@@ -65,7 +67,7 @@ void Engine::loadEntities()
     std::clog << "Constructing the entities!" << '\n';
     std::clog << "Loading..." << '\n';
 
-    constexpr std::size_t totalEntities = 4;
+    constexpr std::size_t totalEntities = 30000;
     entities.reserve(totalEntities);
 
     entities.push_back(new Entity(data::cubeVerticiesData, data::cubeTotalVerticies,
@@ -85,6 +87,7 @@ void Engine::loadEntities()
 
 
 #if 1
+
     for(std::size_t i=0; i<totalEntities; ++i)
     {
         entities.push_back(new Entity(nullptr, 0, nullptr, 0, "", ""));
@@ -95,16 +98,17 @@ void Engine::loadEntities()
         entity->loadShader();
     }
 
-    for(std::size_t i=0; i<totalEntities; ++i)
+    for(auto entity : entities)
     {
-        renderer.initVAO(entities[i]->getVertexObjects().getVAO());
-        renderer.initIndicies(entities[i]->totalIndicies());
+        renderer.initVAO(entity->getVertexObjects().getVAO());
+        renderer.initIndicies(entity->totalIndicies());
     }
 
 
 #else
 
-#if 0
+#if 1
+    //#pragma omp parallel for
     for(std::size_t i=0; i<totalEntities; ++i)
     {
         entities.push_back(new Entity(nullptr, 0, nullptr, 0, "", ""));
@@ -114,7 +118,7 @@ void Engine::loadEntities()
         renderer.initVAO(entities[i]->getVertexObjects().getVAO());
         renderer.initIndicies(entities[i]->totalIndicies());
 
-        camera->addShaderProgramID(entities[i]->getShader().ProgramID());
+        //camera->addShaderProgramID(entities[i]->getShader().ProgramID());
     }
 #else
     for(auto entity : entities)
@@ -126,7 +130,7 @@ void Engine::loadEntities()
         renderer.initVAO(entity->getVertexObjects().getVAO());
         renderer.initIndicies(entity->totalIndicies());
 
-        camera->addShaderProgramID(entity->getShader().ProgramID());
+        //camera->addShaderProgramID(entity->getShader().ProgramID());
     }
 #endif
 
@@ -138,7 +142,7 @@ void Engine::loadEntities()
 void Engine::loadCamera()
 {
     camera = new Camera();
-    Camera::setupMouse(window.windowAddress());
+    Camera::setupMouse(window->windowAddress());
 
     //giving one single shader program id of one entity also renders all the other entities
     //will see this
@@ -153,7 +157,12 @@ void Engine::loadCamera()
 void Engine::loadRenderer()
 {
     //this is only for entities renderer.
-    renderer = Renderer(entities.size()-2);
+    renderer = Renderer(entities.size());
+//    for(std::size_t i=0; i<entities.size(); ++i)
+//    {
+//        renderer.initVAO(entities[i]->getVertexObjects().getVAO());
+//        renderer.initIndicies(entities[i]->totalIndicies());
+//    }
 
     //will add other types of renderers for other Game Engine Objects
 }
@@ -175,8 +184,6 @@ int8_t Engine::Init()
 
 
 
-
-
 int8_t Engine::Run()
 {
 
@@ -186,85 +193,26 @@ int8_t Engine::Run()
 //from here the run function should start and everything before should be inside the Engine constructor or a function named Init()
 //which will initialize the window, glad, camera, scenes, entities, Engine mode etc.
 
-
-#ifdef __MULTITHREADING__
-
-#define TOTAL_THREADS 1
-
-    std::vector<std::thread> updateThreads;
-    std::vector<std::thread> renderThreads;
-    updateThreads.reserve(TOTAL_THREADS);
-    renderThreads.reserve(TOTAL_THREADS);
-
-    auto entitiesPartialUpdate = [this](std::size_t first, std::size_t last)->void
-    {
-        for(std::size_t i=first; i<last; ++i)
-        {
-            entities[i]->update();
-        }
-    };
-    auto entitiesPartialRender = [this](std::size_t first, std::size_t last)->void
-    {
-        for(std::size_t i=first; i<last; ++i)
-        {
-            entities[i]->render();
-        }
-    };
-
-    {
-        std::size_t first{};
-        std::size_t last{};
-        for (std::size_t i = 0; i < TOTAL_THREADS; ++i)
-        {
-            first = (i * initialEntities) / TOTAL_THREADS;
-            last = ((i + 1) * initialEntities) / TOTAL_THREADS;
-
-            updateThreads.push_back(std::thread(entitiesPartialUpdate, first, last));
-            renderThreads.push_back(std::thread(entitiesPartialRender, first, last));
-        }
-    }
-
-#endif
-
-
     //using namespace renderingInfo;
     //main Engine loop
-    while(window.running())
+    while(window->running())
     {
         renderer._zBufferBg(0.2f, 0.3f, 0.3f, 1.0f);
 
+        window->getKeyboardInput();
+        camera->getKeyboardInput(window->windowAddress());
 
-#ifdef __MULTITHREADING__
-        std::thread windowKeyInputThread([this]()->void
-        {
-            window.getKeyboardInput();
-        });
-        std::thread cameraKeyInputThread([this]()->void
-        {
-            camera->getKeyboardInput(window.windowAddress());
-        });
-
-        windowKeyInputThread.join();
-        cameraKeyInputThread.join();
-#else
-        window.getKeyboardInput();
-        camera->getKeyboardInput(window.windowAddress());
-#endif
 
         camera->update();
 
-
 #ifdef __MULTITHREADING__
-        for(std::size_t i=0; i<TOTAL_THREADS; ++i)
-        {
-            updateThreads[i].join();
-        }
-#else
+        omp_set_num_threads(4);
+        #pragma omp parallel for
+#endif
         for(auto entity : entities)
         {
             entity->update();
         }
-#endif
 
         //make any modification to the entities or entity after running useProgram() and before rendering otherwise it would be TOO bad!
 
@@ -298,30 +246,18 @@ int8_t Engine::Run()
 //        transformation = glm::translate(transformation, glm::vec3(0.0f, 1.0f, 0.0f));
 
 #if 0
-
-#ifdef __MULTITHREADING__
-        for(std::size_t i=0; i<TOTAL_THREADS; ++i)
-        {
-            renderThreads[i].join();
-        }
-#else
         for(auto entity : entities)
         {
             entity->render();
         }
-#endif
-
-
 #else
         renderer.renderEntities();
-        //renderer.render<Entity>();
 #endif
-
         //this is definately not for benchmarking
         renderingInfo::framesPerSecond();
 
-        window.swapBuffers();
-        window.pollEvents();
+        window->swapBuffers();
+        window->pollEvents();
     }
 
     return 0;

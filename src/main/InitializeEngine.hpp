@@ -19,6 +19,9 @@
 #include <glm/gtx/string_cast.hpp>
 
 #include <vector>
+#include <future>
+#include <mutex>
+
 
 
 #define PLATFORM
@@ -32,18 +35,18 @@ class PLATFORM Engine
 public:
     Engine() = default;
 
-        //isInitSuccess(glfwInit()),    //initialize the glfw functions and other glfw features
-        //initialEntities(303){}
-        //window(1920.0f, 1080.0f, "Simulation Engine"){}
-        //camera(new Camera()),
-        //renderer(Renderer(initialEntities)){}
-
     ~Engine()
     {
-        delete camera;
+        if(camera!=nullptr)
+        {
+            delete camera;
+        }
+        if(window!=nullptr)
+        {
+            delete window;
+        }
     }
-
-
+    
     int8_t loadGLFW();
     void   loadWindow();
     int8_t loadGLAD();
@@ -53,16 +56,18 @@ public:
     void   loadRenderer();
 
 
+
     [[nodiscard]] int8_t Init();
     [[nodiscard]] int8_t Init(const unsigned int&);
     [[nodiscard]] int8_t Run();
 private:
 
     bool isInitSuccess;
-    Window window;
+    Window *window;
     Camera *camera;
     std::vector<Entity*> entities;  //this should be Game engine objects but for now let's keep it as entities
     Renderer renderer;
+    std::vector<std::future<void>> futures;
 };
 
 

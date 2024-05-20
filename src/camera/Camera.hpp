@@ -74,7 +74,6 @@ public:
     void update();
 
 //    static void calculateDirectionVector();    //this is equavalent to calculating the cameraFront vector
-//    static void mouseInput(GLFWwindow* window, float xpos, float ypos);
     static void setupMouse(GLFWwindow* window);
 
 

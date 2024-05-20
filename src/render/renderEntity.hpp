@@ -2,6 +2,8 @@
 
 #include <vector>
 #include <type_traits>
+#include <future>
+#include <thread>
 
 #include <glad/glad.hpp>
 
@@ -45,6 +47,7 @@ public:
     inline void initIndicies(GLuint totalEntityIndicies){m_entitiesTotalInidicies.push_back(totalEntityIndicies);}
 
     void _zBufferBg(float r, float g, float b, float w);
+    void renderEntitiesPartially(std::size_t start, std::size_t end);
     void renderEntities();
 //    void renderImage();
 
@@ -59,6 +62,7 @@ private:
     std::size_t m_totalEntities;
     std::vector <GLuint> m_entitiesVAO;
     std::vector <GLuint> m_entitiesTotalInidicies;
+
 
 //    std::vector<uint64_t> pixels;
 //

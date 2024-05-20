@@ -5,7 +5,7 @@ CXX_CUSTOM_INCLUDE_FLAGS=-I../src/main -I../src/window -I../src/entity -I../src/
 CXX_EXTERNAL_INCLUDE_FLAGS=-I../src/external/GLFW/include -I../src/external/glad/include -I../src/external/glm
 CXX_INCLUDE_FLAGS+=$(CXX_CUSTOM_INCLUDE_FLAGS)
 CXX_INCLUDE_FLAGS+=$(CXX_EXTERNAL_INCLUDE_FLAGS)
-CXXFLAGS=-std=c++17 -Wall -Wextra -O3
+CXXFLAGS=-std=c++17 -Wall -Wextra -O3 -fopenmp
 CXXFLAGS+=$(CXX_INCLUDE_FLAGS)
 
 
