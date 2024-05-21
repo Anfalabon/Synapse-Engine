@@ -9,17 +9,50 @@
 #include <algorithm>
 #include <thread>
 #include <omp.h>
+#include <functional>
 
 
-namespace data = entitiesData;
+#define __RELEASE__
+#define __DEBUG__
 
-#define SUCCESS 1
+#if defined(__RELEASE__)
+    #define __RUNTIME__MULTITHREADING__
+    //#define __LOADTIME__MULTITHREADING__
+#elif defined(__DEBUG__)
+    #define __SINGLETHREADING__
+#endif
 
-#define __DEVELOPMENT__
-//#define __DEBUG__
 
-#define __MULTITHREADING__
-//#define __SINGLETHREADING__
+//will have this in another folder called multithreading
+//will add serious issused like Data Race, Race Conditions
+namespace Hilbert
+{
+//let's create an custom for loop thread
+    template<typename RETURN_TYPE, typename ITERATOR_TYPE>
+    void pragma_omp_prallel_loop(ITERATOR_TYPE __first, ITERATOR_TYPE __end, unsigned char __threads_num,
+                                 std::function<RETURN_TYPE(ITERATOR_TYPE)> __func){
+        assert(__threads_num>0);
+        omp_set_num_threads(__threads_num);
+        #pragma omp parallel for
+        for (ITERATOR_TYPE iterator=__first; iterator<__end; ++iterator)
+            __func(iterator);
+    }
+
+}
+
+
+
+void compute_in_parallel()
+{
+    uint64_t sum = 0;
+    Hilbert::pragma_omp_prallel_loop<void, int64_t>(1, 11, 2, [&sum](auto i)->void
+    {
+        sum += i;
+    });
+
+    std::cout << "Total sum: " << sum << '\n';
+}
+
 
 
 
@@ -48,7 +81,7 @@ int8_t Engine::loadGLAD()
         std::cerr << "Failed to load GLAD" << '\n';
         return -1;
     }
-    return 0;
+    return 1;
 }
 
 
@@ -58,12 +91,11 @@ void Engine::setViewPort()
 }
 
 
-std::mutex m;
-
-
 
 void Engine::loadEntities()
 {
+    namespace data = entitiesData;
+
     std::clog << "Constructing the entities!" << '\n';
     std::clog << "Loading..." << '\n';
 
@@ -98,13 +130,6 @@ void Engine::loadEntities()
         entity->loadShader();
     }
 
-    for(auto entity : entities)
-    {
-        renderer.initVAO(entity->getVertexObjects().getVAO());
-        renderer.initIndicies(entity->totalIndicies());
-    }
-
-
 #else
 
 #if 1
@@ -134,7 +159,6 @@ void Engine::loadEntities()
     }
 #endif
 
-
 #endif
 }
 
@@ -147,6 +171,10 @@ void Engine::loadCamera()
     //giving one single shader program id of one entity also renders all the other entities
     //will see this
     //camera->setShaderProgramID(entities[0]->getShader().ProgramID());
+#ifdef __LOADTIME__MULTITHREADING__
+    omp_set_num_threads(4);
+    #pragma omp parallel for
+#endif
     for(std::size_t i=0; i<entities.size(); ++i)
     {
         camera->addShaderProgramID(entities[i]->getShader().ProgramID());
@@ -158,11 +186,15 @@ void Engine::loadRenderer()
 {
     //this is only for entities renderer.
     renderer = Renderer(entities.size());
-//    for(std::size_t i=0; i<entities.size(); ++i)
-//    {
-//        renderer.initVAO(entities[i]->getVertexObjects().getVAO());
-//        renderer.initIndicies(entities[i]->totalIndicies());
-//    }
+#ifdef __LOADTIME__MULTITHREADING__
+    omp_set_num_threads(4);
+    #pragma omp parallel for
+#endif
+    for(std::size_t i=0; i<entities.size(); ++i)
+    {
+        renderer.initVAO(entities[i]->getVertexObjects().getVAO());
+        renderer.initIndicies(entities[i]->totalIndicies());
+    }
 
     //will add other types of renderers for other Game Engine Objects
 }
@@ -171,6 +203,7 @@ void Engine::loadRenderer()
 
 int8_t Engine::Init()
 {
+    compute_in_parallel();
     this->loadGLFW();
     this->loadWindow();
     this->loadGLAD();
@@ -193,7 +226,7 @@ int8_t Engine::Run()
 //from here the run function should start and everything before should be inside the Engine constructor or a function named Init()
 //which will initialize the window, glad, camera, scenes, entities, Engine mode etc.
 
-    //using namespace renderingInfo;
+
     //main Engine loop
     while(window->running())
     {
@@ -202,17 +235,21 @@ int8_t Engine::Run()
         window->getKeyboardInput();
         camera->getKeyboardInput(window->windowAddress());
 
-
         camera->update();
 
-#ifdef __MULTITHREADING__
-        omp_set_num_threads(4);
-        #pragma omp parallel for
-#endif
-        for(auto entity : entities)
+//#ifdef __RUNTIME__MULTITHREADING__
+//        omp_set_num_threads(4);
+//        #pragma omp parallel for
+//#endif
+//        for(auto entity : entities)
+//        {
+//            entity->update();
+//        }
+
+        Hilbert::pragma_omp_prallel_loop<void, std::size_t>(0, entities.size(), 4, [this](auto i)->void
         {
-            entity->update();
-        }
+            entities[i]->update();
+        });
 
         //make any modification to the entities or entity after running useProgram() and before rendering otherwise it would be TOO bad!
 
@@ -235,6 +272,7 @@ int8_t Engine::Run()
 //        });
 //
 //        i=0;
+        //compute_in_parallel();
 
 #else
         entities[0]->translate(glm::vec3(0.0f, -0.01f, 0.0f));
@@ -246,11 +284,14 @@ int8_t Engine::Run()
 //        transformation = glm::translate(transformation, glm::vec3(0.0f, 1.0f, 0.0f));
 
 #if 0
+        //doing this is slow cause everytime the CPU needs to access the slower memroy
         for(auto entity : entities)
         {
             entity->render();
         }
 #else
+        //where's using this is faster cause CPU can predict what the next memory location is going to be (using the L1 cache memory)
+        //see the definition. It's also multithreaded
         renderer.renderEntities();
 #endif
         //this is definately not for benchmarking

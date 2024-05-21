@@ -22,6 +22,13 @@
 #include <future>
 #include <mutex>
 
+template<typename T>
+static void clean(T *ptr)
+{
+    if(ptr!=nullptr)
+        delete ptr;
+}
+
 
 
 #define PLATFORM
@@ -37,14 +44,8 @@ public:
 
     ~Engine()
     {
-        if(camera!=nullptr)
-        {
-            delete camera;
-        }
-        if(window!=nullptr)
-        {
-            delete window;
-        }
+        clean(camera);
+        clean(window);
     }
     
     int8_t loadGLFW();
@@ -54,7 +55,6 @@ public:
     void   loadEntities();
     void   loadCamera();
     void   loadRenderer();
-
 
 
     [[nodiscard]] int8_t Init();

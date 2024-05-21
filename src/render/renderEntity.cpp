@@ -36,7 +36,7 @@ void Renderer::renderEntitiesPartially(std::size_t start, std::size_t end)
 void Renderer::renderEntities()
 {
 #ifdef __MULTITHREADING__RENDERER__
-    //omp_set_num_threads(4);
+    omp_set_num_threads(4);
     #pragma omp parallel for
 #endif
     for(std::size_t i=0; i<m_totalEntities; ++i)
