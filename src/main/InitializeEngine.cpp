@@ -7,14 +7,13 @@
 #include <iostream>
 #include <memory>
 #include <vector>
-#include <algorithm>
-#include <thread>
-#include <omp.h>
-#include <functional>
 
+
+
+#define __SUCCESS__ 1;
 
 #define __RELEASE__
-#define __DEBUG__
+//#define __DEBUG__
 
 #if defined(__RELEASE__)
     #define __RUNTIME__MULTITHREADING__
@@ -23,6 +22,17 @@
     #define __SINGLETHREADING__
 #endif
 
+
+#if  defined(__RUNTIME__MULTITHREADING__) || defined(__LOADTIME__MULTITHREADING__)
+
+#include <thread>
+#include <omp.h>
+#include <algorithm>    //std::execution::policy in std::for_each()
+
+#endif
+
+
+#define __UTILIZE__BRANCHPREDICTION__
 
 int8_t Engine::loadGLFW()
 {
@@ -48,7 +58,7 @@ int8_t Engine::loadGLAD()
         std::cerr << "Failed to load GLAD" << '\n';
         return -1;
     }
-    return 1;
+    return 0;
 }
 
 
@@ -61,6 +71,9 @@ void Engine::setViewPort()
 
 void Engine::loadEntities()
 {
+
+    //will decrease the loading time of the Engine with 10s and thousands of object initialization
+
     namespace data = entitiesData;
 
     std::clog << "Constructing the entities!" << '\n';
@@ -84,49 +97,19 @@ void Engine::loadEntities()
                                   "../src/shader/GLSL/vertexShaderSource1.glslv",
                                   "../src/shader/GLSL/fragmentShaderSource1.glslf"));
 
-
-#if 1
-
+    //initialize the other null entities
+    //for now this is because of the benchmarking
     for(std::size_t i=0; i<totalEntities; ++i)
     {
         entities.push_back(new Entity(nullptr, 0, nullptr, 0, "", ""));
     }
 
+    //load the shaders of the entities
     for(auto entity : entities)
     {
         entity->loadShader();
     }
 
-#else
-
-#if 1
-    //#pragma omp parallel for
-    for(std::size_t i=0; i<totalEntities; ++i)
-    {
-        entities.push_back(new Entity(nullptr, 0, nullptr, 0, "", ""));
-
-        entities[i]->loadShader();
-
-        renderer.initVAO(entities[i]->getVertexObjects().getVAO());
-        renderer.initIndicies(entities[i]->totalIndicies());
-
-        //camera->addShaderProgramID(entities[i]->getShader().ProgramID());
-    }
-#else
-    for(auto entity : entities)
-    {
-        entities.push_back(new Entity(nullptr, 0, nullptr, 0, "", ""));
-
-        entity->loadShader();
-
-        renderer.initVAO(entity->getVertexObjects().getVAO());
-        renderer.initIndicies(entity->totalIndicies());
-
-        //camera->addShaderProgramID(entity->getShader().ProgramID());
-    }
-#endif
-
-#endif
 }
 
 
@@ -170,7 +153,6 @@ void Engine::loadRenderer()
 
 int8_t Engine::Init()
 {
-    compute_in_parallel();
     this->loadGLFW();
     this->loadWindow();
     this->loadGLAD();
@@ -179,7 +161,7 @@ int8_t Engine::Init()
     this->loadCamera();
     this->loadRenderer();
 
-    return isInitSuccess;
+    return __SUCCESS__;
 }
 
 
@@ -204,19 +186,18 @@ int8_t Engine::Run()
 
         camera->update();
 
-//#ifdef __RUNTIME__MULTITHREADING__
-//        omp_set_num_threads(4);
-//        #pragma omp parallel for
-//#endif
-//        for(auto entity : entities)
-//        {
-//            entity->update();
-//        }
 
-        Hilbert::Threading::pragma_omp_prallel_loop<void, std::size_t>(0, entities.size(), 4, [this](auto i)->void
+#ifdef __RUNTIME__MULTITHREADING__
+        Hilbert::Threading::pragma_omp_parallel_loop<void, std::size_t>(0, entities.size(), 4, [this](auto i)->void
         {
             entities[i]->update();
         });
+#elif defined(__SINGLETHREADING__)
+        for(auto entity : entities)
+        {
+            entity->update();
+        }
+#endif
 
 
         //make any modification to the entities or entity after running useProgram() and before rendering otherwise it would be TOO bad!
@@ -251,17 +232,21 @@ int8_t Engine::Run()
 //
 //        transformation = glm::translate(transformation, glm::vec3(0.0f, 1.0f, 0.0f));
 
-#if 0
-        //doing this is slow cause everytime the CPU needs to access the slower memroy
+
+
+#ifdef __UTILIZE__BRANCHPREDICTION__
+        //using this is faster cause CPU can predict what the next memory location is going to be (using the L1 cache memory && branch prediction)
+        //see the definition of this function. It's also multithreaded
+        renderer.renderEntities();
+#else
+        //doing this is slower cause everytime the CPU needs to access the location in slow memroy
         for(auto entity : entities)
         {
             entity->render();
         }
-#else
-        //where's using this is faster cause CPU can predict what the next memory location is going to be (using the L1 cache memory)
-        //see the definition. It's also multithreaded
-        renderer.renderEntities();
 #endif
+
+
         //this is definately not for benchmarking
         renderingInfo::framesPerSecond();
 
@@ -269,7 +254,7 @@ int8_t Engine::Run()
         window->pollEvents();
     }
 
-    return 0;
+    return __SUCCESS__;
 }
 
 

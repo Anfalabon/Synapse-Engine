@@ -721,7 +721,32 @@ void updateFrame(Camera *camera,
 
 ///////////////////////////////////////////////////////////////////////////////
 
+#if 1
+    //#pragma omp parallel for
+    for(std::size_t i=0; i<totalEntities; ++i)
+    {
+        entities.push_back(new Entity(nullptr, 0, nullptr, 0, "", ""));
 
+        entities[i]->loadShader();
+
+        renderer.initVAO(entities[i]->getVertexObjects().getVAO());
+        renderer.initIndicies(entities[i]->totalIndicies());
+
+        //camera->addShaderProgramID(entities[i]->getShader().ProgramID());
+    }
+#else
+    for(auto entity : entities)
+    {
+        entities.push_back(new Entity(nullptr, 0, nullptr, 0, "", ""));
+
+        entity->loadShader();
+
+        renderer.initVAO(entity->getVertexObjects().getVAO());
+        renderer.initIndicies(entity->totalIndicies());
+
+        //camera->addShaderProgramID(entity->getShader().ProgramID());
+    }
+#endif
 
 
 

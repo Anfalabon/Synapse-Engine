@@ -37,7 +37,7 @@ static void clean(T *ptr)
 //class PLATFORM PhysicsEngine;
 //class PLATFORM GraphicsEngine;
 
-class PLATFORM Engine
+class [[nodiscard]] PLATFORM Engine
 {
 public:
     Engine() = default;

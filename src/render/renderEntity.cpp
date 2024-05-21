@@ -1,7 +1,11 @@
 #include "renderEntity.hpp"
+#include "../multithreading/runParallel.hpp"
 
-#include <mutex>
 #include <omp.h>
+
+
+#define __MULTITHREADING__RENDERER__
+
 
 //set the background color
 //enable the depth test (z buffer)
@@ -16,8 +20,6 @@ void Renderer::_zBufferBg(float r, float g, float b, float w)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-
-#define __MULTITHREADING__RENDERER__
 
 //this was for multithreading using std::thread or std::future+std::async
 void Renderer::renderEntitiesPartially(std::size_t start, std::size_t end)
@@ -35,15 +37,11 @@ void Renderer::renderEntitiesPartially(std::size_t start, std::size_t end)
 //with this CPU's L1 cahce memroy get's more chance to deal with faster accessing
 void Renderer::renderEntities()
 {
-#ifdef __MULTITHREADING__RENDERER__
-    omp_set_num_threads(4);
-    #pragma omp parallel for
-#endif
-    for(std::size_t i=0; i<m_totalEntities; ++i)
+    Hilbert::Threading::pragma_omp_parallel_loop<void, std::size_t>(0, m_totalEntities, 4, [this](auto i)->void
     {
         glBindVertexArray(m_entitiesVAO[i]);
         glDrawElements(GL_TRIANGLES, m_entitiesTotalInidicies[i], GL_UNSIGNED_INT, 0);
-    }
+    });
 }
 
 
