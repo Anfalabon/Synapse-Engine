@@ -79,7 +79,7 @@ void Engine::loadEntities()
     std::clog << "Constructing the entities!" << '\n';
     std::clog << "Loading..." << '\n';
 
-    constexpr std::size_t totalEntities = 30000;
+    constexpr std::size_t totalEntities = 30003;
     entities.reserve(totalEntities);
 
     entities.push_back(new Entity(data::cubeVerticiesData, data::cubeTotalVerticies,
@@ -99,7 +99,7 @@ void Engine::loadEntities()
 
     //initialize the other null entities
     //for now this is because of the benchmarking
-    for(std::size_t i=0; i<totalEntities; ++i)
+    for(std::size_t i=3; i<totalEntities; ++i)
     {
         entities.push_back(new Entity(nullptr, 0, nullptr, 0, "", ""));
     }
