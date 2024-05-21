@@ -2,6 +2,7 @@
 #include "InitializeEngine.hpp"
 #include "../entity/entitiesAttributesData.hpp"
 #include "../debug/RenderingInfoLog.hpp"
+#include "../multithreading/runParallel.hpp"
 
 #include <iostream>
 #include <memory>
@@ -21,40 +22,6 @@
 #elif defined(__DEBUG__)
     #define __SINGLETHREADING__
 #endif
-
-
-//will have this in another folder called multithreading
-//will add serious issused like Data Race, Race Conditions
-namespace Hilbert
-{
-//let's create an custom for loop thread
-    template<typename RETURN_TYPE, typename ITERATOR_TYPE>
-    void pragma_omp_prallel_loop(ITERATOR_TYPE __first, ITERATOR_TYPE __end, unsigned char __threads_num,
-                                 std::function<RETURN_TYPE(ITERATOR_TYPE)> __func){
-        assert(__threads_num>0);
-        omp_set_num_threads(__threads_num);
-        #pragma omp parallel for
-        for (ITERATOR_TYPE iterator=__first; iterator<__end; ++iterator)
-            __func(iterator);
-    }
-
-}
-
-
-
-void compute_in_parallel()
-{
-    uint64_t sum = 0;
-    Hilbert::pragma_omp_prallel_loop<void, int64_t>(1, 11, 2, [&sum](auto i)->void
-    {
-        sum += i;
-    });
-
-    std::cout << "Total sum: " << sum << '\n';
-}
-
-
-
 
 
 int8_t Engine::loadGLFW()
@@ -246,10 +213,11 @@ int8_t Engine::Run()
 //            entity->update();
 //        }
 
-        Hilbert::pragma_omp_prallel_loop<void, std::size_t>(0, entities.size(), 4, [this](auto i)->void
+        Hilbert::Threading::pragma_omp_prallel_loop<void, std::size_t>(0, entities.size(), 4, [this](auto i)->void
         {
             entities[i]->update();
         });
+
 
         //make any modification to the entities or entity after running useProgram() and before rendering otherwise it would be TOO bad!
 
