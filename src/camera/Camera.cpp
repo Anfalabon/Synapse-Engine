@@ -627,20 +627,21 @@ void Camera::updatePerspective()
 //updateViewMatrix()
 void Camera::lookAtTarget()
 {
+
     m_targetPos = m_cameraPos + Calculate::m_directionVector;
 
-    LOG('\n');
-    LOG("Camera's direction vector: ");
-    LOG_GLM(Calculate::m_directionVector);
-    LOG('\n');
+    DEBUG::__LOG__MANAGER__::LOG('\n');
+    DEBUG::__LOG__MANAGER__::LOG("Camera's direction vector: ");
+    DEBUG::__LOG__MANAGER__::GLM_LOG(Calculate::m_directionVector);
+    DEBUG::__LOG__MANAGER__::LOG('\n');
 
-    LOG("Camera's current Position: ");
-    LOG_GLM(m_cameraPos);
-    LOG('\n');
+    DEBUG::__LOG__MANAGER__::LOG("Camera's current Position: ");
+    DEBUG::__LOG__MANAGER__::GLM_LOG(m_cameraPos);
+    DEBUG::__LOG__MANAGER__::LOG('\n');
 
-    LOG("Camera's target Position: ");
-    LOG_GLM(m_targetPos);
-    LOG('\n');
+    DEBUG::__LOG__MANAGER__::LOG("Camera's target Position: ");
+    DEBUG::__LOG__MANAGER__::GLM_LOG(m_targetPos);
+    DEBUG::__LOG__MANAGER__::LOG('\n');
 
     m_view = glm::lookAt(m_cameraPos, m_targetPos, m_cameraUpVector);
 }

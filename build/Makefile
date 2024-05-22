@@ -1,11 +1,13 @@
 
 
-CXX=g++
+CXX=clang++
 CXX_CUSTOM_INCLUDE_FLAGS=-I../src/main -I../src/window -I../src/entity -I../src/shader -I../src/render -I../src/camera -I../src/debug
 CXX_EXTERNAL_INCLUDE_FLAGS=-I../src/external/GLFW/include -I../src/external/glad/include -I../src/external/glm
 CXX_INCLUDE_FLAGS+=$(CXX_CUSTOM_INCLUDE_FLAGS)
 CXX_INCLUDE_FLAGS+=$(CXX_EXTERNAL_INCLUDE_FLAGS)
 CXXFLAGS=-std=c++17 -Wall -Wextra -O3 -fopenmp
+#CXXLDFLAGS=-fopenmp -pg
+#CXXFLAGS+=$(CXXLDFLAGS)
 CXXFLAGS+=$(CXX_INCLUDE_FLAGS)
 
 

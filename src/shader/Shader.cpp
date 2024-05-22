@@ -121,10 +121,10 @@ const char *fragmentSS = "#version 330 core\n"
 //     const char* vertexShaderSource = vertexSS;
 //     const char* fragmentShaderSource = fragmentSS;
 
- #define DEBUG
- #ifdef DEBUG
-     LOG(vertexShaderSource);
-     LOG(fragmentShaderSource);
+ #define __DEBUG__
+ #ifdef __DEBUG__
+     DEBUG::__LOG__MANAGER__::LOG(vertexShaderSource);
+     DEBUG::__LOG__MANAGER__::LOG(fragmentShaderSource);
  #endif
 
      //compile the vertex shader source

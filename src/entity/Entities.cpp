@@ -2,28 +2,6 @@
 
 #include "Entities.hpp"
 
-//static GLuint count = 0;
-
-
-unsigned int size(const GLuint *arr)
-{
-    //get the size of an pointer array eg. GLuint *indiciesData = new GLuint[78];
-    unsigned int count = 0;
-    while((arr+count)!=nullptr)
-    {
-        ++count;
-    }
-    return count;
-}
-
-
-//template<typename T>
-//template<GLuint *buffer> struct Size{ enum{ count = size<buffer+1>::count }; };
-//template<> struct Size<nullptr>{ enum{count = 0}; };
-
-//constexpr totalV = size<verticiesArr>::count;
-//constexpr totalI = size<indiciesArr>::count;
-
 
 
 Entity::Entity(Vertex *verticies, GLuint totalVerticies,
@@ -38,17 +16,7 @@ Entity::Entity(Vertex *verticies, GLuint totalVerticies,
      m_verticiesSizeBytes(sizeof(Vertex)*totalVerticies),
      m_indiciesSizeBytes(sizeof(GLuint)*totalIndicies),
      m_shader(vertexShaderSourcePath, fragmentShaderSourcePath),
-     m_VO(m_verticiesSizeBytes, m_verticies, m_indiciesSizeBytes, m_indicies)
-{
-//    compile, link the vertex and fragment shader
-//    m_shader.setup();
-//    m_shader.link();
-
-    for(unsigned int i=0; i<totalIndicies; ++i)
-    {
-        std::cout << indicies[i] << '\n';
-    }
-}
+     m_VO(m_verticiesSizeBytes, m_verticies, m_indiciesSizeBytes, m_indicies){}
 
 
 

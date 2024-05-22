@@ -1,17 +1,17 @@
-
-#ifndef LOG_HPP
-#define LOG_HPP
+#pragma once
 
 #include <glm/ext.hpp>
 #include <glm/gtx/string_cast.hpp>
-
 #include <iostream>
+
 
 namespace DEBUG
 {
-#define LOG(x) std::clog << x << '\n'
-#define LOG_GLM(x) std::clog << glm::to_string(x) << '\n'
-#define SYSTEM_LOG(system_command) system(system_command)
+struct __LOG__MANAGER__
+{
+    template<typename T> inline static void LOG(T __log__txt__) { std::clog << __log__txt__ << '\n'; }
+    template<typename T> inline static void GLM_LOG(T __glm__func__) { std::clog << glm::to_string(__glm__func__) << '\n'; }
+    template<typename T> inline static void SYSTEM_LOG(T __system__cmd__) { system(__system__cmd__); }
+};
 }
 
-#endif //LOG_HPP

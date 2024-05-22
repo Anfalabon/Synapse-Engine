@@ -25,7 +25,7 @@ public:
     void init();
     void resize();
     void exitOnEscape();
-    void keyPressedLog(){LOG("key pressed!");}
+    void keyPressedLog(){DEBUG::__LOG__MANAGER__::LOG("key pressed!");}
     void getKeyboardInput();
 
     static void mouseInput(GLFWwindow* window ,double xpos, double ypos);    

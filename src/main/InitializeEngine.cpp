@@ -15,6 +15,10 @@
 #define __RELEASE__
 //#define __DEBUG__
 
+//#ifdef __RELEASE__
+//#include "../multithreading/defineMultithreadingMacros.hpp"
+//#endif
+
 #if defined(__RELEASE__)
     #define __RUNTIME__MULTITHREADING__
     //#define __LOADTIME__MULTITHREADING__
@@ -168,14 +172,6 @@ int8_t Engine::Init()
 
 int8_t Engine::Run()
 {
-
-//will use multithreading for updating and redering the entities
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//from here the run function should start and everything before should be inside the Engine constructor or a function named Init()
-//which will initialize the window, glad, camera, scenes, entities, Engine mode etc.
-
-
     //main Engine loop
     while(window->running())
     {
