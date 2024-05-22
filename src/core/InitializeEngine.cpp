@@ -172,7 +172,7 @@ int8_t Engine::Init()
 
 int8_t Engine::Run()
 {
-    //main Engine loop
+    //core Engine loop
     while(window->running())
     {
         renderer._zBufferBg(0.2f, 0.3f, 0.3f, 1.0f);

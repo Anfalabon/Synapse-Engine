@@ -1,8 +1,8 @@
-#ifndef CAMERA_HPP
-#define CAMERA_HPP
+#pragma once
+
+#include "../physics/PhysicsEngine.hpp"
 
 #include <glad/glad.hpp>
-
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -83,6 +83,8 @@ private:
     //may initialize these vectors and the matix in the initializer list
     //glm::vec3 m_directionVector = glm::vec3(0.0f, 0.0f, -1.0f);
 
+    struct PhysicsEngine motion;
+
     glm::vec3 m_cameraPos = glm::vec3(3.0f, 0.0f, 3.0f);
     glm::vec3 m_cameraPosWhileCollision = glm::vec3(3.0f, 0.0f, 3.0f);
     glm::vec3 m_targetPos = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -99,7 +101,9 @@ private:
     glm::vec3 m_objectMaxSize = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 m_objectMinSize = glm::vec3(0.0f, 0.0f, 0.0f);
 
-    bool m_jumped = false;
+
+
+    //bool m_jumped = false;
     bool m_isAtTheRoof = false;    //check if the camera is at the top of the current object it's interecting with
     bool m_keepRunning = false;
     bool m_collided = false;
@@ -138,7 +142,3 @@ private:
     const CAMERA_MODES M_CAMERA_MODE;
 
 };
-
-
-
-#endif  //CAMERA_HPP

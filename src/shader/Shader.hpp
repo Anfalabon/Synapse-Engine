@@ -1,6 +1,4 @@
-//#pragma once
-#ifndef SHADER_HPP
-#define SHADER_HPP
+#pragma once
 
 #include <glad/glad.hpp>
 
@@ -59,13 +57,6 @@
      ShaderFile m_fragmentShader;
 
  };
-
-
-
-
-
-#endif //file guard
-
 
 
 

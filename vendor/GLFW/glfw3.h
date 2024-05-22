@@ -1785,7 +1785,7 @@ typedef struct GLFWgamepadstate
  *  application locale according to the current environment if that category is
  *  still "C".  This is because the "C" locale breaks Unicode text input.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref intro_init
  *  @sa @ref glfwTerminate
@@ -1819,7 +1819,7 @@ GLFWAPI int glfwInit(void);
  *
  *  @reentrancy This function must not be called from a callback.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref intro_init
  *  @sa @ref glfwInit
@@ -1851,7 +1851,7 @@ GLFWAPI void glfwTerminate(void);
  *
  *  @remarks This function may be called before @ref glfwInit.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa init_hints
  *  @sa glfwInit
@@ -1986,7 +1986,7 @@ GLFWAPI int glfwGetError(const char** description);
  *
  *  @remark This function may be called before @ref glfwInit.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref error_handling
  *  @sa @ref glfwGetError
@@ -2014,7 +2014,7 @@ GLFWAPI GLFWerrorfun glfwSetErrorCallback(GLFWerrorfun callback);
  *  should not free it yourself.  It is guaranteed to be valid only until the
  *  monitor configuration changes or the library is terminated.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref monitor_monitors
  *  @sa @ref monitor_event
@@ -2036,7 +2036,7 @@ GLFWAPI GLFWmonitor** glfwGetMonitors(int* count);
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @remark The primary monitor is always first in the array returned by @ref
  *  glfwGetMonitors.
@@ -2065,7 +2065,7 @@ GLFWAPI GLFWmonitor* glfwGetPrimaryMonitor(void);
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
  *  GLFW_PLATFORM_ERROR.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref monitor_properties
  *
@@ -2096,7 +2096,7 @@ GLFWAPI void glfwGetMonitorPos(GLFWmonitor* monitor, int* xpos, int* ypos);
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
  *  GLFW_PLATFORM_ERROR.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref monitor_workarea
  *
@@ -2130,7 +2130,7 @@ GLFWAPI void glfwGetMonitorWorkarea(GLFWmonitor* monitor, int* xpos, int* ypos, 
  *  @remark @win32 On Windows 8 and earlier the physical size is calculated from
  *  the current resolution and system DPI instead of querying the monitor EDID data.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref monitor_properties
  *
@@ -2161,7 +2161,7 @@ GLFWAPI void glfwGetMonitorPhysicalSize(GLFWmonitor* monitor, int* widthMM, int*
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
  *  GLFW_PLATFORM_ERROR.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref monitor_scale
  *  @sa @ref glfwGetWindowContentScale
@@ -2188,7 +2188,7 @@ GLFWAPI void glfwGetMonitorContentScale(GLFWmonitor* monitor, float* xscale, flo
  *  should not free it yourself.  It is valid until the specified monitor is
  *  disconnected or the library is terminated.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref monitor_properties
  *
@@ -2268,7 +2268,7 @@ GLFWAPI void* glfwGetMonitorUserPointer(GLFWmonitor* monitor);
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref monitor_event
  *
@@ -2300,7 +2300,7 @@ GLFWAPI GLFWmonitorfun glfwSetMonitorCallback(GLFWmonitorfun callback);
  *  disconnected, this function is called again for that monitor or the library
  *  is terminated.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref monitor_modes
  *  @sa @ref glfwGetVideoMode
@@ -2329,7 +2329,7 @@ GLFWAPI const GLFWvidmode* glfwGetVideoModes(GLFWmonitor* monitor, int* count);
  *  should not free it yourself.  It is valid until the specified monitor is
  *  disconnected or the library is terminated.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref monitor_modes
  *  @sa @ref glfwGetVideoModes
@@ -2363,7 +2363,7 @@ GLFWAPI const GLFWvidmode* glfwGetVideoMode(GLFWmonitor* monitor);
  *  @remark @wayland Gamma handling is a privileged protocol, this function
  *  will thus never be implemented and emits @ref GLFW_PLATFORM_ERROR.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref monitor_gamma
  *
@@ -2393,7 +2393,7 @@ GLFWAPI void glfwSetGamma(GLFWmonitor* monitor, float gamma);
  *  specified monitor is disconnected, this function is called again for that
  *  monitor or the library is terminated.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref monitor_gamma
  *
@@ -2434,7 +2434,7 @@ GLFWAPI const GLFWgammaramp* glfwGetGammaRamp(GLFWmonitor* monitor);
  *  @pointer_lifetime The specified gamma ramp is copied before this function
  *  returns.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref monitor_gamma
  *
@@ -2451,7 +2451,7 @@ GLFWAPI void glfwSetGammaRamp(GLFWmonitor* monitor, const GLFWgammaramp* ramp);
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_hints
  *  @sa @ref glfwWindowHint
@@ -2486,7 +2486,7 @@ GLFWAPI void glfwDefaultWindowHints(void);
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
  *  GLFW_INVALID_ENUM.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_hints
  *  @sa @ref glfwWindowHintString
@@ -2524,7 +2524,7 @@ GLFWAPI void glfwWindowHint(int hint, int value);
  *  @pointer_lifetime The specified string is copied before this function
  *  returns.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_hints
  *  @sa @ref glfwWindowHint
@@ -2679,7 +2679,7 @@ GLFWAPI void glfwWindowHintString(int hint, const char* value);
  *  @remark @wayland Screensaver inhibition requires the idle-inhibit protocol
  *  to be implemented in the user's compositor.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_creation
  *  @sa @ref glfwDestroyWindow
@@ -2695,7 +2695,7 @@ GLFWAPI GLFWwindow* glfwCreateWindow(int width, int height, const char* title, G
  *  This function destroys the specified window and its context.  On calling
  *  this function, no further callbacks will be called for that window.
  *
- *  If the context of the specified window is current on the main thread, it is
+ *  If the context of the specified window is current on the core thread, it is
  *  detached before being destroyed.
  *
  *  @param[in] window The window to destroy.
@@ -2708,7 +2708,7 @@ GLFWAPI GLFWwindow* glfwCreateWindow(int width, int height, const char* title, G
  *
  *  @reentrancy This function must not be called from a callback.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_creation
  *  @sa @ref glfwCreateWindow
@@ -2775,7 +2775,7 @@ GLFWAPI void glfwSetWindowShouldClose(GLFWwindow* window, int value);
  *  @remark @macos The window title will not be updated until the next time you
  *  process events.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_title
  *
@@ -2823,7 +2823,7 @@ GLFWAPI void glfwSetWindowTitle(GLFWwindow* window, const char* title);
  *  window will thus inherit the one defined in the application's desktop file.
  *  This function always emits @ref GLFW_PLATFORM_ERROR.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_icon
  *
@@ -2854,7 +2854,7 @@ GLFWAPI void glfwSetWindowIcon(GLFWwindow* window, int count, const GLFWimage* i
  *  position of its windows, this function will always emit @ref
  *  GLFW_PLATFORM_ERROR.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_pos
  *  @sa @ref glfwSetWindowPos
@@ -2888,7 +2888,7 @@ GLFWAPI void glfwGetWindowPos(GLFWwindow* window, int* xpos, int* ypos);
  *  position of its windows, this function will always emit @ref
  *  GLFW_PLATFORM_ERROR.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_pos
  *  @sa @ref glfwGetWindowPos
@@ -2918,7 +2918,7 @@ GLFWAPI void glfwSetWindowPos(GLFWwindow* window, int xpos, int ypos);
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
  *  GLFW_PLATFORM_ERROR.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_size
  *  @sa @ref glfwSetWindowSize
@@ -2962,7 +2962,7 @@ GLFWAPI void glfwGetWindowSize(GLFWwindow* window, int* width, int* height);
  *  @remark @wayland The size limits will not be applied until the window is
  *  actually resized, either by the user or by the compositor.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_sizelimits
  *  @sa @ref glfwSetWindowAspectRatio
@@ -3005,7 +3005,7 @@ GLFWAPI void glfwSetWindowSizeLimits(GLFWwindow* window, int minwidth, int minhe
  *  @remark @wayland The aspect ratio will not be applied until the window is
  *  actually resized, either by the user or by the compositor.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_sizelimits
  *  @sa @ref glfwSetWindowSizeLimits
@@ -3044,7 +3044,7 @@ GLFWAPI void glfwSetWindowAspectRatio(GLFWwindow* window, int numer, int denom);
  *  @remark @wayland A full screen window will not attempt to change the mode,
  *  no matter what the requested size.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_size
  *  @sa @ref glfwGetWindowSize
@@ -3075,7 +3075,7 @@ GLFWAPI void glfwSetWindowSize(GLFWwindow* window, int width, int height);
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
  *  GLFW_PLATFORM_ERROR.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_fbsize
  *  @sa @ref glfwSetFramebufferSizeCallback
@@ -3113,7 +3113,7 @@ GLFWAPI void glfwGetFramebufferSize(GLFWwindow* window, int* width, int* height)
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
  *  GLFW_PLATFORM_ERROR.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_size
  *
@@ -3144,7 +3144,7 @@ GLFWAPI void glfwGetWindowFrameSize(GLFWwindow* window, int* left, int* top, int
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
  *  GLFW_PLATFORM_ERROR.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_scale
  *  @sa @ref glfwSetWindowContentScaleCallback
@@ -3172,7 +3172,7 @@ GLFWAPI void glfwGetWindowContentScale(GLFWwindow* window, float* xscale, float*
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
  *  GLFW_PLATFORM_ERROR.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_transparency
  *  @sa @ref glfwSetWindowOpacity
@@ -3201,7 +3201,7 @@ GLFWAPI float glfwGetWindowOpacity(GLFWwindow* window);
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
  *  GLFW_PLATFORM_ERROR.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_transparency
  *  @sa @ref glfwGetWindowOpacity
@@ -3227,7 +3227,7 @@ GLFWAPI void glfwSetWindowOpacity(GLFWwindow* window, float opacity);
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
  *  GLFW_PLATFORM_ERROR.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_iconify
  *  @sa @ref glfwRestoreWindow
@@ -3254,7 +3254,7 @@ GLFWAPI void glfwIconifyWindow(GLFWwindow* window);
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
  *  GLFW_PLATFORM_ERROR.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_iconify
  *  @sa @ref glfwIconifyWindow
@@ -3280,7 +3280,7 @@ GLFWAPI void glfwRestoreWindow(GLFWwindow* window);
  *  GLFW_PLATFORM_ERROR.
  *
  *  @par Thread Safety
- *  This function may only be called from the main thread.
+ *  This function may only be called from the core thread.
  *
  *  @sa @ref window_iconify
  *  @sa @ref glfwIconifyWindow
@@ -3313,7 +3313,7 @@ GLFWAPI void glfwMaximizeWindow(GLFWwindow* window);
  *  Instead it will become visible the next time the window framebuffer is
  *  updated after this call.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_hide
  *  @sa @ref glfwHideWindow
@@ -3335,7 +3335,7 @@ GLFWAPI void glfwShowWindow(GLFWwindow* window);
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
  *  GLFW_PLATFORM_ERROR.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_hide
  *  @sa @ref glfwShowWindow
@@ -3374,7 +3374,7 @@ GLFWAPI void glfwHideWindow(GLFWwindow* window);
  *  @remark @wayland It is not possible for an application to bring its windows
  *  to front, this function will always emit @ref GLFW_PLATFORM_ERROR.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_focus
  *  @sa @ref window_attention
@@ -3402,7 +3402,7 @@ GLFWAPI void glfwFocusWindow(GLFWwindow* window);
  *  @remark @macos Attention is requested to the application as a whole, not the
  *  specific window.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_attention
  *
@@ -3423,7 +3423,7 @@ GLFWAPI void glfwRequestWindowAttention(GLFWwindow* window);
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_monitor
  *  @sa @ref glfwSetWindowMonitor
@@ -3480,7 +3480,7 @@ GLFWAPI GLFWmonitor* glfwGetWindowMonitor(GLFWwindow* window);
  *  @remark @wayland Setting the window to full screen will not attempt to
  *  change the mode, no matter what the requested size or refresh rate.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_monitor
  *  @sa @ref window_full_screen
@@ -3518,7 +3518,7 @@ GLFWAPI void glfwSetWindowMonitor(GLFWwindow* window, GLFWmonitor* monitor, int 
  *  @remark @wayland The Wayland protocol provides no way to check whether a
  *  window is iconfied, so @ref GLFW_ICONIFIED always returns `GLFW_FALSE`.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_attribs
  *  @sa @ref glfwSetWindowAttrib
@@ -3556,7 +3556,7 @@ GLFWAPI int glfwGetWindowAttrib(GLFWwindow* window, int attrib);
  *  @remark Calling @ref glfwGetWindowAttrib will always return the latest
  *  value, even if that value is ignored by the current mode of the window.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_attribs
  *  @sa @ref glfwGetWindowAttrib
@@ -3636,7 +3636,7 @@ GLFWAPI void* glfwGetWindowUserPointer(GLFWwindow* window);
  *  @remark @wayland This callback will never be called, as there is no way for
  *  an application to know its global position.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_pos
  *
@@ -3667,7 +3667,7 @@ GLFWAPI GLFWwindowposfun glfwSetWindowPosCallback(GLFWwindow* window, GLFWwindow
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_size
  *
@@ -3707,7 +3707,7 @@ GLFWAPI GLFWwindowsizefun glfwSetWindowSizeCallback(GLFWwindow* window, GLFWwind
  *  @remark @macos Selecting Quit from the application menu will trigger the
  *  close callback for all windows.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_close
  *
@@ -3743,7 +3743,7 @@ GLFWAPI GLFWwindowclosefun glfwSetWindowCloseCallback(GLFWwindow* window, GLFWwi
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_refresh
  *
@@ -3779,7 +3779,7 @@ GLFWAPI GLFWwindowrefreshfun glfwSetWindowRefreshCallback(GLFWwindow* window, GL
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_focus
  *
@@ -3812,7 +3812,7 @@ GLFWAPI GLFWwindowfocusfun glfwSetWindowFocusCallback(GLFWwindow* window, GLFWwi
  *  @remark @wayland The XDG-shell protocol has no event for iconification, so
  *  this callback will never be called.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_iconify
  *
@@ -3842,7 +3842,7 @@ GLFWAPI GLFWwindowiconifyfun glfwSetWindowIconifyCallback(GLFWwindow* window, GL
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_maximize
  *
@@ -3872,7 +3872,7 @@ GLFWAPI GLFWwindowmaximizefun glfwSetWindowMaximizeCallback(GLFWwindow* window, 
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_fbsize
  *
@@ -3902,7 +3902,7 @@ GLFWAPI GLFWframebuffersizefun glfwSetFramebufferSizeCallback(GLFWwindow* window
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref window_scale
  *  @sa @ref glfwGetWindowContentScale
@@ -3939,7 +3939,7 @@ GLFWAPI GLFWwindowcontentscalefun glfwSetWindowContentScaleCallback(GLFWwindow* 
  *
  *  @reentrancy This function must not be called from a callback.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref events
  *  @sa @ref glfwWaitEvents
@@ -3984,7 +3984,7 @@ GLFWAPI void glfwPollEvents(void);
  *
  *  @reentrancy This function must not be called from a callback.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref events
  *  @sa @ref glfwPollEvents
@@ -4033,7 +4033,7 @@ GLFWAPI void glfwWaitEvents(void);
  *
  *  @reentrancy This function must not be called from a callback.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref events
  *  @sa @ref glfwPollEvents
@@ -4080,7 +4080,7 @@ GLFWAPI void glfwPostEmptyEvent(void);
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
  *  GLFW_INVALID_ENUM.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref glfwSetInputMode
  *
@@ -4142,7 +4142,7 @@ GLFWAPI int glfwGetInputMode(GLFWwindow* window, int mode);
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
  *  GLFW_INVALID_ENUM and @ref GLFW_PLATFORM_ERROR.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref glfwGetInputMode
  *
@@ -4170,7 +4170,7 @@ GLFWAPI void glfwSetInputMode(GLFWwindow* window, int mode, int value);
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref raw_mouse_motion
  *  @sa @ref glfwSetInputMode
@@ -4239,7 +4239,7 @@ GLFWAPI int glfwRawMouseMotionSupported(void);
  *  @pointer_lifetime The returned string is allocated and freed by GLFW.  You
  *  should not free it yourself.  It is valid until the library is terminated.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref input_key_name
  *
@@ -4301,7 +4301,7 @@ GLFWAPI int glfwGetKeyScancode(int key);
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
  *  GLFW_INVALID_ENUM.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref input_key
  *
@@ -4330,7 +4330,7 @@ GLFWAPI int glfwGetKey(GLFWwindow* window, int key);
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
  *  GLFW_INVALID_ENUM.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref input_mouse_button
  *
@@ -4368,7 +4368,7 @@ GLFWAPI int glfwGetMouseButton(GLFWwindow* window, int button);
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
  *  GLFW_PLATFORM_ERROR.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref cursor_pos
  *  @sa @ref glfwSetCursorPos
@@ -4408,7 +4408,7 @@ GLFWAPI void glfwGetCursorPos(GLFWwindow* window, double* xpos, double* ypos);
  *  @remark @wayland This function will only work when the cursor mode is
  *  `GLFW_CURSOR_DISABLED`, otherwise it will do nothing.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref cursor_pos
  *  @sa @ref glfwGetCursorPos
@@ -4445,7 +4445,7 @@ GLFWAPI void glfwSetCursorPos(GLFWwindow* window, double xpos, double ypos);
  *  @pointer_lifetime The specified image data is copied before this function
  *  returns.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref cursor_object
  *  @sa @ref glfwDestroyCursor
@@ -4469,7 +4469,7 @@ GLFWAPI GLFWcursor* glfwCreateCursor(const GLFWimage* image, int xhot, int yhot)
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
  *  GLFW_INVALID_ENUM and @ref GLFW_PLATFORM_ERROR.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref cursor_object
  *  @sa @ref glfwCreateCursor
@@ -4496,7 +4496,7 @@ GLFWAPI GLFWcursor* glfwCreateStandardCursor(int shape);
  *
  *  @reentrancy This function must not be called from a callback.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref cursor_object
  *  @sa @ref glfwCreateCursor
@@ -4524,7 +4524,7 @@ GLFWAPI void glfwDestroyCursor(GLFWcursor* cursor);
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
  *  GLFW_PLATFORM_ERROR.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref cursor_object
  *
@@ -4573,7 +4573,7 @@ GLFWAPI void glfwSetCursor(GLFWwindow* window, GLFWcursor* cursor);
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref input_key
  *
@@ -4616,7 +4616,7 @@ GLFWAPI GLFWkeyfun glfwSetKeyCallback(GLFWwindow* window, GLFWkeyfun callback);
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref input_char
  *
@@ -4659,7 +4659,7 @@ GLFWAPI GLFWcharfun glfwSetCharCallback(GLFWwindow* window, GLFWcharfun callback
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref input_char
  *
@@ -4695,7 +4695,7 @@ GLFWAPI GLFWcharmodsfun glfwSetCharModsCallback(GLFWwindow* window, GLFWcharmods
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref input_mouse_button
  *
@@ -4728,7 +4728,7 @@ GLFWAPI GLFWmousebuttonfun glfwSetMouseButtonCallback(GLFWwindow* window, GLFWmo
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref cursor_pos
  *
@@ -4759,7 +4759,7 @@ GLFWAPI GLFWcursorposfun glfwSetCursorPosCallback(GLFWwindow* window, GLFWcursor
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref cursor_enter
  *
@@ -4793,7 +4793,7 @@ GLFWAPI GLFWcursorenterfun glfwSetCursorEnterCallback(GLFWwindow* window, GLFWcu
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref scrolling
  *
@@ -4830,7 +4830,7 @@ GLFWAPI GLFWscrollfun glfwSetScrollCallback(GLFWwindow* window, GLFWscrollfun ca
  *
  *  @remark @wayland File drop is currently unimplemented.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref path_drop
  *
@@ -4854,7 +4854,7 @@ GLFWAPI GLFWdropfun glfwSetDropCallback(GLFWwindow* window, GLFWdropfun callback
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
  *  GLFW_INVALID_ENUM and @ref GLFW_PLATFORM_ERROR.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref joystick
  *
@@ -4887,7 +4887,7 @@ GLFWAPI int glfwJoystickPresent(int jid);
  *  should not free it yourself.  It is valid until the specified joystick is
  *  disconnected or the library is terminated.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref joystick_axis
  *
@@ -4927,7 +4927,7 @@ GLFWAPI const float* glfwGetJoystickAxes(int jid, int* count);
  *  should not free it yourself.  It is valid until the specified joystick is
  *  disconnected or the library is terminated.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref joystick_button
  *
@@ -4985,7 +4985,7 @@ GLFWAPI const unsigned char* glfwGetJoystickButtons(int jid, int* count);
  *  disconnected, this function is called again for that joystick or the library
  *  is terminated.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref joystick_hat
  *
@@ -5016,7 +5016,7 @@ GLFWAPI const unsigned char* glfwGetJoystickHats(int jid, int* count);
  *  should not free it yourself.  It is valid until the specified joystick is
  *  disconnected or the library is terminated.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref joystick_name
  *
@@ -5057,7 +5057,7 @@ GLFWAPI const char* glfwGetJoystickName(int jid);
  *  should not free it yourself.  It is valid until the specified joystick is
  *  disconnected or the library is terminated.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref gamepad
  *
@@ -5134,7 +5134,7 @@ GLFWAPI void* glfwGetJoystickUserPointer(int jid);
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
  *  GLFW_INVALID_ENUM.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref gamepad
  *  @sa @ref glfwGetGamepadState
@@ -5171,7 +5171,7 @@ GLFWAPI int glfwJoystickIsGamepad(int jid);
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref joystick_event
  *
@@ -5203,7 +5203,7 @@ GLFWAPI GLFWjoystickfun glfwSetJoystickCallback(GLFWjoystickfun callback);
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
  *  GLFW_INVALID_VALUE.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref gamepad
  *  @sa @ref glfwJoystickIsGamepad
@@ -5236,7 +5236,7 @@ GLFWAPI int glfwUpdateGamepadMappings(const char* string);
  *  should not free it yourself.  It is valid until the specified joystick is
  *  disconnected, the gamepad mappings are updated or the library is terminated.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref gamepad
  *  @sa @ref glfwJoystickIsGamepad
@@ -5273,7 +5273,7 @@ GLFWAPI const char* glfwGetGamepadName(int jid);
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
  *  GLFW_INVALID_ENUM.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref gamepad
  *  @sa @ref glfwUpdateGamepadMappings
@@ -5299,7 +5299,7 @@ GLFWAPI int glfwGetGamepadState(int jid, GLFWgamepadstate* state);
  *  @pointer_lifetime The specified string is copied before this function
  *  returns.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref clipboard
  *  @sa @ref glfwGetClipboardString
@@ -5329,7 +5329,7 @@ GLFWAPI void glfwSetClipboardString(GLFWwindow* window, const char* string);
  *  glfwGetClipboardString or @ref glfwSetClipboardString, or until the library
  *  is terminated.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref clipboard
  *  @sa @ref glfwSetClipboardString

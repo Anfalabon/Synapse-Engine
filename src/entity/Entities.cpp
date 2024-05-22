@@ -79,7 +79,6 @@ void Entity::render()
 
 
 
-
 void Entity::update()
 {
     m_shader.useProgram();
@@ -93,9 +92,12 @@ Entity::~Entity()
     //so now both owns the verticies and indicies data
     //we will delete the verticies and indicies data from the Entity destructor
     //it will prevent us from doing manual deletion in InitializeEngine.cpp where the entities are deleted explicitly at the end of the program
-    if(m_verticies!=nullptr || m_indicies!=nullptr)
+    if(m_verticies!=nullptr)
     {
-        delete m_verticies;
-        delete m_indicies;
+        delete[] m_verticies;
+    }
+    if(m_indicies!=nullptr)
+    {
+        delete[] m_indicies;
     }
 }

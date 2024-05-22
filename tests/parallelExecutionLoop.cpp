@@ -40,7 +40,7 @@
 //
 //
 //
-//int main()
+//int core()
 //{
 //    std::vector<std::uint64_t> v;
 //    v.reserve(900000000);

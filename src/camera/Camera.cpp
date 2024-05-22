@@ -334,7 +334,7 @@ void Camera::jump()
         m_cameraPos.y = minHeight;
         m_cameraVelocity.y = 0.774f;
         //m_cameraVelocity.y = glm::sqrt(2 * gravity * jumpMaxHeight);
-        m_jumped = false;
+        motion.m_jumped = false;
         m_timeElapsed = 0.0f;
     }
 }
@@ -346,7 +346,7 @@ void Camera::applyVerticalMotions()
 
     std::cout << "Time elapsed: " << m_timeElapsed << '\n';
 
-    if(m_jumped)
+    if(motion.m_jumped)
     {
         this->jump();
     }
@@ -359,12 +359,13 @@ void Camera::applyVerticalMotions()
         m_cameraPos.y = m_currentObjectHeight;
     }
     
-    if(!m_jumped && !m_isAtTheRoof)
+    if(!motion.m_jumped && !m_isAtTheRoof)
     {
         if(m_cameraPos.y >= 1.2f)
         {
             //initVelocity(glm::vec3(0.0f, -0.49f, 0.0f));
             initVelocity(Tensor::Vector3(0.0f, -0.49f, 0.0f));
+
             m_timeElapsed = 0.455f;
             m_keepRunning = true;
         }
@@ -381,6 +382,8 @@ void Camera::applyVerticalMotions()
 }
 
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -459,11 +462,12 @@ void Camera::getKeyboardInput(GLFWwindow* m_window)
 
 
     //&& !m_collided
-    if(keyPressed(m_window, GLFW_KEY_SPACE) && !m_jumped)
+    if(keyPressed(m_window, GLFW_KEY_SPACE) && !motion.m_jumped)
     {
-        m_jumped = true;
+        motion.m_jumped = true;
         m_initialHeight = m_cameraPos.y;
     }
+
 
     std::cout << "Current Min height: " << m_initialHeight << '\n';
 
@@ -513,7 +517,7 @@ void Camera::getKeyboardInput(GLFWwindow* m_window)
     {
         m_crouch = true;
         m_cameraPos.y -= 0.5f;
-        if(m_jumped)
+        if(motion.m_jumped)
         {
             m_crouch = false;
             m_cameraPos.y += 0.5f;

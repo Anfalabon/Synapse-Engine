@@ -1,5 +1,4 @@
-#ifndef RENDERINGINFOLOG_HPP
-#define RENDERINGINFOLOG_HPP
+#pragma once
 
 #include <GLFW/glfw3.h>
 
@@ -26,5 +25,3 @@ inline void framesPerSecond()
 }
 
 }
-
-#endif //RENDERINGINFOLOG_HPP

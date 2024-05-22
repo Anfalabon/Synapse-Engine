@@ -132,7 +132,7 @@ int main()
 
 
 
-// int main()
+// int core()
 // {
 //     //initialize the glfw functions and other glfw features
 //     if (!glfwInit())
@@ -225,7 +225,7 @@ int main()
 // #define GAME_MODE 1
 
 //     //using namespace renderingInfo;
-//     //main Engine loop
+//     //core Engine loop
 //     while(window.running())
 //     {
 //         window.getKeyboardInput();

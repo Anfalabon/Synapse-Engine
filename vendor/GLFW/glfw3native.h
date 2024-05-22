@@ -371,7 +371,7 @@ GLFWAPI Window glfwGetX11Window(GLFWwindow* window);
  *  @pointer_lifetime The specified string is copied before this function
  *  returns.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref clipboard
  *  @sa glfwGetX11SelectionString
@@ -399,7 +399,7 @@ GLFWAPI void glfwSetX11SelectionString(const char* string);
  *  glfwGetX11SelectionString or @ref glfwSetX11SelectionString, or until the
  *  library is terminated.
  *
- *  @thread_safety This function must only be called from the main thread.
+ *  @thread_safety This function must only be called from the core thread.
  *
  *  @sa @ref clipboard
  *  @sa glfwSetX11SelectionString
@@ -481,9 +481,9 @@ GLFWAPI struct wl_display* glfwGetWaylandDisplay(void);
  */
 GLFWAPI struct wl_output* glfwGetWaylandMonitor(GLFWmonitor* monitor);
 
-/*! @brief Returns the main `struct wl_surface*` of the specified window.
+/*! @brief Returns the core `struct wl_surface*` of the specified window.
  *
- *  @return The main `struct wl_surface*` of the specified window, or `NULL` if
+ *  @return The core `struct wl_surface*` of the specified window, or `NULL` if
  *  an [error](@ref error_handling) occurred.
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
