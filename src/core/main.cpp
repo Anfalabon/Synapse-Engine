@@ -1,4 +1,5 @@
 #include "InitializeEngine.hpp"
+#include "../debug/Timer.hpp"
 
 //direction vector is also defined as cameraFront
 //extern glm::vec3 directionVector;
@@ -11,6 +12,10 @@
 
 int main()
 {
+    Timer timer;
+    timer.Start();
+
+
     Engine *engine = new Engine();
     int8_t runningSuccessfully = 0;
     if(engine->Init())
@@ -18,6 +23,11 @@ int main()
         runningSuccessfully = engine->Run();
     }
     delete engine;
+
+
+    timer.ShutDown();
+    timer.PrintResult("Ran for: ");
+
     return runningSuccessfully;
 }
 
