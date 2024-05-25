@@ -7,7 +7,7 @@
 #include "../entity/Entities.hpp"
 #include "../entity/CoordinateTransformation.hpp"
 #include "../entity/vertexObjects.hpp"
-#include "../render/renderEntity.hpp"
+#include "../renderer/renderEntity.hpp"
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -36,6 +36,8 @@ static void clean(T *ptr)
 //class PLATFORM PhysicsEngine;
 //class PLATFORM GraphicsEngine;
 
+
+
 class [[nodiscard]] PLATFORM Engine
 {
 public:
@@ -45,6 +47,7 @@ public:
     {
         clean(camera);
         clean(window);
+        clean(renderer);
     }
     
     int8_t loadGLFW();
@@ -61,12 +64,11 @@ public:
     [[nodiscard]] int8_t Run();
 private:
 
-    bool isInitSuccess;
     Window *window;
     Camera *camera;
     std::vector<Entity*> entities;  //this should be Game engine objects but for now let's keep it as entities
-    Renderer renderer;
-    std::vector<std::future<void>> futures;
+    EntityRenderer *renderer;
+    //Renderer *renderer;
 };
 
 

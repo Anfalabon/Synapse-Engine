@@ -12,15 +12,6 @@
 #include <vector>
 
 
-//template<std::size_t N>
-namespace Tensor
-{
-    using Vector2 = glm::vec2;
-    using Vector3 = glm::vec3;
-    using Vector4 = glm::vec4;
-}
-
-
 
 class Camera
 {
@@ -35,7 +26,10 @@ public:
     explicit Camera()
         : m_deltaTime(0.0f),
           m_lastFrame(0.0f),
-          M_CAMERA_MODE(CAMERA_MODES::GAME_MODE){}
+          M_CAMERA_MODE(CAMERA_MODES::GAME_MODE)
+          {
+              motion.calculateDeltaTime();
+          }
 
     ~Camera() = default;
 

@@ -7,13 +7,13 @@
 #include <mutex>
 
 //will add serious issuses like Data Races, Race Conditions
-namespace Hilbert
+namespace Synapse
 {
 struct Threading
 {
     //let's create an custom for loop thread
     template<typename RETURN_TYPE, typename ITERATOR_TYPE>
-    static void pragma_omp_parallel_loop(ITERATOR_TYPE __first, ITERATOR_TYPE __end, unsigned char __threads_num,
+    static void S_pragma_omp_parallel_loop(ITERATOR_TYPE __first, ITERATOR_TYPE __end, unsigned char __threads_num,
                                          std::function<RETURN_TYPE(ITERATOR_TYPE)> __func) {
         assert(__threads_num>0);
         omp_set_num_threads(__threads_num);
@@ -30,7 +30,7 @@ struct Threading
 inline void compute_in_parallel()
 {
     uint64_t sum = 0;
-    Hilbert::Threading::pragma_omp_parallel_loop<void, int64_t>(1, 11, 2, [&sum](auto i)->void
+    Synapse::Threading::S_pragma_omp_parallel_loop<void, int64_t>(1, 11, 2, [&sum](auto i)->void
     {
         sum += i;
     });

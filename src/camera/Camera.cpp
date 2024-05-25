@@ -196,7 +196,8 @@ void Camera::setCurrentObjectInfo(const glm::vec3 &objectMaxSize, const glm::vec
 
 
 //check for the collision with any object(for now it's the object located at the center)
-bool Camera::wasCollided() {
+bool Camera::wasCollided()
+{
     bool pointsInsideObject = false;
     bool collisionOccured = false;
 
@@ -278,8 +279,12 @@ void Camera::fallDown()
     float gravity = -0.1f;
     float deltaTime = 0.27f;
 
-    m_cameraPos.y = m_cameraPos.y + m_cameraVelocity.y * deltaTime;
-    m_cameraVelocity.y = m_cameraVelocity.y + gravity * deltaTime;
+
+    m_cameraPos.y += m_cameraVelocity.y * PhysicsEngine::PHYSICAL_CONSTANTS::DELTATIME;
+    m_cameraVelocity.y += PhysicsEngine::PHYSICAL_CONSTANTS::GRAVITY * PhysicsEngine::PHYSICAL_CONSTANTS::DELTATIME;
+
+//    motion.increaseHeight(m_cameraVelocity.y * deltaTime);
+//    motion.increaseVerticalVelocity(PhysicsEngine::PHYSICAL_CONSTANTS::GRAVITY * deltaTime);
 
     std::cout << "Velocity while falling down: " << m_cameraVelocity.y << '\n';
     std::cout << "Position while falling down: " << m_cameraPos.y << '\n';
@@ -291,6 +296,8 @@ void Camera::fallDown()
         m_cameraVelocity.y = 0.774f;
         m_keepRunning = false;
         m_timeElapsed = 0.0f;
+
+        //motion.reset();
     }
 
 }
@@ -313,8 +320,8 @@ void Camera::jump()
     float gravity = -0.1f;    
     float deltaTime = 0.27f;     //0.167f is a standard delta time but to make it faster it has been changed   
     
-    m_cameraPos.y = m_cameraPos.y + m_cameraVelocity.y * deltaTime;
-    m_cameraVelocity.y = m_cameraVelocity.y + gravity * deltaTime;
+    m_cameraPos.y = m_cameraPos.y + m_cameraVelocity.y * PhysicsEngine::PHYSICAL_CONSTANTS::DELTATIME;
+    m_cameraVelocity.y = m_cameraVelocity.y + gravity * PhysicsEngine::PHYSICAL_CONSTANTS::DELTATIME;
 
     std::cout << "Camera's vertical velocity: " << m_cameraVelocity.y << '\n';
 
@@ -363,8 +370,8 @@ void Camera::applyVerticalMotions()
     {
         if(m_cameraPos.y >= 1.2f)
         {
-            //initVelocity(glm::vec3(0.0f, -0.49f, 0.0f));
-            initVelocity(Tensor::Vector3(0.0f, -0.49f, 0.0f));
+            initVelocity(glm::vec3(0.0f, -0.49f, 0.0f));
+            //initVelocity(Tensor::Vector3(0.0f, -0.49f, 0.0f));
 
             m_timeElapsed = 0.455f;
             m_keepRunning = true;
@@ -646,6 +653,12 @@ void Camera::lookAtTarget()
     DEBUG::__LOG__MANAGER__::LOG("Camera's target Position: ");
     DEBUG::__LOG__MANAGER__::GLM_LOG(m_targetPos);
     DEBUG::__LOG__MANAGER__::LOG('\n');
+
+
+    DEBUG::__LOG__MANAGER__::LOG("Camera's delta time: ");
+    DEBUG::__LOG__MANAGER__::LOG(motion.m_deltaTime);
+    DEBUG::__LOG__MANAGER__::LOG('\n');
+
 
     m_view = glm::lookAt(m_cameraPos, m_targetPos, m_cameraUpVector);
 }

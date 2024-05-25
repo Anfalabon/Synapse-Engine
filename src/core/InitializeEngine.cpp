@@ -20,11 +20,14 @@
 //#endif
 
 #if defined(__RELEASE__)
+    #define __UTILIZE__BRANCHPREDICTION__
     #define __RUNTIME__MULTITHREADING__
     //#define __LOADTIME__MULTITHREADING__
 #elif defined(__DEBUG__)
     #define __SINGLETHREADING__
 #endif
+
+
 
 
 #if  defined(__RUNTIME__MULTITHREADING__) || defined(__LOADTIME__MULTITHREADING__)
@@ -35,8 +38,6 @@
 
 #endif
 
-
-#define __UTILIZE__BRANCHPREDICTION__
 
 int8_t Engine::loadGLFW()
 {
@@ -138,16 +139,17 @@ void Engine::loadCamera()
 
 void Engine::loadRenderer()
 {
-    //this is only for entities renderer.
-    renderer = Renderer(entities.size());
+    //renderer = Renderer(entities.size());
+    renderer = new EntityRenderer(entities.size());
+
 #ifdef __LOADTIME__MULTITHREADING__
     omp_set_num_threads(4);
     #pragma omp parallel for
 #endif
     for(std::size_t i=0; i<entities.size(); ++i)
     {
-        renderer.initVAO(entities[i]->getVertexObjects().getVAO());
-        renderer.initIndicies(entities[i]->totalIndicies());
+        renderer->initVAO(entities[i]->getVertexObjects().getVAO());
+        renderer->initIndicies(entities[i]->totalIndicies());
     }
 
     //will add other types of renderers for other Game Engine Objects
@@ -175,7 +177,7 @@ int8_t Engine::Run()
     //core Engine loop
     while(window->running())
     {
-        renderer._zBufferBg(0.2f, 0.3f, 0.3f, 1.0f);
+        renderer->_zBufferBg(0.2f, 0.3f, 0.3f, 1.0f);
 
         window->getKeyboardInput();
         camera->getKeyboardInput(window->windowAddress());
@@ -184,7 +186,7 @@ int8_t Engine::Run()
 
 
 #ifdef __RUNTIME__MULTITHREADING__
-        Hilbert::Threading::pragma_omp_parallel_loop<void, std::size_t>(0, entities.size(), 4, [this](auto i)->void
+        Synapse::Threading::S_pragma_omp_parallel_loop<void, std::size_t>(0, entities.size(), 4, [this](auto i)->void
         {
             entities[i]->update();
         });
@@ -233,7 +235,10 @@ int8_t Engine::Run()
 #ifdef __UTILIZE__BRANCHPREDICTION__
         //using this is faster cause CPU can predict what the next memory location is going to be (using the L1 cache memory && branch prediction)
         //see the definition of this function. It's also multithreaded
-        renderer.renderEntities();
+
+        //renderer.renderEntities();
+        renderer->render();
+
 #else
         //doing this is slower cause everytime the CPU needs to access the location in slow memroy
         for(auto entity : entities)
