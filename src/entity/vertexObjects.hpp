@@ -1,11 +1,15 @@
-#ifndef VERTEXOBJECTS_H
-#define VERTEXOBJECTS_H
+#pragma once
+
 
 #include <glad/glad.hpp>
 //#include "../external/glad/include/glad/glad.hpp"
 
 #include <iostream>
 
+
+
+namespace Synapse
+{
 
 typedef struct Vertex
 {
@@ -31,9 +35,9 @@ public:
                            GLuint indiciesSizeBytes, const void *indiciesData) noexcept;
     ~VertexObjects();
 
-    [[nodiscard]] inline GLuint &getVAO(){return _VAO;}
-    [[nodiscard]] inline GLuint &getEBO(){return _EBO;}
-    [[nodiscard]] inline GLuint &getVBO(){return _VBO;}
+    [[nodiscard]] inline GLuint &GetVAO(){return _VAO;}
+    [[nodiscard]] inline GLuint &GetEBO(){return _EBO;}
+    [[nodiscard]] inline GLuint &GetVBO(){return _VBO;}
 
 private:
     GLuint _VBO;
@@ -49,4 +53,6 @@ typedef struct Vertex Vertex;
 typedef struct VertexObjects VertexObjects;
 
 
-#endif //VERTEXOBJECTS_H
+
+}
+

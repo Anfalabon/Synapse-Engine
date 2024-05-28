@@ -1,11 +1,4 @@
-//
-// Created by anfal on 4/29/24.
-//
-
-#ifndef SIMULATION_VERTICIESINDICIESDATA_HPP
-#define SIMULATION_VERTICIESINDICIESDATA_HPP
-
-
+#pragma once
 
 
 GLuint totalVerticies = 21;
@@ -169,9 +162,3 @@ GLuint *indiciesData = new GLuint[totalIndicies]{
 
 
 
-
-
-
-
-
-#endif //SIMULATION_VERTICIESINDICIESDATA_HPP

@@ -9,9 +9,10 @@
 #ifndef PLATFORM
 #define PLATFORM
 
+namespace Synapse
+{
 
-
-struct PLATFORM PhysicsEngine
+struct PLATFORM Physics
 {
 public:
 
@@ -22,10 +23,11 @@ public:
         static constexpr float DELTATIME = 0.27f;
     };
 
-    PhysicsEngine() = default;
-    ~PhysicsEngine() = default;
+    Physics() = default;
 
-    inline void calculateDeltaTime()
+    ~Physics() = default;
+
+    inline void CalculateDeltaTime()
     {
         float currentFrame = glfwGetTime();
         float currentDeltaTime = m_deltaTime;
@@ -33,63 +35,55 @@ public:
         m_lastFrame = currentFrame;
     }
 
+    //Kinematics
+    inline void InitPosition(const glm::vec3 &pos) { m_pos = pos; }
+    inline void InitVelocity(const glm::vec3 &velocity) { m_velocity = velocity; }
 
-
-    inline void initPosition(const glm::vec3 &pos){m_pos = pos;}
-    inline void initVelocity(const glm::vec3 &velocity){m_velocity = velocity;}
-
-    inline void changeHeight(GLfloat height){m_pos.y = height;}
-    inline void increaseHeight(GLfloat deltaHeight){m_pos.y += deltaHeight;}
-    inline void decreaseHeight(GLfloat deltaHeight){m_pos -= deltaHeight;}
-
-    inline void changeVerticalVelocity(GLfloat velocity){m_velocity.y = velocity;}
-    inline void increaseVerticalVelocity(GLfloat deltaVelocity){m_velocity.y += deltaVelocity;}
-    inline void decreaseVerticalVelocity(GLfloat deltaVelocity){m_velocity.y -= deltaVelocity;}
+    inline void ChangeHeight(GLfloat height) { m_pos.y = height; }
+    inline void IncreaseHeight(GLfloat deltaHeight) { m_pos.y += deltaHeight; }
+    inline void DecreaseHeight(GLfloat deltaHeight) { m_pos -= deltaHeight; }
+    inline void ChangeVerticalVelocity(GLfloat velocity) { m_velocity.y = velocity; }
+    inline void IncreaseVerticalVelocity(GLfloat deltaVelocity) { m_velocity.y += deltaVelocity; }
+    inline void DecreaseVerticalVelocity(GLfloat deltaVelocity) { m_velocity.y -= deltaVelocity; }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    inline void initPosX(){}
-    inline void initPosY(){}
-    inline void initPosZ(){}
+    inline void InitPosX() {}
+    inline void InitPosY() {}
+    inline void InitPosZ() {}
 
-    inline void initVelocityX(){}
-    inline void initVelocityY(){}
-    inline void initVelocityZ(){}
+    inline void InitVelocityX() {}
+    inline void InitVelocityY() {}
+    inline void InitVelocityZ() {}
+
+    inline void IncreasePosX() {}
+    inline void IncreasePosY() {}
+    inline void IncreasePosZ() {}
+
+    inline void IncreaseVelocityX() {}
+    inline void IncreaseVelocityY() {}
+    inline void IncreaseVelocityZ() {}
 
 
-    inline void increasePosX(){}
-    inline void increasePosY(){}
-    inline void increasePosZ(){}
+    inline void SetPosX() {}
+    inline void SetPosY() {}
+    inline void SetPosZ() {}
 
-    inline void increaseVelocityX(){}
-    inline void increaseVelocityY(){}
-    inline void increaseVelocityZ(){}
-
-
-    inline void setPosX(){}
-    inline void setPosY(){}
-    inline void setPosZ(){}
-
-    inline void setVelocityX(){}
-    inline void setVelocityY(){}
-    inline void setVelocityZ(){}
+    inline void SetVelocityX() {}
+    inline void SetVelocityY() {}
+    inline void SetVelocityZ() {}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
-    void setCurrentObjectInfo(const glm::vec3 &objectMaxSize, const glm::vec3 &objectMinSize);
-
-    inline void reset(){}
-
-    [[nodiscard]] bool wasCollided();
-    void fallDown();
-    void jump();
-    void applyVerticalMotions();
-
-    void applyPhysics();
-
-
+    void SetCurrentObjectInfo(const glm::vec3 &objectMaxSize, const glm::vec3 &objectMinSize);
+    inline void Reset() {}
+    [[nodiscard]] bool WasCollided();
+    void FallDown();
+    void Jump();
+    void ApplyVerticalMotions();
+    void ApplyPhysics();
 
 
     [[nodiscard]] int8_t Init();
@@ -118,6 +112,8 @@ public:
     float m_lastFrame = 0.0f;
 
 };
+
+}
 
 
 #endif

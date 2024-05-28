@@ -21,14 +21,6 @@
 #include <mutex>
 
 
-template<typename T>
-static void clean(T *ptr)
-{
-    if(ptr!=nullptr)
-        delete ptr;
-}
-
-
 
 #define PLATFORM
 
@@ -36,7 +28,16 @@ static void clean(T *ptr)
 //class PLATFORM PhysicsEngine;
 //class PLATFORM GraphicsEngine;
 
+namespace Synapse
+{
 
+
+template<typename T>
+static void Clean(T *ptr)
+{
+    if(ptr!=nullptr)
+        delete ptr;
+}
 
 class [[nodiscard]] PLATFORM Engine
 {
@@ -45,31 +46,33 @@ public:
 
     ~Engine()
     {
-        clean(camera);
-        clean(window);
-        clean(renderer);
+        Clean(camera);
+        Clean(window);
+        Clean(renderer);
     }
-    
-    int8_t loadGLFW();
-    void   loadWindow();
-    int8_t loadGLAD();
-    void   setViewPort();
-    void   loadEntities();
-    void   loadCamera();
-    void   loadRenderer();
 
+    int8_t LoadGLFW();
+    void   LoadWindow();
+    int8_t LoadGLAD();
+    void   SetViewPort();
+    void   LoadEntities();
+    void   LoadCamera();
+    void   LoadRenderer();
 
     [[nodiscard]] int8_t Init();
-    [[nodiscard]] int8_t Init(const unsigned int&);
+    [[nodiscard]] int8_t Init(const unsigned int &);
     [[nodiscard]] int8_t Run();
+
 private:
 
     Window *window;
     Camera *camera;
-    std::vector<Entity*> entities;  //this should be Game engine objects but for now let's keep it as entities
+    std::vector<Entity *> entities;  //this should be Game engine objects but for now let's keep it as entities
     EntityRenderer *renderer;
     //Renderer *renderer;
 };
+
+}
 
 
 #if 0

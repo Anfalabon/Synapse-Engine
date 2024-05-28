@@ -38,8 +38,11 @@
 
 #endif
 
+namespace Synapse
+{
 
-int8_t Engine::loadGLFW()
+
+int8_t Engine::LoadGLFW()
 {
     if (!glfwInit())
     {
@@ -49,16 +52,16 @@ int8_t Engine::loadGLFW()
     return 0;
 }
 
-void Engine::loadWindow()
+void Engine::LoadWindow()
 {
     window = new Window(1920.0f, 1080.0f, "Simulation Engine");
-    window->init();
+    window->Init();
 }
 
 
-int8_t Engine::loadGLAD()
+int8_t Engine::LoadGLAD()
 {
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
     {
         std::cerr << "Failed to load GLAD" << '\n';
         return -1;
@@ -67,14 +70,13 @@ int8_t Engine::loadGLAD()
 }
 
 
-void Engine::setViewPort()
+void Engine::SetViewPort()
 {
     glViewport(0, 0, window->WIDTH(), window->HEIGHT());
 }
 
 
-
-void Engine::loadEntities()
+void Engine::LoadEntities()
 {
 
     //will decrease the loading time of the Engine with 10s and thousands of object initialization
@@ -87,6 +89,8 @@ void Engine::loadEntities()
     constexpr std::size_t totalEntities = 30003;
     entities.reserve(totalEntities);
 
+    //even though there are no shader files for the ground and anotherCube as given below in the entity constructor but still it is running.
+    //will fix it.
     entities.push_back(new Entity(data::cubeVerticiesData, data::cubeTotalVerticies,
                                   data::cubeIndiciesData, data::cubeTotalIndicies,
                                   "../src/shader/GLSL/vertexShaderSource1.glslv",
@@ -104,96 +108,96 @@ void Engine::loadEntities()
 
     //initialize the other null entities
     //for now this is because of the benchmarking
-    for(std::size_t i=3; i<totalEntities; ++i)
+    for (std::size_t i = 3; i < totalEntities; ++i)
     {
         entities.push_back(new Entity(nullptr, 0, nullptr, 0, "", ""));
     }
 
     //load the shaders of the entities
-    for(auto entity : entities)
+    for (auto entity: entities)
     {
-        entity->loadShader();
+        entity->LoadShader();
     }
 
 }
 
 
-void Engine::loadCamera()
+void Engine::LoadCamera()
 {
     camera = new Camera();
-    Camera::setupMouse(window->windowAddress());
+    Camera::SetupMouse(window->WindowAddress());
 
     //giving one single shader program id of one entity also renders all the other entities
     //will see this
     //camera->setShaderProgramID(entities[0]->getShader().ProgramID());
 #ifdef __LOADTIME__MULTITHREADING__
     omp_set_num_threads(4);
-    #pragma omp parallel for
+#pragma omp parallel for
 #endif
-    for(std::size_t i=0; i<entities.size(); ++i)
+    for (std::size_t i = 0; i < entities.size(); ++i)
     {
-        camera->addShaderProgramID(entities[i]->getShader().ProgramID());
+        camera->AddShaderProgramID(entities[i]->GetShader().ProgramID());
     }
 }
 
 
-void Engine::loadRenderer()
+void Engine::LoadRenderer()
 {
     //renderer = Renderer(entities.size());
     renderer = new EntityRenderer(entities.size());
 
 #ifdef __LOADTIME__MULTITHREADING__
     omp_set_num_threads(4);
-    #pragma omp parallel for
+#pragma omp parallel for
 #endif
-    for(std::size_t i=0; i<entities.size(); ++i)
+    for (std::size_t i = 0; i < entities.size(); ++i)
     {
-        renderer->initVAO(entities[i]->getVertexObjects().getVAO());
-        renderer->initIndicies(entities[i]->totalIndicies());
+        renderer->InitVAO(entities[i]->GetVertexObjects().GetVAO());
+        renderer->InitIndicies(entities[i]->TotalIndicies());
     }
 
     //will add other types of renderers for other Game Engine Objects
 }
 
 
-
 int8_t Engine::Init()
 {
-    this->loadGLFW();
-    this->loadWindow();
-    this->loadGLAD();
-    this->setViewPort();
-    this->loadEntities();
-    this->loadCamera();
-    this->loadRenderer();
+    this->LoadGLFW();
+    this->LoadWindow();
+    this->LoadGLAD();
+    this->SetViewPort();
+    this->LoadEntities();
+    this->LoadCamera();
+    this->LoadRenderer();
 
     return __SUCCESS__;
 }
 
 
-
 int8_t Engine::Run()
 {
     //core Engine loop
-    while(window->running())
+    while (window->Running())
     {
         renderer->_zBufferBg(0.2f, 0.3f, 0.3f, 1.0f);
 
-        window->getKeyboardInput();
-        camera->getKeyboardInput(window->windowAddress());
+        window->GetKeyboardInput();
+        camera->GetKeyboardInput(window->WindowAddress());
 
-        camera->update();
+        camera->Update();
 
 
 #ifdef __RUNTIME__MULTITHREADING__
-        Synapse::Threading::S_pragma_omp_parallel_loop<void, std::size_t>(0, entities.size(), 4, [this](auto i)->void
+        Synapse::Threading::S_pragma_omp_parallel_loop<void, std::size_t>(0, entities.size(), 4,
+        [this](auto i) -> void
         {
-            entities[i]->update();
+            entities[i]->Update();
         });
+
 #elif defined(__SINGLETHREADING__)
         for(auto entity : entities)
         {
-            entity->update();
+            entity->Update();
         }
 #endif
 
@@ -237,31 +241,28 @@ int8_t Engine::Run()
         //see the definition of this function. It's also multithreaded
 
         //renderer.renderEntities();
-        renderer->render();
-
+        renderer->Render();
 #else
         //doing this is slower cause everytime the CPU needs to access the location in slow memroy
         for(auto entity : entities)
         {
-            entity->render();
+            entity->Render();
         }
 #endif
 
 
         //this is definately not for benchmarking
-        renderingInfo::framesPerSecond();
+        renderingInfo::FramesPerSecond();
 
-        window->swapBuffers();
-        window->pollEvents();
+        window->SwapBuffers();
+        window->PollEvents();
     }
 
     return __SUCCESS__;
 }
 
 
-
-
-
+}
 
 
 

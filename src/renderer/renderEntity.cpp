@@ -6,7 +6,8 @@
 
 #define __MULTITHREADING__RENDERER__
 
-
+namespace Synapse
+{
 //set the background color
 //enable the depth test (z buffer)
 //disable the cull face
@@ -35,13 +36,14 @@ void Renderer::_zBufferBg(float r, float g, float b, float w)
 
 //rendering like this is much faster as we are storing the entities infos' in a contiguous memory.
 //with this CPU's L1 cahce memroy get's more chance to deal with faster accessing
-void EntityRenderer::render()
+void EntityRenderer::Render()
 {
     Synapse::Threading::S_pragma_omp_parallel_loop<void, std::size_t>(0, m_totalEntities, 4, [this](auto i)->void
     {
-        glBindVertexArray(m_entitiesVAO[i]);
-        glDrawElements(GL_TRIANGLES, m_entitiesTotalInidicies[i], GL_UNSIGNED_INT, 0);
+          glBindVertexArray(m_entitiesVAO[i]);
+          glDrawElements(GL_TRIANGLES, m_entitiesTotalInidicies[i], GL_UNSIGNED_INT, 0);
     });
 }
 
 
+}

@@ -1,6 +1,5 @@
+#pragma once
 
-#ifndef WINDOW_HPP
-#define WINDOW_HPP
 
 #include "../debug/LOG.hpp"
 
@@ -13,40 +12,48 @@
 #include <glm/ext.hpp>
 #include <glm/gtx/string_cast.hpp>
 
+
+
+namespace Synapse
+{
+
 class Window
-{    
+{
 public:
 
     Window() = default;
-    Window(GLfloat WIDTH, GLfloat HEIGHT, const char* TITLE);
-    
+    Window(GLfloat WIDTH, GLfloat HEIGHT, const char *TITLE);
+
     //void giveHint();
     //bool initSuccessLog();
-    void init();
-    void resize();
-    void exitOnEscape();
-    void keyPressedLog(){DEBUG::__LOG__MANAGER__::LOG("key pressed!");}
-    void getKeyboardInput();
+    void Init();
+    void Resize();
+    void ExitOnEscape();
+    void KeyPressedLog(){ DEBUG::__LOG__MANAGER__::LOG("key pressed!"); }
+    void GetKeyboardInput();
 
-    static void mouseInput(GLFWwindow* window ,double xpos, double ypos);    
-    void swapBuffers();
-    void terminate();
-    void pollEvents();
+    static void MouseInput(GLFWwindow *window, double xpos, double ypos);
 
-    [[nodiscard]] bool running(); 
-    [[nodiscard]] inline GLFWwindow *windowAddress(){return m_window;}
-    [[nodiscard]] inline GLfloat WIDTH(){return m_WIDTH;}
-    [[nodiscard]] inline GLfloat HEIGHT(){return m_HEIGHT;}
+    void SwapBuffers();
+    void Terminate();
+    void PollEvents();
+
+    [[nodiscard]] bool Running();
+    [[nodiscard]] inline GLFWwindow *WindowAddress(){ return m_window; }
+    [[nodiscard]] inline GLfloat WIDTH(){ return m_WIDTH; }
+    [[nodiscard]] inline GLfloat HEIGHT(){ return m_HEIGHT; }
 
 private:
 
-    GLFWwindow  *m_window;    
+    GLFWwindow *m_window;
     GLfloat m_WIDTH;
     GLfloat m_HEIGHT;
-    const char* m_TITLE;
+    const char *m_TITLE;
 };
 
-#endif  //file guard
+
+
+}
 
 
 

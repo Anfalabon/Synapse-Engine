@@ -9,8 +9,11 @@
 
 
 
- void Shader::readSources()
- {
+namespace Synapse
+{
+
+void Shader::ReadSources()
+{
      std::ifstream vertexShaderFile(m_vertexShader.path);
      std::ifstream fragmentShaderFile(m_fragmentShader.path);
 
@@ -21,6 +24,7 @@
                 "else\n"
                 "    echo \"File or directory does not exist.\"\n"
                 "fi");
+#endif
 
      if(vertexShaderFile.fail())
      {
@@ -39,7 +43,6 @@
      std::cout << "Vertex Shader file: " << m_vertexShader.path << '\n';
      std::cout << "Fragment Shader file: " << m_fragmentShader.path << '\n';
 
-#endif
      std::string vertexLine;
      while ( std::getline(vertexShaderFile, vertexLine) )
          m_vertexShader.source += vertexLine + '\n';
@@ -55,7 +58,7 @@
 
      vertexShaderFile.close();
      fragmentShaderFile.close();
- }
+}
 
 
 
@@ -112,20 +115,20 @@ const char *fragmentSS = "#version 330 core\n"
 
 
 
- void Shader::setup()
- {
-     this->readSources();
+void Shader::Setup()
+{
+     this->ReadSources();
      const char* vertexShaderSource = m_vertexShader.source.c_str();
      const char* fragmentShaderSource = m_fragmentShader.source.c_str();
 
-//     const char* vertexShaderSource = vertexSS;
-//     const char* fragmentShaderSource = fragmentSS;
+    //const char* vertexShaderSource = vertexSS;
+    //const char* fragmentShaderSource = fragmentSS;
 
- #define __DEBUG__
- #ifdef __DEBUG__
+#define __DEBUG__
+#ifdef __DEBUG__
      DEBUG::__LOG__MANAGER__::LOG(vertexShaderSource);
      DEBUG::__LOG__MANAGER__::LOG(fragmentShaderSource);
- #endif
+#endif
 
      //compile the vertex shader source
      glShaderSource(m_vertexShaderID, 1, &vertexShaderSource, NULL);
@@ -134,19 +137,19 @@ const char *fragmentSS = "#version 330 core\n"
      //compile the fragment shader source
      glShaderSource(m_fragmentShaderID, 1, &fragmentShaderSource, NULL);
      glCompileShader(m_fragmentShaderID);
- }
+}
 
 
- void Shader::link()
- {
+void Shader::Link()
+{
      //attach and link the vertex and fragment shader
      glAttachShader(m_shaderProgramID, m_vertexShaderID);
      glAttachShader(m_shaderProgramID, m_fragmentShaderID);
      glLinkProgram(m_shaderProgramID);
- }
+}
 
 
-void Shader::setupSuccessLog()
+void Shader::SetupSuccessLog()
 {
     int success;
     char infoLog[512];
@@ -159,24 +162,29 @@ void Shader::setupSuccessLog()
 }
 
 
-void Shader::remove()
- {
+void Shader::Remove()
+{
      //delete both the shaders ID
      glDeleteShader(m_vertexShaderID);
      glDeleteShader(m_fragmentShaderID);
- }
+}
 
 
- void Shader::useProgram()
- {
+void Shader::UseProgram()
+{
      glUseProgram(m_shaderProgramID);
- }
+}
 
 
- void Shader::removeProgram()
- {
+void Shader::RemoveProgram()
+{
      glDeleteProgram(m_shaderProgramID);
- }
+}
+
+
+
+}
+
 
 
 

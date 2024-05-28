@@ -10,11 +10,14 @@
 //then add or fix anything if needed.
 //lastly delete all the previous obj files and generate new obj files using make
 
-int main()
+
+namespace Synapse
+{
+
+int8_t Main()
 {
     Timer timer;
     timer.Start();
-
 
     Engine *engine = new Engine();
     int8_t runningSuccessfully = 0;
@@ -31,6 +34,14 @@ int main()
     return runningSuccessfully;
 }
 
+
+}
+
+
+
+
+
+int main(){return static_cast<int>(Synapse::Main());}
 
 
 

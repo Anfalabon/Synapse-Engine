@@ -1,7 +1,4 @@
-
-
-#ifndef COORDINATETRANSFORMATION_HPP
-#define COORDINATETRANSFORMATION_HPP
+#pragma once
 
 
 #include <glad/glad.hpp>
@@ -12,6 +9,9 @@
 
 
 
+namespace Synapse
+{
+
 struct CoordinateTransformation
 {
     CoordinateTransformation() = default;
@@ -21,7 +21,7 @@ struct CoordinateTransformation
     glm::mat4 m_perspective = glm::mat4(1.0);
 
     //get the location of model matrix uniform in vertex shader
-    inline void modelLocation(GLuint shaderProgramID)
+    inline void ModelLocation(GLuint shaderProgramID)
     {
         GLuint modelLocation = glGetUniformLocation(shaderProgramID, "model");
         glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(m_model));
@@ -30,14 +30,14 @@ struct CoordinateTransformation
     }
 
     //view and perspective matrix and location finder is going to be in the Camera class
-    inline void viewLocation(GLuint shaderProgramID)
+    inline void ViewLocation(GLuint shaderProgramID)
     {
         GLuint viewLocation = glGetUniformLocation(shaderProgramID, "view");
         glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(m_view));
     }
 
     //get the location of perspective matrix uniform in vertex shader
-    inline void perspectiveLocation(GLuint shaderProgramID)
+    inline void PerspectiveLocation(GLuint shaderProgramID)
     {
         GLuint perspectiveLocation = glGetUniformLocation(shaderProgramID, "perspective");
         glUniformMatrix4fv(perspectiveLocation, 1, GL_FALSE, glm::value_ptr(m_perspective));
@@ -48,4 +48,4 @@ struct CoordinateTransformation
 typedef struct CoordinateTransformation CoordinateTransformation;
 
 
-#endif //   COORDINATETRANSFORMATION_HPP
+}

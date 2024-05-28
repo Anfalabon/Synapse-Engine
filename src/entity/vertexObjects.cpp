@@ -3,6 +3,8 @@
 #include "vertexObjects.hpp"
 
 
+namespace Synapse
+{
 
 VertexObjects::VertexObjects(GLuint verticiesSizeBytes, const void *verticiesData,
                              GLuint indiciesSizeBytes, const void *indiciesData) noexcept
@@ -54,3 +56,7 @@ VertexObjects::~VertexObjects()
     glDeleteBuffers(1, &_VBO);
     glDeleteBuffers(1, &_EBO);
 }
+
+
+}
+

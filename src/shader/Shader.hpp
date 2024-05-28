@@ -7,11 +7,13 @@
 #include <string.h>
 #include <vector>
 
-//for me this is much better than the second one which has more useless abstraction
 
- class Shader
- {
- public:
+namespace Synapse
+{
+
+class Shader
+{
+public:
     typedef struct ShaderFile
     {
         std::string source;
@@ -36,16 +38,16 @@
          glDeleteProgram(m_shaderProgramID);
      }
 
-     void readSources();
+     void ReadSources();
      [[nodiscard]] GLuint ProgramID(){return m_shaderProgramID;}
-     void setup();
-     void link();
-     void setupSuccessLog();
-     void remove();
-     void removeProgram();
-     void useProgram();
+     void Setup();
+     void Link();
+     void SetupSuccessLog();
+     void Remove();
+     void RemoveProgram();
+     void UseProgram();
 
- private:
+private:
 
      //ID's of the shaders
      GLuint m_vertexShaderID;
@@ -56,7 +58,12 @@
      ShaderFile m_vertexShader;
      ShaderFile m_fragmentShader;
 
- };
+};
+
+
+
+
+}
 
 
 

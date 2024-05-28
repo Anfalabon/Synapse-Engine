@@ -10,7 +10,8 @@
 #include "../entity/Entities.hpp"
 
 
-
+namespace Synapse
+{
 
 class Renderer
 {
@@ -19,7 +20,8 @@ public:
     ~Renderer() = default;
 
     void _zBufferBg(float r, float g, float b, float w);
-    virtual void render(){};
+
+    virtual void Render() = 0;
 };
 
 
@@ -29,19 +31,19 @@ public:
 
     EntityRenderer() = default;
     EntityRenderer(std::size_t totalEntities)
-        :m_totalEntities(totalEntities)
-        {
-            m_entitiesVAO.reserve(m_totalEntities);
-            m_entitiesTotalInidicies.reserve(m_totalEntities);
-        }
+            : m_totalEntities(totalEntities)
+    {
+        m_entitiesVAO.reserve(m_totalEntities);
+        m_entitiesTotalInidicies.reserve(m_totalEntities);
+    }
 
-    inline void initVAO(GLuint VAO){m_entitiesVAO.push_back(VAO);}
-    inline void initIndicies(GLuint totalEntityIndicies){m_entitiesTotalInidicies.push_back(totalEntityIndicies);}
+    inline void InitVAO(GLuint VAO){m_entitiesVAO.push_back(VAO);}
+    inline void InitIndicies(GLuint totalEntityIndicies){m_entitiesTotalInidicies.push_back(totalEntityIndicies);}
 
     //void renderEntitiesPartially(std::size_t start, std::size_t end);
 
 
-    void render() override;
+    void Render() override;
 
 private:
 
@@ -51,15 +53,14 @@ private:
 };
 
 
-
-
 class ImageRenderer : public Renderer
 {
 public:
-    void render() override;
+    void Render() override;
+
 private:
-    std::vector<uint64_t> pixels;
+    std::vector <uint64_t> pixels;
 };
 
 
-
+}

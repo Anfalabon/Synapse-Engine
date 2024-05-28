@@ -12,6 +12,10 @@
 #include <vector>
 
 
+namespace Synapse
+{
+
+
 class Camera
 {
 public:
@@ -23,51 +27,48 @@ public:
     };
 
     explicit Camera()
-        : m_deltaTime(0.0f),
-          m_lastFrame(0.0f),
-          M_CAMERA_MODE(CAMERA_MODES::GAME_MODE)
-          {
-              motion.calculateDeltaTime();
-          }
+            : m_deltaTime(0.0f),
+              m_lastFrame(0.0f),
+              M_CAMERA_MODE(CAMERA_MODES::GAME_MODE)
+    {
+        motion.CalculateDeltaTime();
+    }
 
     ~Camera() = default;
 
 
-    void setCameraMode(CAMERA_MODES M);
-    void changeCameraMode(){} //will declare it later
-    void addShaderProgramID(GLuint shaderProgramID);
-    void getPerspectiveMatrixLocation();
-    void getViewMatrixLocation();
-    void updatePerspective();
-    void updateView(glm::mat4 &view);
-    void lookAtTarget();   //this is the overloaded function of glm::lookAt(). So the it will return : return glm::lookAt(cameraPos, targetPos, upVecPos)
-    void isLookingAtEntity();
-    void updateCameraSpeed();
-    void setCurrentObjectInfo(const glm::vec3 &maxObjectRange, const glm::vec3 &minObjectRange);
+    void SetCameraMode(CAMERA_MODES M);
+    void ChangeCameraMode() {} //will declare it later
+    void AddShaderProgramID(GLuint shaderProgramID);
+    void GetPerspectiveMatrixLocation();
+    void GetViewMatrixLocation();
+    void UpdatePerspective();
+    void UpdateView(glm::mat4 &view);
+    void LookAtTarget();   //this is the overloaded function of glm::lookAt(). So the it will return : return glm::lookAt(cameraPos, targetPos, upVecPos)
+    void IsLookingAtEntity();
+    void UpdateCameraSpeed();
+    void SetCurrentObjectInfo(const glm::vec3 &maxObjectRange, const glm::vec3 &minObjectRange);
 
 
     //this is the physics part
     //will separate this physics part and generalize meaning the physics will work not only for the Camera but also for other Entities
     //for some general physics stuffs will keep them in the Physics Engine class
-    bool wasCollided();
-    void initVelocity(const glm::vec3 &velocity); //throw with initial velocity
-    void fallDown();
-    void jump();
-    void applyVerticalMotions();
+    bool WasCollided();
+    void InitVelocity(const glm::vec3 &velocity); //throw with initial velocity
+    void FallDown();
+    void Jump();
+    void ApplyVerticalMotions();
 
-    void applyPhysics();
-
-
-
-    float zoomValue();
-    bool keyPressed(GLFWwindow *m_window, const uint16_t KEYTOKEN);
-    void getKeyboardInput(GLFWwindow* window);
+    void ApplyPhysics();
 
 
-    void update();
+    bool KeyPressed(GLFWwindow *m_window, const uint16_t KEYTOKEN);
+    void GetKeyboardInput(GLFWwindow *window);
+
+    void Update();
 
 //    static void calculateDirectionVector();    //this is equavalent to calculating the cameraFront vector
-    static void setupMouse(GLFWwindow* window);
+    static void SetupMouse(GLFWwindow *window);
 
 
 private:
@@ -76,14 +77,14 @@ private:
     //may initialize these vectors and the matix in the initializer list
     //glm::vec3 m_directionVector = glm::vec3(0.0f, 0.0f, -1.0f);
 
-    struct PhysicsEngine motion;
+    struct Physics motion;
 
     glm::vec3 m_cameraPos = glm::vec3(3.0f, 0.0f, 3.0f);
     glm::vec3 m_cameraPosWhileCollision = glm::vec3(3.0f, 0.0f, 3.0f);
     glm::vec3 m_targetPos = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 m_cameraUpVector = glm::vec3(0.0f, 1.0f, 0.0f);   //camera up vector is arbitary
 
-    glm::vec3 m_cameraVelocity = glm::vec3(0.0f,  0.774f, 0.0f);
+    glm::vec3 m_cameraVelocity = glm::vec3(0.0f, 0.774f, 0.0f);
 
 
     //Physics motion(m_cameraPos, m_cameraVelocity);
@@ -93,7 +94,6 @@ private:
 
     glm::vec3 m_objectMaxSize = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 m_objectMinSize = glm::vec3(0.0f, 0.0f, 0.0f);
-
 
 
     //bool m_jumped = false;
@@ -117,13 +117,13 @@ private:
     float m_deltaTime;
     float m_lastFrame;
 
-    bool  m_zoomed = false;
+    bool m_zoomed = false;
     float m_zoomValue = 45.0f;  //this is basically the Field of view of the camera
 
-    bool  m_crouch = false;
+    bool m_crouch = false;
 
     //GLuint m_shaderProgramID;
-    std::vector<GLuint> m_shaderProgramIDs;
+    std::vector <GLuint> m_shaderProgramIDs;
 
     bool m_firstMouse = true;
 
@@ -135,3 +135,9 @@ private:
     const CAMERA_MODES M_CAMERA_MODE;
 
 };
+
+
+
+
+
+}

@@ -6,6 +6,10 @@
 #include <vertexObjects.hpp>
 
 
+
+namespace Synapse
+{
+
 //each of the entity data will go in seperate header files(or maybe text or hex files which will be later retrived by fstream)
 //and will include each of the header files in one single file called 'entitiesAttributesData.hpp' which is the current file
 
@@ -90,6 +94,10 @@ inline GLuint *anotherCubeIndiciesData = new GLuint[anotherCubeTotalIndicies]{
 };
 
 }
+
+
+}
+
 
 
 #endif //SIMULATION_ENTITIESATTRIBUTESDATA_H

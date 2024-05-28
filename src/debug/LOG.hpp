@@ -5,6 +5,9 @@
 #include <iostream>
 
 
+namespace Synapse
+{
+
 namespace DEBUG
 {
 struct __LOG__MANAGER__
@@ -14,4 +17,7 @@ struct __LOG__MANAGER__
     template<typename T> inline static void SYSTEM_LOG(T __system__cmd__) { system(__system__cmd__); }
 };
 }
+
+}
+
 

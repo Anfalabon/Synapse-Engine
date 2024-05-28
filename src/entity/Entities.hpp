@@ -1,6 +1,4 @@
-#ifndef ENTITIES_HPP
-#define ENTITIES_HPP
-
+#pragma once
 
 #include <glad/glad.hpp>
 
@@ -12,6 +10,10 @@
 
 #include <iostream>
 
+
+
+namespace Synapse
+{
 
 
 class Entity
@@ -30,29 +32,29 @@ public:
     [[nodiscard]] inline GLuint verticiesSizeBytes(){return m_verticiesSizeBytes;}
     [[nodiscard]] inline GLuint indiciesSizeBytes(){return m_indiciesSizeBytes;}
 
-    [[nodiscard]] inline GLuint totalverticies(){return m_totalVerticies;}
-    [[nodiscard]] inline GLuint totalIndicies(){return m_totalIndicies;}
+    [[nodiscard]] inline GLuint Totalverticies(){return m_totalVerticies;}
+    [[nodiscard]] inline GLuint TotalIndicies(){return m_totalIndicies;}
 
 
 
-    [[nodiscard]] inline Shader& getShader(){return m_shader;}
-    [[nodiscard]] inline CoordinateTransformation& getTransformation(){return m_coordinateTransform;}
-    [[nodiscard]] inline VertexObjects& getVertexObjects(){return m_VO;}
+    [[nodiscard]] inline Shader& GetShader(){return m_shader;}
+    [[nodiscard]] inline CoordinateTransformation& GetTransformation(){return m_coordinateTransform;}
+    [[nodiscard]] inline VertexObjects& GetVertexObjects(){return m_VO;}
 
-    void loadShader();
+    void LoadShader();
 
 //#ifdef __DEBUG__
-    void printVerticiesData();
-    void printIndiciesData();
+    void PrintVerticiesData();
+    void PrintIndiciesData();
 //#endif
 
     //apply transformation to the Entity
-    void translate(glm::vec3 translationVec);
-    void rotate(float angleToRotateDegrees, glm::vec3 rotationVec);
-    void scale();
+    void Translate(glm::vec3 translationVec);
+    void Rotate(float angleToRotateDegrees, glm::vec3 rotationVec);
+    void Scale();
 
-    void render();
-    void update();
+    void Render();
+    void Update();
 
 private:
 
@@ -76,6 +78,4 @@ private:
 
 
 
-
-
-#endif // ENTITIES_HPP
+}

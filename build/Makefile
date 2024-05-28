@@ -35,8 +35,8 @@ LDFLAGS=-L../src/shader -L../vendor/GLFW/lib -lglfw -L../vendor/glad/lib -lGL
 
 
 
-start_graphics_engine: obj/glad.o obj/PhysicsEngine.o obj/Entities.o obj/vertexObjects.o obj/Shader.o obj/renderEntity.o obj/Window.o obj/Camera.o obj/InitializeEngine.o obj/main.o
-		$(CXX) $(CXXFLAGS) -o start_graphics_engine obj/glad.o obj/PhysicsEngine.o obj/Entities.o obj/vertexObjects.o obj/Shader.o obj/renderEntity.o obj/Window.o obj/Camera.o obj/InitializeEngine.o obj/main.o $(LDFLAGS)
+start_game_engine: obj/glad.o obj/PhysicsEngine.o obj/Entities.o obj/vertexObjects.o obj/Shader.o obj/renderEntity.o obj/Window.o obj/Camera.o obj/InitializeEngine.o obj/main.o
+		$(CXX) $(CXXFLAGS) -o start_game_engine obj/glad.o obj/PhysicsEngine.o obj/Entities.o obj/vertexObjects.o obj/Shader.o obj/renderEntity.o obj/Window.o obj/Camera.o obj/InitializeEngine.o obj/main.o $(LDFLAGS)
 
 
 
@@ -63,7 +63,7 @@ obj/renderEntity.o: ../src/renderer/renderEntity.cpp ../src/renderer/renderEntit
 obj/Window.o: ../src/window/Window.cpp ../src/window/Window.hpp ../src/debug/LOG.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/window/Window.cpp -o obj/Window.o
 
-obj/Camera.o: ../src/camera/Camera.cpp	../src/camera/Camera.hpp ../src/debug/LOG.hpp ../src/debug/RenderingInfoLog.hpp ../src/physics/PhysicsEngine.hpp
+obj/Camera.o: ../src/camera/Camera.cpp	../src/camera/Camera.hpp ../src/debug/LOG.hpp ../src/debug/RenderingInfoLog.hpp ../src/physics/PhysicsEngine.hpp ../src/camera/Cursor.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/camera/Camera.cpp -o obj/Camera.o
 
 obj/InitializeEngine.o: ../src/core ../src/core ../src/debug/LOG.hpp ../src/entity/Entities.hpp ../src/debug/RenderingInfoLog.hpp ../src/entity/vertexObjects.hpp ../src/shader/Shader.hpp ../src/renderer/renderEntity.hpp ../src/entity/entitiesAttributesData.hpp ../src/multithreading/runParallel.hpp
@@ -93,13 +93,13 @@ clear:
 		 rm -f obj/main.o
 		 
 run:
-		./start_graphics_engine
+		./start_game_engine
 
 run_make_only_if_compiles: start_graphics_engine
-		./start_graphics_engine
+		./start_game_engine
 		
 c:
-		rm -f start_graphics_engine
+		rm -f start_game_engine
 
 
 
