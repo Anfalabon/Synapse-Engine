@@ -54,8 +54,8 @@ int8_t Engine::LoadGLFW()
 
 void Engine::LoadWindow()
 {
-    window = new Window(1920.0f, 1080.0f, "Simulation Engine");
-    window->Init();
+    m_window = new Window(1920.0f, 1080.0f, "Simulation Engine");
+    m_window->Init();
 }
 
 
@@ -72,7 +72,7 @@ int8_t Engine::LoadGLAD()
 
 void Engine::SetViewPort()
 {
-    glViewport(0, 0, window->WIDTH(), window->HEIGHT());
+    glViewport(0, 0, m_window->WIDTH(), m_window->HEIGHT());
 }
 
 
@@ -87,21 +87,21 @@ void Engine::LoadEntities()
     std::clog << "Loading..." << '\n';
 
     constexpr std::size_t totalEntities = 30003;
-    entities.reserve(totalEntities);
+    m_entities.reserve(totalEntities);
 
     //even though there are no shader files for the ground and anotherCube as given below in the entity constructor but still it is running.
     //will fix it.
-    entities.push_back(new Entity(data::cubeVerticiesData, data::cubeTotalVerticies,
+    m_entities.push_back(new Entity(data::cubeVerticiesData, data::cubeTotalVerticies,
                                   data::cubeIndiciesData, data::cubeTotalIndicies,
                                   "../src/shader/GLSL/vertexShaderSource1.glslv",
                                   "../src/shader/GLSL/fragmentShaderSource1.glslf"));
 
-    entities.push_back(new Entity(data::groundVerticiesData, data::groundTotalVerticies,
+    m_entities.push_back(new Entity(data::groundVerticiesData, data::groundTotalVerticies,
                                   data::groundIndiciesData, data::groundTotalIndicies,
                                   "../src/shader/GLSL/vertexShaderSource1.glslv",
                                   "../src/shader/GLSL/fragmentShaderSource1.glslf"));
 
-    entities.push_back(new Entity(data::anotherCubeVerticiesData, data::anotherCubeTotalVerticies,
+    m_entities.push_back(new Entity(data::anotherCubeVerticiesData, data::anotherCubeTotalVerticies,
                                   data::anotherCubeIndiciesData, data::anotherCubeTotalIndicies,
                                   "../src/shader/GLSL/vertexShaderSource1.glslv",
                                   "../src/shader/GLSL/fragmentShaderSource1.glslf"));
@@ -110,11 +110,11 @@ void Engine::LoadEntities()
     //for now this is because of the benchmarking
     for (std::size_t i = 3; i < totalEntities; ++i)
     {
-        entities.push_back(new Entity(nullptr, 0, nullptr, 0, "", ""));
+        m_entities.push_back(new Entity(nullptr, 0, nullptr, 0, "", ""));
     }
 
     //load the shaders of the entities
-    for (auto entity: entities)
+    for (auto entity: m_entities)
     {
         entity->LoadShader();
     }
@@ -124,8 +124,8 @@ void Engine::LoadEntities()
 
 void Engine::LoadCamera()
 {
-    camera = new Camera();
-    Camera::SetupMouse(window->WindowAddress());
+    m_camera = new Camera();
+    Camera::SetupMouse(m_window->WindowAddress());
 
     //giving one single shader program id of one entity also renders all the other entities
     //will see this
@@ -134,9 +134,9 @@ void Engine::LoadCamera()
     omp_set_num_threads(4);
 #pragma omp parallel for
 #endif
-    for (std::size_t i = 0; i < entities.size(); ++i)
+    for (std::size_t i=0; i<m_entities.size(); ++i)
     {
-        camera->AddShaderProgramID(entities[i]->GetShader().ProgramID());
+        m_camera->AddShaderProgramID(m_entities[i]->GetShader().ProgramID());
     }
 }
 
@@ -144,16 +144,16 @@ void Engine::LoadCamera()
 void Engine::LoadRenderer()
 {
     //renderer = Renderer(entities.size());
-    renderer = new EntityRenderer(entities.size());
+    m_renderer = new EntityRenderer(m_entities.size());
 
 #ifdef __LOADTIME__MULTITHREADING__
     omp_set_num_threads(4);
 #pragma omp parallel for
 #endif
-    for (std::size_t i = 0; i < entities.size(); ++i)
+    for (std::size_t i=0; i<m_entities.size(); ++i)
     {
-        renderer->InitVAO(entities[i]->GetVertexObjects().GetVAO());
-        renderer->InitIndicies(entities[i]->TotalIndicies());
+        m_renderer->InitVAO(m_entities[i]->GetVertexObjects().GetVAO());
+        m_renderer->InitIndicies(m_entities[i]->TotalIndicies());
     }
 
     //will add other types of renderers for other Game Engine Objects
@@ -177,25 +177,25 @@ int8_t Engine::Init()
 int8_t Engine::Run()
 {
     //core Engine loop
-    while (window->Running())
+    while (m_window->Running())
     {
-        renderer->_zBufferBg(0.2f, 0.3f, 0.3f, 1.0f);
+        m_renderer->_zBufferBg(0.2f, 0.3f, 0.3f, 1.0f);
 
-        window->GetKeyboardInput();
-        camera->GetKeyboardInput(window->WindowAddress());
+        m_window->GetKeyboardInput();
+        m_camera->GetKeyboardInput(m_window->WindowAddress());
 
-        camera->Update();
+        m_camera->Update();
 
 
 #ifdef __RUNTIME__MULTITHREADING__
-        Synapse::Threading::S_pragma_omp_parallel_loop<void, std::size_t>(0, entities.size(), 4,
+        Synapse::Threading::S_pragma_omp_parallel_loop<void, std::size_t>(0, m_entities.size(), 4,
         [this](auto i) -> void
         {
-            entities[i]->Update();
+            m_entities[i]->Update();
         });
 
 #elif defined(__SINGLETHREADING__)
-        for(auto entity : entities)
+        for(auto entity : m_entities)
         {
             entity->Update();
         }
@@ -226,7 +226,7 @@ int8_t Engine::Run()
         //compute_in_parallel();
 
 #else
-        entities[0]->translate(glm::vec3(0.0f, -0.01f, 0.0f));
+        m_entities[0]->translate(glm::vec3(0.0f, -0.01f, 0.0f));
 #endif
 
 //        GLuint transformationLocation = glGetUniformLocation(entities[0]->getShader().ProgramID(), "transform");
@@ -241,7 +241,7 @@ int8_t Engine::Run()
         //see the definition of this function. It's also multithreaded
 
         //renderer.renderEntities();
-        renderer->Render();
+        m_renderer->Render();
 #else
         //doing this is slower cause everytime the CPU needs to access the location in slow memroy
         for(auto entity : entities)
@@ -254,8 +254,8 @@ int8_t Engine::Run()
         //this is definately not for benchmarking
         renderingInfo::FramesPerSecond();
 
-        window->SwapBuffers();
-        window->PollEvents();
+        m_window->SwapBuffers();
+        m_window->PollEvents();
     }
 
     return __SUCCESS__;

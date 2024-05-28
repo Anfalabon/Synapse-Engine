@@ -9,7 +9,7 @@ namespace Synapse
 {
 
 
-void PhysicsEngine::SetCurrentObjectInfo(const glm::vec3 &objectMaxSize, const glm::vec3 &objectMinSize)
+void Physics::SetCurrentObjectInfo(const glm::vec3 &objectMaxSize, const glm::vec3 &objectMinSize)
 {
     //initialize the max and min object range
     m_objectMaxSize = objectMaxSize;
@@ -18,7 +18,7 @@ void PhysicsEngine::SetCurrentObjectInfo(const glm::vec3 &objectMaxSize, const g
 }
 
 
-bool PhysicsEngine::WasCollided()
+bool Physics::WasCollided()
 {
     bool pointsInsideObject = false;
     bool collisionOccured = false;
@@ -79,7 +79,7 @@ bool PhysicsEngine::WasCollided()
 }
 
 
-void PhysicsEngine::FallDown()
+void Physics::FallDown()
 {
     //if the player has reached the roof then he can't get down automatically for the height collision
     //Tensor::Vector3 position = Tensor::Vector3(0.0f, 1.0f, 0.0f);
@@ -110,7 +110,7 @@ void PhysicsEngine::FallDown()
 }
 
 
-void PhysicsEngine::Jump()
+void Physics::Jump()
 {
     //will make it something like: It will jump from it's current height(the initial height doesn't have to be zero)
 
@@ -152,7 +152,7 @@ void PhysicsEngine::Jump()
 }
 
 
-void PhysicsEngine::ApplyVerticalMotions()
+void Physics::ApplyVerticalMotions()
 {
 
     std::cout << "Time elapsed: " << m_timeElapsed << '\n';

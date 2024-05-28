@@ -91,34 +91,21 @@ void Camera::UpdateCameraSpeed()
 
 //////will separate this physics part and generalize it for other Entities including Camera(maybe in the Physics Engine)//////
 
-//
-//namespace glm {
-//    inline bool operator<=(const vec3 &firstVec, const vec3 &secondVec)
-//
-//    noexcept {
-//    return (firstVec.x <= secondVec.
-//    x &&
-//            firstVec
-//    .y <= secondVec.
-//    y &&
-//            firstVec
-//    .z <= secondVec.z);
-//}
-//
-//    inline bool operator>=(const vec3 &firstVec, const vec3 &secondVec)
-//
-//    noexcept {
-//    return (firstVec.x >= secondVec.
-//    x &&
-//            firstVec
-//    .y >= secondVec.
-//    y &&
-//            firstVec
-//    .z >= secondVec.z);
-//}
-//
-//}
-//}
+
+inline bool operator<=(const glm::vec3 &firstVec, const glm::vec3 &secondVec) noexcept
+{
+    return (firstVec.x <= secondVec.x &&
+            firstVec.y <= secondVec.y &&
+            firstVec.z <= secondVec.z);
+}
+
+inline bool operator>=(const glm::vec3 &firstVec, const glm::vec3 &secondVec) noexcept
+{
+    return (firstVec.x >= secondVec.x &&
+            firstVec.y >= secondVec.y &&
+            firstVec.z >= secondVec.z);
+}
+
 
 
 void Camera::SetCurrentObjectInfo(const glm::vec3 &objectMaxSize, const glm::vec3 &objectMinSize)

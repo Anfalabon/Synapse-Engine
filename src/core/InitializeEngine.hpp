@@ -46,9 +46,9 @@ public:
 
     ~Engine()
     {
-        Clean(camera);
-        Clean(window);
-        Clean(renderer);
+        Clean(m_camera);
+        Clean(m_window);
+        Clean(m_renderer);
     }
 
     int8_t LoadGLFW();
@@ -65,26 +65,11 @@ public:
 
 private:
 
-    Window *window;
-    Camera *camera;
-    std::vector<Entity *> entities;  //this should be Game engine objects but for now let's keep it as entities
-    EntityRenderer *renderer;
-    //Renderer *renderer;
+    Window *m_window;
+    Camera *m_camera;
+    std::vector<Entity *> m_entities;  //this should be Game engine objects but for now let's keep it as entities
+    EntityRenderer *m_renderer;
+    //Renderer *m_renderer;
 };
 
 }
-
-
-#if 0
-
-class PLATFORM GraphicsEngine : Engine
-{
-    GraphicsEngine() = default;
-    ~GraphicsEngine() = default;
-
-    [[nodiscard]] int8_t Init() override;
-    [[nodiscard]] int8_t Run() override;
-};
-
-#endif
-
