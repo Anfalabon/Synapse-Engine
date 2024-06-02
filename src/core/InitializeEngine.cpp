@@ -9,7 +9,6 @@
 #include <vector>
 
 
-
 #define __SUCCESS__ 1;
 
 #define __RELEASE__
@@ -26,7 +25,6 @@
 #elif defined(__DEBUG__)
     #define __SINGLETHREADING__
 #endif
-
 
 
 
@@ -119,6 +117,7 @@ void Engine::LoadEntities()
         entity->LoadShader();
     }
 
+
 }
 
 
@@ -143,18 +142,19 @@ void Engine::LoadCamera()
 
 void Engine::LoadRenderer()
 {
-    //renderer = Renderer(entities.size());
-    m_renderer = new EntityRenderer(m_entities.size());
+    EntityRenderer *entityRenderer = new EntityRenderer(m_entities.size());
+    //renderers.push_back(new EntityRenderer(m_entities.size()));
 
 #ifdef __LOADTIME__MULTITHREADING__
     omp_set_num_threads(4);
-#pragma omp parallel for
+    #pragma omp parallel for
 #endif
     for (std::size_t i=0; i<m_entities.size(); ++i)
     {
-        m_renderer->InitVAO(m_entities[i]->GetVertexObjects().GetVAO());
-        m_renderer->InitIndicies(m_entities[i]->TotalIndicies());
+        entityRenderer->InitVAO(m_entities[i]->GetVertexObjects().GetVAO());
+        entityRenderer->InitIndicies(m_entities[i]->TotalIndicies());
     }
+    m_renderer = std::move(entityRenderer);
 
     //will add other types of renderers for other Game Engine Objects
 }
@@ -177,7 +177,7 @@ int8_t Engine::Init()
 int8_t Engine::Run()
 {
     //core Engine loop
-    while (m_window->Running())
+    while(m_window->Running())
     {
         m_renderer->_zBufferBg(0.2f, 0.3f, 0.3f, 1.0f);
 
@@ -188,12 +188,11 @@ int8_t Engine::Run()
 
 
 #ifdef __RUNTIME__MULTITHREADING__
-        Synapse::Threading::S_pragma_omp_parallel_loop<void, std::size_t>(0, m_entities.size(), 4,
+        Synapse::Threading::S_pragma_omp_parallel_loop<void, std::size_t>(0, m_entities.size(), 0x4,
         [this](auto i) -> void
         {
             m_entities[i]->Update();
         });
-
 #elif defined(__SINGLETHREADING__)
         for(auto entity : m_entities)
         {
@@ -244,7 +243,7 @@ int8_t Engine::Run()
         m_renderer->Render();
 #else
         //doing this is slower cause everytime the CPU needs to access the location in slow memroy
-        for(auto entity : entities)
+        for(auto entity : m_entities)
         {
             entity->Render();
         }

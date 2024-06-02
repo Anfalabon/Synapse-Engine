@@ -3,6 +3,7 @@
 CXX=clang++
 CXXVERSION=-std=c++17
 CXX_WARNING_FLAGS=-Wall -Wextra
+CXX_DEBUGGING_FLAGS=-g
 CXX_OPTIMIZATION_LEVEL=-O3
 
 CXX_CUSTOM_INCLUDE_FLAGS=-I../src/core -I../src/window -I../src/physics -I../src/multithreading -I../src/math -I../src/entity -I../src/shader -I../src/renderer -I../src/camera -I../src/debug
@@ -14,6 +15,7 @@ CXX_INCLUDE_FLAGS+=$(CXX_EXTERNAL_INCLUDE_FLAGS)
 
 CXXFLAGS+=$(CXXVERSION)
 CXXFLAGS+=$(CXX_WARNING_FLAGS)
+CXXFLAGS+=$(CXX_DEBUGGING_FLAGS)
 CXXFLAGS+=$(CXX_OPTIMIZATION_LEVEL)
 
 CXXLDFLAGS=-fopenmp
@@ -95,7 +97,7 @@ clear:
 run:
 		./start_game_engine
 
-run_make_only_if_compiles: start_graphics_engine
+run_make_only_if_compiles: start_game_engine
 		./start_game_engine
 		
 c:

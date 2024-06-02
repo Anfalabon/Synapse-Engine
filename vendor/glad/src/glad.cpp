@@ -84,6 +84,8 @@ typedef void* (APIENTRYP PFNGLXGETPROCADDRESSPROC_PRIVATE)(const char*);
 static PFNGLXGETPROCADDRESSPROC_PRIVATE gladGetProcAddressPtr;
 #endif
 
+
+
 static
 int open_gl(void) {
 #ifdef __APPLE__
@@ -124,8 +126,7 @@ void close_gl(void) {
 }
 #endif
 
-static
-void* get_proc(const char *namez) {
+static void* get_proc(const char *namez) {
     void* result = NULL;
     if(libGL == NULL) return NULL;
 
@@ -205,8 +206,8 @@ static int get_exts(void) {
 
 static void free_exts(void) {
     if (exts_i != NULL) {
-        int index;
-        for(index = 0; index < num_exts_i; index++) {
+        //int index;
+        for(int index = 0; index < num_exts_i; index++) {
             free((char *)exts_i[index]);
         }
         free((void *)exts_i);

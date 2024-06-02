@@ -1,19 +1,11 @@
 #pragma once
 
+#include <iostream>
 #include <vector>
-#include <type_traits>
-#include <future>
-#include <thread>
-
-#include <glad/glad.hpp>
-
-#include "../entity/Entities.hpp"
 
 
-//#define __UTILIZE__STANDARDCXX__THREADING___
+typedef unsigned int GLuint;
 
-namespace Synapse
-{
 
 class Renderer
 {
@@ -23,9 +15,6 @@ public:
 
     void _zBufferBg(float r, float g, float b, float w);
 
-
-//    virtual inline void InitVAO(GLuint VAO) = 0;
-//    virtual inline void InitIndicies(GLuint totalEntityIndicies) = 0;
     virtual void Render() = 0;
 };
 
@@ -45,12 +34,9 @@ public:
 
     inline void InitVAO(GLuint VAO){m_entitiesVAO.push_back(VAO);}
     inline void InitIndicies(GLuint totalEntityIndicies){m_entitiesTotalInidicies.push_back(totalEntityIndicies);}
+
+
     void Render() override;
-
-#if defined(__UTILIZE__STANDARDCXX__THREADING___)
-    void renderEntitiesPartially(std::size_t start, std::size_t end);
-#endif
-
 
 private:
 
@@ -69,8 +55,20 @@ public:
     void Render() override;
 
 private:
-    std::vector <uint64_t> pixels;
+    std::vector<std::size_t> pixels;
 };
 
 
+
+
+
+
+void Renderer::_zBufferBg(float r, float g, float b, float w)
+{
+
 }
+
+
+
+
+void Entity
