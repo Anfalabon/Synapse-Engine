@@ -339,14 +339,6 @@ void Camera::ApplyPhysics()
 
 
 
-//void Camera::changeCameraMode()
-//{
-//    if(glfwGetKey(m_window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS && glfwGetKey(m_window, GLFW_KEY_M) == GLFW_PRESS)
-//    {
-//        M_ENGINE_MODE = (M_ENGINE_MODE == 0) ? 1 : 0;
-//    }
-//}
-
 bool Camera::KeyPressed(GLFWwindow *m_window, const uint16_t KEYTOKEN)
 {
     return (glfwGetKey(m_window, KEYTOKEN) == GLFW_PRESS);
@@ -371,7 +363,7 @@ void Camera::GetKeyboardInput(GLFWwindow *m_window)
 
 
     //&& !m_collided
-    if (KeyPressed(m_window, GLFW_KEY_SPACE) && !motion.m_jumped)
+    if (KeyPressed(m_window, GLFW_KEY_SPACE) && !motion.m_jumped && M_CAMERA_MODE == CAMERA_MODES::GAME_MODE)
     {
         motion.m_jumped = true;
         m_initialHeight = m_cameraPos.y;
@@ -521,12 +513,68 @@ void Camera::GetKeyboardInput(GLFWwindow *m_window)
 
 
     //reset the camera speed
-    if (leftShiftPressed)
+    if(leftShiftPressed)
     {
         UpdateCameraSpeed();
     }
 
+
+//    if(glfwGetKey(m_window, GLFW_KEY_M) == GLFW_PRESS)
+//    {
+//        if(M_CAMERA_MODE == CAMERA_MODES::GAME_MODE)
+//        {
+//            M_CAMERA_MODE = CAMERA_MODES::INSPECTION_MODE;
+//        }
+//        else if(M_CAMERA_MODE == CAMERA_MODES::INSPECTION_MODE)
+//        {
+//            M_CAMERA_MODE = CAMERA_MODES::GAME_MODE;
+//            m_cameraPos.y = 0.0f;
+//        }
+//    }
+
+    //m_changeCameraMode = false;
+    if(glfwGetKey(m_window, GLFW_KEY_O) == GLFW_PRESS)
+    {
+        //m_changeCameraMode = true;
+        if(M_CAMERA_MODE == CAMERA_MODES::GAME_MODE)
+        {
+            M_CAMERA_MODE = CAMERA_MODES::INSPECTION_MODE;
+        }
+        else if(M_CAMERA_MODE == CAMERA_MODES::INSPECTION_MODE)
+        {
+            M_CAMERA_MODE = CAMERA_MODES::GAME_MODE;
+            this->FallDown();
+            //m_cameraPos.y = 0.0f;
+        }
+    }
+
+
+
+
 }
+
+
+void Camera::ChangeCameraMode()
+{}
+
+//void Camera::ChangeCameraMode()
+//{
+//    if(m_changeCameraMode)
+//    {
+//        if(M_CAMERA_MODE == CAMERA_MODES::GAME_MODE)
+//        {
+//            M_CAMERA_MODE = CAMERA_MODES::INSPECTION_MODE;
+//        }
+//        else if(M_CAMERA_MODE == CAMERA_MODES::INSPECTION_MODE)
+//        {
+//            M_CAMERA_MODE = CAMERA_MODES::GAME_MODE;
+//            //this->FallDown();
+//            m_cameraPos.y = 0.0f;
+//        }
+//
+//        //M_CAMERA_MODE = (M_CAMERA_MODE == CAMERA_MODES::GAME_MODE) ? CAMERA_MODES::INSPECTION_MODE : CAMERA_MODES::GAME_MODE, m_cameraPos.y = 0.0f;
+//    }
+//}
 
 
 void Camera::UpdatePerspective()
@@ -585,12 +633,11 @@ void Camera::IsLookingAtEntity()
 void Camera::Update()
 {
     //this->getKeyboardInput();
-    //this->changeEngineMode();
     std::cout << "Total shader program ID's: " << m_shaderProgramIDs.size() << '\n';
 
+    //this->ChangeCameraMode();
     this->UpdateCameraSpeed();
     this->ApplyPhysics();
-    this->UpdatePerspective();
     this->GetViewMatrixLocation();
     this->GetPerspectiveMatrixLocation();
     this->UpdatePerspective();

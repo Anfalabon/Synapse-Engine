@@ -14,9 +14,13 @@ namespace Synapse
 
 void Shader::ReadSources()
 {
-     std::ifstream vertexShaderFile(m_vertexShader.path);
-     std::ifstream fragmentShaderFile(m_fragmentShader.path);
+    if(m_vertexShader.path == "" || m_fragmentShader.path == "")
+    {
+        return;
+    }
 
+    std::ifstream vertexShaderFile(m_vertexShader.path);
+    std::ifstream fragmentShaderFile(m_fragmentShader.path);
 
 #if 0
      SYSTEM_LOG("if test -e /shader/GLSL/vertesShaderSource.glslv; then\n"
@@ -117,9 +121,14 @@ const char *fragmentSS = "#version 330 core\n"
 
 void Shader::Setup()
 {
-     this->ReadSources();
-     const char* vertexShaderSource = m_vertexShader.source.c_str();
-     const char* fragmentShaderSource = m_fragmentShader.source.c_str();
+    this->ReadSources();
+    if(m_vertexShader.source == "" || m_fragmentShader.source == "")
+    {
+        return;
+    }
+
+    const char* vertexShaderSource = m_vertexShader.source.c_str();
+    const char* fragmentShaderSource = m_fragmentShader.source.c_str();
 
     //const char* vertexShaderSource = vertexSS;
     //const char* fragmentShaderSource = fragmentSS;
@@ -138,6 +147,7 @@ void Shader::Setup()
      glShaderSource(m_fragmentShaderID, 1, &fragmentShaderSource, NULL);
      glCompileShader(m_fragmentShaderID);
 }
+
 
 
 void Shader::Link()

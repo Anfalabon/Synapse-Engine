@@ -106,9 +106,10 @@ void Engine::LoadEntities()
 
     //initialize the other null entities
     //for now this is because of the benchmarking
-    for (std::size_t i = 3; i < totalEntities; ++i)
+    for (std::size_t i=3; i<totalEntities; ++i)
     {
         m_entities.push_back(new Entity(nullptr, 0, nullptr, 0, "", ""));
+        //m_entities[i] = new Entity(nullptr, 0, nullptr, 0, "", "");
     }
 
     //load the shaders of the entities

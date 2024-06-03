@@ -38,7 +38,7 @@ public:
 
 
     void SetCameraMode(CAMERA_MODES M);
-    void ChangeCameraMode() {} //will declare it later
+    void ChangeCameraMode();
     void AddShaderProgramID(GLuint shaderProgramID);
     void GetPerspectiveMatrixLocation();
     void GetViewMatrixLocation();
@@ -76,6 +76,9 @@ private:
 
     //may initialize these vectors and the matix in the initializer list
     //glm::vec3 m_directionVector = glm::vec3(0.0f, 0.0f, -1.0f);
+
+
+    //GLFWwindow *window;
 
     struct Physics motion;
 
@@ -131,8 +134,10 @@ private:
 
     bool m_addedNewEntityShader = false;
 
+    bool m_changeCameraMode = false;
 
-    const CAMERA_MODES M_CAMERA_MODE;
+
+    CAMERA_MODES M_CAMERA_MODE;
 
 };
 

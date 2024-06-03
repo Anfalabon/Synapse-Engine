@@ -49,7 +49,7 @@ public:
     {
         Clean(m_camera);
         Clean(m_window);
-        //Clean(m_renderer);
+        Clean(m_renderer);
     }
 
     int8_t LoadGLFW();
@@ -69,9 +69,11 @@ private:
     Window *m_window;
     Camera *m_camera;
     std::vector<Entity *> m_entities;  //this should be Game engine objects but for now let's keep it as entities
-    //EntityRenderer *m_renderer;
     Renderer *m_renderer;
     //std::vector<Renderer*> renderers;
 };
 
 }
+
+
+

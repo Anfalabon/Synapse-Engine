@@ -19,7 +19,7 @@ class Renderer
 {
 public:
     Renderer() = default;
-    ~Renderer() = default;
+    virtual ~Renderer() = default;
 
     void _zBufferBg(float r, float g, float b, float w);
 
