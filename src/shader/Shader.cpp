@@ -7,7 +7,7 @@
 #include <sstream>
 #include <stdlib.h>
 
-
+#define __DEBUG__
 
 namespace Synapse
 {
@@ -34,6 +34,7 @@ void Shader::ReadSources()
      {
          std::cout << "didn't find vertex shader file!" << '\n';
          std::cout << "Vertex Shader File name: " << m_vertexShader.path << '\n';
+         std::cin.get();    //this is definately bad for doing
          return;
      }
 
@@ -41,6 +42,7 @@ void Shader::ReadSources()
      {
          std::cout << "didn't find fragment shader file!" << '\n';
          std::cout << "Fragment Shader File name: " << m_fragmentShader.path << '\n';
+         std::cin.get();    //this is definately bad for doing
          return;
      }
 
@@ -64,6 +66,23 @@ void Shader::ReadSources()
      fragmentShaderFile.close();
 }
 
+
+
+
+
+template<typename T>
+void Shader::SetupSuccessLog(T __STATUS__, GLuint shaderID)
+{
+    int success;
+    char infoLog[512];
+    //thinking of using Bit Manipulation and Flags here
+    glGetShaderiv(shaderID, __STATUS__, &success);
+    if(!success)
+    {
+        glGetShaderInfoLog(shaderID, 512, NULL, infoLog);
+        std::cerr << "ERROR:SHADER:COMPILATION:FAILED" << '\n';
+    }
+}
 
 
 
@@ -99,24 +118,23 @@ const char *vertexSS = "#version 330 core\n"
 
 
 const char *fragmentSS = "#version 330 core\n"
-                        "\n"
-                        "out vec4 FragColor;\n"
-                        "\n"
-                        "in vec3 vertexColor;\n"
-                        "\n"
-                        "//uniform vec3 vertexColor;\n"
-                        "\n"
-                        "//uniform vec3 objectColor;\n"
-                        "//uniform vec3 lightColor;\n"
-                        "\n"
-                        "\n"
-                        "void core()\n"
-                        "{\n"
-                        "    FragColor = vec4(vertexColor, 1.0f);\n"
-                        "\n"
-                        "    //FragColor = vec4(objectColor * lightColor, 1.0f);\n"
-                        "}";
-
+                         "\n"
+                         "out vec4 FragColor;\n"
+                         "\n"
+                         "in vec3 vertexColor;\n"
+                         "\n"
+                         "//uniform vec3 vertexColor;\n"
+                         "\n"
+                         "//uniform vec3 objectColor;\n"
+                         "//uniform vec3 lightColor;\n"
+                         "\n"
+                         "\n"
+                         "void core()\n"
+                         "{\n"
+                         "    FragColor = vec4(vertexColor, 1.0f);\n"
+                         "\n"
+                         "    //FragColor = vec4(objectColor * lightColor, 1.0f);\n"
+                         "}";
 
 
 void Shader::Setup()
@@ -130,8 +148,8 @@ void Shader::Setup()
     const char* vertexShaderSource = m_vertexShader.source.c_str();
     const char* fragmentShaderSource = m_fragmentShader.source.c_str();
 
-    //const char* vertexShaderSource = vertexSS;
-    //const char* fragmentShaderSource = fragmentSS;
+//    const char* vertexShaderSource = vertexSS;
+//    const char* fragmentShaderSource = fragmentSS;
 
 #define __DEBUG__
 #ifdef __DEBUG__
@@ -143,36 +161,33 @@ void Shader::Setup()
      glShaderSource(m_vertexShaderID, 1, &vertexShaderSource, NULL);
      glCompileShader(m_vertexShaderID);
 
+     this->SetupSuccessLog(GL_COMPILE_STATUS, m_vertexShaderID);
+
      //compile the fragment shader source
      glShaderSource(m_fragmentShaderID, 1, &fragmentShaderSource, NULL);
      glCompileShader(m_fragmentShaderID);
+
+     this->SetupSuccessLog(GL_COMPILE_STATUS, m_fragmentShaderID);
+
+
+     //this->SetupSuccessLog(GL_COMPILE_STATUS | GL_LINK_STATUS);
 }
 
 
 
-void Shader::Link()
+void Shader::AttachAndLink()
 {
      //attach and link the vertex and fragment shader
      glAttachShader(m_shaderProgramID, m_vertexShaderID);
      glAttachShader(m_shaderProgramID, m_fragmentShaderID);
      glLinkProgram(m_shaderProgramID);
+
+     this->SetupSuccessLog(GL_LINK_STATUS, m_shaderProgramID);
 }
 
 
-void Shader::SetupSuccessLog()
-{
-    int success;
-    char infoLog[512];
-    glGetShaderiv(m_shaderProgramID, GL_COMPILE_STATUS, &success);
-    if(!success)
-    {
-        glGetShaderInfoLog(m_shaderProgramID, 512, NULL, infoLog);
-        std::cerr << "ERROR:SHADER:COMPILATION:FAILED" << '\n';
-    }
-}
 
-
-void Shader::Remove()
+void Shader::RemoveShaders()
 {
      //delete both the shaders ID
      glDeleteShader(m_vertexShaderID);

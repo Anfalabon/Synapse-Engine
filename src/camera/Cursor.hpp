@@ -9,30 +9,29 @@ namespace Synapse
 {
 
 //will make it a struct called "Calculate and the mouseInput will be inside Calculate::Cursor."
-namespace Calculate
+namespace Cursor
 {
 
 inline float m_lastX = 1920.0f / 2.0f;
 inline float m_lastY = 1080.0f / 2.0f;
 inline float m_yaw = -90.0f;
 inline float m_pitch = 0.0f;
-inline float m_rightAngleMovingSpeed = 1.0f;
 inline const float m_sensitivity = 0.1f;
 
 inline bool m_firstMouse = true;
 inline bool m_isMouseMoving = false;
-inline glm::vec3 m_directionVector = glm::vec3(0.0f, 0.0f, 0.0f);
+inline glm::vec3 m_frontVector = glm::vec3(0.0f, 0.0f, 0.0f);
 
 
 //calculate the direction where the mouse/cursor is pointing to
 //this calculates the vector where the camera will look at after certain changes in mouse input
 static void CalculateDirectionVector()
 {
-    glm::vec3 direction;
-    direction.x = glm::cos(glm::radians(m_yaw)) * glm::cos(glm::radians(m_pitch));
-    direction.y = glm::sin(glm::radians(m_pitch));
-    direction.z = glm::sin(glm::radians(m_yaw)) * glm::cos(glm::radians(m_pitch));
-    m_directionVector = glm::normalize(direction);
+    glm::vec3 frontVector;
+    frontVector.x = glm::cos(glm::radians(m_yaw)) * glm::cos(glm::radians(m_pitch));
+    frontVector.y = glm::sin(glm::radians(m_pitch));
+    frontVector.z = glm::sin(glm::radians(m_yaw)) * glm::cos(glm::radians(m_pitch));
+    m_frontVector = glm::normalize(frontVector);
 }
 
 
@@ -65,16 +64,10 @@ static void mouseInput(GLFWwindow *window, double xpos, double ypos)
     if (m_pitch > 89.0f)
     {
         m_pitch = 89.0f;
-        m_rightAngleMovingSpeed = 3.6f;
     }
     else if (m_pitch < -89.0f)
     {
         m_pitch = -89.0f;
-        m_rightAngleMovingSpeed = 3.6f;
-    }
-    else
-    {
-        m_rightAngleMovingSpeed = 1.0f;
     }
 
     CalculateDirectionVector();

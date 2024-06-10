@@ -5,7 +5,7 @@ GLuint totalVerticies = 21;
 GLuint totalIndicies = 78;
 
 Vertex *verticiesData = new Vertex[totalVerticies]{
-        //an entity with all unique vertex attributes(shape: cube)
+        //an scene with all unique vertex attributes(shape: cube)
         {{0.5f, 0.5f, 0.5f},    {1.0f, 1.0f, 1.0f}},
         {{0.5f, 0.5f, -0.5f},   {1.0f, 1.0f, 1.0f}},
         {{0.5f, -0.5f, 0.5f},   {1.0f, 1.0f, 1.0f}},
@@ -24,7 +24,7 @@ Vertex *verticiesData = new Vertex[totalVerticies]{
         {{-960.0f, -10.0f, -540.0f}, {1.0f, 0.0f, 1.0f}},
 
 
-        //another entity with all unique vertex attributes(shape: random IDK)
+        //another scene with all unique vertex attributes(shape: random IDK)
         {{3.0f, 0.5f, 1.0f},    {1.0f, 0.0f, 0.0f}},
         {{3.0f, 0.5f, -1.0f},   {0.0f, 1.0f, 0.0f}},
         {{2.0f, -0.5f, 1.0f},   {0.0f, 0.0f, 1.0f}},
@@ -82,7 +82,7 @@ GLuint *indiciesData = new GLuint[totalIndicies]{
 
 //Vertex m_verticiesArr[21] = {
 //
-//        //an entity with all unique vertex attributes(shape: cube)
+//        //an scene with all unique vertex attributes(shape: cube)
 //        {{0.5f, 0.5f, 0.5f},    {1.0f, 1.0f, 1.0f}},
 //        {{0.5f, 0.5f, -0.5f},   {1.0f, 1.0f, 1.0f}},
 //        {{0.5f, -0.5f, 0.5f},   {1.0f, 1.0f, 1.0f}},
@@ -101,7 +101,7 @@ GLuint *indiciesData = new GLuint[totalIndicies]{
 //        {{-960.0f, -10.0f, -540.0f}, {1.0f, 0.0f, 1.0f}},
 //
 //
-//        //another entity with all unique vertex attributes(shape: random IDK)
+//        //another scene with all unique vertex attributes(shape: random IDK)
 //        {{3.0f, 0.5f, 1.0f},    {1.0f, 0.0f, 0.0f}},
 //        {{3.0f, 0.5f, -1.0f},   {0.0f, 1.0f, 0.0f}},
 //        {{2.0f, -0.5f, 1.0f},   {0.0f, 0.0f, 1.0f}},

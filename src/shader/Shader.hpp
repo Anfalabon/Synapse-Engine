@@ -21,31 +21,28 @@ public:
     }ShaderFile;
 
      Shader(const std::string &vertexShaderPath, const std::string &fragmentShaderPath)
-         :
-           m_vertexShaderID(glCreateShader(GL_VERTEX_SHADER)),
-           m_fragmentShaderID(glCreateShader(GL_FRAGMENT_SHADER)),
-           m_shaderProgramID(glCreateProgram())
-           {
-               m_vertexShader.path = vertexShaderPath;
-               m_fragmentShader.path = fragmentShaderPath;
-           }
+        :
+       m_vertexShaderID(glCreateShader(GL_VERTEX_SHADER)),
+       m_fragmentShaderID(glCreateShader(GL_FRAGMENT_SHADER)),
+       m_shaderProgramID(glCreateProgram())
+     {
+         m_vertexShader.path = std::move(vertexShaderPath);
+         m_fragmentShader.path = std::move(fragmentShaderPath);
+     }
 
      ~Shader()
      {
-         glDeleteShader(m_vertexShaderID);
-         glDeleteShader(m_fragmentShaderID);
-
-         glDeleteProgram(m_shaderProgramID);
+         //glDeleteProgram(m_shaderProgramID);
      }
 
      void ReadSources();
      [[nodiscard]] GLuint ProgramID(){return m_shaderProgramID;}
+     template<typename T> void SetupSuccessLog(T __STATUS__, GLuint shaderID);
      void Setup();
-     void Link();
-     void SetupSuccessLog();
-     void Remove();
-     void RemoveProgram();
+     void AttachAndLink();
      void UseProgram();
+     void RemoveShaders();
+     void RemoveProgram();
 
 private:
 

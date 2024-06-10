@@ -758,3 +758,136 @@ void updateFrame(Camera *camera,
 
 
 
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void Engine::Run()
+{
+    //core Engine loop
+    while(m_window->Running())
+    {
+        m_renderer->_zBufferBg(0.2f, 0.3f, 0.3f, 1.0f);
+
+        m_window->GetKeyboardInput();
+        m_camera->GetKeyboardInput(m_window->WindowAddress());
+
+        m_camera->Update();
+
+
+
+#ifdef __RUNTIME__MULTITHREADING__
+
+//        //this should be 'm_scene->Update(m_window->WindowAddress())'
+//        Synapse::Threading::S_pragma_omp_parallel_loop<void, std::size_t>(0, m_scene->GetTotalSceneObjects(), 0x4,
+//        [this](auto i) -> void
+//        {
+//            //m_entities[i]->Update();
+//            m_scene->GetRenderableObject(i)->Update();
+//        });
+        m_scene->Update(m_window->WindowAddress());
+
+#elif defined(__SINGLETHREADING__)
+        if(m_entities.size() > 0)
+        {
+            for(auto scene : m_entities)
+            {
+                scene->Update();
+            }
+        }
+#endif
+
+
+
+        //make any modification to the entities or scene after running useProgram() and before rendering otherwise it would be TOO bad!
+
+//        entities[0]->getTransformation().translate(glm::vec3(0.0f, -0.01f, 0.0f));
+//        entities[0]->getTransformation().modelLocation(entities[0]->getShader().ProgramID());
+
+
+#if 1
+
+//        for(const auto scene : entities)
+//        {
+//            scene->translate(glm::vec3(-0.01f, -0.01f, -0.01f));
+//        }
+
+//        std::for_each(std::execution::par, entities.begin(), entities.end(), [&](auto scene)->void
+//        {
+//            scene->getTransformation().translate(vecs[i]);
+//            scene->getTransformation().modelLocation(scene->getShader().ProgramID());
+//            ++i;
+//        });
+//
+//        i=0;
+        //compute_in_parallel();
+
+#else
+        m_entities[0]->translate(glm::vec3(0.0f, -0.01f, 0.0f));
+#endif
+
+//        GLuint transformationLocation = glGetUniformLocation(m_entities[0]->GetShader().ProgramID(), "model");
+//        glUniformMatrix4fv(transformationLocation, 1, GL_FALSE, glm::value_ptr(m_entities[0]->m_model));
+//
+//        m_entities[0]->m_model = glm::translate(m_entities[0]->m_model, glm::vec3(0.0f, -0.01, 0.0f));
+//
+
+#ifdef __UTILIZE__BRANCHPREDICTION__
+        //using this is faster cause CPU can predict what the next memory location is going to be (using the L1 cache memory && branch prediction)
+        //see the definition of this function. It's also multithreaded
+
+        //using this is the reason why the renderer is rendering only the first scene pushed back in the scene container
+
+        //render scene (where scene has entities or renderable objects)
+        //this should be m_renderer->Render(m_scene);
+        m_renderer->Render();
+#else
+        //doing this is slower cause everytime the CPU needs to access the location in slow memroy
+        for(Entity *entity : m_entities)
+        {
+            entity->Render();
+        }
+
+#endif
+
+        //this is definately not for benchmarking
+        renderingInfo::FramesPerSecond();
+
+
+#if defined(__DEBUG__)
+        DEBUG::__LOG__MANAGER__::LOG("Total entities to Render: ");
+        DEBUG::__LOG__MANAGER__::LOG();
+        DEBUG::__LOG__MANAGER__::LOG('\n');
+#endif
+
+        m_window->SwapBuffers();
+        m_window->PollEvents();
+    }
+
+}
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////

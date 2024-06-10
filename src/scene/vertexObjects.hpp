@@ -31,7 +31,7 @@ std::ostream &operator<<(std::ostream &os, const struct Vertex &vertex)
 struct VertexObjects
 {
 public:
-    explicit VertexObjects(GLuint verticiesSizeBytes, const void *verticiesData,
+    VertexObjects(GLuint verticiesSizeBytes, const void *verticiesData,
                            GLuint indiciesSizeBytes, const void *indiciesData) noexcept;
     ~VertexObjects();
 

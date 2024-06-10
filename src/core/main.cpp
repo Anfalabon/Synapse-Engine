@@ -1,4 +1,4 @@
-#include "InitializeEngine.hpp"
+#include "Application.hpp"
 #include "../debug/Timer.hpp"
 
 //direction vector is also defined as cameraFront
@@ -14,24 +14,23 @@
 namespace Synapse
 {
 
-int8_t Main()
+int8_t Main()   //will place 'main.cpp' in the 'Engine' directory instead of 'Engine/src/core'
 {
     Timer timer;
     timer.Start();
 
-    Engine *engine = new Engine();
-    int8_t runningSuccessfully = 0;
-    if(engine->Init())
+    //Engine *engine = new Engine();
+    Engine &engine = Engine::getInstance();
+    if(engine.Init())
     {
-        runningSuccessfully = engine->Run();
+        engine.Run();
     }
-    delete engine;
-
+    //delete engine;
 
     timer.ShutDown();
     timer.PrintResult("Ran for: ");
 
-    return runningSuccessfully;
+    return 0;
 }
 
 
@@ -39,7 +38,7 @@ int8_t Main()
 
 
 
-
+//will add the entity point for other platforms
 
 int main(){return static_cast<int>(Synapse::Main());}
 

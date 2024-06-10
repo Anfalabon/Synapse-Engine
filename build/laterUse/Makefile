@@ -9,7 +9,7 @@ CXXFLAGS = -Wall -Wextra -O3 -std=c++17 -fopenmp $(CXXINCLUDEFLAGS) $(CXX_LINKER
 SRC_DIRS = ../../vendor/glad/src ../../src/camera ../../src/core ../../src/debug ../../src/entity ../../src/multithreading ../../src/physics ../../src/renderer ../../src/shader ../../src/window
 
 # Source files
-#SRC_FILES = $(wildcard ../vendor/glad/src/*.cpp ../src/camera/*.cpp ../src/core/*.cpp ../src/debug/*.cpp ../src/entity/*.cpp ../src/multithreading/*.cpp ../src/physics/*.cpp ../src/renderer/*.cpp ../src/shader/*.cpp ../src/window/*.cpp)
+#SRC_FILES = $(wildcard ../vendor/glad/src/*.cpp ../src/camera/*.cpp ../src/core/*.cpp ../src/debug/*.cpp ../src/scene/*.cpp ../src/multithreading/*.cpp ../src/physics/*.cpp ../src/renderer/*.cpp ../src/shader/*.cpp ../src/window/*.cpp)
 
 SRC_FILES = $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.cpp))
 

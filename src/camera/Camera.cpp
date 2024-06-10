@@ -30,22 +30,6 @@ void Camera::AddShaderProgramID(GLuint shaderProgramID)
 }
 
 
-//get the location of perspective matrix uniform in vertex shader
-//void Camera::perspectiveLocation(GLuint shaderProgramID)
-void Camera::GetPerspectiveMatrixLocation()
-{
-//    for (auto shaderProgramID: m_shaderProgramIDs)
-//    {
-//        GLuint perspectiveLocation = glGetUniformLocation(shaderProgramID, "perspective");
-//        glUniformMatrix4fv(perspectiveLocation, 1, GL_FALSE, glm::value_ptr(m_perspective));
-//
-//        //glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "perspective", 1, GL_FALSE, glm::value_ptr(m_perspective)));
-//    }
-
-    GLuint perspectiveLocation = glGetUniformLocation(m_shaderProgramIDs[0], "perspective");
-    glUniformMatrix4fv(perspectiveLocation, 1, GL_FALSE, glm::value_ptr(m_perspective));
-
-}
 
 //void Camera::viewLocation(GLuint shaderProgramID)
 void Camera::GetViewMatrixLocation()
@@ -58,8 +42,31 @@ void Camera::GetViewMatrixLocation()
 //        //glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "view", 1, GL_FALSE, glm::value_ptr(m_view)));
 //    }
 
-    GLuint viewLocation = glGetUniformLocation(m_shaderProgramIDs[0], "view");
-    glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(m_view));
+    if(m_shaderProgramIDs.size() > 0)
+    {
+        GLuint viewLocation = glGetUniformLocation(m_shaderProgramIDs[0], "view");
+        glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(m_view));
+    }
+
+}
+
+//get the location of perspective matrix uniform in vertex shader
+//void Camera::perspectiveLocation(GLuint shaderProgramID)
+void Camera::GetPerspectiveMatrixLocation()
+{
+//    for (auto shaderProgramID: m_shaderProgramIDs)
+//    {
+//        GLuint perspectiveLocation = glGetUniformLocation(shaderProgramID, "perspective");
+//        glUniformMatrix4fv(perspectiveLocation, 1, GL_FALSE, glm::value_ptr(m_perspective));
+//
+//        //glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "perspective", 1, GL_FALSE, glm::value_ptr(m_perspective)));
+//    }
+
+    if(m_shaderProgramIDs.size() > 0)
+    {
+        GLuint perspectiveLocation = glGetUniformLocation(m_shaderProgramIDs[0], "perspective");
+        glUniformMatrix4fv(perspectiveLocation, 1, GL_FALSE, glm::value_ptr(m_perspective));
+    }
 
 }
 
@@ -349,7 +356,7 @@ bool Camera::KeyPressed(GLFWwindow *m_window, const uint16_t KEYTOKEN)
 //will bind up other codes in other structures
 void Camera::GetKeyboardInput(GLFWwindow *m_window)
 {
-    using namespace Calculate;
+    using namespace Cursor;
 
     this->UpdateCameraSpeed();
 
@@ -432,7 +439,7 @@ void Camera::GetKeyboardInput(GLFWwindow *m_window)
         }
     }
 
-    m_cameraSpeed = m_cameraSpeed * Calculate::m_rightAngleMovingSpeed;
+    //m_cameraSpeed = m_cameraSpeed * Calculate::m_rightAngleMovingSpeed;
     std::cout << "Current Camera speed is: " << m_cameraSpeed << '\n';
 
 
@@ -453,13 +460,13 @@ void Camera::GetKeyboardInput(GLFWwindow *m_window)
             //wil fix it.
             if (!m_collided)
             {
-                m_cameraPos.x = m_cameraPos.x + m_cameraSpeed * Calculate::m_directionVector.x * Calculate::m_rightAngleMovingSpeed;
-                m_cameraPos.z = m_cameraPos.z + m_cameraSpeed * Calculate::m_directionVector.z * Calculate::m_rightAngleMovingSpeed;
+                m_cameraPos.x = m_cameraPos.x + m_cameraSpeed * Cursor::m_frontVector.x;
+                m_cameraPos.z = m_cameraPos.z + m_cameraSpeed * Cursor::m_frontVector.z;
             }
         }
         else if (M_CAMERA_MODE == CAMERA_MODES::INSPECTION_MODE)
         {
-            m_cameraPos = m_cameraPos + m_cameraSpeed * Calculate::m_directionVector * Calculate::m_rightAngleMovingSpeed;
+            m_cameraPos = m_cameraPos + m_cameraSpeed * Cursor::m_frontVector;
         }
 
     }
@@ -467,8 +474,8 @@ void Camera::GetKeyboardInput(GLFWwindow *m_window)
     {
     //        if(!m_collided && M_ENGINE_MODE == 1)
     //        {
-        m_cameraPos.x = m_cameraPos.x - m_cameraSpeed * Calculate::m_directionVector.x * Calculate::m_rightAngleMovingSpeed;
-        m_cameraPos.z = m_cameraPos.z - m_cameraSpeed * Calculate::m_directionVector.z * Calculate::m_rightAngleMovingSpeed;
+        m_cameraPos.x = m_cameraPos.x - m_cameraSpeed * Cursor::m_frontVector.x;
+        m_cameraPos.z = m_cameraPos.z - m_cameraSpeed * Cursor::m_frontVector.z;
     //        }
     //        else if(M_ENGINE_MODE == 0)
     //        {
@@ -477,11 +484,11 @@ void Camera::GetKeyboardInput(GLFWwindow *m_window)
     }
     else if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
     {
-        m_cameraPos = m_cameraPos + m_cameraSpeed * glm::normalize(glm::cross(Calculate::m_directionVector, m_cameraUpVector));
+        m_cameraPos = m_cameraPos + m_cameraSpeed * glm::normalize(glm::cross(Cursor::m_frontVector, m_cameraUpVector));
     }
     else if (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
     {
-        m_cameraPos = m_cameraPos - m_cameraSpeed * glm::normalize(glm::cross(Calculate::m_directionVector, m_cameraUpVector));
+        m_cameraPos = m_cameraPos - m_cameraSpeed * glm::normalize(glm::cross(Cursor::m_frontVector, m_cameraUpVector));
     }
 
 
@@ -489,25 +496,25 @@ void Camera::GetKeyboardInput(GLFWwindow *m_window)
     if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS && glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
     {
         std::cout << "W and A pressed!" << '\n';
-        m_cameraPos = m_cameraPos - 1.0f * m_cameraSpeed * glm::normalize(glm::cross(Calculate::m_directionVector, m_cameraUpVector));
+        m_cameraPos = m_cameraPos - 1.0f * m_cameraSpeed * glm::normalize(glm::cross(Cursor::m_frontVector, m_cameraUpVector));
     }
 
     if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS && glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
     {
         std::cout << "W and D pressed!" << '\n';
-        m_cameraPos = m_cameraPos + 1.0f * m_cameraSpeed * glm::normalize(glm::cross(Calculate::m_directionVector, m_cameraUpVector));
+        m_cameraPos = m_cameraPos + 1.0f * m_cameraSpeed * glm::normalize(glm::cross(Cursor::m_frontVector, m_cameraUpVector));
     }
 
     if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS && glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
     {
         std::cout << "S and A pressed!" << '\n';
-        m_cameraPos = m_cameraPos - 1.0f * m_cameraSpeed * glm::normalize(glm::cross(Calculate::m_directionVector, m_cameraUpVector));
+        m_cameraPos = m_cameraPos - 1.0f * m_cameraSpeed * glm::normalize(glm::cross(Cursor::m_frontVector, m_cameraUpVector));
     }
 
     if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS && glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
     {
         std::cout << "S and D pressed!" << '\n';
-        m_cameraPos = m_cameraPos + 1.0f * m_cameraSpeed * glm::normalize(glm::cross(Calculate::m_directionVector, m_cameraUpVector));
+        m_cameraPos = m_cameraPos + 1.0f * m_cameraSpeed * glm::normalize(glm::cross(Cursor::m_frontVector, m_cameraUpVector));
     }
 
 
@@ -587,11 +594,11 @@ void Camera::UpdatePerspective()
 //updateViewMatrix()
 void Camera::LookAtTarget()
 {
-    m_targetPos = m_cameraPos + Calculate::m_directionVector;
+    m_targetPos = m_cameraPos + Cursor::m_frontVector;
 
     DEBUG::__LOG__MANAGER__::LOG('\n');
     DEBUG::__LOG__MANAGER__::LOG("Camera's direction vector: ");
-    DEBUG::__LOG__MANAGER__::GLM_LOG(Calculate::m_directionVector);
+    DEBUG::__LOG__MANAGER__::GLM_LOG(Cursor::m_frontVector);
     DEBUG::__LOG__MANAGER__::LOG('\n');
 
     DEBUG::__LOG__MANAGER__::LOG("Camera's current Position: ");
@@ -607,6 +614,12 @@ void Camera::LookAtTarget()
     DEBUG::__LOG__MANAGER__::LOG(motion.m_deltaTime);
     DEBUG::__LOG__MANAGER__::LOG('\n');
 
+    //glm::vec3 m_cameraWorldUp = glm::vec3(m_cameraUpVector.x , m_cameraUpVector.y, m_cameraUpVector.z);
+
+    //this is for slow speed when the camera is pointing towards up-most or down-most
+//    glm::vec3 m_cameraWorldUp = m_cameraUpVector;
+//    glm::vec3 m_cameraRightVector = glm::normalize(glm::cross(Calculate::m_frontVector, m_cameraWorldUp));
+//    m_cameraUpVector = glm::normalize(glm::cross(m_cameraRightVector, Calculate::m_frontVector));
 
     m_view = glm::lookAt(m_cameraPos, m_targetPos, m_cameraUpVector);
 }
@@ -615,7 +628,7 @@ void Camera::LookAtTarget()
 void Camera::IsLookingAtEntity()
 {
     glm::vec3 entityPos = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 differenceVec = entityPos - Calculate::m_directionVector;
+    glm::vec3 differenceVec = entityPos - Cursor::m_frontVector;
 
     if (differenceVec.x <= m_objectMaxSize.x &&
         differenceVec.x >= m_objectMinSize.x &&
@@ -648,7 +661,7 @@ void Camera::Update()
 //static function
 void Camera::SetupMouse(GLFWwindow *window)
 {
-    glfwSetCursorPosCallback(window, Calculate::mouseInput);
+    glfwSetCursorPosCallback(window, Cursor::mouseInput);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 

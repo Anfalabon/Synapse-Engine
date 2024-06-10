@@ -3,6 +3,12 @@
 #include "Entities.hpp"
 
 
+#ifdef __stdcxx__
+    #include <random>
+#else
+    #include <cstdlib>
+#endif
+
 
 namespace Synapse
 {
@@ -18,11 +24,15 @@ static std::size_t GetSize(T *arr)
 }
 
 
-Entity::Entity(Vertex *verticies, GLuint totalVerticies,
+
+RenderableObject::RenderableObject(const char *name,
+               Vertex *verticies, GLuint totalVerticies,
                GLuint *indicies, GLuint totalIndicies,
                const std::string &vertexShaderSourcePath,
                const std::string &fragmentShaderSourcePath) noexcept
     :
+     m_name(name),
+     m_ID(rand()%INT_MAX),  //i know it's bad to use but still...
      m_verticies(std::move(verticies)),
      m_indicies(std::move(indicies)),
      m_totalVerticies(totalVerticies),
@@ -34,16 +44,14 @@ Entity::Entity(Vertex *verticies, GLuint totalVerticies,
 
 
 
-
-
-void Entity::LoadShader()
+void RenderableObject::LoadShader()
 {
     m_shader.Setup();
-    m_shader.Link();
+    m_shader.AttachAndLink();
 }
 
 
-void Entity::PrintVerticiesData()
+void RenderableObject::PrintVerticiesData()
 {
     std::cout << "\n\n\n\n\n\n\n\n\n\n\n";
     for (std::size_t i = 0; i < m_totalVerticies; ++i)
@@ -53,7 +61,7 @@ void Entity::PrintVerticiesData()
 }
 
 
-void Entity::PrintIndiciesData()
+void RenderableObject::PrintIndiciesData()
 {
     std::cout << "\n\n\n\n\n\n\n\n\n\n\n";
     for (std::size_t i = 0; i < m_totalIndicies; ++i)
@@ -64,27 +72,36 @@ void Entity::PrintIndiciesData()
 
 
 
-void Entity::Translate(glm::vec3 translationVec)
+void RenderableObject::Translate(glm::vec3 translationVec)
 {
-    m_coordinateTransform.m_model = glm::translate(m_coordinateTransform.m_model, translationVec);
-    m_coordinateTransform.ModelLocation(m_shader.ProgramID());
+    m_Transform.m_model = glm::translate(m_Transform.m_model, translationVec);
+    m_Transform.ModelLocation(m_shader.ProgramID());
 }
 
 
-void Entity::Rotate(float angleToRotateDegrees, glm::vec3 rotationVec)
+void RenderableObject::Rotate(float angleToRotateDegrees, glm::vec3 rotationVec)
 {
-    m_coordinateTransform.m_model = glm::rotate(m_coordinateTransform.m_model, glm::radians(angleToRotateDegrees), rotationVec);
-    m_coordinateTransform.ModelLocation(m_shader.ProgramID());
+    m_Transform.m_model = glm::rotate(m_Transform.m_model, glm::radians(angleToRotateDegrees), rotationVec);
+    m_Transform.ModelLocation(m_shader.ProgramID());
 }
 
 
-void Entity::Scale()
+void RenderableObject::Scale(glm::vec3 scaleVec)
 {
-    //scale the entity by parameter amount
+    m_Transform.m_model = glm::scale(m_Transform.m_model, scaleVec);
 }
 
 
-void Entity::Render()
+void RenderableObject::Update()
+{
+    m_shader.UseProgram();
+    //m_Transform.ModelLocation(m_shader.ProgramID());
+    GLuint modelLocation = glGetUniformLocation(m_shader.ProgramID(), "model");
+    glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(m_Transform.m_model));
+}
+
+//first update and then render
+void RenderableObject::Render()
 {
     //glDrawArrays(GL_TRIANGLES, 0, 36)
     glBindVertexArray(m_VO.GetVAO());
@@ -93,14 +110,7 @@ void Entity::Render()
 
 
 
-void Entity::Update()
-{
-    m_shader.UseProgram();
-    m_coordinateTransform.ModelLocation(m_shader.ProgramID());
-}
-
-
-Entity::~Entity()
+RenderableObject::~RenderableObject()
 {
     //in constructor initializer list m_verticies and m_indicies was assigned to verticiesArr and indiciesArr
     //so now both owns the verticies and indicies data

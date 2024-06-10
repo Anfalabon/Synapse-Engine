@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include "../physics/PhysicsEngine.hpp"
 
 #include <glad/glad.hpp>
@@ -48,6 +49,7 @@ public:
     void IsLookingAtEntity();
     void UpdateCameraSpeed();
     void SetCurrentObjectInfo(const glm::vec3 &maxObjectRange, const glm::vec3 &minObjectRange);
+    auto GetTargetPos()->glm::vec3{return m_targetPos;}
 
 
     //this is the physics part

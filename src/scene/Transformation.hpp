@@ -8,13 +8,25 @@
 #include <glm/ext.hpp>
 
 
-
 namespace Synapse
 {
 
-struct CoordinateTransformation
+
+//inline glm::mat4 m_model = glm::mat4(1.0f);
+//
+//inline void SetModelMatrix(const glm::mat4 &model)
+//{
+//    m_model = model;
+//}
+//inline void SetModelMatrixLocation(GLuint shaderProgramID)
+//{
+//    GLuint modelLocation = glGetUniformLocation(shaderProgramID, "model");
+//    glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(m_model));
+//}
+
+struct Transformation
 {
-    CoordinateTransformation() = default;
+    Transformation() = default;
 
     glm::mat4 m_model = glm::mat4(1.0f);
     glm::mat4 m_view = glm::mat4(1.0f);
@@ -42,10 +54,29 @@ struct CoordinateTransformation
         GLuint perspectiveLocation = glGetUniformLocation(shaderProgramID, "perspective");
         glUniformMatrix4fv(perspectiveLocation, 1, GL_FALSE, glm::value_ptr(m_perspective));
     }
+
+
+    void Translate(glm::vec3 translationVec)
+    {
+        m_model = glm::translate(m_model, translationVec);
+    }
+
+    void Rotate(float angleToRotateDegrees, glm::vec3 rotationVec)
+    {
+        m_model = glm::rotate(m_model, glm::radians(angleToRotateDegrees), rotationVec);
+    }
+
+    void Scale(glm::vec3 scaleVec)
+    {
+        m_model = glm::scale(m_model, scaleVec);
+    }
+
+
+
 };
 
 
-typedef struct CoordinateTransformation CoordinateTransformation;
+typedef struct Transformation Transformation;
 
 
 }

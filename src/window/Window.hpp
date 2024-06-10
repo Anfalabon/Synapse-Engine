@@ -23,6 +23,10 @@ public:
 
     Window() = default;
     Window(GLfloat WIDTH, GLfloat HEIGHT, const char *TITLE);
+//    ~Window()
+//    {
+//        glfwTerminate();
+//    }
 
     //void giveHint();
     //bool initSuccessLog();

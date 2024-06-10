@@ -1,11 +1,13 @@
 #pragma once
 
+
+
 #include <glad/glad.hpp>
 
 
 //pretend like '../shader/Shader.hpp' is an library with '<>' lol
-#include <../shader/Shader.hpp>
-#include "CoordinateTransformation.hpp"
+#include "../shader/Shader.hpp"
+#include "Transformation.hpp"
 #include "vertexObjects.hpp"
 
 #include <iostream>
@@ -16,15 +18,16 @@ namespace Synapse
 {
 
 
-class Entity
+class RenderableObject
 {
 public:
 
-    explicit Entity(Vertex *verticies, GLuint totalVerticies,
+    explicit RenderableObject(const char *name,
+                    Vertex *verticies, GLuint totalVerticies,
                     GLuint *indicies, GLuint totalIndicies,
                     const std::string &vertexShaderSourcePath,
                     const std::string &fragmentShaderSourcePath) noexcept;
-    ~Entity();
+    ~RenderableObject();
 
     [[nodiscard]] inline Vertex *verticiesData(){return m_verticies;}
     [[nodiscard]] inline GLuint *indiciesData(){return m_indicies;}
@@ -38,7 +41,7 @@ public:
 
 
     [[nodiscard]] inline Shader& GetShader(){return m_shader;}
-    [[nodiscard]] inline CoordinateTransformation& GetTransformation(){return m_coordinateTransform;}
+    [[nodiscard]] inline Transformation& GetTransformation(){return m_Transform;}
     [[nodiscard]] inline VertexObjects& GetVertexObjects(){return m_VO;}
 
     void LoadShader();
@@ -51,14 +54,15 @@ public:
     //apply transformation to the Entity
     void Translate(glm::vec3 translationVec);
     void Rotate(float angleToRotateDegrees, glm::vec3 rotationVec);
-    void Scale();
+    void Scale(glm::vec3 scaleVec);
 
     void Render();
     void Update();
 
 private:
 
-    const char* m_name = "Cube and cuboid object";
+    const char* m_name;
+    GLuint m_ID;
 
     Vertex *m_verticies = nullptr;
     GLuint *m_indicies = nullptr;
@@ -72,8 +76,11 @@ private:
     //we can't use this if the Shader() constructor is explicit
     //Shader m_shader = Shader("../src/shader/GLSL/vertexShaderSource1.glslv", "../src/shader/GLSL/fragmentShaderSource1.glslf");
     Shader m_shader;
-    struct CoordinateTransformation m_coordinateTransform;
+    struct Transformation m_Transform;
     struct VertexObjects m_VO;
+
+public:
+    //glm::mat4 m_model = glm::mat4(1.0f);
 };
 
 
