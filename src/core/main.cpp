@@ -1,45 +1,47 @@
 #include "Application.hpp"
-#include "../debug/Timer.hpp"
+
 
 //direction vector is also defined as cameraFront
 //extern glm::vec3 directionVector;
-
 
 
 //if you are getting 'multiple definition' linker error then first check the linking of all obj files in 'Makefile'.
 //then add or fix anything if needed.
 //lastly delete all the previous obj files and generate new obj files using make
 
-
 namespace Synapse
 {
 
+static bool g_applicationIsRunning = false;
+
 int8_t Main()   //will place 'main.cpp' in the 'Engine' directory instead of 'Engine/src/core'
 {
-    Timer timer;
-    timer.Start();
-
-    //Engine *engine = new Engine();
-    Engine &engine = Engine::getInstance();
-    if(engine.Init())
+    Application &application = Application::getApplication();
+    if(application.Init())
     {
-        engine.Run();
+        g_applicationIsRunning = true;
+        while(g_applicationIsRunning)
+        {
+            if(!application.IsWindowRunning())
+            {
+                g_applicationIsRunning = false;
+                break;
+            }
+            application.Update();
+        }
+        //application.Run();
     }
-    //delete engine;
+    application.ShutDown();
 
-    timer.ShutDown();
-    timer.PrintResult("Ran for: ");
 
     return 0;
 }
-
 
 }
 
 
 
 //will add the entity point for other platforms
-
 int main(){return static_cast<int>(Synapse::Main());}
 
 

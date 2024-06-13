@@ -1,21 +1,17 @@
 #pragma once
 
-
-#include "../physics/PhysicsEngine.hpp"
-
 #include <glad/glad.hpp>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
-#include <iostream>
+#include "../physics/PhysicsEngine.hpp"
+//#include "../events/MouseEvents.hpp"
+
 #include <vector>
 
 
 namespace Synapse
 {
-
 
 class Camera
 {
@@ -43,6 +39,7 @@ public:
     void AddShaderProgramID(GLuint shaderProgramID);
     void GetPerspectiveMatrixLocation();
     void GetViewMatrixLocation();
+    void CalculateFrontVector(float yaw, float pitch);
     void UpdatePerspective();
     void UpdateView(glm::mat4 &view);
     void LookAtTarget();   //this is the overloaded function of glm::lookAt(). So the it will return : return glm::lookAt(cameraPos, targetPos, upVecPos)
@@ -69,7 +66,6 @@ public:
 
     void Update();
 
-//    static void calculateDirectionVector();    //this is equavalent to calculating the cameraFront vector
     static void SetupMouse(GLFWwindow *window);
 
 
@@ -83,11 +79,14 @@ private:
     //GLFWwindow *window;
 
     struct Physics motion;
+    //MouseEvents mouseEvents;
+
 
     glm::vec3 m_cameraPos = glm::vec3(3.0f, 0.0f, 3.0f);
     glm::vec3 m_cameraPosWhileCollision = glm::vec3(3.0f, 0.0f, 3.0f);
     glm::vec3 m_targetPos = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 m_cameraUpVector = glm::vec3(0.0f, 1.0f, 0.0f);   //camera up vector is arbitary
+    glm::vec3 m_frontVector = glm::vec3(0.0f, 0.0f, 0.0f);
 
     glm::vec3 m_cameraVelocity = glm::vec3(0.0f, 0.774f, 0.0f);
 
@@ -142,7 +141,6 @@ private:
     CAMERA_MODES M_CAMERA_MODE;
 
 };
-
 
 
 

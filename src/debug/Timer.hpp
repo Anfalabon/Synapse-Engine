@@ -13,22 +13,9 @@ public:
     Timer() = default;
     ~Timer() = default;
 
-    void Start()
-    {
-        start = std::chrono::high_resolution_clock::now();
-    }
-
-    void ShutDown()
-    {
-        end = std::chrono::high_resolution_clock::now();
-    }
-
-    void PrintResult(const std::string &message)
-    {
-        duration = end - start;
-        std::cout << message << '\n';
-        std::cout << "Time taken: " << duration.count() << " seconds." << '\n';
-    }
+    void Start();
+    void ShutDown();
+    void PrintResult();
 
 private:
     std::chrono::time_point <std::chrono::high_resolution_clock> start;

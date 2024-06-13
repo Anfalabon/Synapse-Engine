@@ -1,13 +1,10 @@
-
-
 #include "Camera.hpp"
-#include "Cursor.hpp"
+#include "Cursor.hpp"   //include 'Cursor.hpp' after 'Camera.hpp' cause cursor includes GLFW and glm followed by and camera's inclusion of glad
 #include "../debug/LOG.hpp"
-#include "../debug/RenderingInfoLog.hpp"
 
-#include <thread>
+#include <glm/glm.hpp>
+
 #include <iostream>
-#include <array>
 
 
 namespace Synapse
@@ -27,6 +24,16 @@ void Camera::AddShaderProgramID(GLuint shaderProgramID)
     //m_shaderProgramID = shaderProgramID;
     m_shaderProgramIDs.push_back(shaderProgramID);
     m_addedNewEntityShader = true;
+}
+
+
+void Camera::CalculateFrontVector(float yaw, float pitch)
+{
+    glm::vec3 frontVector;  //using this is maybe waste of memory when everytime mouse is moved
+    frontVector.x = glm::cos(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
+    frontVector.y = glm::sin(glm::radians(pitch));
+    frontVector.z = glm::sin(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
+    m_frontVector = glm::normalize(frontVector);
 }
 
 
@@ -360,6 +367,8 @@ void Camera::GetKeyboardInput(GLFWwindow *m_window)
 
     this->UpdateCameraSpeed();
 
+    //---------------------------all of these will be inside 'events' directory----------------------------
+
     //speed up the camera if left shift was pressed
     bool leftShiftPressed = false;
     if (glfwGetKey(m_window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
@@ -442,6 +451,7 @@ void Camera::GetKeyboardInput(GLFWwindow *m_window)
     //m_cameraSpeed = m_cameraSpeed * Calculate::m_rightAngleMovingSpeed;
     std::cout << "Current Camera speed is: " << m_cameraSpeed << '\n';
 
+    //this->CalculateFrontVector();
 
     if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
     {
@@ -453,20 +463,20 @@ void Camera::GetKeyboardInput(GLFWwindow *m_window)
 
         //in game mode it can freely move in the ground plane only(x, z plane) but It can't move vertically.
         //and in inspection mode it can move in anywhere freely.
-        if (M_CAMERA_MODE == CAMERA_MODES::GAME_MODE)
+        if (M_CAMERA_MODE == CAMERA_MODES::GAME_MODE) [[likely]]
         {
             //if the camera collided with any object then it can't move further.
             //doing action on collision detection like this has a lot of problems
             //wil fix it.
             if (!m_collided)
             {
-                m_cameraPos.x = m_cameraPos.x + m_cameraSpeed * Cursor::m_frontVector.x;
-                m_cameraPos.z = m_cameraPos.z + m_cameraSpeed * Cursor::m_frontVector.z;
+                m_cameraPos.x = m_cameraPos.x + m_cameraSpeed * Cursor::g_frontVector.x;
+                m_cameraPos.z = m_cameraPos.z + m_cameraSpeed * Cursor::g_frontVector.z;
             }
         }
-        else if (M_CAMERA_MODE == CAMERA_MODES::INSPECTION_MODE)
+        else if (M_CAMERA_MODE == CAMERA_MODES::INSPECTION_MODE) [[unlikely]]
         {
-            m_cameraPos = m_cameraPos + m_cameraSpeed * Cursor::m_frontVector;
+            m_cameraPos = m_cameraPos + m_cameraSpeed * Cursor::g_frontVector;
         }
 
     }
@@ -474,8 +484,8 @@ void Camera::GetKeyboardInput(GLFWwindow *m_window)
     {
     //        if(!m_collided && M_ENGINE_MODE == 1)
     //        {
-        m_cameraPos.x = m_cameraPos.x - m_cameraSpeed * Cursor::m_frontVector.x;
-        m_cameraPos.z = m_cameraPos.z - m_cameraSpeed * Cursor::m_frontVector.z;
+        m_cameraPos.x = m_cameraPos.x - m_cameraSpeed * Cursor::g_frontVector.x;
+        m_cameraPos.z = m_cameraPos.z - m_cameraSpeed * Cursor::g_frontVector.z;
     //        }
     //        else if(M_ENGINE_MODE == 0)
     //        {
@@ -484,11 +494,11 @@ void Camera::GetKeyboardInput(GLFWwindow *m_window)
     }
     else if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
     {
-        m_cameraPos = m_cameraPos + m_cameraSpeed * glm::normalize(glm::cross(Cursor::m_frontVector, m_cameraUpVector));
+        m_cameraPos = m_cameraPos + m_cameraSpeed * glm::normalize(glm::cross(Cursor::g_frontVector, m_cameraUpVector));
     }
     else if (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
     {
-        m_cameraPos = m_cameraPos - m_cameraSpeed * glm::normalize(glm::cross(Cursor::m_frontVector, m_cameraUpVector));
+        m_cameraPos = m_cameraPos - m_cameraSpeed * glm::normalize(glm::cross(Cursor::g_frontVector, m_cameraUpVector));
     }
 
 
@@ -496,27 +506,26 @@ void Camera::GetKeyboardInput(GLFWwindow *m_window)
     if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS && glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
     {
         std::cout << "W and A pressed!" << '\n';
-        m_cameraPos = m_cameraPos - 1.0f * m_cameraSpeed * glm::normalize(glm::cross(Cursor::m_frontVector, m_cameraUpVector));
+        m_cameraPos = m_cameraPos - 1.0f * m_cameraSpeed * glm::normalize(glm::cross(Cursor::g_frontVector, m_cameraUpVector));
     }
 
     if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS && glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
     {
         std::cout << "W and D pressed!" << '\n';
-        m_cameraPos = m_cameraPos + 1.0f * m_cameraSpeed * glm::normalize(glm::cross(Cursor::m_frontVector, m_cameraUpVector));
+        m_cameraPos = m_cameraPos + 1.0f * m_cameraSpeed * glm::normalize(glm::cross(Cursor::g_frontVector, m_cameraUpVector));
     }
 
     if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS && glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
     {
         std::cout << "S and A pressed!" << '\n';
-        m_cameraPos = m_cameraPos - 1.0f * m_cameraSpeed * glm::normalize(glm::cross(Cursor::m_frontVector, m_cameraUpVector));
+        m_cameraPos = m_cameraPos - 1.0f * m_cameraSpeed * glm::normalize(glm::cross(Cursor::g_frontVector, m_cameraUpVector));
     }
 
     if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS && glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
     {
         std::cout << "S and D pressed!" << '\n';
-        m_cameraPos = m_cameraPos + 1.0f * m_cameraSpeed * glm::normalize(glm::cross(Cursor::m_frontVector, m_cameraUpVector));
+        m_cameraPos = m_cameraPos + 1.0f * m_cameraSpeed * glm::normalize(glm::cross(Cursor::g_frontVector, m_cameraUpVector));
     }
-
 
 
     //reset the camera speed
@@ -556,6 +565,7 @@ void Camera::GetKeyboardInput(GLFWwindow *m_window)
     }
 
 
+    std::cout << "Camera going to crash!" << '\n';
 
 
 }
@@ -594,11 +604,11 @@ void Camera::UpdatePerspective()
 //updateViewMatrix()
 void Camera::LookAtTarget()
 {
-    m_targetPos = m_cameraPos + Cursor::m_frontVector;
+    m_targetPos = m_cameraPos + Cursor::g_frontVector;
 
     DEBUG::__LOG__MANAGER__::LOG('\n');
     DEBUG::__LOG__MANAGER__::LOG("Camera's direction vector: ");
-    DEBUG::__LOG__MANAGER__::GLM_LOG(Cursor::m_frontVector);
+    DEBUG::__LOG__MANAGER__::GLM_LOG(Cursor::g_frontVector);
     DEBUG::__LOG__MANAGER__::LOG('\n');
 
     DEBUG::__LOG__MANAGER__::LOG("Camera's current Position: ");
@@ -628,7 +638,7 @@ void Camera::LookAtTarget()
 void Camera::IsLookingAtEntity()
 {
     glm::vec3 entityPos = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 differenceVec = entityPos - Cursor::m_frontVector;
+    glm::vec3 differenceVec = entityPos - Cursor::g_frontVector;
 
     if (differenceVec.x <= m_objectMaxSize.x &&
         differenceVec.x >= m_objectMinSize.x &&
@@ -661,7 +671,7 @@ void Camera::Update()
 //static function
 void Camera::SetupMouse(GLFWwindow *window)
 {
-    glfwSetCursorPosCallback(window, Cursor::mouseInput);
+    glfwSetCursorPosCallback(window, Cursor::mouseInput);  //MouseEvents::mouseInput
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 

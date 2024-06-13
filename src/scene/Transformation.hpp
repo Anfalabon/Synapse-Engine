@@ -24,6 +24,36 @@ namespace Synapse
 //    glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(m_model));
 //}
 
+
+struct TransformComponent
+{
+public:
+
+    TransformComponent(const glm::mat4 &model = glm::mat4(1.0f))
+        : m_model(model){}
+    ~TransformComponent() = default;
+
+    void Translate(glm::vec3 translationVec)
+    {
+        m_model = glm::translate(m_model, translationVec);
+    }
+
+    void Rotate(float angleToRotateDegrees, glm::vec3 rotationVec)
+    {
+        m_model = glm::rotate(m_model, glm::radians(angleToRotateDegrees), rotationVec);
+    }
+
+    void Scale(glm::vec3 scaleVec)
+    {
+        m_model = glm::scale(m_model, scaleVec);
+    }
+
+private:
+    glm::mat4 m_model;
+};
+
+
+
 struct Transformation
 {
     Transformation() = default;

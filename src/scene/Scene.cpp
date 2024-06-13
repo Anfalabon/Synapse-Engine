@@ -9,10 +9,17 @@
 #include <vector>
 
 
+#define __RELEASE__
+//#define __DEBUG__
 
-#define __RUNTIME__MULTITHREADING__
-//#define __SINGLETHREADING__
 
+#if defined(__RELEASE__)
+    #define __UTILIZE__BRANCHPREDICTION__
+    #define __RUNTIME__MULTITHREADING__
+    //#define __LOADTIME__MULTITHREADING__
+#elif defined(__DEBUG__)
+#define __SINGLETHREADING__
+#endif
 
 namespace Synapse
 {
@@ -53,7 +60,6 @@ void Scene::LoadRenderableObjectsStatically()
 //        entities[0]->getTransformation().modelLocation(entities[0]->getShader().ProgramID());
 
 
-
 //    unsigned int entityIndex = 0;
 //    m_renderableObjects[entityIndex]->Update();
 //    m_renderableObjects[entityIndex]->m_model = glm::translate(m_renderableObjects[entityIndex]->m_model, glm::vec3(0.0f, -1.0f, 0.0f));
@@ -62,12 +68,12 @@ void Scene::LoadRenderableObjectsStatically()
 
     //for now this is because of the benchmarking
     //add null entities
-    for(std::size_t i=0; i<nullEntities; ++i)
+    for(std::size_t i=0; i<nullEntities; ++i) [[unlikely]]
     {
         m_renderableObjects.push_back(new RenderableObject("", nullptr, 0, nullptr, 0, "", ""));
     }
 
-    for(RenderableObject *renderableObject: m_renderableObjects)
+    for(RenderableObject *renderableObject: m_renderableObjects) [[likely]]
     {
         renderableObject->LoadShader();
     }
@@ -93,12 +99,7 @@ void Scene::LoadRenderableObjectsDynamically()
     std::size_t lastEntityIndex = m_renderableObjects.size()-1;
     m_renderableObjects[lastEntityIndex]->LoadShader();
 
-
-//    m_camera->AddShaderProgramID(m_entities[lastEntityIndex]->GetShader().ProgramID());
-//
-//    m_renderer->InitVAO(m_entities[lastEntityIndex]->GetVertexObjects().GetVAO());
-//    m_renderer->InitIndicies(m_entities[lastEntityIndex]->TotalIndicies());
-
+    //m_camera->AddShaderProgramID(m_renderableObjects[lastEntityIndex]->GetShader().ProgramID());
     //m_renderableObjects[lastEntityIndex]->Translate(m_camera->GetTargetPos());
 
     m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(0.0f, -10.0f, 0.0f));
@@ -114,7 +115,16 @@ void Scene::Update(GLFWwindow *window)
         return;
     }
 
-    std::cout << "Total renderable objects: " << m_renderableObjects.size() << '\n';
+
+    if(glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
+       glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
+    {
+        DEBUG::__LOG__MANAGER__::LOG("PRESSED Dynamic Entity Loader!");
+        this->LoadRenderableObjectsDynamically();
+    }
+
+    std::cout << "Scene updater is going to crash!" << '\n';
+    std::cout << "Total renderable objects: " << m_renderableObjects.size() << '\n';    //this is causing crash
     //apply different transformation to the renderable objects if needed
     //but the objects are being treated like they are in one buffer
     //will NEED to fix it.
@@ -125,7 +135,7 @@ void Scene::Update(GLFWwindow *window)
     //m_renderableObjects[entityIndex]->m_model = glm::rotate(m_renderableObjects[entityIndex]->m_model, glm::radians(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 
 #ifdef __RUNTIME__MULTITHREADING__
-    unsigned short threadsToUtilize = 0x4;
+    unsigned short threadsToUtilize = 0x5;
     Threading::S_pragma_omp_parallel_loop<void, std::size_t>(0, m_renderableObjects.size(), threadsToUtilize,
     [this](auto i) -> void
     {
@@ -138,12 +148,6 @@ void Scene::Update(GLFWwindow *window)
     }
 #endif
 
-    if(glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
-       glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
-    {
-        DEBUG::__LOG__MANAGER__::LOG("PRESSED Dynamic Entity Loader!");
-        this->LoadRenderableObjectsDynamically();
-    }
 
 }
 
@@ -158,6 +162,16 @@ Scene::~Scene()
     }
 }
 
+
+#if defined(__RELEASE__)
+    #undef __RELEASE__
+    #undef __UTILIZE__BRANCHPREDICTION__
+    #undef __RUNTIME__MULTITHREADING__
+    //#undef __LOADTIME__MULTITHREADING__
+#elif defined(__DEBUG__)
+    #undef __DEBUG__
+    #undef __SINGLETHREADING__
+#endif
 
 
 

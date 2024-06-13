@@ -1,6 +1,10 @@
-#include "renderEntity.hpp"
+#include "Renderer.hpp"
 #include "../scene/Scene.hpp"
 #include "../multithreading/runParallel.hpp"
+
+#include <future>
+#include <thread>
+
 
 
 
@@ -38,15 +42,15 @@ void EntityRenderer::renderEntitiesPartially(std::size_t start, std::size_t end)
 
 //rendering like this is much faster as we are storing the entities infos' in a contiguous memory.
 //with this CPU's L1 cahce memroy get's more chance to deal with faster accessing
-void EntityRenderer::Render()
+void SceneRenderer::Render()
 {
 #if defined(__MULTITHREADING__RENDERER__)
 
     //this somehow causes rendering only the first entitty in the 'm_entities' contianer in 'Engine' class.
     //it's probably because of 'race condition'.
     //will fix it.
-    unsigned short THREADS_NUMBER = 0x4;
-    Threading::S_pragma_omp_parallel_loop<void, std::size_t>(0, m_totalEntities, 0x4,
+    unsigned short threadsToUtilize = 0x4;
+    Threading::S_pragma_omp_parallel_loop<void, std::size_t>(0, m_totalEntities, threadsToUtilize,
     [this](auto i)->void
     {
           //#pragma omp critical
@@ -65,16 +69,22 @@ void EntityRenderer::Render()
 
 
 
-
-void EntityRenderer::Render(Scene *scene)
+void SceneRenderer::Render(Scene *scene)
 {
 
 #if defined(__MULTITHREADING__RENDERER__)
-    unsigned short THREADS_NUMBER = 0x4;
-    Threading::S_pragma_omp_parallel_loop<void, std::size_t>(0, scene->GetTotalSceneObjects(), THREADS_NUMBER,
+    auto ThreadsToUtilize = [=]()->unsigned short
+    {
+        //there maybe an threshold in the number of scene objects for which a the threads to utilize for rendering would be set
+        //right now the threshold is 1000
+        return (scene->GetTotalSceneObjects() > 1000) ? 0x4 : 0x1;
+    };
+    //using this causes weird rendering(it only renders the first renderable object in the scene)
+    unsigned short threadsToUtilize = 0x3;
+    Threading::S_pragma_omp_parallel_loop<void, std::size_t>(0, scene->GetTotalSceneObjects(), ThreadsToUtilize(),
     [&scene](auto i)->void
     {
-         //#pragma omp critical
+         #pragma omp critical
          glBindVertexArray(scene->GetRenderableObject(i)->GetVertexObjects().GetVAO());
          glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->TotalIndicies(), GL_UNSIGNED_INT, 0);
     });

@@ -3,7 +3,7 @@
 #include "Entities.hpp"
 #include "entitiesAttributesData.hpp"
 #include "../camera/Camera.hpp"
-#include "../renderer/renderEntity.hpp"
+#include "../renderer/Renderer.hpp"
 
 #include <vector>
 #include <memory>

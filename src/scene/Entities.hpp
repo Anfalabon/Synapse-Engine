@@ -1,11 +1,7 @@
 #pragma once
 
-
-
 #include <glad/glad.hpp>
 
-
-//pretend like '../shader/Shader.hpp' is an library with '<>' lol
 #include "../shader/Shader.hpp"
 #include "Transformation.hpp"
 #include "vertexObjects.hpp"
@@ -18,7 +14,7 @@ namespace Synapse
 {
 
 
-class RenderableObject
+class __attribute__((packed)) RenderableObject
 {
 public:
 
@@ -35,14 +31,12 @@ public:
     [[nodiscard]] inline GLuint verticiesSizeBytes(){return m_verticiesSizeBytes;}
     [[nodiscard]] inline GLuint indiciesSizeBytes(){return m_indiciesSizeBytes;}
 
-    [[nodiscard]] inline GLuint Totalverticies(){return m_totalVerticies;}
-    [[nodiscard]] inline GLuint TotalIndicies(){return m_totalIndicies;}
+    [[nodiscard]] inline GLuint Totalverticies() __attribute__((always_inline)) {return m_totalVerticies;}
+    [[nodiscard]] inline GLuint TotalIndicies() __attribute__((always_inline)) {return m_totalIndicies;}
 
-
-
-    [[nodiscard]] inline Shader& GetShader(){return m_shader;}
-    [[nodiscard]] inline Transformation& GetTransformation(){return m_Transform;}
-    [[nodiscard]] inline VertexObjects& GetVertexObjects(){return m_VO;}
+    [[nodiscard]] inline Shader& GetShader() __attribute__((always_inline)) {return m_shader;}
+    [[nodiscard]] inline Transformation& GetTransformation() __attribute__((always_inline)) {return m_Transform;}
+    [[nodiscard]] inline VertexObjects& GetVertexObjects() __attribute__((always_inline)) {return m_VO;}
 
     void LoadShader();
 
@@ -62,22 +56,22 @@ public:
 private:
 
     const char* m_name;
-    GLuint m_ID;
+    GLuint      m_ID;
 
-    Vertex *m_verticies = nullptr;
-    GLuint *m_indicies = nullptr;
+    Vertex      *m_verticies = nullptr;
+    GLuint      *m_indicies = nullptr;
 
-    GLuint m_totalVerticies;
-    GLuint m_totalIndicies;
+    GLuint      m_totalVerticies;
+    GLuint      m_totalIndicies;
 
-    GLuint m_verticiesSizeBytes;
-    GLuint m_indiciesSizeBytes;
+    GLuint      m_verticiesSizeBytes;
+    GLuint      m_indiciesSizeBytes;
 
     //we can't use this if the Shader() constructor is explicit
     //Shader m_shader = Shader("../src/shader/GLSL/vertexShaderSource1.glslv", "../src/shader/GLSL/fragmentShaderSource1.glslf");
-    Shader m_shader;
+    Shader                m_shader;
     struct Transformation m_Transform;
-    struct VertexObjects m_VO;
+    struct VertexObjects  m_VO;
 
 public:
     //glm::mat4 m_model = glm::mat4(1.0f);

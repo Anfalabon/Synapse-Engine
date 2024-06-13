@@ -1,20 +1,13 @@
 #pragma once
 
-#include "../shader/Shader.hpp"
-
-#include <glad/glad.hpp>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
 
-
-#ifndef PLATFORM
-#define PLATFORM
-
 namespace Synapse
 {
 
-struct PLATFORM Physics
+struct Physics
 {
 public:
 
@@ -118,4 +111,3 @@ public:
 }
 
 
-#endif

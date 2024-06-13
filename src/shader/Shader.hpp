@@ -2,10 +2,9 @@
 
 #include <glad/glad.hpp>
 
-
 #include <iostream>
 #include <string.h>
-#include <vector>
+
 
 
 namespace Synapse

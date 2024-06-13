@@ -1,8 +1,6 @@
 #pragma once
 
-
 #include <glad/glad.hpp>
-//#include "../external/glad/include/glad/glad.hpp"
 
 #include <iostream>
 

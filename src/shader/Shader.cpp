@@ -1,10 +1,7 @@
-
-
 #include "Shader.hpp"
 #include "../debug/LOG.hpp"
 
 #include <fstream>
-#include <sstream>
 #include <stdlib.h>
 
 #define __DEBUG__

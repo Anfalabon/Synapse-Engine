@@ -29,7 +29,7 @@
 
 
 #ifdef __gl_h_
-#error OpenGL header already included, remove this include, glad already provides it
+#error OpenGL header already included, remove this include, glad already provides it(check if you have included GFLW or glm before glad)
 #endif
 #define __gl_h_
 

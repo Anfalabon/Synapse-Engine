@@ -1,97 +1,42 @@
 #pragma once
 
-
-#include "../shader/Shader.hpp" //this is not to be used here but removing this causes error. Will fix it.
-#include "../window/Window.hpp"
-#include "../camera/Camera.hpp"
-
-#include "../scene/Entities.hpp"
-#include "../scene/Scene.hpp"
-
-#include "../renderer/renderEntity.hpp"
-#include "../debug/LOG.hpp"
-
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/ext.hpp>
-#include <glm/gtx/string_cast.hpp>
-
-#include <array>
-#include <vector>
-#include <future>
-#include <mutex>
-#include <memory>
-
-
+#include "Engine.hpp"
 
 
 #define PLATFORM
-
-//#define __linux__
-//#define __unix__
-
-//class PLATFORM PhysicsEngine;
-//class PLATFORM GraphicsEngine;
-
-
 
 namespace Synapse
 {
 
 
-template<typename T>
-static void Clean(T *ptr)
-{
-    if(ptr!=nullptr)
-        delete ptr;
-}
-
-
-#ifdef __linux__
-
-class [[nodiscard]] PLATFORM Engine
+class [[nodiscard]] PLATFORM Application
 {
 public:
-    Engine() = default;
-    ~Engine();
+    Application() = default;
+    ~Application() = default;
 
-    static Engine &getInstance()
+    static Application &getApplication()
     {
-        static Engine engine;
-        return engine;
+        static Application application;
+        return application;
     }
 
-    int8_t LoadGLFW();
-    void   LoadWindow();
-    int8_t LoadGLAD();
-    void   SetViewPort();
-    void   LoadEntitiesStatically();
-    void   LoadScene();
-    void   LoadCamera();
-    void   LoadRenderer();
-
-
+    [[nodiscard]] bool Init();
     void Update();
-
-
-    [[nodiscard]] int8_t Init();
     void Run();
+    [[nodiscard]] bool IsWindowRunning();
+    void ShutDown();
 
 private:
 
-    Window *m_window;
-    Camera *m_camera;
-    std::vector<RenderableObject*> m_entities;  //this should be Game engine objects but for now let's keep it as entities
-    Scene *m_scene;
-    EntityRenderer *m_renderer;
-    //Renderer *m_renderer;
+    Engine *m_engine;
+
 };
 
 
 
-
+#if defined(__linux__)
+    //write application for linux
 #elif defined(__WIN32__)
     DEBUG::__LOG__MANAGER__::LOG("WIN32 system not defined yet!");
 #elif defined(__MAC__)

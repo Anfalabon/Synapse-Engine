@@ -1,5 +1,3 @@
-
-
 #include "PhysicsEngine.hpp"
 
 #include <iostream>
