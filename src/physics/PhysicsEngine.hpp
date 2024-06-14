@@ -19,8 +19,7 @@ public:
     };
 
     Physics() = default;
-
-    ~Physics() = default;
+    virtual ~Physics() = default;
 
     inline void CalculateDeltaTime()
     {
