@@ -27,9 +27,15 @@ public:
     void   LoadWindow();
     int8_t LoadGLAD();
     void   SetViewPort();
+    void   LoadUI(){}
+    void   LoadPhysicsEngine(){}
+    void   LoadAudioEngine(){}
+    void   LoadNetworkEngine(){}
+    void   LoadAIEngine(){}
     void   LoadScene();
     void   LoadCameras();
     void   LoadRenderer();
+
 
     bool   Restart();
     void   SelectCamera();
