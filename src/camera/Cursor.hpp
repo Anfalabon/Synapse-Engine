@@ -8,48 +8,18 @@ namespace Synapse
 {
 
 
-class MouseEvents
+
+struct CursorData
 {
-public:
-
-    MouseEvents()
-    : m_movedForTheFirstTime(true),
-      m_lastX(1920.0f/2.0f),
-      m_lastY(1080.0f/2.0f),
-      m_yaw(-90.0f),
-      m_pitch(0.0f),
-      m_sensitivity(0.1f),
-      m_isMoving(false),
-      m_frontVector(glm::vec3(0.0f, 0.0f, 0.0f)){}
-
-    ~MouseEvents() = default;
-
-    static void CalculateFrontVector(const float yaw, const float pitch, glm::vec3 &__frontVector);
-    static void mouseInput(GLFWwindow *window, double xpos, double ypos);
-
-    bool  MovedForTheFirstTime(){return m_movedForTheFirstTime;}
-    float GetLastX(){return m_lastX;}
-    float GetLastY(){return m_lastY;}
-    float GetYaw(){return m_yaw;}
-    float GetPitch(){return m_pitch;}
-    float GetSensitivity(){return m_sensitivity;}
-    bool  IsMoving(){return m_isMoving;}
-    auto  FrontVector()->glm::vec3{return m_frontVector;}
-
-private:
-
     bool  m_movedForTheFirstTime;
     float m_lastX;
     float m_lastY;
     float m_yaw;
     float m_pitch;
     const float m_sensitivity;
-    bool m_isMoving;
+    bool  m_isMoving;
     glm::vec3 m_frontVector;
-
 };
-
-
 
 
 
@@ -117,6 +87,49 @@ static void mouseInput(GLFWwindow *window, double xpos, double ypos)
     }
 
     CalculateFrontVector();
+
+}
+
+
+
+static void MultipleMouseInput(GLFWwindow *window, double xpos, double ypos)
+{
+    //m_cameras[m_currentCameraIndex]->cursor.g_movedMouseForTheFirstTime
+    if (g_movedMouseForTheFirstTime)
+    {
+        g_lastX = xpos;
+        g_lastY = ypos;
+
+        g_movedMouseForTheFirstTime = false;
+    }
+
+    float Xoffset = xpos - g_lastX;
+    float Yoffset = g_lastY - ypos;
+
+    g_lastX = xpos;
+    g_lastY = ypos;
+
+    //calculate the offset
+    Xoffset = Xoffset * g_sensitivity;
+    Yoffset = Yoffset * g_sensitivity;
+
+    //calculate yaw and pitch
+    g_yaw = g_yaw + Xoffset;
+    g_pitch = g_pitch + Yoffset;
+    //set the moving speed constant of the camera when't it's pointing at 90 degree or right angle
+    //cause camera speed is slower at 90 or -90 degree pitch //but this is still not that good cause it only works for some degrees
+    if (g_pitch > 89.0f)
+    {
+        g_pitch = 89.0f;
+    }
+    else if (g_pitch < -89.0f)
+    {
+        g_pitch = -89.0f;
+    }
+
+    CalculateFrontVector();
+
+    //m_cameras[m_currentCameraIndex]->CalculateFrontVector();
 
 }
 

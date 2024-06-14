@@ -1,4 +1,5 @@
 #include "Application.hpp"
+#include <GLFW/glfw3.h>
 
 
 namespace Synapse
@@ -12,19 +13,20 @@ bool Application::Init()
     return m_engine->Init();
 }
 
+//for now window is being used in 'Engine'. So no need for this
 bool Application::IsWindowRunning()
 {
     return m_engine->GetWindow()->IsRunning();
 }
 
-void Application::Update()
-{
-    m_engine->Update();
-}
-
 void Application::Run()
 {
     m_engine->Run();
+}
+
+bool Application::IsRestart()
+{
+    return m_engine->m_engineRestart;
 }
 
 void Application::ShutDown()

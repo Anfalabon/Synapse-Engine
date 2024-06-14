@@ -2,7 +2,7 @@
 #include "../debug/LOG.hpp"
 #include "../window/Window.hpp"
 #include "entitiesAttributesData.hpp"
-#include "../multithreading/runParallel.hpp"
+#include "../utils/RunParallel.hpp"
 
 #include <GLFW/glfw3.h>
 
@@ -136,6 +136,9 @@ void Scene::Update(GLFWwindow *window)
 
 #ifdef __RUNTIME__MULTITHREADING__
     unsigned short threadsToUtilize = 0x5;
+    //even ther if given '1, 2' instead of '0' when the total renderable objects are '3', it still works fine.
+    //probably the same error as said previously in the 'LoadRenderableObjectsStatically()'
+    //will fix this error.
     Threading::S_pragma_omp_parallel_loop<void, std::size_t>(0, m_renderableObjects.size(), threadsToUtilize,
     [this](auto i) -> void
     {

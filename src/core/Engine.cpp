@@ -19,8 +19,6 @@
 
 #endif
 
-
-
 //the braces style is inconsistent(not next line) here because i like to use 'extern "C"' perticularly in this way
 extern "C"{
     inline void FramesPerSecond();
@@ -84,7 +82,7 @@ void Engine::LoadScene()
 
 
 
-void Engine::LoadCamera()
+void Engine::LoadCameras()
 {
     std::cout << "Going to initialize the Camera" << '\n';
 #ifdef Alloc
@@ -93,12 +91,11 @@ void Engine::LoadCamera()
     //will do nullptr checking
     //m_camera = new Camera();
 
-    std::size_t totalCameras = 2;
+    std::size_t totalCameras = 3;
     for(std::size_t i=0; i<totalCameras; ++i)
     {
         m_cameras.push_back(new Camera());
     }
-
 
     std::cout << "pushed cameras to the std::vector!" << '\n';
 
@@ -113,19 +110,22 @@ void Engine::LoadCamera()
     #pragma omp parallel for
 #endif
 
-//    for(std::size_t i=0; i<m_scene->GetTotalSceneObjects(); ++i)
+
+//    for(std::size_t j=0; j<totalCameras; ++j)
 //    {
-//        m_camera->AddShaderProgramID(m_scene->GetRenderableObject(i)->GetShader().ProgramID());
+//        for(std::size_t i=0; i<m_scene->GetTotalSceneObjects(); ++i)
+//        {
+//            m_cameras[j]->AddShaderProgramID(m_scene->GetRenderableObject(i)->GetShader().ProgramID());
+//        }
 //    }
 
-    for(std::size_t j=0; j<totalCameras; ++j)
-    {
-        for(std::size_t i=0; i<m_scene->GetTotalSceneObjects(); ++i)
-        {
-            m_cameras[j]->AddShaderProgramID(m_scene->GetRenderableObject(i)->GetShader().ProgramID());
-        }
-    }
 
+    std::size_t j = 0;
+    std::size_t i = 0;
+    for(; i<m_scene->GetTotalSceneObjects() && j<m_cameras.size(); ++i, ++j)
+    {
+        m_cameras[j]->AddShaderProgramID(m_scene->GetRenderableObject(i)->GetShader().ProgramID());
+    }
 
 
 
@@ -179,7 +179,7 @@ int8_t Engine::Init()
     this->LoadGLAD();
     this->SetViewPort();
     this->LoadScene();
-    this->LoadCamera();
+    this->LoadCameras();
     //this->LoadRenderer();
 
     std::cout << "Initialized the Engine" << '\n';
@@ -191,7 +191,28 @@ int8_t Engine::Init()
 
 void Engine::SelectCamera()
 {
-    if(glfwGetKey(m_window->WindowAddress(), GLFW_KEY_F1) == GLFW_PRESS)
+#if 0
+    bool exit = false;
+    auto getCamera = [&exit, this](unsigned short cameraNum)->void
+    {
+        std::cout << "Running Camera selector!" << '\n';
+        if(exit)
+        {
+            return;
+        }
+        else if(glfwGetKey(m_window->WindowAddress(), GLFW_KEY_F1 + cameraNum) == GLFW_PRESS)    //290
+        {
+            m_currentCameraIndex = cameraNum;
+            exit = true;
+        }
+    };
+    for(unsigned short i=0; i<m_cameras.size() && !exit; ++i) [[likely]]
+    {
+        getCamera(i);
+    }
+#endif
+
+    if(glfwGetKey(m_window->WindowAddress(), GLFW_KEY_F1) == GLFW_PRESS)    //290
     {
         m_currentCameraIndex = 0;
     }
@@ -199,24 +220,40 @@ void Engine::SelectCamera()
     {
         m_currentCameraIndex = 1;
     }
+    else if(glfwGetKey(m_window->WindowAddress(), GLFW_KEY_F3) == GLFW_PRESS)
+    {
+        m_currentCameraIndex = 2;
+    }
 
+
+    //DEBUG::__LOG__MANAGER__::LOG("Current Camera running: ");
     std::cout << "Current Camera running: " << m_currentCameraIndex << '\n';
 }
 
 
+bool Engine::Restart()
+{
+    return (glfwGetKey(m_window->WindowAddress(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
+            glfwGetKey(m_window->WindowAddress(), GLFW_KEY_LEFT_ALT) == GLFW_PRESS &&
+            glfwGetKey(m_window->WindowAddress(), GLFW_KEY_R) == GLFW_PRESS) ? true : false;
+}
+
+
+#ifdef __UPDATE__ENGINE__
+
 void Engine::Update()
 {
-    m_renderer->_zBufferBg(0.2f, 0.3f, 0.3f, 1.0f);
+    m_renderer->SetBackGround(0.2f, 0.3f, 0.3f, 1.0f);
+    m_renderer->UseZbuffer();
 
+    //m_renderer->_zBufferBg(0.2f, 0.3f, 0.3f, 1.0f);
+    //will use 'event' systems for these two bad boys
     m_window->GetKeyboardInput();
     this->SelectCamera();
-    //m_camera->GetKeyboardInput(m_window->WindowAddress());
     m_cameras[m_currentCameraIndex]->GetKeyboardInput(m_window->WindowAddress());
-
 
     m_scene->Update(m_window->WindowAddress());
     m_renderer->Render(m_scene);
-    //m_camera->Update();
     m_cameras[m_currentCameraIndex]->Update();
 
     //this is definately not for benchmarking
@@ -226,22 +263,34 @@ void Engine::Update()
     m_window->PollEvents();
 }
 
+#elif defined(__RUN__ENGINE__)
 
 void Engine::Run()
 {
-    std::cout << "Going to run the Engine" << '\n';
+    DEBUG::__LOG__MANAGER__::LOG("Going to run the Engine");
     //core Engine loop
     while(m_window->IsRunning())
     {
-        m_renderer->_zBufferBg(0.2f, 0.3f, 0.3f, 1.0f);
+        //this should be inside 'm_window->GetKeyboardInput();'
+        if(this->Restart())
+        {
+            m_engineRestart = true;
+            m_window->ShutDown();
+            break;
+        }
 
-        //will use 'event' system for these two bad boys
+        m_renderer->SetBackGround(0.2f, 0.3f, 0.3f, 1.0f);
+        m_renderer->UseZbuffer();
+
+        //m_renderer->_zBufferBg(0.2f, 0.3f, 0.3f, 1.0f);
+        //will use 'event' systems for these two bad boys
         m_window->GetKeyboardInput();
-        m_camera->GetKeyboardInput(m_window->WindowAddress());
+        this->SelectCamera();
+        m_cameras[m_currentCameraIndex]->GetKeyboardInput(m_window->WindowAddress());
 
         m_scene->Update(m_window->WindowAddress());
         m_renderer->Render(m_scene);
-        m_camera->Update();
+        m_cameras[m_currentCameraIndex]->Update();
 
         //this is definately not for benchmarking
         renderingInfo::FramesPerSecond();
@@ -252,6 +301,7 @@ void Engine::Run()
 
 }
 
+#endif
 
 
 void Engine::ShutDown()

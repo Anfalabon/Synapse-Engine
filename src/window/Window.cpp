@@ -40,7 +40,7 @@ int8_t Window::Init()
     if(!m_windowAddress)
     {
         std::cerr << "Failed to initialize window!" << '\n';
-        this->Terminate();
+        this->ShutDown();
         return -1;
     }
     glfwMakeContextCurrent(m_windowAddress);
@@ -61,7 +61,9 @@ void Window::ExitOnEscape()
 
 void Window::Resize()
 {
-    if(glfwGetKey(m_windowAddress, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS && glfwGetKey(m_windowAddress, GLFW_KEY_R) == GLFW_PRESS)
+    if(glfwGetKey(m_windowAddress, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
+       glfwGetKey(m_windowAddress, GLFW_KEY_R) == GLFW_PRESS &&
+       glfwGetKey(m_windowAddress, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS)
     {
         if(m_WIDTH == 1980.0f && m_HEIGHT == 1080.0f)
         {
@@ -85,16 +87,9 @@ void Window::Resize()
 //get the input's from the user
 void Window::GetKeyboardInput()
 {
-    Resize();
-    ExitOnEscape();
+    this->Resize();
+    this->ExitOnEscape();
 }
-
-
-void Window::Terminate()
-{
-    glfwTerminate();
-}
-
 
 
 void Window::SwapBuffers()
@@ -105,19 +100,25 @@ void Window::SwapBuffers()
 
 bool Window::IsRunning()
 {
-    if(glfwWindowShouldClose(m_windowAddress))
-    {
-        return false;
-    }
-    return true;
+//    if(glfwWindowShouldClose(m_windowAddress))
+//    {
+//        return false;
+//    }
+//    return true;
 
-    //return (glfwWindowShouldClose(m_windowAddress)) ? false : true;
+    return (glfwWindowShouldClose(m_windowAddress)) ? false : true;
 }
 
 
 void Window::PollEvents()
 {
     glfwPollEvents();
+}
+
+
+void Window::ShutDown()
+{
+    glfwTerminate();
 }
 
 

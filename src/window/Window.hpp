@@ -26,15 +26,12 @@ public:
     void ExitOnEscape();
     void KeyPressedLog(){ DEBUG::__LOG__MANAGER__::LOG("key pressed!"); }
     void GetKeyboardInput();
-
-    static void MouseInput(GLFWwindow *window, double xpos, double ypos);
-
     void SwapBuffers();
-    void Terminate();
+    void ShutDown();    //this is right now same as 'Terminate()'
     void PollEvents();
 
-    [[nodiscard]] bool IsRunning();
-    [[nodiscard]] inline GLFWwindow *WindowAddress(){ return m_windowAddress; }
+    [[nodiscard]] bool IsRunning() __attribute__((always_inline)); //inlining this can lead to error
+    [[nodiscard]] inline GLFWwindow *WindowAddress() __attribute__((always_inline)) {return m_windowAddress;}
     [[nodiscard]] inline GLfloat WIDTH(){ return m_WIDTH; }
     [[nodiscard]] inline GLfloat HEIGHT(){ return m_HEIGHT; }
 

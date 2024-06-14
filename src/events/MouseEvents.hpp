@@ -6,21 +6,6 @@
 namespace Synapse
 {
 
-
-
-struct CursorData
-{
-    bool  m_movedForTheFirstTime;
-    float m_lastX;
-    float m_lastY;
-    float m_yaw;
-    float m_pitch;
-    const float m_sensitivity;
-    bool m_isMoving;
-    glm::vec3 m_frontVector;
-
-};
-
 class MouseEvents
 {
 public:

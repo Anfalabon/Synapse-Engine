@@ -1,5 +1,7 @@
 #include "Application.hpp"
+#include "../utils/Asserts.hpp"
 
+#include <memory>
 
 //direction vector is also defined as cameraFront
 //extern glm::vec3 directionVector;
@@ -12,28 +14,25 @@
 namespace Synapse
 {
 
-static bool g_applicationIsRunning = false;
+static bool g_applicationIsRunning = true;
 
-int8_t Main()   //will place 'main.cpp' in the 'Engine' directory instead of 'Engine/src/core'
+int Main()   //will place 'main.cpp' in the 'Engine' directory instead of 'Engine/src/core'
 {
-    Application &application = Application::getApplication();
-    if(application.Init())
+    while(g_applicationIsRunning)
     {
-        g_applicationIsRunning = true;
-        while(g_applicationIsRunning)
+        //Application &application = Application::getApplication();
+        Application *application = new Application();
+        S_NULL_ASSERT(application, "Application is NULL!");
+        S_CORE_INITIALIZATION_ASSERT(application->Init(), "Failed to Initialize Application!");
+        application->Run();
+        if(!application->IsRestart())
         {
-            if(!application.IsWindowRunning())
-            {
-                g_applicationIsRunning = false;
-                break;
-            }
-            application.Update();
+            g_applicationIsRunning = false;
+            application->ShutDown();
+            break;
         }
-        //application.Run();
+        delete application;
     }
-    application.ShutDown();
-
-
     return 0;
 }
 
@@ -42,7 +41,10 @@ int8_t Main()   //will place 'main.cpp' in the 'Engine' directory instead of 'En
 
 
 //will add the entity point for other platforms
-int main(){return static_cast<int>(Synapse::Main());}
+int main()
+{
+    return static_cast<int>(Synapse::Main());
+}
 
 
 

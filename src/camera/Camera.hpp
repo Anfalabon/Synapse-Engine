@@ -80,6 +80,7 @@ private:
 
     struct Physics motion;
     //MouseEvents mouseEvents;
+    //struct CursorData cursor;
 
 
     glm::vec3 m_cameraPos = glm::vec3(3.0f, 0.0f, 3.0f);

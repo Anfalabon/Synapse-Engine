@@ -21,15 +21,18 @@ public:
         return application;
     }
 
-    [[nodiscard]] bool Init();
-    void Update();
-    void Run();
     [[nodiscard]] bool IsWindowRunning();
+    [[nodiscard]] bool IsRestart();
+
+    [[nodiscard]] bool Init();
+    void Run();
     void ShutDown();
 
 private:
-
     Engine *m_engine;
+public:
+    bool    m_applicationRestart = false;
+private:
 
 };
 

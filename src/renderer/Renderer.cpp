@@ -1,6 +1,7 @@
 #include "Renderer.hpp"
 #include "../scene/Scene.hpp"
-#include "../multithreading/runParallel.hpp"
+#include "../utils/RunParallel.hpp"
+//#include "../multithreading/runParallel.hpp"
 
 #include <future>
 #include <thread>
@@ -19,6 +20,7 @@ namespace Synapse
 //disable the cull face
 //clear the color buffer bit along with depth buffer bit
 //also the last parameter isn't 'w' (the homogenious coordinate) it's alpha (the opacity)
+
 void Renderer::_zBufferBg(float r, float g, float b, float w)
 {
     glClearColor(r, g, b, w);
@@ -26,6 +28,20 @@ void Renderer::_zBufferBg(float r, float g, float b, float w)
     glDisable(GL_CULL_FACE);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
+
+void Renderer::SetBackGround(float r, float g, float b, float w)
+{
+    glClearColor(r, g, b, w);
+}
+
+void Renderer::UseZbuffer()
+{
+    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+
 
 
 #if defined(__UTILIZE__STANDARDCXX__THREADING___)

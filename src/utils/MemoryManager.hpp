@@ -5,7 +5,7 @@ namespace MemoryManager
 
     static bool g_wasShutDownMethodCalled = false;
 
-    static void Alloc()
+    static void Initializer()
     {
 
     }

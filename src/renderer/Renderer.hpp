@@ -24,6 +24,9 @@ public:
 
     void _zBufferBg(float r, float g, float b, float w);
 
+    void UseZbuffer();
+    void SetBackGround(float r, float g, float b, float w);
+
     virtual void Render() = 0;
 //    void Render(Scene *scene);
 };

@@ -152,6 +152,8 @@ void Shader::Setup()
 #ifdef __DEBUG__
      DEBUG::__LOG__MANAGER__::LOG(vertexShaderSource);
      DEBUG::__LOG__MANAGER__::LOG(fragmentShaderSource);
+//     DEBUG::LOG(vertexShaderSource);
+//     DEBUG::LOG(fragmentShaderSource);
 #endif
 
      //compile the vertex shader source
