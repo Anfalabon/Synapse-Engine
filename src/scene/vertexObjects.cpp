@@ -41,13 +41,6 @@ VertexObjects::VertexObjects(GLuint verticiesSizeBytes, const void *verticiesDat
 
 
 
-
-
-
-
-
-
-
     glGenVertexArrays(1, &_VAO);
     glGenBuffers(1, &_VBO);
     glGenBuffers(1, &_EBO);

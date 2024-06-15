@@ -30,7 +30,7 @@ struct VertexObjects
 {
 public:
     VertexObjects(GLuint verticiesSizeBytes, const void *verticiesData,
-                           GLuint indiciesSizeBytes, const void *indiciesData) noexcept;
+                  GLuint indiciesSizeBytes, const void *indiciesData) noexcept;
     ~VertexObjects();
 
     [[nodiscard]] inline GLuint &GetVAO(){return _VAO;}
@@ -47,8 +47,46 @@ private:
 };
 
 
-typedef struct Vertex Vertex;
-typedef struct VertexObjects VertexObjects;
+struct VertexBuffer
+{
+    VertexBuffer() = default;
+    ~VertexBuffer() = default;
+
+    void Gen();
+    void Bind();
+    void Unbind();
+
+    GLuint _VBO;
+};
+
+struct IndexBuffer
+{
+    IndexBuffer() = default;
+    ~IndexBuffer() = default;
+
+    void Gen();
+    void Bind();
+    void Unbind();
+
+    GLuint _EBO;
+};
+
+
+struct VertexArray
+{
+    VertexArray() = default;
+    ~VertexArray() = default;
+
+    void Gen();
+    void Bind();
+    void Unbind();
+
+    void EnableVertexAtrribute(unsigned short attributeNo)
+    {
+        glVertexAttribPointer(attributeNo, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(attributeNo * sizeof(GLfloat)));
+        glEnableVertexAttribArray(attributeNo);
+    }
+};
 
 
 
