@@ -119,6 +119,7 @@ void Engine::LoadCameras()
 //        }
 //    }
 
+    // std::cout << "Initialized the Camera" << '\n'; 
 
     std::size_t j = 0;
     std::size_t i = 0;
@@ -180,7 +181,7 @@ int8_t Engine::Init()
     this->SetViewPort();
     this->LoadScene();
     this->LoadCameras();
-    //this->LoadRenderer();
+    this->LoadRenderer();
 
     std::cout << "Initialized the Engine" << '\n';
 
@@ -290,6 +291,7 @@ void Engine::Run()
 
         m_scene->Update(m_window->WindowAddress());
         m_renderer->Render(m_scene);
+        //m_physics->Apply(m_cameras[m_currentCameraIndex]);  //PHYSICS_MODE::MINECRAFT
         m_cameras[m_currentCameraIndex]->Update();
 
         //this is definately not for benchmarking

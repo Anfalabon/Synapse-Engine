@@ -1234,6 +1234,24 @@ Engine::~Engine()
 
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-
+//void Camera::ChangeCameraMode()
+//{
+//    if(m_changeCameraMode)
+//    {
+//        if(M_CAMERA_MODE == CAMERA_MODES::GAME_MODE)
+//        {
+//            M_CAMERA_MODE = CAMERA_MODES::INSPECTION_MODE;
+//        }
+//        else if(M_CAMERA_MODE == CAMERA_MODES::INSPECTION_MODE)
+//        {
+//            M_CAMERA_MODE = CAMERA_MODES::GAME_MODE;
+//            //this->FallDown();
+//            m_cameraPos.y = 0.0f;
+//        }
+//
+//        //M_CAMERA_MODE = (M_CAMERA_MODE == CAMERA_MODES::GAME_MODE) ? CAMERA_MODES::INSPECTION_MODE : CAMERA_MODES::GAME_MODE, m_cameraPos.y = 0.0f;
+//    }
+//}

@@ -2,7 +2,7 @@
 
 #include <glad/glad.hpp>
 
-#include "../shader/Shader.hpp"
+#include "../renderer/shader/Shader.hpp"
 #include "Transformation.hpp"
 #include "vertexObjects.hpp"
 

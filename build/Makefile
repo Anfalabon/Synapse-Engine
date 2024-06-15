@@ -52,14 +52,14 @@ obj/glad.o: ../vendor/glad/src/glad.cpp ../vendor/glad/include/glad/glad.hpp
 obj/PhysicsEngine.o: ../src/physics/PhysicsEngine.cpp
 		$(CXX) $(CXXFLAGS) -c ../src/physics/PhysicsEngine.cpp -o obj/PhysicsEngine.o
 
-obj/Entities.o: ../src/scene ../src/scene ../src/scene ../src/physics/PhysicsEngine.hpp
+obj/Entities.o: ../src/scene/Entities.cpp ../src/scene/Entities.hpp ../src/scene/Transformation.hpp ../src/scene/vertexObjects.hpp ../src/physics/PhysicsEngine.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/scene/Entities.cpp -o obj/Entities.o
 
 obj/vertexObjects.o: ../src/scene/vertexObjects.cpp ../src/scene/vertexObjects.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/scene/vertexObjects.cpp -o obj/vertexObjects.o
 
-obj/Shader.o: ../src/shader/Shader.cpp	../src/shader/Shader.hpp ../src/debug/LOG.hpp ../src/shader/GLSL/vertexShaderSource1.glslv ../src/shader/GLSL/fragmentShaderSource1.glslf
-		$(CXX) $(CXXFLAGS) -c ../src/shader/Shader.cpp -o obj/Shader.o
+obj/Shader.o: ../src/renderer/shader/Shader.cpp	../src/renderer/shader/Shader.hpp ../src/debug/LOG.hpp ../src/renderer/shader/GLSL/vertexShaderSource1.glslv ../src/renderer/shader/GLSL/fragmentShaderSource1.glslf
+		$(CXX) $(CXXFLAGS) -c ../src/renderer/shader/Shader.cpp -o obj/Shader.o
 
 obj/Scene.o: ../src/scene/Scene.cpp ../src/scene/Scene.hpp ../src/scene/Entities.hpp ../src/scene/entitiesAttributesData.hpp ../src/window/Window.hpp ../src/utils/RunParallel.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/scene/Scene.cpp -o obj/Scene.o
@@ -73,7 +73,7 @@ obj/Window.o: ../src/window/Window.cpp ../src/window/Window.hpp ../src/debug/LOG
 obj/Camera.o: ../src/camera/Camera.cpp	../src/camera/Camera.hpp ../src/debug/LOG.hpp ../src/debug/RenderingInfoLog.hpp ../src/physics/PhysicsEngine.hpp ../src/camera/Cursor.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/camera/Camera.cpp -o obj/Camera.o
 
-obj/Engine.o: ../src/core/Engine.cpp ../src/core/Engine.hpp ../src/debug/LOG.hpp ../src/scene/Scene.hpp ../src/debug/RenderingInfoLog.hpp ../src/shader/Shader.hpp ../src/renderer/Renderer.hpp ../src/utils/RunParallel.hpp
+obj/Engine.o: ../src/core/Engine.cpp ../src/core/Engine.hpp ../src/debug/LOG.hpp ../src/scene/Scene.hpp ../src/debug/RenderingInfoLog.hpp ../src/renderer/shader/Shader.hpp ../src/renderer/Renderer.hpp ../src/utils/RunParallel.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/core/Engine.cpp -o obj/Engine.o
 
 obj/Application.o: ../src/core/Application.cpp ../src/core/Application.hpp ../src/core/Engine.hpp

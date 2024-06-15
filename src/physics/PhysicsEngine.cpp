@@ -6,6 +6,13 @@
 namespace Synapse
 {
 
+void Physics::CalculateDeltaTime()
+{
+    float currentFrame = glfwGetTime();
+    float currentDeltaTime = m_deltaTime;
+    m_deltaTime = currentFrame - m_lastFrame;
+    m_lastFrame = currentFrame;
+}
 
 void Physics::SetCurrentObjectInfo(const glm::vec3 &objectMaxSize, const glm::vec3 &objectMinSize)
 {
@@ -16,6 +23,7 @@ void Physics::SetCurrentObjectInfo(const glm::vec3 &objectMaxSize, const glm::ve
 }
 
 
+//check for the collision with any object(for now it's the object located at the center)
 bool Physics::WasCollided()
 {
     bool pointsInsideObject = false;
@@ -25,13 +33,11 @@ bool Physics::WasCollided()
 //    this->setCurrentObjectInfo(glm::vec3(0.9f, 1.2f, 0.9f),
 //                               glm::vec3(-0.9f, -1.2f, -0.9f));
 
-    this->SetCurrentObjectInfo(glm::vec3(0.5f, 0.5f, 0.5f),
-                               glm::vec3(-0.5, -0.5f, -0.5f));
+    //this was already done in this->ApplyPhysics() method
 
+//float offset = 0.3f;    //offset is for more accurate collision with the object to check for the height collision
 
-    //float offset = 0.3f;    //offset is for more accurate collision with the object to check for the height collision
-
-    //this is because we need to detect the camera's collision with the object earlier than the camera's actual collision with the object
+//this is because we need to detect the camera's collision with the object earlier than the camera's actual collision with the object
     glm::vec3 offset = glm::vec3(0.3f, 0.3f, 0.3f);
 
 //    if (m_cameraPos <= m_objectMaxSize + offset &&
@@ -42,8 +48,8 @@ bool Physics::WasCollided()
 //    }
 
 
-    //check if all the points of camera position is inside the object(collision detection)
-    //we are neglecting the minimum y-axis detection cause we assume everything starts from height 0.0f(maybe will change it in the future)
+//check if all the points of camera position is inside the object(collision detection)
+//we are neglecting the minimum y-axis detection cause we assume everything starts from height 0.0f(maybe will change it in the future)
 
     if (m_pos.x <= m_objectMaxSize.x + offset.x &&
         m_pos.x >= m_objectMinSize.x - offset.x &&
@@ -53,7 +59,7 @@ bool Physics::WasCollided()
         m_pos.y >= m_objectMinSize.y - offset.y)
     {
         pointsInsideObject = true;
-        m_posWhileCollision = m_pos;
+        //m_cameraPosWhileCollision = m_cameraPos;
     }
 
     std::cout << std::boolalpha << "Point is inside the object: " << pointsInsideObject << '\n';
@@ -77,19 +83,25 @@ bool Physics::WasCollided()
 }
 
 
+
 void Physics::FallDown()
 {
-    //if the player has reached the roof then he can't get down automatically for the height collision
-    //Tensor::Vector3 position = Tensor::Vector3(0.0f, 1.0f, 0.0f);
+//if the player has reached the roof then he can't get down automatically for the height collision
+//Tensor::Vector3 position = Tensor::Vector3(0.0f, 1.0f, 0.0f);
 
     float minHeight = m_initialHeight;
 
     std::cout << "Camera's current minHeight: " << minHeight << '\n';
 
+    float gravity = -0.1f;
     float deltaTime = 0.27f;
+
 
     m_pos.y += m_velocity.y * PHYSICAL_CONSTANTS::DELTATIME;
     m_velocity.y += PHYSICAL_CONSTANTS::GRAVITY * PHYSICAL_CONSTANTS::DELTATIME;
+
+    //    motion.increaseHeight(m_cameraVelocity.y * deltaTime);
+    //    motion.increaseVerticalVelocity(PhysicsEngine::PHYSICAL_CONSTANTS::GRAVITY * deltaTime);
 
     std::cout << "Velocity while falling down: " << m_velocity.y << '\n';
     std::cout << "Position while falling down: " << m_pos.y << '\n';
@@ -101,7 +113,6 @@ void Physics::FallDown()
         m_velocity.y = 0.774f;
         m_keepPhysicsRunning = false;
         m_timeElapsed = 0.0f;
-
         //motion.reset();
     }
 
@@ -121,10 +132,11 @@ void Physics::Jump()
 
     std::cout << "Min current height: " << minHeight << '\n';
 
-    float deltaTime = 0.27f;
+    float gravity = -0.1f;
+    float deltaTime = 0.27f;     //0.167f is a standard delta time but to make it faster it has been changed
 
-    m_pos.y += m_velocity.y * PHYSICAL_CONSTANTS::DELTATIME;
-    m_velocity.y += PHYSICAL_CONSTANTS::GRAVITY * PHYSICAL_CONSTANTS::DELTATIME;
+    m_pos.y = m_pos.y + m_velocity.y * PHYSICAL_CONSTANTS::DELTATIME;
+    m_velocity.y = m_velocity.y + gravity * PHYSICAL_CONSTANTS::DELTATIME;
 
     std::cout << "Camera's vertical velocity: " << m_velocity.y << '\n';
 
@@ -147,12 +159,12 @@ void Physics::Jump()
         m_jumped = false;
         m_timeElapsed = 0.0f;
     }
+
 }
 
 
 void Physics::ApplyVerticalMotions()
 {
-
     std::cout << "Time elapsed: " << m_timeElapsed << '\n';
 
     if (m_jumped)
@@ -160,7 +172,7 @@ void Physics::ApplyVerticalMotions()
         this->Jump();
     }
 
-    // this->wasCollided();
+    // this->WasCollided();
     if (m_pos.y <= m_currentObjectHeight && m_isAtTheRoof)
     {
         std::cout << "Camera is at the roof" << '\n';
@@ -172,7 +184,8 @@ void Physics::ApplyVerticalMotions()
     {
         if (m_pos.y >= 1.2f)
         {
-            InitVelocity(glm::vec3(0.0f, -0.49f, 0.0f));
+            m_velocity.y = -0.49;
+            //InitVelocity(glm::vec3(0.0f, -0.49f, 0.0f));
             //initVelocity(Tensor::Vector3(0.0f, -0.49f, 0.0f));
 
             m_timeElapsed = 0.455f;
@@ -190,6 +203,23 @@ void Physics::ApplyVerticalMotions()
 
 }
 
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+void Physics::Apply()
+{
+    std::cout << "Camera is now in game mode" << '\n';
+    this->ApplyVerticalMotions();
+
+    this->SetCurrentObjectInfo(glm::vec3(0.5f, 0.5f, 0.5f),
+                               glm::vec3(-0.5, -0.5f, -0.5f));
+
+    m_collided = false;
+    m_collided = this->WasCollided();
+}
 
 
 

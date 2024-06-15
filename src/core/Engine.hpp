@@ -6,6 +6,8 @@
 #include "../camera/Camera.hpp"
 #include "../scene/Scene.hpp"
 #include "../renderer/Renderer.hpp"
+#include "../physics/PhysicsEngine.hpp"
+#include "../audio/audio.hpp"
 
 #include <vector>
 #include <unordered_map>
@@ -59,6 +61,8 @@ private:
     Camera          *m_camera;
     Scene           *m_scene;
     SceneRenderer   *m_renderer;
+    Physics         *m_physics;
+//    Audio           *m_audio;
 
     std::vector<Camera*> m_cameras;
     unsigned short       m_currentCameraIndex;

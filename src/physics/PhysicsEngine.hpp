@@ -4,10 +4,11 @@
 #include <glm/glm.hpp>
 
 
+
 namespace Synapse
 {
 
-struct Physics
+class Physics
 {
 public:
 
@@ -19,74 +20,45 @@ public:
     };
 
     Physics() = default;
-    virtual ~Physics() = default;
+    //virtual ~Physics() = default;
 
-    inline void CalculateDeltaTime()
-    {
-        float currentFrame = glfwGetTime();
-        float currentDeltaTime = m_deltaTime;
-        m_deltaTime = currentFrame - m_lastFrame;
-        m_lastFrame = currentFrame;
-    }
-
-    //Kinematics
-    inline void InitPosition(const glm::vec3 &pos) { m_pos = pos; }
-    inline void InitVelocity(const glm::vec3 &velocity) { m_velocity = velocity; }
-
-    inline void ChangeHeight(GLfloat height) { m_pos.y = height; }
-    inline void IncreaseHeight(GLfloat deltaHeight) { m_pos.y += deltaHeight; }
-    inline void DecreaseHeight(GLfloat deltaHeight) { m_pos -= deltaHeight; }
-    inline void ChangeVerticalVelocity(GLfloat velocity) { m_velocity.y = velocity; }
-    inline void IncreaseVerticalVelocity(GLfloat deltaVelocity) { m_velocity.y += deltaVelocity; }
-    inline void DecreaseVerticalVelocity(GLfloat deltaVelocity) { m_velocity.y -= deltaVelocity; }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    inline void InitPosX() {}
-    inline void InitPosY() {}
-    inline void InitPosZ() {}
-
-    inline void InitVelocityX() {}
-    inline void InitVelocityY() {}
-    inline void InitVelocityZ() {}
-
-    inline void IncreasePosX() {}
-    inline void IncreasePosY() {}
-    inline void IncreasePosZ() {}
-
-    inline void IncreaseVelocityX() {}
-    inline void IncreaseVelocityY() {}
-    inline void IncreaseVelocityZ() {}
-
-
-    inline void SetPosX() {}
-    inline void SetPosY() {}
-    inline void SetPosZ() {}
-
-    inline void SetVelocityX() {}
-    inline void SetVelocityY() {}
-    inline void SetVelocityZ() {}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//protected:
-
+    void CalculateDeltaTime();
     void SetCurrentObjectInfo(const glm::vec3 &objectMaxSize, const glm::vec3 &objectMinSize);
-    inline void Reset() {}
-    [[nodiscard]] bool WasCollided();
+    void Reset(){}
+    bool WasCollided();
     void FallDown();
     void Jump();
     void ApplyVerticalMotions();
-    void ApplyPhysics();
+    void Apply();
 
 
-    [[nodiscard]] int8_t Init();
-    [[nodiscard]] int8_t Run();
 
+
+
+//protected:
+
+
+    //inside physics class we don't need these data's as our design style for utilizing Physics in the Engine doesn't match nicely with this
+    //every scene object will have it's own data sets like this if physics is needed to be implemented on it.
+    //so basically the owner of these data sets is not going to be 'Physics' class or any of it's derived classes.
+    //this 'Physics' class and it's derived classed will only operate on objects
+
+
+    //So, for instance it should be the following (according to the design style):
+    //Camera *camera = new Camera();
+    //Physics *physics;
+    //physics->Jump(camera);
+    //bool wasCollidedWithObject = physics->WasCollided(camera);
+
+    //rather than the following:
+    //Camera *camera = new Camera();
+    //camera->physics->Jump();
 
     //will name it 'm_pos' from 'm_entityPos' and same with 'm_entityVelocity'
-    glm::vec3 m_pos = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 m_velocity = glm::vec3(0.0f, 0.0f, 0.0f);
+
+
+    glm::vec3 m_pos = glm::vec3(3.0f, 0.0f, 3.0f);
+    glm::vec3 m_velocity = glm::vec3(0.0f, 0.7740f, 0.0f);
 
     glm::vec3 m_posWhileCollision;
     glm::vec3 m_objectMaxSize;
@@ -101,9 +73,11 @@ public:
     float m_initialHeight = 0.0f;
     float m_currentObjectHeight = 0.0f;
 
+    float m_speedCoefficient;
     float m_timeElapsed = 0.0f;
     float m_deltaTime = 0.0f;
     float m_lastFrame = 0.0f;
+
 
 };
 

@@ -38,20 +38,20 @@ void Scene::LoadRenderableObjectsStatically()
     m_renderableObjects.push_back(new RenderableObject("light source cube",
                                                         data::cubeData::cubeVerticiesData, data::cubeData::cubeTotalVerticies,
                                                         data::cubeData::cubeIndiciesData, data::cubeData::cubeTotalIndicies,
-                                                        "../src/shader/GLSL/vertexShaderSource1.glslv",
-                                                        "../src/shader/GLSL/fragmentShaderSource1.glslf"));
+                                                        "../src/renderer/shader/GLSL/vertexShaderSource1.glslv",
+                                                        "../src/renderer/shader/GLSL/fragmentShaderSource1.glslf"));
 
     m_renderableObjects.push_back(new RenderableObject("ground",
                                                         data::groundData::groundVerticiesData, data::groundData::groundTotalVerticies,
                                                         data::groundData::groundIndiciesData, data::groundData::groundTotalIndicies,
-                                                        "../src/shader/GLSL/vertexShaderSource1.glslv",
-                                                        "../src/shader/GLSL/fragmentShaderSource1.glslf"));
+                                                        "../src/renderer/shader/GLSL/vertexShaderSource1.glslv",
+                                                        "../src/renderer/shader/GLSL/fragmentShaderSource1.glslf"));
 
     m_renderableObjects.push_back(new RenderableObject("anotherCube",
                                                         data::anotherCubeData::anotherCubeVerticiesData, data::anotherCubeData::anotherCubeTotalVerticies,
                                                         data::anotherCubeData::anotherCubeIndiciesData, data::anotherCubeData::anotherCubeTotalIndicies,
-                                                        "../src/shader/GLSL/vertexShaderSource1.glslv",
-                                                        "../src/shader/GLSL/fragmentShaderSource1.glslf"));
+                                                        "../src/renderer/shader/GLSL/vertexShaderSource1.glslv",
+                                                        "../src/renderer/shader/GLSL/fragmentShaderSource1.glslf"));
 
 
     //make any modification to the entities or scene after running useProgram() and before rendering otherwise it would be TOO bad!
@@ -92,8 +92,8 @@ void Scene::LoadRenderableObjectsDynamically()
     m_renderableObjects.push_back(new RenderableObject("light source cube",
                                               data::cubeData::cubeVerticiesData, data::cubeData::cubeTotalVerticies,
                                               data::cubeData::cubeIndiciesData, data::cubeData::cubeTotalIndicies,
-                                              "../src/shader/GLSL/vertexShaderSource1.glslv",
-                                              "../src/shader/GLSL/fragmentShaderSource1.glslf"));
+                                              "../src/renderer/shader/GLSL/vertexShaderSource1.glslv",
+                                              "../src/renderer/shader/GLSL/fragmentShaderSource1.glslf"));
 
 
     std::size_t lastEntityIndex = m_renderableObjects.size()-1;
@@ -150,6 +150,9 @@ void Scene::Update(GLFWwindow *window)
         renderableObject->Update();
     }
 #endif
+
+
+    std::cout << "Completed updating current scene!" << '\n';
 
 
 }

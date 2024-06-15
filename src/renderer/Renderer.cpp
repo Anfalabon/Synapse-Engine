@@ -112,6 +112,8 @@ void SceneRenderer::Render(Scene *scene)
     }
 #endif
 
+    std::cout << "Finised rendering current scene!" << '\n';
+
 }
 
 
