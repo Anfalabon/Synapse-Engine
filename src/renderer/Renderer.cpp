@@ -1,6 +1,7 @@
 #include "Renderer.hpp"
 #include "../scene/Scene.hpp"
 #include "../utils/RunParallel.hpp"
+#include "../debug/LOG.hpp"
 //#include "../multithreading/runParallel.hpp"
 
 #include <glm/glm.hpp>
@@ -163,11 +164,12 @@ void SceneRenderer::Render(Scene *scene)
     };
 
 
-//    model = scene->GetRenderableObject(0)->m_model;
 
     for(std::size_t i=0; i < scene->GetTotalSceneObjects(); ++i)
     {
+        //scene->GetRenderableObject(0)->GetVA().Bind();
         scene->GetRenderableObject(i)->GetVA().Bind();
+
 
 //        float angle = 10.0f;
 //        glm::mat4 model = glm::mat4(1.0f);
@@ -175,6 +177,8 @@ void SceneRenderer::Render(Scene *scene)
         scene->GetRenderableObject(i)->m_model = glm::rotate(scene->GetRenderableObject(i)->m_model, rotationAngles[i], glm::vec3(1.0f, 0.0f, 0.0f));
         scene->GetRenderableObject(i)->m_model = glm::translate(scene->GetRenderableObject(i)->m_model, translationVectors[i]);
         scene->GetRenderableObject(i)->GetShader().SendMatrix4ToGPU("model", scene->GetRenderableObject(i)->m_model);
+
+        DEBUG::__LOG__MANAGER__::GLM_LOG(scene->GetRenderableObject(i)->m_model);
 
 
         //render every object
