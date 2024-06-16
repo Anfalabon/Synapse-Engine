@@ -6,7 +6,6 @@
 #include <string.h>
 
 
-
 namespace Synapse
 {
 
@@ -19,6 +18,7 @@ public:
         std::string path;
     }ShaderFile;
 
+     Shader() = default;
      Shader(const std::string &vertexShaderPath, const std::string &fragmentShaderPath)
         :
        m_vertexShaderID(glCreateShader(GL_VERTEX_SHADER)),
@@ -29,6 +29,7 @@ public:
          m_fragmentShader.path = std::move(fragmentShaderPath);
      }
 
+     //by now it's now defualt cause it may delete the program(which is kind of optional)
      ~Shader()
      {
          //glDeleteProgram(m_shaderProgramID);

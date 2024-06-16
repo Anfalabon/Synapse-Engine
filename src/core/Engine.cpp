@@ -159,8 +159,8 @@ void Engine::LoadRenderer()
         //here once used '0' instead of 'i' in GetRenderableObject() function arg
         //so it was only rendering the first object inside scene's renderable objects buffer.
         //wasted hours for this lol.
-        m_renderer->InitVAO(m_scene->GetRenderableObject(i)->GetVertexObjects().GetVAO());
-        m_renderer->InitIndicies(m_scene->GetRenderableObject(i)->TotalIndicies());
+        m_renderer->InitVAO(m_scene->GetRenderableObject(i)->GetVA().GetVAO());
+        m_renderer->InitIndicies(m_scene->GetRenderableObject(i)->GetEB().GetTotalIndicies());
     }
 
     std::cout << "Initialized Renderer" << '\n';

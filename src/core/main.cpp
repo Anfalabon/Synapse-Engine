@@ -29,9 +29,9 @@ int Main()   //will place 'main.cpp' in the 'Engine' directory instead of 'Engin
         {
             g_applicationIsRunning = false;
             application->ShutDown();
+            delete application;
             break;
         }
-        delete application;
     }
     return 0;
 }

@@ -50,43 +50,169 @@ private:
 struct VertexBuffer
 {
     VertexBuffer() = default;
-    ~VertexBuffer() = default;
+    VertexBuffer(GLuint totalVerticies, Vertex *verticiesData)
+    :     _totalVerticies(totalVerticies),
+          _verticiesData(verticiesData){}
 
-    void Gen();
-    void Bind();
-    void Unbind();
+    ~VertexBuffer()
+    {
+        glDeleteBuffers(1, &_VBO);
+        if(_verticiesData!=nullptr)
+        {
+            delete[] _verticiesData;
+            //delete[] (Vertex*)_verticiesData;
+        }
+    }
 
+    void SetVerticies(GLuint totalVerticies, Vertex *verticiesData)
+    {
+        _totalVerticies = totalVerticies;
+        _verticiesData = std::move(verticiesData);
+    }
+
+    void Gen()
+    {
+        glGenBuffers(1, &_VBO);
+    }
+
+    void Bind()
+    {
+        unsigned long TARGET_BUFFER = 0x8892;   //GL_ARRAY_BUFFER
+        glBindBuffer(TARGET_BUFFER, _VBO);
+        glBufferData(TARGET_BUFFER, sizeof(Vertex)*_totalVerticies, _verticiesData, GL_STATIC_DRAW);
+    }
+
+    void Unbind()
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
+
+    GLuint &GetVBO()
+    {
+        return _VBO;
+    }
+
+    GLuint GetTotalVerticies()
+    {
+        return _totalVerticies;
+    }
+
+    Vertex *GetVerticiesData()
+    {
+        //return (Vertex*)_verticiesData;
+        return _verticiesData;
+    }
+
+private:
     GLuint _VBO;
+    GLuint _totalVerticies;
+    Vertex *_verticiesData;
 };
 
 struct IndexBuffer
 {
     IndexBuffer() = default;
-    ~IndexBuffer() = default;
+    IndexBuffer(GLuint totalIndicies, GLuint *indiciesData)
+    :    _totalIndicies(totalIndicies),
+         _indiciesData(std::move(indiciesData)){}
 
-    void Gen();
-    void Bind();
-    void Unbind();
+    ~IndexBuffer()
+    {
+        glDeleteBuffers(1, &_EBO);
+        if(_indiciesData!=nullptr)
+        {
+            delete[] _indiciesData;
+            //delete[] (GLuint*)_indiciesData;
+        }
+    }
 
+    void SetIndicies(GLuint totalIndicies, GLuint *indiciesData)
+    {
+        _totalIndicies = totalIndicies;
+        _indiciesData = std::move(indiciesData);
+    }
+
+    void Gen()
+    {
+        glGenBuffers(1, &_EBO);
+    }
+
+    void Bind()
+    {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*_totalIndicies, _indiciesData, GL_STATIC_DRAW);
+    }
+
+    void Unbind()
+    {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    }
+
+    GLuint &GetEBO()
+    {
+        return _EBO;
+    }
+
+    GLuint GetTotalIndicies()
+    {
+        return _totalIndicies;
+    }
+
+    GLuint *GetIndiciesData()
+    {
+        //return (GLuint*)_indiciesData;
+        return _indiciesData;
+    }
+
+private:
     GLuint _EBO;
+    GLuint _totalIndicies;
+    GLuint *_indiciesData;
 };
 
 
 struct VertexArray
 {
     VertexArray() = default;
-    ~VertexArray() = default;
-
-    void Gen();
-    void Bind();
-    void Unbind();
-
-    void EnableVertexAtrribute(unsigned short attributeNo)
+    ~VertexArray()
     {
-        glVertexAttribPointer(attributeNo, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(attributeNo * sizeof(GLfloat)));
-        glEnableVertexAttribArray(attributeNo);
+        glDeleteVertexArrays(1, &_VAO);
     }
+
+    void Gen()
+    {
+        glGenVertexArrays(1, &_VAO);
+    }
+
+    void Bind()
+    {
+        glBindVertexArray(_VAO);
+    }
+
+    void Unbind()
+    {
+        glBindVertexArray(0);
+    }
+
+    void EnableVertexAttribute(unsigned short vertexAttributeNo)
+    {
+        glVertexAttribPointer(vertexAttributeNo, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3*vertexAttributeNo * sizeof(GLfloat)));
+        glEnableVertexAttribArray(vertexAttributeNo);
+    }
+
+    GLuint &GetVAO()
+    {
+        return _VAO;
+    }
+
+private:
+    GLuint _VAO;
 };
+
+
+typedef struct VertexBuffer VertexBuffer;
+typedef struct IndexBuffer IndexBuffer;
+typedef struct VertexArray VertexArray;
 
 
 

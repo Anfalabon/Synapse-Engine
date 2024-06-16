@@ -14,7 +14,7 @@ namespace Synapse
 {
 
 
-class __attribute__((packed)) RenderableObject
+class RenderableObject
 {
 public:
 
@@ -23,34 +23,34 @@ public:
                     GLuint *indicies, GLuint totalIndicies,
                     const std::string &vertexShaderSourcePath,
                     const std::string &fragmentShaderSourcePath) noexcept;
+
+
+    RenderableObject() = default;
     ~RenderableObject();
 
-    [[nodiscard]] inline Vertex *verticiesData(){return m_verticies;}
-    [[nodiscard]] inline GLuint *indiciesData(){return m_indicies;}
 
-    [[nodiscard]] inline GLuint verticiesSizeBytes(){return m_verticiesSizeBytes;}
-    [[nodiscard]] inline GLuint indiciesSizeBytes(){return m_indiciesSizeBytes;}
+    void SetName(const char* name);
+    void SetID(){}
+    void SetVerticies(GLuint totalVerticies, Vertex *verticies);
+    void SetIndicies(GLuint totalIndicies, GLuint *indicies);
+    void SetShaderSources(const std::string &vertexShaderSourcePath, const std::string &fragmentShaderSourcePath);
 
-    [[nodiscard]] inline GLuint Totalverticies() __attribute__((always_inline)) {return m_totalVerticies;}
-    [[nodiscard]] inline GLuint TotalIndicies() __attribute__((always_inline)) {return m_totalIndicies;}
-
-    [[nodiscard]] inline Shader& GetShader() __attribute__((always_inline)) {return m_shader;}
-    [[nodiscard]] inline Transformation& GetTransformation() __attribute__((always_inline)) {return m_Transform;}
-    [[nodiscard]] inline VertexObjects& GetVertexObjects() __attribute__((always_inline)) {return m_VO;}
-
+    void LoadVertexObjects();
     void LoadShader();
 
-//#ifdef __DEBUG__
-    void PrintVerticiesData();
-    void PrintIndiciesData();
-//#endif
+    [[nodiscard]] inline struct VertexArray&  GetVA(){return m_VA;}
+    [[nodiscard]] inline struct VertexBuffer& GetVB(){return m_VB;}
+    [[nodiscard]] inline struct IndexBuffer&  GetEB(){return m_EB;}
+
+    [[nodiscard]] inline Shader& GetShader(){return m_shader;}
+    [[nodiscard]] inline Transformation& GetTransformation(){return m_Transform;}
+
 
     //apply transformation to the Entity
     void Translate(glm::vec3 translationVec);
     void Rotate(float angleToRotateDegrees, glm::vec3 rotationVec);
     void Scale(glm::vec3 scaleVec);
 
-    void Render();
     void Update();
 
 private:
@@ -58,23 +58,16 @@ private:
     const char* m_name;
     GLuint      m_ID;
 
-    Vertex      *m_verticies = nullptr;
-    GLuint      *m_indicies = nullptr;
-
-    GLuint      m_totalVerticies;
-    GLuint      m_totalIndicies;
-
-    GLuint      m_verticiesSizeBytes;
-    GLuint      m_indiciesSizeBytes;
-
     //we can't use this if the Shader() constructor is explicit
     //Shader m_shader = Shader("../src/shader/GLSL/vertexShaderSource1.glslv", "../src/shader/GLSL/fragmentShaderSource1.glslf");
     Shader                m_shader;
     struct Transformation m_Transform;
-    struct VertexObjects  m_VO;
+    struct VertexArray    m_VA;
+    struct VertexBuffer   m_VB;
+    struct IndexBuffer    m_EB;
 
 public:
-    //glm::mat4 m_model = glm::mat4(1.0f);
+    glm::mat4 m_model = glm::mat4(1.0f);
 };
 
 

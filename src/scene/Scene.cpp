@@ -35,23 +35,56 @@ void Scene::LoadRenderableObjectsStatically()
 {
     namespace data = entitiesData;
 
-    m_renderableObjects.push_back(new RenderableObject("light source cube",
-                                                        data::cubeData::cubeVerticiesData, data::cubeData::cubeTotalVerticies,
-                                                        data::cubeData::cubeIndiciesData, data::cubeData::cubeTotalIndicies,
-                                                        "../src/renderer/shader/GLSL/vertexShaderSource1.glslv",
-                                                        "../src/renderer/shader/GLSL/fragmentShaderSource1.glslf"));
+//    m_renderableObjects.push_back(new RenderableObject("light source cube",
+//                                                        data::cubeData::cubeVerticiesData, data::cubeData::cubeTotalVerticies,
+//                                                        data::cubeData::cubeIndiciesData, data::cubeData::cubeTotalIndicies,
+//                                                        "../src/renderer/shader/GLSL/vertexShaderSource1.glslv",
+//                                                        "../src/renderer/shader/GLSL/fragmentShaderSource1.glslf"));
+//
+//
+//    m_renderableObjects.push_back(new RenderableObject("ground",
+//                                                        data::groundData::groundVerticiesData, data::groundData::groundTotalVerticies,
+//                                                        data::groundData::groundIndiciesData, data::groundData::groundTotalIndicies,
+//                                                        "../src/renderer/shader/GLSL/vertexShaderSource1.glslv",
+//                                                        "../src/renderer/shader/GLSL/fragmentShaderSource1.glslf"));
+//
+//
+//    m_renderableObjects.push_back(new RenderableObject("anotherCube",
+//                                                        data::anotherCubeData::anotherCubeVerticiesData, data::anotherCubeData::anotherCubeTotalVerticies,
+//                                                        data::anotherCubeData::anotherCubeIndiciesData, data::anotherCubeData::anotherCubeTotalIndicies,
+//                                                        "../src/renderer/shader/GLSL/vertexShaderSource1.glslv",
+//                                                        "../src/renderer/shader/GLSL/fragmentShaderSource1.glslf"));
 
-    m_renderableObjects.push_back(new RenderableObject("ground",
-                                                        data::groundData::groundVerticiesData, data::groundData::groundTotalVerticies,
-                                                        data::groundData::groundIndiciesData, data::groundData::groundTotalIndicies,
-                                                        "../src/renderer/shader/GLSL/vertexShaderSource1.glslv",
-                                                        "../src/renderer/shader/GLSL/fragmentShaderSource1.glslf"));
 
-    m_renderableObjects.push_back(new RenderableObject("anotherCube",
-                                                        data::anotherCubeData::anotherCubeVerticiesData, data::anotherCubeData::anotherCubeTotalVerticies,
-                                                        data::anotherCubeData::anotherCubeIndiciesData, data::anotherCubeData::anotherCubeTotalIndicies,
-                                                        "../src/renderer/shader/GLSL/vertexShaderSource1.glslv",
-                                                        "../src/renderer/shader/GLSL/fragmentShaderSource1.glslf"));
+
+
+    m_renderableObjects.push_back(new RenderableObject());
+    m_renderableObjects[0]->SetName("Light Source");
+    m_renderableObjects[0]->SetVerticies(data::cubeData::cubeTotalVerticies, data::cubeData::cubeVerticiesData);
+    m_renderableObjects[0]->SetIndicies(data::cubeData::cubeTotalIndicies, data::cubeData::cubeIndiciesData);
+    m_renderableObjects[0]->SetShaderSources("../src/renderer/shader/GLSL/vertexShaderSource1.glslv",
+                                             "../src/renderer/shader/GLSL/fragmentShaderSource1.glslf");
+
+
+
+    m_renderableObjects.push_back(new RenderableObject());
+    m_renderableObjects[1]->SetName("Ground");
+    m_renderableObjects[1]->SetVerticies(data::groundData::groundTotalVerticies, data::groundData::groundVerticiesData);
+    m_renderableObjects[1]->SetIndicies(data::groundData::groundTotalIndicies, data::groundData::groundIndiciesData);
+    m_renderableObjects[1]->SetShaderSources("../src/renderer/shader/GLSL/vertexShaderSource1.glslv",
+                                             "../src/renderer/shader/GLSL/fragmentShaderSource1.glslf");
+
+
+
+    m_renderableObjects.push_back(new RenderableObject());
+    m_renderableObjects[2]->SetName("3D Trapizium");
+    m_renderableObjects[2]->SetVerticies(data::anotherCubeData::anotherCubeTotalVerticies, data::anotherCubeData::anotherCubeVerticiesData);
+    m_renderableObjects[2]->SetIndicies(data::anotherCubeData::anotherCubeTotalIndicies, data::anotherCubeData::anotherCubeIndiciesData);
+    m_renderableObjects[2]->SetShaderSources("../src/renderer/shader/GLSL/vertexShaderSource1.glslv",
+                                             "../src/renderer/shader/GLSL/fragmentShaderSource1.glslf");
+
+
+
 
 
     //make any modification to the entities or scene after running useProgram() and before rendering otherwise it would be TOO bad!
@@ -73,8 +106,10 @@ void Scene::LoadRenderableObjectsStatically()
         m_renderableObjects.push_back(new RenderableObject("", nullptr, 0, nullptr, 0, "", ""));
     }
 
+
     for(RenderableObject *renderableObject: m_renderableObjects) [[likely]]
     {
+        renderableObject->LoadVertexObjects();
         renderableObject->LoadShader();
     }
 
@@ -89,14 +124,24 @@ void Scene::LoadRenderableObjectsDynamically()
 
     //adding a single scene(which is here a cube) causes adding of other entities.
     //will need to fix this
-    m_renderableObjects.push_back(new RenderableObject("light source cube",
-                                              data::cubeData::cubeVerticiesData, data::cubeData::cubeTotalVerticies,
-                                              data::cubeData::cubeIndiciesData, data::cubeData::cubeTotalIndicies,
-                                              "../src/renderer/shader/GLSL/vertexShaderSource1.glslv",
-                                              "../src/renderer/shader/GLSL/fragmentShaderSource1.glslf"));
+//    m_renderableObjects.push_back(new RenderableObject("light source cube",
+//                                              data::cubeData::cubeVerticiesData, data::cubeData::cubeTotalVerticies,
+//                                              data::cubeData::cubeIndiciesData, data::cubeData::cubeTotalIndicies,
+//                                              "../src/renderer/shader/GLSL/vertexShaderSource1.glslv",
+//                                              "../src/renderer/shader/GLSL/fragmentShaderSource1.glslf"));
 
+
+
+    m_renderableObjects.push_back(new RenderableObject());
 
     std::size_t lastEntityIndex = m_renderableObjects.size()-1;
+
+    m_renderableObjects[lastEntityIndex]->SetName("Light Source");
+    m_renderableObjects[lastEntityIndex]->SetVerticies(data::cubeData::cubeTotalVerticies, data::cubeData::cubeVerticiesData);
+    m_renderableObjects[lastEntityIndex]->SetIndicies(data::cubeData::cubeTotalIndicies, data::cubeData::cubeIndiciesData);
+    m_renderableObjects[lastEntityIndex]->SetShaderSources("../src/renderer/shader/GLSL/vertexShaderSource1.glslv",
+                                                            "../src/renderer/shader/GLSL/fragmentShaderSource1.glslf");
+    m_renderableObjects[lastEntityIndex]->LoadVertexObjects();
     m_renderableObjects[lastEntityIndex]->LoadShader();
 
     //m_camera->AddShaderProgramID(m_renderableObjects[lastEntityIndex]->GetShader().ProgramID());

@@ -33,44 +33,62 @@ RenderableObject::RenderableObject(const char *name,
     :
      m_name(name),
      m_ID(rand()%INT_MAX),  //i know it's bad to use but still...
-     m_verticies(std::move(verticies)),
-     m_indicies(std::move(indicies)),
-     m_totalVerticies(totalVerticies),
-     m_totalIndicies(totalIndicies),
-     m_verticiesSizeBytes(sizeof(Vertex)*totalVerticies),
-     m_indiciesSizeBytes(sizeof(GLuint)*totalIndicies),
      m_shader(vertexShaderSourcePath, fragmentShaderSourcePath),
-     m_VO(m_verticiesSizeBytes, m_verticies, m_indiciesSizeBytes, m_indicies){}
+     m_VB(totalVerticies, std::move(verticies)),
+     m_EB(totalIndicies, std::move(indicies)){}
 
 
+void RenderableObject::SetName(const char *name)
+{
+    if(name!=nullptr)
+    {
+        m_name = std::move(name);
+    }
+}
+
+void RenderableObject::SetVerticies(GLuint totalVerticies, Vertex *verticies)
+{
+    //m_VB = struct VertexBuffer(totalVerticies, std::move(verticies));
+    m_VB.SetVerticies(totalVerticies, std::move(verticies));
+}
+
+void RenderableObject::SetIndicies(GLuint totalIndicies, GLuint *indicies)
+{
+    //m_EB = struct IndexBuffer(totalIndicies, std::move(indicies));
+    m_EB.SetIndicies(totalIndicies, std::move(indicies));
+}
+
+void RenderableObject::SetShaderSources(const std::string &vertexShaderSourcePath, const std::string &fragmentShaderSourcePath)
+{
+    m_shader = Shader(vertexShaderSourcePath, fragmentShaderSourcePath);
+}
 
 void RenderableObject::LoadShader()
 {
+    //m_shader = Shader(vertexShaderSourcePath, fragmentShaderSourcePath);
     m_shader.Setup();
     m_shader.AttachAndLink();
 }
 
-
-void RenderableObject::PrintVerticiesData()
+void RenderableObject::LoadVertexObjects()
 {
-    std::cout << "\n\n\n\n\n\n\n\n\n\n\n";
-    for (std::size_t i = 0; i < m_totalVerticies; ++i)
-    {
-        std::cout << m_verticies[i] << '\n';
-    }
+    m_VA.Gen();
+    m_VB.Gen();
+    m_EB.Gen();
+
+    m_VA.Bind();
+    m_VB.Bind();
+    m_EB.Bind();
+
+    m_VA.EnableVertexAttribute(0);
+    m_VA.EnableVertexAttribute(1);
+
+    m_VA.Unbind();
+    m_VB.Unbind();
 }
 
 
-void RenderableObject::PrintIndiciesData()
-{
-    std::cout << "\n\n\n\n\n\n\n\n\n\n\n";
-    for (std::size_t i = 0; i < m_totalIndicies; ++i)
-    {
-        std::cout << m_indicies[i] << '\n';
-    }
-}
-
-
+//these shouldn't be inside 'RenderableObjects' class
 
 void RenderableObject::Translate(glm::vec3 translationVec)
 {
@@ -100,15 +118,6 @@ void RenderableObject::Update()
     glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(m_Transform.m_model));
 }
 
-//first update and then render
-void RenderableObject::Render()
-{
-    //glDrawArrays(GL_TRIANGLES, 0, 36)
-    glBindVertexArray(m_VO.GetVAO());
-    glDrawElements(GL_TRIANGLES, m_totalIndicies, GL_UNSIGNED_INT, 0);
-}
-
-
 
 RenderableObject::~RenderableObject()
 {
@@ -116,14 +125,6 @@ RenderableObject::~RenderableObject()
     //so now both owns the verticies and indicies data
     //we will delete the verticies and indicies data from the Entity destructor
     //it will prevent us from doing manual deletion in InitializeEngine.cpp where the entities are deleted explicitly at the end of the program
-    if(m_verticies!=nullptr)
-    {
-        delete[] m_verticies;
-    }
-    if(m_indicies!=nullptr)
-    {
-        delete[] m_indicies;
-    }
 }
 
 

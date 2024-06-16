@@ -3,6 +3,8 @@
 #include "../utils/RunParallel.hpp"
 //#include "../multithreading/runParallel.hpp"
 
+#include <glm/glm.hpp>
+
 #include <future>
 #include <thread>
 
@@ -105,10 +107,40 @@ void SceneRenderer::Render(Scene *scene)
          glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->TotalIndicies(), GL_UNSIGNED_INT, 0);
     });
 #else
+
+
+//    scene->GetRenderableObject(0)->GetVA().Bind();
+//    scene->GetRenderableObject(1)->GetVA().Bind();
+//    scene->GetRenderableObject(2)->GetVA().Bind();
+
+
+
     for(std::size_t i=0; i < scene->GetTotalSceneObjects(); ++i)
     {
-        glBindVertexArray(scene->GetRenderableObject(i)->GetVertexObjects().GetVAO());
-        glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->TotalIndicies(), GL_UNSIGNED_INT, 0);
+//        glBindVertexArray(scene->GetRenderableObject(i)->GetVertexObjects().GetVAO());
+//        glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->TotalIndicies(), GL_UNSIGNED_INT, 0);
+
+
+        std::size_t index = i;
+        scene->GetRenderableObject(i)->GetVA().Bind();
+
+        float angle = 20*i;
+
+        glm::mat4 model = glm::mat4(1.0f);
+
+//        scene->GetRenderableObject(index)->m_model = glm::rotate(scene->GetRenderableObject(index)->m_model,
+//                                                             glm::radians(angle),
+//                                                             glm::vec3(1.0f, 0.3f, 0.5f));
+
+        model = glm::rotate(model, angle, glm::vec3(1.0f, 0.3f, 0.5));
+
+        //scene->GetRenderableObject(2)->m_model = glm::translate(scene->GetRenderableObject(2)->m_model, glm::vec3(0.0f, 0.01f, 0.0f));
+
+        GLuint modelLocation = glGetUniformLocation(scene->GetRenderableObject(i)->GetShader().ProgramID(), "model");
+        glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
+
+        //render every object
+        glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->GetEB().GetTotalIndicies(), GL_UNSIGNED_INT, 0);
     }
 #endif
 
