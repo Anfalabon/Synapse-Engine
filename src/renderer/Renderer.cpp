@@ -125,16 +125,10 @@ void SceneRenderer::Render(Scene *scene)
         scene->GetRenderableObject(i)->GetVA().Bind();
 
         float angle = 20*i;
-
         glm::mat4 model = glm::mat4(1.0f);
-
-//        scene->GetRenderableObject(index)->m_model = glm::rotate(scene->GetRenderableObject(index)->m_model,
-//                                                             glm::radians(angle),
-//                                                             glm::vec3(1.0f, 0.3f, 0.5f));
-
-        model = glm::rotate(model, angle, glm::vec3(1.0f, 0.3f, 0.5));
-
-        //scene->GetRenderableObject(2)->m_model = glm::translate(scene->GetRenderableObject(2)->m_model, glm::vec3(0.0f, 0.01f, 0.0f));
+        
+        //model = glm::rotate(model, angle, glm::vec3(1.0f, 0.3f, 0.5));
+        model = glm::translate(model , glm::vec3(0.0f, (float)i, 0.0f));
 
         GLuint modelLocation = glGetUniformLocation(scene->GetRenderableObject(i)->GetShader().ProgramID(), "model");
         glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
