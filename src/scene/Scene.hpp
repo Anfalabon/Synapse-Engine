@@ -42,7 +42,7 @@ private:
     class UUID; //later define if want to add 'ECS'
     std::unordered_map<UUID, RenderableObject*> m_renderableObjectsMap;
 #else
-    std::vector<RenderableObject*> m_renderableObjects;
+    std::vector<Synapse::RenderableObject*> m_renderableObjects;
 #endif
 
 };

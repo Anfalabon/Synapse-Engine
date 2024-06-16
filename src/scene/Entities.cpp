@@ -66,7 +66,7 @@ void RenderableObject::SetShaderSources(const std::string &vertexShaderSourcePat
 void RenderableObject::LoadShader()
 {
     //m_shader = Shader(vertexShaderSourcePath, fragmentShaderSourcePath);
-    m_shader.Setup();
+    m_shader.Compile();
     m_shader.AttachAndLink();
 }
 
@@ -114,8 +114,10 @@ void RenderableObject::Update()
 {
     m_shader.UseProgram();
     //m_Transform.ModelLocation(m_shader.ProgramID());
-    GLuint modelLocation = glGetUniformLocation(m_shader.ProgramID(), "model");
-    glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(m_Transform.m_model));
+    m_shader.SendMatrix4ToGPU("model", m_model);    //this is not necessary to do everytime if entities model matrix don't change everytime
+
+//    GLuint modelLocation = glGetUniformLocation(m_shader.ProgramID(), "model");
+//    glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(m_Transform.m_model));
 }
 
 

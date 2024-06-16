@@ -85,56 +85,63 @@ void Shader::SetupSuccessLog(T __STATUS__, GLuint shaderID)
 
 
 const char *vertexSS = "#version 330 core\n"
+                       "\n"
+                       "\n"
                        "layout (location = 0) in vec3 aPosition;\n"
                        "layout (location = 1) in vec3 aColor;\n"
                        "\n"
                        "out vec3 vertexColor;\n"
+                       "//out float time;\n"
                        "\n"
                        "\n"
-                       "//we won't add any tranformations to the object now\n"
-                       "//uniform mat4 transform;\n"
                        "\n"
+                       "uniform mat4 transform = mat4(1.0f);\n"
                        "uniform mat4 model;\n"
                        "uniform mat4 view;\n"
                        "uniform mat4 perspective;\n"
                        "\n"
-                       "void core()\n"
+                       "void main()\n"
                        "{   \n"
                        "    //gl_Position = transform * perspective * view * model * vec4(aPosition, 1.0f);\n"
-                       "\n"
-                       "    gl_Position = perspective * view * model * vec4(aPosition, 1.0f);\n"
-                       "\n"
-                       "    //gl_Position = transform * vec4(aPosition, 1.0f);    \n"
+                       "    //gl_Position = transform * vec4(aPosition, 1.0f);\n"
                        "    //gl_Position = vec4(aPosition, 1.0f);\n"
                        "\n"
                        "\n"
-                       "    vertexColor = aColor;\n"
+                       "    gl_Position = transform * perspective * view * model * vec4(aPosition, 1.0f);\n"
                        "\n"
+                       "    vertexColor = aColor;\n"
                        "}";
 
 
 
 const char *fragmentSS = "#version 330 core\n"
                          "\n"
-                         "out vec4 FragColor;\n"
-                         "\n"
+                         "//out vec4 FragColor;\n"
                          "in vec3 vertexColor;\n"
+                         "//in float time;\n"
+                         "\n"
                          "\n"
                          "//uniform vec3 vertexColor;\n"
-                         "\n"
                          "//uniform vec3 objectColor;\n"
                          "//uniform vec3 lightColor;\n"
                          "\n"
                          "\n"
-                         "void core()\n"
+                         "//uniform float time;\n"
+                         "\n"
+                         "\n"
+                         "void main()\n"
                          "{\n"
-                         "    FragColor = vec4(vertexColor, 1.0f);\n"
+                         "    //FragColor = vec4(vertexColor, 1.0f);\n"
                          "\n"
                          "    //FragColor = vec4(objectColor * lightColor, 1.0f);\n"
+                         "\n"
+                         "    //vec3 changingColor = 0.5f * (sin(time)+1);\n"
+                         "\n"
+                         "    gl_FragColor = vec4(vertexColor, 1.0f);\n"
                          "}";
 
 
-void Shader::Setup()
+void Shader::Compile()
 {
     this->ReadSources();
     if(m_vertexShader.source == "" || m_fragmentShader.source == "")
@@ -204,6 +211,85 @@ void Shader::RemoveProgram()
 {
      glDeleteProgram(m_shaderProgramID);
 }
+
+
+
+void Shader::SetMatrix4vf(const char *uniformMatrixName, glm::mat4 &model)
+{
+    glUniformMatrix4fv(glGetUniformLocation(m_shaderProgramID, uniformMatrixName), 1, GL_FALSE, glm::value_ptr(model));
+}
+
+void Shader::SendMatrix4ToGPU(const char *uniformMatrixName, glm::mat4 &model)
+{
+    glUniformMatrix4fv(glGetUniformLocation(m_shaderProgramID, uniformMatrixName), 1, GL_FALSE, glm::value_ptr(model));
+}
+
+
+
+
+
+#if 0
+
+void Shader::SetBool(const std::string &name, bool value) const
+{
+    glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
+}
+
+void Shader::SetInt(const std::string &name, int value) const
+{
+    glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
+}
+
+void Shader::SetFloat(const std::string &name, float value) const
+{
+    glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
+}
+
+void Shader::SetVec2(const std::string &name, const glm::vec2 &value) const
+{
+    glUniform2fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]);
+}
+void Shader::SetVec2(const std::string &name, float x, float y) const
+{
+    glUniform2f(glGetUniformLocation(ID, name.c_str()), x, y);
+}
+
+void Shader::SetVec3(const std::string &name, const glm::vec3 &value) const
+{
+    glUniform3fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]);
+}
+
+void Shader::SetVec3(const std::string &name, float x, float y, float z) const
+{
+    glUniform3f(glGetUniformLocation(ID, name.c_str()), x, y, z);
+}
+
+void Shader::SetVec4(const std::string &name, const glm::vec4 &value) const
+{
+    glUniform4fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]);
+}
+
+void Shader::SetVec4(const std::string &name, float x, float y, float z, float w) const
+{
+    glUniform4f(glGetUniformLocation(ID, name.c_str()), x, y, z, w);
+}
+
+void Shader::SetMat2(const std::string &name, const glm::mat2 &mat) const
+{
+    glUniformMatrix2fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+}
+
+void Shader::SetMat3(const std::string &name, const glm::mat3 &mat) const
+{
+    glUniformMatrix3fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+}
+
+void Shader::SetMat4(const std::string &name, const glm::mat4 &mat) const
+{
+    glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+}
+
+#endif
 
 
 

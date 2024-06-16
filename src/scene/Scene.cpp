@@ -5,6 +5,8 @@
 #include "../utils/RunParallel.hpp"
 
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <vector>
 
@@ -58,12 +60,21 @@ void Scene::LoadRenderableObjectsStatically()
 
 
 
+
+
+
+
+
+
     m_renderableObjects.push_back(new RenderableObject());
     m_renderableObjects[0]->SetName("Light Source");
     m_renderableObjects[0]->SetVerticies(data::cubeData::cubeTotalVerticies, data::cubeData::cubeVerticiesData);
     m_renderableObjects[0]->SetIndicies(data::cubeData::cubeTotalIndicies, data::cubeData::cubeIndiciesData);
     m_renderableObjects[0]->SetShaderSources("../src/renderer/shader/GLSL/vertexShaderSource1.glslv",
                                              "../src/renderer/shader/GLSL/fragmentShaderSource1.glslf");
+
+
+
 
 
 
@@ -84,7 +95,8 @@ void Scene::LoadRenderableObjectsStatically()
                                              "../src/renderer/shader/GLSL/fragmentShaderSource1.glslf");
 
 
-
+//    m_renderableObjects[0]->SetShaderSources("../src/renderer/shader/GLSL/vertexShaderSource1.glslv",
+//                                             "../src/renderer/shader/GLSL/fragmentShaderSource1.glslf");
 
 
     //make any modification to the entities or scene after running useProgram() and before rendering otherwise it would be TOO bad!
@@ -112,6 +124,11 @@ void Scene::LoadRenderableObjectsStatically()
         renderableObject->LoadVertexObjects();
         renderableObject->LoadShader();
     }
+
+//    m_renderableObjects[0]->Update();
+//    m_renderableObjects[0]->GetVA().Bind();
+//    m_renderableObjects[0]->m_model = glm::translate(m_renderableObjects[0]->m_model, glm::vec3(0.0f, -1.0f, 0.0f));
+//    m_renderableObjects[0]->GetShader().SendMatrix4ToGPU("model", m_renderableObjects[0]->m_model);
 
     //std::cin.get();
 }

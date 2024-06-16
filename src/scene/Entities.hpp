@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glad/glad.hpp>
+#include <glm/glm.hpp>
 
 #include "../renderer/shader/Shader.hpp"
 #include "Transformation.hpp"
@@ -42,6 +43,8 @@ public:
     [[nodiscard]] inline struct VertexBuffer& GetVB(){return m_VB;}
     [[nodiscard]] inline struct IndexBuffer&  GetEB(){return m_EB;}
 
+    [[nodiscard]] inline glm::mat4& GetModelMatrix(){return m_model;}
+
     [[nodiscard]] inline Shader& GetShader(){return m_shader;}
     [[nodiscard]] inline Transformation& GetTransformation(){return m_Transform;}
 
@@ -60,6 +63,9 @@ private:
 
     //we can't use this if the Shader() constructor is explicit
     //Shader m_shader = Shader("../src/shader/GLSL/vertexShaderSource1.glslv", "../src/shader/GLSL/fragmentShaderSource1.glslf");
+public:
+    glm::vec3             m_position = glm::vec3(0.0f, 0.0f, 0.0f);
+private:
     Shader                m_shader;
     struct Transformation m_Transform;
     struct VertexArray    m_VA;

@@ -7,7 +7,7 @@
 
 #include <future>
 #include <thread>
-
+#include <vector>
 
 
 
@@ -42,7 +42,6 @@ void Renderer::UseZbuffer()
     glDisable(GL_CULL_FACE);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
-
 
 
 
@@ -85,6 +84,17 @@ void SceneRenderer::Render()
 }
 
 
+static void SetMatrix(GLuint shaderProgramID, const char *uniformMatrixName, glm::mat4 &model)
+{
+    GLuint modelLocation = glGetUniformLocation(shaderProgramID, uniformMatrixName);
+    glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
+}
+
+//static void Transformation(glm::mat4 &model, )
+//{
+//    model = glm::rotate(model, angle, glm::vec3(1.0f, 0.3f, 0.5));
+//    model = glm::translate(model, glm::vec3(0.0f, (float)2.0f, 0.0f));
+//}
 
 
 void SceneRenderer::Render(Scene *scene)
@@ -113,29 +123,64 @@ void SceneRenderer::Render(Scene *scene)
 //    scene->GetRenderableObject(1)->GetVA().Bind();
 //    scene->GetRenderableObject(2)->GetVA().Bind();
 
+//    std::vector<glm::mat4> models;
+//    models[0] = glm::mat4(1.0f);
+//    models[1] = glm::mat4(1.0f);
+//    models[2] = glm::mat4(1.0f);
 
+//    scene->GetRenderableObject(2)->GetVA().Bind();
+//    scene->GetRenderableObject(2)->GetShader().UseProgram();
+//
+//    glm::mat4 model = glm::mat4(1.0f);
+//    model = glm::translate(model, glm::vec3(1.0f, 1.0f, 0.0f));
+//    SetMatrix(scene->GetRenderableObject(2)->GetShader().ProgramID(), "model", model);
+
+    //glm::mat4 model = glm::mat4(1.0f);
+
+
+
+    //GLuint *ptr = &scene->GetRenderableObject(0)->GetEB().GetTotalIndicies();
+
+//    scene->GetRenderableObject(0)->GetVA().Bind();
+
+
+    glm::vec3 translationVectors[3] = {
+            glm::vec3(0.0f, 1.0f/100.0f, 0.0f),     //moves the Ligth source(first object upwards)
+            glm::vec3(0.0f, 0.0f, 0.0f),    //moves the Ground(second object downwards)
+            glm::vec3(0.0f, 0.0f, 0.0f)
+    };
+
+    float rotationAngles[3] = {
+            0.0f,
+            0.0f,
+            1.0f
+    };
+
+    glm::vec3 rotationalVectors[3] = {
+            glm::vec3(1.0, 0.0f, 0.0f),
+            glm::vec3(0.0f, 1.0f, 0.0f),
+            glm::vec3(0.0f, 1.0f, 0.0f)
+    };
+
+
+//    model = scene->GetRenderableObject(0)->m_model;
 
     for(std::size_t i=0; i < scene->GetTotalSceneObjects(); ++i)
     {
-//        glBindVertexArray(scene->GetRenderableObject(i)->GetVertexObjects().GetVAO());
-//        glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->TotalIndicies(), GL_UNSIGNED_INT, 0);
-
-
-        std::size_t index = i;
         scene->GetRenderableObject(i)->GetVA().Bind();
 
-        float angle = 20*i;
-        glm::mat4 model = glm::mat4(1.0f);
-        
-        //model = glm::rotate(model, angle, glm::vec3(1.0f, 0.3f, 0.5));
-        model = glm::translate(model , glm::vec3(0.0f, (float)i, 0.0f));
+//        float angle = 10.0f;
+//        glm::mat4 model = glm::mat4(1.0f);
 
-        GLuint modelLocation = glGetUniformLocation(scene->GetRenderableObject(i)->GetShader().ProgramID(), "model");
-        glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
+        scene->GetRenderableObject(i)->m_model = glm::rotate(scene->GetRenderableObject(i)->m_model, rotationAngles[i], glm::vec3(1.0f, 0.0f, 0.0f));
+        scene->GetRenderableObject(i)->m_model = glm::translate(scene->GetRenderableObject(i)->m_model, translationVectors[i]);
+        scene->GetRenderableObject(i)->GetShader().SendMatrix4ToGPU("model", scene->GetRenderableObject(i)->m_model);
+
 
         //render every object
         glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->GetEB().GetTotalIndicies(), GL_UNSIGNED_INT, 0);
     }
+
 #endif
 
     std::cout << "Finised rendering current scene!" << '\n';
