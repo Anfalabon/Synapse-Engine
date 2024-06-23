@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <type_traits>
+#include <unordered_map>
 
 #include <glad/glad.hpp>
 
@@ -39,19 +39,33 @@ class SceneRenderer : public Renderer
 public:
 
     SceneRenderer() = default;
-    SceneRenderer(std::size_t totalEntities)
-            : m_totalEntities(totalEntities)
-    {
-        m_entitiesVAO.reserve(m_totalEntities);
-        m_entitiesTotalIndicies.reserve(m_totalEntities);
-    }
     ~SceneRenderer() = default;
 
-    //really bad code and have to fix it later
-    inline void InitVAO(GLuint VAO){m_entitiesVAO.push_back(VAO);}
-    inline void InitIndicies(GLuint totalEntityIndicies){m_entitiesTotalIndicies.push_back(totalEntityIndicies);}
+    void AddShader(const std::string &vertexShaderPath, const std::string &fragmentShaderPath)
+    {
+        m_sceneShaders.push_back(Shader(vertexShaderPath, fragmentShaderPath));
+        D_AddShaderMethodCalled = true;
+    }
 
-    inline std::size_t TotalEntitiesToRender(){return m_totalEntities;}
+    void SetShader()
+    {
+        if(!D_AddShaderMethodCalled)
+        {
+            std::cout << "Add the shader file first!" << '\n';
+            return;
+        }
+
+        std::size_t lastIndex = m_sceneShaders.size() - 1;
+        m_sceneShaders[lastIndex].Compile();
+        m_sceneShaders[lastIndex].AttachAndLink();
+        //m_sceneShaders[lastIndex].RemoveShaders();
+    }
+
+    Shader& GetShader(std::size_t index)
+    {
+        return m_sceneShaders[index];
+    }
+
 
     void Render() override;
     void Render(Scene *scene);
@@ -63,13 +77,18 @@ public:
 
 private:
 
-    //scene object info
+    Scene *m_scene;
+    //std::unordered_map<std::string, Shader> m_sceneShadersMap;
+    std::vector<Shader> m_sceneShaders;
 
-    std::size_t m_totalEntities;
-    std::vector <GLuint> m_entitiesVAO;
-    std::vector <GLuint> m_entitiesTotalIndicies;
+
+    bool D_AddShaderMethodCalled = false;
 
 };
+
+
+
+
 
 
 class ImageRenderer : public Renderer

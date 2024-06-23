@@ -13,6 +13,7 @@ void Shader::ReadSources()
 {
     if(m_vertexShader.path == "" || m_fragmentShader.path == "")
     {
+        std::cout << "Shader files are or file is empty!" << '\n';
         return;
     }
 
@@ -71,7 +72,8 @@ template<typename T>
 void Shader::SetupSuccessLog(T __STATUS__, GLuint shaderID)
 {
     int success;
-    char infoLog[512];
+    //char infoLog[512];
+    char *infoLog = (char*)alloca(512*sizeof(char));    //this allocates memory in stack
     //thinking of using Bit Manipulation and Flags here
     glGetShaderiv(shaderID, __STATUS__, &success);
     if(!success)
@@ -141,6 +143,21 @@ const char *fragmentSS = "#version 330 core\n"
                          "}";
 
 
+
+
+
+unsigned int Shader::Compile(unsigned int type, const char *shaderSource)
+{
+    unsigned int shaderID = glCreateShader(type);
+    glShaderSource(shaderID, 1, &shaderSource, NULL);
+    glCompileShader(shaderID);
+
+    return shaderID;
+}
+
+
+
+
 void Shader::Compile()
 {
     this->ReadSources();
@@ -163,6 +180,10 @@ void Shader::Compile()
 //     DEBUG::LOG(fragmentShaderSource);
 #endif
 
+     m_vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
+     m_fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+
+
      //compile the vertex shader source
      glShaderSource(m_vertexShaderID, 1, &vertexShaderSource, NULL);
      glCompileShader(m_vertexShaderID);
@@ -183,10 +204,14 @@ void Shader::Compile()
 
 void Shader::AttachAndLink()
 {
+     m_shaderProgramID = glCreateProgram();
      //attach and link the vertex and fragment shader
      glAttachShader(m_shaderProgramID, m_vertexShaderID);
      glAttachShader(m_shaderProgramID, m_fragmentShaderID);
      glLinkProgram(m_shaderProgramID);
+
+     glDeleteShader(m_vertexShaderID);
+     glDeleteShader(m_fragmentShaderID);
 
      this->SetupSuccessLog(GL_LINK_STATUS, m_shaderProgramID);
 }

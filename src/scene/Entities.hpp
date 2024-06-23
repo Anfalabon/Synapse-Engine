@@ -19,15 +19,17 @@ class RenderableObject
 {
 public:
 
-    explicit RenderableObject(const char *name,
-                    Vertex *verticies, GLuint totalVerticies,
-                    GLuint *indicies, GLuint totalIndicies,
-                    const std::string &vertexShaderSourcePath,
-                    const std::string &fragmentShaderSourcePath) noexcept;
-
-
     RenderableObject() = default;
     ~RenderableObject();
+
+    explicit RenderableObject(const char *name,
+                    Vertex *verticies, GLuint totalVerticies,
+                    GLuint *indicies, GLuint totalIndicies) noexcept;
+
+
+    explicit RenderableObject(const char *name, Vertex *verticies, unsigned int *indicies) noexcept{}
+
+
 
 
     void SetName(const char* name);
@@ -45,14 +47,6 @@ public:
 
     [[nodiscard]] inline glm::mat4& GetModelMatrix(){return m_model;}
 
-    [[nodiscard]] inline Shader& GetShader(){return m_shader;}
-    [[nodiscard]] inline Transformation& GetTransformation(){return m_Transform;}
-
-
-    //apply transformation to the Entity
-    void Translate(glm::vec3 translationVec);
-    void Rotate(float angleToRotateDegrees, glm::vec3 rotationVec);
-    void Scale(glm::vec3 scaleVec);
 
     void Update();
 
@@ -62,17 +56,14 @@ private:
     GLuint      m_ID;
 
     //we can't use this if the Shader() constructor is explicit
-    //Shader m_shader = Shader("../src/shader/GLSL/vertexShaderSource1.glslv", "../src/shader/GLSL/fragmentShaderSource1.glslf");
-public:
-    glm::vec3             m_position = glm::vec3(0.0f, 0.0f, 0.0f);
+    //Shader m_shader = Shader("../src/shader/GLSL/vertexShader1.vert", "../src/shader/GLSL/fragmentShader1.frag");
 private:
-    Shader                m_shader;
-    struct Transformation m_Transform;
     struct VertexArray    m_VA;
     struct VertexBuffer   m_VB;
     struct IndexBuffer    m_EB;
 
 public:
+    glm::vec3 m_position = glm::vec3(0.0f, 1.0f/100.0f, 0.0f);
     glm::mat4 m_model = glm::mat4(1.0f);
 };
 

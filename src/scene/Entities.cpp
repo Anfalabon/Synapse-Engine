@@ -1,6 +1,7 @@
 
 
 #include "Entities.hpp"
+#include "../utils/MemoryManager.hpp"
 
 
 #ifdef __stdcxx__
@@ -14,26 +15,12 @@ namespace Synapse
 {
 
 
-template<typename T>
-static std::size_t GetSize(T *arr)
-{
-    std::size_t i=0;
-    while(!arr[++i])
-        ;;
-    return i;
-}
-
-
-
 RenderableObject::RenderableObject(const char *name,
                Vertex *verticies, GLuint totalVerticies,
-               GLuint *indicies, GLuint totalIndicies,
-               const std::string &vertexShaderSourcePath,
-               const std::string &fragmentShaderSourcePath) noexcept
+               GLuint *indicies, GLuint totalIndicies) noexcept
     :
      m_name(name),
      m_ID(rand()%INT_MAX),  //i know it's bad to use but still...
-     m_shader(vertexShaderSourcePath, fragmentShaderSourcePath),
      m_VB(totalVerticies, std::move(verticies)),
      m_EB(totalIndicies, std::move(indicies)){}
 
@@ -58,17 +45,6 @@ void RenderableObject::SetIndicies(GLuint totalIndicies, GLuint *indicies)
     m_EB.SetIndicies(totalIndicies, std::move(indicies));
 }
 
-void RenderableObject::SetShaderSources(const std::string &vertexShaderSourcePath, const std::string &fragmentShaderSourcePath)
-{
-    m_shader = Shader(vertexShaderSourcePath, fragmentShaderSourcePath);
-}
-
-void RenderableObject::LoadShader()
-{
-    //m_shader = Shader(vertexShaderSourcePath, fragmentShaderSourcePath);
-    m_shader.Compile();
-    m_shader.AttachAndLink();
-}
 
 void RenderableObject::LoadVertexObjects()
 {
@@ -88,36 +64,12 @@ void RenderableObject::LoadVertexObjects()
 }
 
 
-//these shouldn't be inside 'RenderableObjects' class
-
-void RenderableObject::Translate(glm::vec3 translationVec)
-{
-    m_Transform.m_model = glm::translate(m_Transform.m_model, translationVec);
-    m_Transform.ModelLocation(m_shader.ProgramID());
-}
-
-
-void RenderableObject::Rotate(float angleToRotateDegrees, glm::vec3 rotationVec)
-{
-    m_Transform.m_model = glm::rotate(m_Transform.m_model, glm::radians(angleToRotateDegrees), rotationVec);
-    m_Transform.ModelLocation(m_shader.ProgramID());
-}
-
-
-void RenderableObject::Scale(glm::vec3 scaleVec)
-{
-    m_Transform.m_model = glm::scale(m_Transform.m_model, scaleVec);
-}
 
 
 void RenderableObject::Update()
 {
-    m_shader.UseProgram();
-    //m_Transform.ModelLocation(m_shader.ProgramID());
-    m_shader.SendMatrix4ToGPU("model", m_model);    //this is not necessary to do everytime if entities model matrix don't change everytime
-
-//    GLuint modelLocation = glGetUniformLocation(m_shader.ProgramID(), "model");
-//    glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(m_Transform.m_model));
+    //m_shader.UseProgram();
+    //m_shader.SendMatrix4ToGPU("model", m_model);    //this is not necessary to do everytime if entities model matrix don't change everytime
 }
 
 

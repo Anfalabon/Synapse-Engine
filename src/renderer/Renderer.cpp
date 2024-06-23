@@ -2,12 +2,12 @@
 #include "../scene/Scene.hpp"
 #include "../utils/RunParallel.hpp"
 #include "../debug/LOG.hpp"
-//#include "../multithreading/runParallel.hpp"
 
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/ext.hpp>
 
-#include <future>
-#include <thread>
+
 #include <vector>
 
 
@@ -76,30 +76,27 @@ void SceneRenderer::Render()
           glDrawElements(GL_TRIANGLES, m_entitiesTotalIndicies[i], GL_UNSIGNED_INT, 0);
     });
 #else
-    for(std::size_t i=0; i<m_totalEntities; ++i)
-    {
-          glBindVertexArray(m_entitiesVAO[i]);
-          glDrawElements(GL_TRIANGLES, m_entitiesTotalIndicies[i], GL_UNSIGNED_INT, 0);
-    }
+//    for(std::size_t i=0; i<m_totalEntities; ++i)
+//    {
+//          glBindVertexArray(m_entitiesVAO[i]);
+//          glDrawElements(GL_TRIANGLES, m_entitiesTotalIndicies[i], GL_UNSIGNED_INT, 0);
+//    }
 #endif
 }
 
 
-static void SetMatrix(GLuint shaderProgramID, const char *uniformMatrixName, glm::mat4 &model)
-{
-    GLuint modelLocation = glGetUniformLocation(shaderProgramID, uniformMatrixName);
-    glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
-}
-
-//static void Transformation(glm::mat4 &model, )
-//{
-//    model = glm::rotate(model, angle, glm::vec3(1.0f, 0.3f, 0.5));
-//    model = glm::translate(model, glm::vec3(0.0f, (float)2.0f, 0.0f));
-//}
 
 
 void SceneRenderer::Render(Scene *scene)
 {
+
+
+
+//    m_sceneShaders[0].SendMatrix4ToGPU("model", scene->GetRenderableObject(0)->m_model);
+//    m_sceneShaders[0].SendMatrix4ToGPU("model", scene->GetRenderableObject(1)->m_model);
+//    m_sceneShaders[0].SendMatrix4ToGPU("model", scene->GetRenderableObject(2)->m_model);
+
+
 
 #if defined(__MULTITHREADING__RENDERER__)
     auto ThreadsToUtilize = [=]()->unsigned short
@@ -120,69 +117,45 @@ void SceneRenderer::Render(Scene *scene)
 #else
 
 
-//    scene->GetRenderableObject(0)->GetVA().Bind();
-//    scene->GetRenderableObject(1)->GetVA().Bind();
-//    scene->GetRenderableObject(2)->GetVA().Bind();
 
-//    std::vector<glm::mat4> models;
-//    models[0] = glm::mat4(1.0f);
-//    models[1] = glm::mat4(1.0f);
-//    models[2] = glm::mat4(1.0f);
+    //this is for faster memory access
+    //unsigned int *p = &scene->m_renderableObjects[0]->m_EB._totalIndicies;
+    //unsigned int *p = &scene->GetRenderableObject(0)->GetEB().GetTotalIndicies();
+    //*(p + i*sizeof(RenderableObject));
 
-//    scene->GetRenderableObject(2)->GetVA().Bind();
-//    scene->GetRenderableObject(2)->GetShader().UseProgram();
-//
-//    glm::mat4 model = glm::mat4(1.0f);
-//    model = glm::translate(model, glm::vec3(1.0f, 1.0f, 0.0f));
-//    SetMatrix(scene->GetRenderableObject(2)->GetShader().ProgramID(), "model", model);
-
-    //glm::mat4 model = glm::mat4(1.0f);
+//    scene->GetRenderableObject(0)->GetShader().SendMatrix4ToGPU("model", scene->GetRenderableObject(0)->m_model);
 
 
 
-    //GLuint *ptr = &scene->GetRenderableObject(0)->GetEB().GetTotalIndicies();
 
-//    scene->GetRenderableObject(0)->GetVA().Bind();
+        scene->GetRenderableObject(0)->m_model = glm::translate(scene->GetRenderableObject(0)->m_model,
+                                                                glm::vec3(0.0f, 1.0f/100.0f, 0.0f));
+        //m_sceneShaders[0].SendMatrix4ToGPU("model", scene->GetRenderableObject(0)->m_model);
 
 
-    glm::vec3 translationVectors[3] = {
-            glm::vec3(0.0f, 1.0f/100.0f, 0.0f),     //moves the Ligth source(first object upwards)
-            glm::vec3(0.0f, 0.0f, 0.0f),    //moves the Ground(second object downwards)
-            glm::vec3(0.0f, 0.0f, 0.0f)
-    };
+//        scene->GetRenderableObject(1)->m_model = glm::translate(scene->GetRenderableObject(1)->m_model,
+//                                                                glm::vec3(1.0f/100.0f, 0.0f, 0.0f));
+//        //m_sceneShaders[0].SendMatrix4ToGPU("model", scene->GetRenderableObject(1)->m_model);
 
-    float rotationAngles[3] = {
-            0.0f,
-            0.0f,
-            1.0f
-    };
 
-    glm::vec3 rotationalVectors[3] = {
-            glm::vec3(1.0, 0.0f, 0.0f),
-            glm::vec3(0.0f, 1.0f, 0.0f),
-            glm::vec3(0.0f, 1.0f, 0.0f)
-    };
+        scene->GetRenderableObject(1)->m_model = glm::translate(scene->GetRenderableObject(1)->m_model,
+                                                                glm::vec3(0.0f, -1.0f/100.0f, 0.0f));
+        //m_sceneShaders[0].SendMatrix4ToGPU("model", scene->GetRenderableObject(2)->m_model);
+
+
 
 
 
     for(std::size_t i=0; i < scene->GetTotalSceneObjects(); ++i)
     {
-        //scene->GetRenderableObject(0)->GetVA().Bind();
         scene->GetRenderableObject(i)->GetVA().Bind();
 
-
-//        float angle = 10.0f;
-//        glm::mat4 model = glm::mat4(1.0f);
-
-        scene->GetRenderableObject(i)->m_model = glm::rotate(scene->GetRenderableObject(i)->m_model, rotationAngles[i], glm::vec3(1.0f, 0.0f, 0.0f));
-        scene->GetRenderableObject(i)->m_model = glm::translate(scene->GetRenderableObject(i)->m_model, translationVectors[i]);
-        scene->GetRenderableObject(i)->GetShader().SendMatrix4ToGPU("model", scene->GetRenderableObject(i)->m_model);
-
-        DEBUG::__LOG__MANAGER__::GLM_LOG(scene->GetRenderableObject(i)->m_model);
-
+        m_sceneShaders[0].SendMatrix4ToGPU("model", scene->GetRenderableObject(i)->m_model);
+        //DEBUG::__LOG__MANAGER__::GLM_LOG(scene->GetRenderableObject(i)->m_model);
 
         //render every object
         glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->GetEB().GetTotalIndicies(), GL_UNSIGNED_INT, 0);
+        //glDrawElements(GL_TRIANGLES, *(p + i*sizeof(RenderableObject)), GL_UNSIGNED_INT, 0);
     }
 
 #endif
@@ -200,14 +173,13 @@ void SceneRenderer::Render(Scene *scene)
 
 
 
-
-
-
-
-
 void ImageRenderer::Render()
 {
     //render image by pixel by pixel
 }
+
+
+
+
 
 }

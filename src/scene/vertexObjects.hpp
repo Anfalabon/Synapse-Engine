@@ -14,7 +14,15 @@ typedef struct Vertex
     GLfloat positions[3];
     GLfloat colors[3];
 
+//    Vertex &operator[]()
+//    {
+//        return *this;
+//    }
+
+
+
     inline friend std::ostream &operator<<(std::ostream &os, const struct Vertex &vertex);
+
 }Vertex;
 
 

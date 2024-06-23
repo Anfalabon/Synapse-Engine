@@ -6,6 +6,7 @@
 #include <omp.h>
 #include <mutex>
 #include <assert.h>
+#include <future>
 
 //will solve serious issuses like Data Races, Race Conditions
 namespace Synapse

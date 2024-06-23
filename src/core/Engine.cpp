@@ -78,6 +78,18 @@ void Engine::LoadScene()
     std::cout << "Initialized initial scene" << '\n';
     m_scene = new Scene();
     m_scene->Init();
+
+    //m_scene->GetRenderableObject(2)->GetShader().UseProgram();
+//    m_scene->GetRenderableObject(1)->GetShader().UseProgram();
+//    m_scene->GetRenderableObject(2)->GetShader().UseProgram();
+
+    //m_scene->GetRenderableObject(0)->GetShader().SendMatrix4ToGPU("model", m_scene->GetRenderableObject(0)->m_model);
+//    m_scene->GetRenderableObject(1)->GetShader().SendMatrix4ToGPU("model", m_scene->GetRenderableObject(1)->m_model);
+//    m_scene->GetRenderableObject(2)->GetShader().SendMatrix4ToGPU("model", m_scene->GetRenderableObject(2)->m_model);
+
+    //m_scene->GetRenderableObject(2)->GetShader().UseProgram();
+
+
 }
 
 
@@ -125,7 +137,8 @@ void Engine::LoadCameras()
     std::size_t i = 0;
     for(; i<m_scene->GetTotalSceneObjects() && j<m_cameras.size(); ++i, ++j)
     {
-        m_cameras[j]->AddShaderProgramID(m_scene->GetRenderableObject(i)->GetShader().ProgramID());
+        //m_cameras[j]->AddShaderProgramID(m_scene->GetRenderableObject(i)->GetShader().ProgramID());
+        m_cameras[j]->AddShaderProgramID(m_renderer->GetShader(0).GetProgramID());
     }
 
 
@@ -147,23 +160,25 @@ void Engine::LoadRenderer()
 
     //this is not that much necessary unless performence is a big consideration
     //preallocates heap memory
-    m_renderer = new SceneRenderer(m_scene->GetTotalSceneObjects());
+    m_renderer = new SceneRenderer();
 
 #ifdef __LOADTIME__MULTITHREADING__
     omp_set_num_threads(4);
 #pragma omp parallel for
 #endif
 
-    for(std::size_t i=0; i<m_scene->GetTotalSceneObjects(); ++i)
-    {
-        //here once used '0' instead of 'i' in GetRenderableObject() function arg
-        //so it was only rendering the first object inside scene's renderable objects buffer.
-        //wasted hours for this lol.
-        m_renderer->InitVAO(m_scene->GetRenderableObject(i)->GetVA().GetVAO());
-        m_renderer->InitIndicies(m_scene->GetRenderableObject(i)->GetEB().GetTotalIndicies());
-    }
+
 
     std::cout << "Initialized Renderer" << '\n';
+
+
+
+    //these shader files locations are relative to the 'Makefile' in 'build' directory
+    m_renderer->AddShader("../src/renderer/shader/GLSL/vertexShader1.vert",
+                           "../src/renderer/shader/GLSL/fragmentShader1.frag");
+    m_renderer->SetShader();
+    m_renderer->GetShader(0).UseProgram();
+
 
     //will add other types of renderers for other Game Engine Objects(if needed)
 }
@@ -180,8 +195,8 @@ int8_t Engine::Init()
     this->LoadGLAD();
     this->SetViewPort();
     this->LoadScene();
-    this->LoadCameras();
     this->LoadRenderer();
+    this->LoadCameras();
 
     std::cout << "Initialized the Engine" << '\n';
 
@@ -269,6 +284,10 @@ void Engine::Update()
 void Engine::Run()
 {
     DEBUG::__LOG__MANAGER__::LOG("Going to run the Engine");
+
+    //m_scene->GetRenderableObject(0)->GetShader().UseProgram();
+
+
     //core Engine loop
     while(m_window->IsRunning())
     {
@@ -289,7 +308,7 @@ void Engine::Run()
         this->SelectCamera();
         m_cameras[m_currentCameraIndex]->GetKeyboardInput(m_window->WindowAddress());
 
-        m_scene->Update(m_window->WindowAddress());
+        m_scene->Update(m_window->WindowAddress(), m_cameras[m_currentCameraIndex]->GetTargetPos());
         m_renderer->Render(m_scene);
         //m_physics->Apply(m_cameras[m_currentCameraIndex]);  //PHYSICS_MODE::MINECRAFT
         m_cameras[m_currentCameraIndex]->Update();

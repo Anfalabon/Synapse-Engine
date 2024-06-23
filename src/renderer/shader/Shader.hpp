@@ -26,8 +26,8 @@ public:
        m_fragmentShaderID(glCreateShader(GL_FRAGMENT_SHADER)),
        m_shaderProgramID(glCreateProgram())
      {
-         m_vertexShader.path = std::move(vertexShaderPath);
-         m_fragmentShader.path = std::move(fragmentShaderPath);
+         m_vertexShader.path = vertexShaderPath;
+         m_fragmentShader.path = fragmentShaderPath;
      }
 
      //by now it's now defualt cause it may delete the program(which is kind of optional)
@@ -39,7 +39,9 @@ public:
      void ReadSources();
      [[nodiscard]] GLuint ProgramID(){return m_shaderProgramID;}
      template<typename T> void SetupSuccessLog(T __STATUS__, GLuint shaderID);
+     inline unsigned int GetProgramID(){return m_shaderProgramID;}
      void Compile();
+     unsigned int Compile(unsigned int type, const char *shaderSource);
      void AttachAndLink();
      void UseProgram();
      void RemoveShaders();
@@ -58,7 +60,7 @@ private:
      GLuint m_fragmentShaderID;
 
      GLuint m_shaderProgramID;
-
+public:
      ShaderFile m_vertexShader;
      ShaderFile m_fragmentShader;
 

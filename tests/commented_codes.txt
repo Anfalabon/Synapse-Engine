@@ -1277,3 +1277,224 @@ Engine::~Engine()
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+//    m_renderableObjects.push_back(new RenderableObject("light source cube",
+//                                                        data::cubeData::cubeVerticiesData, data::cubeData::cubeTotalVerticies,
+//                                                        data::cubeData::cubeIndiciesData, data::cubeData::cubeTotalIndicies,
+//                                                        "../src/renderer/shader/GLSL/vertexShader1.vert",
+//                                                        "../src/renderer/shader/GLSL/fragmentShader1.frag"));
+//
+//
+//    m_renderableObjects.push_back(new RenderableObject("ground",
+//                                                        data::groundData::groundVerticiesData, data::groundData::groundTotalVerticies,
+//                                                        data::groundData::groundIndiciesData, data::groundData::groundTotalIndicies,
+//                                                        "../src/renderer/shader/GLSL/vertexShader1.vert",
+//                                                        "../src/renderer/shader/GLSL/fragmentShader1.frag"));
+//
+//
+//    m_renderableObjects.push_back(new RenderableObject("anotherCube",
+//                                                        data::anotherCubeData::anotherCubeVerticiesData, data::anotherCubeData::anotherCubeTotalVerticies,
+//                                                        data::anotherCubeData::anotherCubeIndiciesData, data::anotherCubeData::anotherCubeTotalIndicies,
+//                                                        "../src/renderer/shader/GLSL/vertexShader1.vert",
+//                                                        "../src/renderer/shader/GLSL/fragmentShader1.frag"));
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+void RenderableObject::Translate(glm::vec3 translationVec)
+{
+    m_Transform.m_model = glm::translate(m_Transform.m_model, translationVec);
+    m_Transform.ModelLocation(m_shader.ProgramID());
+}
+
+
+void RenderableObject::Rotate(float angleToRotateDegrees, glm::vec3 rotationVec)
+{
+    m_Transform.m_model = glm::rotate(m_Transform.m_model, glm::radians(angleToRotateDegrees), rotationVec);
+    m_Transform.ModelLocation(m_shader.ProgramID());
+}
+
+
+void RenderableObject::Scale(glm::vec3 scaleVec)
+{
+    m_Transform.m_model = glm::scale(m_Transform.m_model, scaleVec);
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//    m_renderableObjects[0]->SetShaderSources("../src/renderer/shader/GLSL/vertexShader1.vert",
+//                                             "../src/renderer/shader/GLSL/fragmentShader1.frag");
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//    m_scene->GetRenderableObject(0)->GetShader().UseProgram();
+//    m_scene->GetRenderableObject(1)->GetShader().UseProgram();
+//    m_scene->GetRenderableObject(2)->GetShader().UseProgram();
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+void RenderableObject::SetShaderSources(const std::string &vertexShaderSourcePath, const std::string &fragmentShaderSourcePath)
+{
+    m_shader = Shader(vertexShaderSourcePath, fragmentShaderSourcePath);
+}
+
+void RenderableObject::LoadShader()
+{
+    //m_shader = Shader(vertexShaderSourcePath, fragmentShaderSourcePath);
+    if(m_shader.m_vertexShader.path != "" || m_shader.m_fragmentShader.path != "" ||
+       m_shader.m_vertexShader.source != "" || m_shader.m_fragmentShader.source != "")
+    {
+        m_shader.Compile();
+        m_shader.AttachAndLink();
+    }
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+Shader                m_shader;   //this shader shouldn't be here. This should be inside the 'SceneRenderer' class cause not every renderable object needs it's own shader and initialization of those
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//    m_Transform.ModelLocation(m_shader.ProgramID());
+//    GLuint modelLocation = glGetUniformLocation(m_shader.ProgramID(), "model");
+//    glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(m_Transform.m_model));
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+//    scene->GetRenderableObject(0)->GetVA().Bind();
+//    scene->GetRenderableObject(1)->GetVA().Bind();
+//    scene->GetRenderableObject(2)->GetVA().Bind();
+
+//    std::vector<glm::mat4> models;
+//    models[0] = glm::mat4(1.0f);
+//    models[1] = glm::mat4(1.0f);
+//    models[2] = glm::mat4(1.0f);
+
+//    scene->GetRenderableObject(2)->GetVA().Bind();
+//    scene->GetRenderableObject(2)->GetShader().UseProgram();
+//
+//    glm::mat4 model = glm::mat4(1.0f);
+//    model = glm::translate(model, glm::vec3(1.0f, 1.0f, 0.0f));
+//    SetMatrix(scene->GetRenderableObject(2)->GetShader().ProgramID(), "model", model);
+
+    //glm::mat4 model = glm::mat4(1.0f);
+
+
+
+    //GLuint *ptr = &scene->GetRenderableObject(0)->GetEB().GetTotalIndicies();
+
+//    scene->GetRenderableObject(0)->GetVA().Bind();
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    glm::vec3 translationVectors[3] = {
+            glm::vec3(0.0f, 1.0f/100.0f, 0.0f),     //moves the Ligth source(first object upwards)
+            glm::vec3(0.0f, 0.0f, 0.0f),    //moves the Ground(second object downwards)
+            glm::vec3(0.0f, 0.0f, 0.0f)
+    };
+
+    float rotationAngles[3] = {
+            0.0f,
+            0.0f,
+            1.0f
+    };
+
+    glm::vec3 rotationalVectors[3] = {
+            glm::vec3(1.0, 0.0f, 0.0f),
+            glm::vec3(0.0f, 1.0f, 0.0f),
+            glm::vec3(0.0f, 1.0f, 0.0f)
+    };
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+//    Shader renderableObjectsShader("vertexShader.vert", "fragmentShader.frag");
+//    renderableObjectsShader.ReadSources();
+//    renderableObjectsShader.Compile(GL_VERTEX_SHADER);
+//    renderableObjectsShader.Compile(GL_FRAGMENT_SHADER);
+//    renderableObjectsShader.AttachAndLink();
+//
+//
+//    renderableObjectsShader.UseProgram();   //this should be inside the constructor of 'SceneRenderer'
+//
+//    SendMatrixToGPU(scene->GetRenderableObject(0).m_model);   //this should be wherever the model matrix of any RenderableObject is modified
+j//
+//    renderableObjectsShader.GetProgramID();
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+//    scene->GetRenderableObject(0)->GetShader().SendMatrix4ToGPU("model", scene->GetRenderableObject(0)->m_model);
+//    scene->GetRenderableObject(1)->GetShader().SendMatrix4ToGPU("model", scene->GetRenderableObject(1)->m_model);
+//    scene->GetRenderableObject(2)->GetShader().SendMatrix4ToGPU("model", scene->GetRenderableObject(2)->m_model);
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+    //m_camera->AddShaderProgramID(m_renderableObjects[lastEntityIndex]->GetShader().ProgramID());
+    //m_renderableObjects[lastEntityIndex]->Translate(m_camera->GetTargetPos());
+
+    //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(0.0f, -10.0f, 0.0f));

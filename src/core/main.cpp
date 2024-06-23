@@ -186,7 +186,7 @@ int main()
 
 //     //initialize, compile, link and remove the vertex and fragment shaders
 //     //will make it 'entityShader' from 'entityShaders'
-//     Shader entityShaders("../GLSL/vertexShaderSource1.glslv", "../GLSL/fragmentShaderSource1.glslf");
+//     Shader entityShaders("../GLSL/vertexShader1.vert", "../GLSL/fragmentShader1.frag");
 //     entityShaders.setup();
 //     entityShaders.link();
 //     entityShaders.remove();

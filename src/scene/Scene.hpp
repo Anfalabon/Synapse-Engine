@@ -26,8 +26,8 @@ public:
 
     void Init();
     void LoadRenderableObjectsStatically();
-    void LoadRenderableObjectsDynamically();
-    void Update(GLFWwindow *window);
+    void LoadRenderableObjectsDynamically(const glm::vec3 &currentCameraTargetPos);
+    void Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos);
 
     [[nodiscard]] inline RenderableObject* GetRenderableObject(std::size_t index)
     {
