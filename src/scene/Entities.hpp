@@ -30,8 +30,6 @@ public:
     explicit RenderableObject(const char *name, Vertex *verticies, unsigned int *indicies) noexcept{}
 
 
-
-
     void SetName(const char* name);
     void SetID(){}
     void SetVerticies(GLuint totalVerticies, Vertex *verticies);

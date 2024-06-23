@@ -3,6 +3,8 @@
 #include <glad/glad.hpp>
 
 #include <iostream>
+#include <array>
+#include <vector>
 
 
 
@@ -85,9 +87,10 @@ struct VertexBuffer
 
     void Bind()
     {
+        //_verticiesData = &_vVerticiesData[0];
         unsigned long TARGET_BUFFER = 0x8892;   //GL_ARRAY_BUFFER
         glBindBuffer(TARGET_BUFFER, _VBO);
-        glBufferData(TARGET_BUFFER, sizeof(Vertex)*_totalVerticies, _verticiesData, GL_STATIC_DRAW);
+        glBufferData(TARGET_BUFFER, sizeof(Vertex)*_totalVerticies, _verticiesData, GL_DYNAMIC_DRAW);
     }
 
     void Unbind()
@@ -115,7 +118,21 @@ private:
     GLuint _VBO;
     GLuint _totalVerticies;
     Vertex *_verticiesData;
+
+//    std::vector<Vertex> _vVerticiesData = {
+//            //vertex positions      //colors
+//            {{0.5f,  0.5f,  0.5f},  {1.0f, 1.0f, 1.0f}},
+//            {{0.5f,  0.5f,  -0.5f}, {1.0f, 1.0f, 1.0f}},
+//            {{0.5f,  -0.5f, 0.5f},  {1.0f, 1.0f, 1.0f}},
+//            {{0.5f,  -0.5f, -0.5f}, {1.0f, 1.0f, 1.0f}},
+//            {{-0.5f, 0.5f,  0.5f},  {1.0f, 1.0f, 1.0f}},
+//            {{-0.5f, 0.5f,  -0.5f}, {1.0f, 1.0f, 1.0f}},
+//            {{-0.5f, -0.5f, 0.5f},  {1.0f, 1.0f, 1.0f}},
+//            {{-0.5f, -0.5f, -0.5f}, {1.0f, 1.0f, 1.0f}}
+//    };
 };
+
+
 
 struct IndexBuffer
 {
@@ -148,7 +165,7 @@ struct IndexBuffer
     void Bind()
     {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*_totalIndicies, _indiciesData, GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*_totalIndicies, _indiciesData, GL_DYNAMIC_DRAW);
     }
 
     void Unbind()

@@ -48,24 +48,24 @@ void Scene::LoadRenderableObjectsStatically()
 
     m_renderableObjects.push_back(new RenderableObject());
     m_renderableObjects[0]->SetName("Light Source");
-    m_renderableObjects[0]->SetVerticies(data::cubeData::cubeTotalVerticies, data::cubeData::cubeVerticiesData);
-    m_renderableObjects[0]->SetIndicies(data::cubeData::cubeTotalIndicies, data::cubeData::cubeIndiciesData);
+    m_renderableObjects[0]->SetVerticies(data::cubeTotalVerticies, data::cubeVerticiesData);
+    m_renderableObjects[0]->SetIndicies(data::cubeTotalIndicies, data::cubeIndiciesData);
 
     std::cout << "IS running?" << '\n';
 
 
 
-//    m_renderableObjects.push_back(new RenderableObject());
-//    m_renderableObjects[1]->SetName("Ground");
-//    m_renderableObjects[1]->SetVerticies(data::groundData::groundTotalVerticies, data::groundData::groundVerticiesData);
-//    m_renderableObjects[1]->SetIndicies(data::groundData::groundTotalIndicies, data::groundData::groundIndiciesData);
+    m_renderableObjects.push_back(new RenderableObject());
+    m_renderableObjects[1]->SetName("Ground");
+    m_renderableObjects[1]->SetVerticies(data::groundTotalVerticies, data::groundVerticiesData);
+    m_renderableObjects[1]->SetIndicies(data::groundTotalIndicies, data::groundIndiciesData);
 
 
 
     m_renderableObjects.push_back(new RenderableObject());
-    m_renderableObjects[1]->SetName("3D Trapizium");
-    m_renderableObjects[1]->SetVerticies(data::anotherCubeData::anotherCubeTotalVerticies, data::anotherCubeData::anotherCubeVerticiesData);
-    m_renderableObjects[1]->SetIndicies(data::anotherCubeData::anotherCubeTotalIndicies, data::anotherCubeData::anotherCubeIndiciesData);
+    m_renderableObjects[2]->SetName("3D Trapizium");
+    m_renderableObjects[2]->SetVerticies(data::anotherCubeTotalVerticies, data::anotherCubeVerticiesData);
+    m_renderableObjects[2]->SetIndicies(data::anotherCubeTotalIndicies, data::anotherCubeIndiciesData);
 
 
 
@@ -115,15 +115,17 @@ void Scene::LoadRenderableObjectsDynamically(const glm::vec3 &currentCameraTarge
     std::size_t lastEntityIndex = m_renderableObjects.size()-1;
 
     m_renderableObjects[lastEntityIndex]->SetName("Light Source");
-    m_renderableObjects[lastEntityIndex]->SetVerticies(data::cubeData::cubeTotalVerticies, data::cubeData::cubeVerticiesData);
-    m_renderableObjects[lastEntityIndex]->SetIndicies(data::cubeData::cubeTotalIndicies, data::cubeData::cubeIndiciesData);
+    m_renderableObjects[lastEntityIndex]->SetVerticies(data::cubeTotalVerticies, data::cubeVerticiesData);
+    m_renderableObjects[lastEntityIndex]->SetIndicies(data::cubeTotalIndicies, data::cubeIndiciesData);
 
     m_renderableObjects[lastEntityIndex]->LoadVertexObjects();
 
     float zToShift = -1.0f;
 
-    m_renderableObjects[lastEntityIndex]->m_model = glm::translate(m_renderableObjects[lastEntityIndex]->m_model,
-                                                                   currentCameraTargetPos + glm::vec3(0.0f, 0.0f, zToShift));
+    m_renderableObjects[lastEntityIndex]->Translate(currentCameraTargetPos + glm::vec3(0.0f, 0.0f, zToShift));
+
+//    m_renderableObjects[lastEntityIndex]->m_model = glm::translate(m_renderableObjects[lastEntityIndex]->m_model,
+//                                                                   currentCameraTargetPos + glm::vec3(0.0f, 0.0f, zToShift));
 
     //the model matrix will be modified using 'SendMatrix4ToGPU()'
 }
@@ -164,6 +166,7 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos)
     }
 
 
+
     {
 
         bool rightMouseButtonClicked = true;
@@ -173,7 +176,6 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos)
             g_dynamicRenderableObjectDeleterRunning = false;
             rightMouseButtonClicked = false;
         }
-
 
         if (rightMouseButtonClicked && !g_dynamicRenderableObjectDeleterRunning)
         {
@@ -197,7 +199,7 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos)
     m_renderableObjects[0]->Translate(glm::vec3(0.0f, 1.0f/100.0f, 0.0f));
     m_renderableObjects[0]->Rotate(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
-    m_renderableObjects[1]->Translate(glm::vec3(0.0f, -1.0f/100.0f, 0.0f));
+    m_renderableObjects[2]->Translate(glm::vec3(0.0f, -1.0f/100.0f, 0.0f));
 
 
 
@@ -211,7 +213,15 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos)
         m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(0.0f, -1.0f/10.0f, 0.0f));
     }
 
+    if(glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+    {
+        m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(1.0f/10.0f, 0.0f, 0.0f));
+    }
 
+    if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+    {
+        m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(-1.0f/10.0f, 0.0f, 0.0f));
+    }
 
 
 
