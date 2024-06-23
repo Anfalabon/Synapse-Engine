@@ -66,6 +66,26 @@ void RenderableObject::LoadVertexObjects()
 
 
 
+
+void RenderableObject::Translate(const glm::vec3 &translationVec)
+{
+    m_model = glm::translate(m_model, translationVec);
+}
+
+
+void RenderableObject::Rotate(float angleToRotateDegrees, const glm::vec3 &rotationVec)
+{
+    m_model = glm::rotate(m_model, glm::radians(angleToRotateDegrees), rotationVec);
+}
+
+
+void RenderableObject::Scale(const glm::vec3 &scaleVec)
+{
+    m_model = glm::scale(m_model, scaleVec);
+}
+
+
+
 void RenderableObject::Update()
 {
     //m_shader.UseProgram();

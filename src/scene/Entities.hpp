@@ -48,6 +48,11 @@ public:
     [[nodiscard]] inline glm::mat4& GetModelMatrix(){return m_model;}
 
 
+    void Translate(const glm::vec3 &translationVec);
+    void Rotate(float angleToRotateDegrees, const glm::vec3 &rotationVec);
+    void Scale(const glm::vec3 &scaleVec);
+
+
     void Update();
 
 private:

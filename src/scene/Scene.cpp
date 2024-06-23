@@ -130,6 +130,7 @@ void Scene::LoadRenderableObjectsDynamically(const glm::vec3 &currentCameraTarge
 
 
 bool g_dynamicRenderableObjectLoaderRunning = false;
+bool g_dynamicRenderableObjectDeleterRunning = false;
 
 
 void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos)
@@ -141,49 +142,73 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos)
 
     //these will be inside the 'EntityLoader' class.
 
-    bool rightMouseButtonClicked = true;
+    //these will be inside some common function cause there logic is similar
 
-    if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) != GLFW_PRESS)
     {
-        g_dynamicRenderableObjectLoaderRunning = false;
-        rightMouseButtonClicked = false;
-    }
 
-    if(rightMouseButtonClicked && !g_dynamicRenderableObjectLoaderRunning)
-    {
-        g_dynamicRenderableObjectLoaderRunning = true;
-        DEBUG::__LOG__MANAGER__::LOG("PRESSED Dynamic Entity Loader!");
-        this->LoadRenderableObjectsDynamically(currentCameraTargetPos);
-    }
+        bool leftMouseButtonClicked = true;
 
-    if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
-    {
-        DEBUG::__LOG__MANAGER__::LOG("PRESSED Dynamic Entity Deleter!");
-        if(m_renderableObjects.size() > 0)
+        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) != GLFW_PRESS)
         {
-            m_renderableObjects.pop_back();
+            g_dynamicRenderableObjectLoaderRunning = false;
+            leftMouseButtonClicked = false;
         }
+
+        if (leftMouseButtonClicked && !g_dynamicRenderableObjectLoaderRunning)
+        {
+            g_dynamicRenderableObjectLoaderRunning = true;
+            DEBUG::__LOG__MANAGER__::LOG("PRESSED Dynamic Entity Loader!");
+            this->LoadRenderableObjectsDynamically(currentCameraTargetPos);
+        }
+
+    }
+
+
+    {
+
+        bool rightMouseButtonClicked = true;
+
+        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) != GLFW_PRESS)
+        {
+            g_dynamicRenderableObjectDeleterRunning = false;
+            rightMouseButtonClicked = false;
+        }
+
+
+        if (rightMouseButtonClicked && !g_dynamicRenderableObjectDeleterRunning)
+        {
+            g_dynamicRenderableObjectDeleterRunning = true;
+            DEBUG::__LOG__MANAGER__::LOG("PRESSED Dynamic Entity Deleter!");
+            if (m_renderableObjects.size() > 0)
+            {
+                m_renderableObjects.pop_back();
+            }
+        }
+
     }
 
 
 
     std::size_t lastEntityIndex = m_renderableObjects.size()-1;
 
-    m_renderableObjects[0]->m_model = glm::rotate(m_renderableObjects[0]->m_model, glm::radians(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    m_renderableObjects[0]->m_model = glm::translate(m_renderableObjects[0]->m_model, glm::vec3(0.0f, 1.0f/100.0f, 0.0f));
-    m_renderableObjects[1]->m_model = glm::translate(m_renderableObjects[1]->m_model, glm::vec3(0.0f, -1.0f/100.0f, 0.0f));
+
+
+
+    m_renderableObjects[0]->Translate(glm::vec3(0.0f, 1.0f/100.0f, 0.0f));
+    m_renderableObjects[0]->Rotate(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+
+    m_renderableObjects[1]->Translate(glm::vec3(0.0f, -1.0f/100.0f, 0.0f));
+
 
 
     if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
     {
-        m_renderableObjects[lastEntityIndex]->m_model = glm::translate(m_renderableObjects[lastEntityIndex]->m_model,
-                                                                       glm::vec3(0.0f, 1.0f/100.0f, 0.0f));
+        m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(0.0f, 1.0f/10.0f, 0.0f));
     }
 
     if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
     {
-        m_renderableObjects[lastEntityIndex]->m_model = glm::translate(m_renderableObjects[lastEntityIndex]->m_model,
-                                                                       glm::vec3(0.0f, -1.0f/100.0f, 0.0f));
+        m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(0.0f, -1.0f/10.0f, 0.0f));
     }
 
 
@@ -207,7 +232,8 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos)
 #elif defined(__SINGLETHREADING__)
     for(RenderableObject *renderableObject : m_renderableObjects)
     {
-        renderableObject->Update();
+        break;
+        //renderableObject->Update();
     }
 #endif
 

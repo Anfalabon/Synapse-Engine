@@ -1538,3 +1538,13 @@ j//
                                                                 glm::vec3(0.0f, -1.0f/100.0f, 0.0f));
         //m_sceneShaders[0].SendMatrix4ToGPU("model", scene->GetRenderableObject(2)->m_model);
 
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//    m_renderableObjects[0]->m_model = glm::translate(m_renderableObjects[0]->m_model, glm::vec3(0.0f, 1.0f/100.0f, 0.0f));
+//    m_renderableObjects[0]->m_model = glm::rotate(m_renderableObjects[0]->m_model, glm::radians(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+//
+//    m_renderableObjects[1]->m_model = glm::translate(m_renderableObjects[1]->m_model, glm::vec3(0.0f, -1.0f/100.0f, 0.0f));
