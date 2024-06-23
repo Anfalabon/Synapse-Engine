@@ -141,6 +141,11 @@ void Engine::LoadCameras()
         m_cameras[j]->AddShaderProgramID(m_renderer->GetShader(0).GetProgramID());
     }
 
+//    for(std::size_t i=0; i<m_scene->GetTotalSceneObjects(); ++i)
+//    {
+//        m_cameras[i]->AddShaderProgramID(m_renderer->GetShader(0).GetProgramID());
+//    }
+
 
 
     std::cout << "Initialized the Camera" << '\n';

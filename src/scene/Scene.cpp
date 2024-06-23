@@ -69,26 +69,6 @@ void Scene::LoadRenderableObjectsStatically()
 
 
 
-
-
-
-
-    //make any modification to the entities or scene after running useProgram() and before rendering otherwise it would be TOO bad!
-
-//        entities[0]->getTransformation().translate(glm::vec3(0.0f, -0.01f, 0.0f));
-//        entities[0]->getTransformation().modelLocation(entities[0]->getShader().ProgramID());
-
-
-//    unsigned int entityIndex = 0;
-//    m_renderableObjects[entityIndex]->Update();
-//    m_renderableObjects[entityIndex]->m_model = glm::translate(m_renderableObjects[entityIndex]->m_model, glm::vec3(0.0f, -1.0f, 0.0f));
-
-
-
-
-
-
-
     constexpr std::size_t nullEntities = 0;
 
     //for now this is because of the benchmarking
@@ -116,6 +96,7 @@ void Scene::LoadRenderableObjectsStatically()
 //    m_renderableObjects[0]->GetShader().SendMatrix4ToGPU("model", m_renderableObjects[0]->m_model);
 
     //std::cin.get();
+
 }
 
 
@@ -163,17 +144,29 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos)
         this->LoadRenderableObjectsDynamically(currentCameraTargetPos);
     }
 
-    
-    std::cout << "Scene updater is going to crash!" << '\n';
-    std::cout << "Total renderable objects: " << m_renderableObjects.size() << '\n';    //this is causing crash
-    //apply different transformation to the renderable objects if needed
-    //but the objects are being treated like they are in one buffer
-    //will NEED to fix it.
 
-    //unsigned int entityIndex = 0;
-    //m_renderableObjects[entityIndex]->Update();
-    //m_renderableObjects[entityIndex]->m_model = glm::translate(m_renderableObjects[entityIndex]->m_model, glm::vec3(0.0f, -0.01f, 0.0f));
-    //m_renderableObjects[entityIndex]->m_model = glm::rotate(m_renderableObjects[entityIndex]->m_model, glm::radians(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+    std::size_t lastEntityIndex = m_renderableObjects.size()-1;
+
+    //m_renderableObjects[0]->m_model = glm::translate(m_renderableObjects[0]->m_model, glm::vec3(0.0f, 1.0f/100.0f, 0.0f));
+    //m_renderableObjects[1]->m_model = glm::translate(m_renderableObjects[1]->m_model, glm::vec3(0.0f, -1.0f/100.0f, 0.0f));
+
+    if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+    {
+        m_renderableObjects[lastEntityIndex]->m_model = glm::translate(m_renderableObjects[lastEntityIndex]->m_model,
+                                                                       glm::vec3(0.0f, 1.0f/100.0f, 0.0f));
+    }
+
+    if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+    {
+        m_renderableObjects[lastEntityIndex]->m_model = glm::translate(m_renderableObjects[lastEntityIndex]->m_model,
+                                                                       glm::vec3(0.0f, -1.0f/100.0f, 0.0f));
+    }
+
+
+
+
+
+    std::cout << "Total renderable objects: " << m_renderableObjects.size() << '\n';    //this is causing crash
 
 #undef __RUNTIME__MULTITHREADING__
 #define __SINGLETHREADING__

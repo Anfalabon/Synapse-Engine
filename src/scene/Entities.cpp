@@ -70,6 +70,8 @@ void RenderableObject::Update()
 {
     //m_shader.UseProgram();
     //m_shader.SendMatrix4ToGPU("model", m_model);    //this is not necessary to do everytime if entities model matrix don't change everytime
+
+
 }
 
 

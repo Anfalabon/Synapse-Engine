@@ -128,19 +128,14 @@ void SceneRenderer::Render(Scene *scene)
 
 
 
-        scene->GetRenderableObject(0)->m_model = glm::translate(scene->GetRenderableObject(0)->m_model,
-                                                                glm::vec3(0.0f, 1.0f/100.0f, 0.0f));
-        //m_sceneShaders[0].SendMatrix4ToGPU("model", scene->GetRenderableObject(0)->m_model);
+    scene->GetRenderableObject(0)->m_model = glm::translate(scene->GetRenderableObject(0)->m_model,
+                                                            glm::vec3(0.0f, 1.0f/100.0f, 0.0f));
+
+    scene->GetRenderableObject(1)->m_model = glm::translate(scene->GetRenderableObject(1)->m_model,
+                                                            glm::vec3(0.0f, -1.0f/100.0f, 0.0f));
 
 
-//        scene->GetRenderableObject(1)->m_model = glm::translate(scene->GetRenderableObject(1)->m_model,
-//                                                                glm::vec3(1.0f/100.0f, 0.0f, 0.0f));
-//        //m_sceneShaders[0].SendMatrix4ToGPU("model", scene->GetRenderableObject(1)->m_model);
 
-
-        scene->GetRenderableObject(1)->m_model = glm::translate(scene->GetRenderableObject(1)->m_model,
-                                                                glm::vec3(0.0f, -1.0f/100.0f, 0.0f));
-        //m_sceneShaders[0].SendMatrix4ToGPU("model", scene->GetRenderableObject(2)->m_model);
 
 
 
