@@ -43,7 +43,12 @@ public:
     [[nodiscard]] inline struct VertexBuffer& GetVB(){return m_VB;}
     [[nodiscard]] inline struct IndexBuffer&  GetEB(){return m_EB;}
 
+    [[nodiscard]] inline unsigned int GetTotalIndicies(){return m_EB.GetTotalIndicies();}
+
     [[nodiscard]] inline glm::mat4& GetModelMatrix(){return m_model;}
+
+    void SetPosition(const glm::vec3 &position){m_position = position;}
+    auto GetPosition()->glm::vec3{return m_position;}
 
 
     void Translate(const glm::vec3 &translationVec);

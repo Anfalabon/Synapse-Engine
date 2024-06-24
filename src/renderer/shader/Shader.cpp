@@ -250,6 +250,11 @@ void Shader::SendMatrix4ToGPU(const char *uniformMatrixName, glm::mat4 &model)
 }
 
 
+void Shader::SendVector3ToGPU(const char *uniformVectorName, glm::vec3 &vector)
+{
+    glUniform3fv(glGetUniformLocation(m_shaderProgramID, uniformVectorName), 1, glm::value_ptr(vector));
+}
+
 
 
 

@@ -146,10 +146,11 @@ void SceneRenderer::Render(Scene *scene)
         scene->GetRenderableObject(i)->GetVA().Bind();
 
         m_sceneShaders[0].SendMatrix4ToGPU("model", scene->GetRenderableObject(i)->m_model);
+        m_sceneShaders[0].SendVector3ToGPU("position", scene->GetRenderableObject(i)->m_position);
         //DEBUG::__LOG__MANAGER__::GLM_LOG(scene->GetRenderableObject(i)->m_model);
 
         //render every object
-        glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->GetEB().GetTotalIndicies(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->GetTotalIndicies(), GL_UNSIGNED_INT, 0);
         //glDrawElements(GL_TRIANGLES, *(p + i*sizeof(RenderableObject)), GL_UNSIGNED_INT, 0);
     }
 

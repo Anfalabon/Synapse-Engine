@@ -69,6 +69,7 @@ void RenderableObject::LoadVertexObjects()
 
 void RenderableObject::Translate(const glm::vec3 &translationVec)
 {
+//    m_position += translationVec;
     m_model = glm::translate(m_model, translationVec);
 }
 

@@ -49,6 +49,7 @@ public:
 
      void SetMatrix4vf(const char *uniformMatrixName, glm::mat4 &model);
      void SendMatrix4ToGPU(const char *uniformMatrixName, glm::mat4 &model);
+     void SendVector3ToGPU(const char *uniformVectorName, glm::vec3 &vector);
 
 
 

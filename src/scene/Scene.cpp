@@ -121,8 +121,7 @@ void Scene::LoadRenderableObjectsDynamically(const glm::vec3 &currentCameraTarge
     m_renderableObjects[lastEntityIndex]->LoadVertexObjects();
 
     float zToShift = -1.0f;
-
-    m_renderableObjects[lastEntityIndex]->Translate(currentCameraTargetPos + glm::vec3(0.0f, 0.0f, zToShift));
+    m_renderableObjects[lastEntityIndex]->Translate(currentCameraTargetPos + glm::vec3(0.0f, 0.0f, zToShift));  //m_renderableObjects[index].GetPosition();
 
 //    m_renderableObjects[lastEntityIndex]->m_model = glm::translate(m_renderableObjects[lastEntityIndex]->m_model,
 //                                                                   currentCameraTargetPos + glm::vec3(0.0f, 0.0f, zToShift));
@@ -135,7 +134,7 @@ bool g_dynamicRenderableObjectLoaderRunning = false;
 bool g_dynamicRenderableObjectDeleterRunning = false;
 
 
-void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos)
+void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos)
 {
     if(m_renderableObjects.size() < 0)
     {
@@ -191,41 +190,51 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos)
 
 
 
-    std::size_t lastEntityIndex = m_renderableObjects.size()-1;
 
 
 
 
-    m_renderableObjects[0]->Translate(glm::vec3(0.0f, 1.0f/100.0f, 0.0f));
+    //m_renderableObjects[0]->Translate(glm::vec3(0.0f, 1.0f/100.0f, 0.0f));
+    m_renderableObjects[0]->m_position.y += 1.0f/100.0f;
     m_renderableObjects[0]->Rotate(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
-    m_renderableObjects[2]->Translate(glm::vec3(0.0f, -1.0f/100.0f, 0.0f));
+
+    //m_renderableObjects[2]->Translate(glm::vec3(0.0f, -1.0f/100.0f, 0.0f));
+    m_renderableObjects[2]->m_position.y += -1.0f/100.0f;
 
 
+
+
+    std::size_t lastEntityIndex = m_renderableObjects.size()-1;
 
     if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
     {
-        m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(0.0f, 1.0f/10.0f, 0.0f));
+        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(0.0f, 1.0f/10.0f, 0.0f));
+        m_renderableObjects[lastEntityIndex]->m_position.y += 1.0f/10.0f;
     }
 
     if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
     {
-        m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(0.0f, -1.0f/10.0f, 0.0f));
+        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(0.0f, -1.0f/10.0f, 0.0f));
+        m_renderableObjects[lastEntityIndex]->m_position.y -= 1.0f/10.0f;
     }
 
     if(glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
     {
-        m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(1.0f/10.0f, 0.0f, 0.0f));
+        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(1.0f/10.0f, 0.0f, 0.0f));
+        m_renderableObjects[lastEntityIndex]->m_position.x += 1.0f/10.0f;
     }
 
     if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
     {
-        m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(-1.0f/10.0f, 0.0f, 0.0f));
+        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(-1.0f/10.0f, 0.0f, 0.0f));
+        m_renderableObjects[lastEntityIndex]->m_position.x -= 1.0f/10.0f;
     }
 
 
 
     std::cout << "Total renderable objects: " << m_renderableObjects.size() << '\n';    //this is causing crash
+
 
 #undef __RUNTIME__MULTITHREADING__
 #define __SINGLETHREADING__

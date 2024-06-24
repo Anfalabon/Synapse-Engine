@@ -50,6 +50,7 @@ public:
     void IsLookingAtEntity();
     void UpdateSpeed();
     void SetCurrentObjectInfo(const glm::vec3 &maxObjectRange, const glm::vec3 &minObjectRange);
+    auto GetPos()->glm::vec3{return m_physics->m_pos;}
     auto GetTargetPos()->glm::vec3{return m_targetPos;}
 
 
