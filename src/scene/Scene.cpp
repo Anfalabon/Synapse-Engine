@@ -9,6 +9,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <vector>
+#include <math.h>
 
 
 #define __RELEASE__
@@ -132,6 +133,7 @@ void Scene::LoadRenderableObjectsDynamically(const glm::vec3 &currentCameraTarge
 
 bool g_dynamicRenderableObjectLoaderRunning = false;
 bool g_dynamicRenderableObjectDeleterRunning = false;
+float g_theta = 0.0f;
 
 
 void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos)
@@ -199,8 +201,19 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, 
     m_renderableObjects[0]->Rotate(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
 
+    float r = 3.0f;
     //m_renderableObjects[2]->Translate(glm::vec3(0.0f, -1.0f/100.0f, 0.0f));
-    m_renderableObjects[2]->m_position.y += -1.0f/100.0f;
+    m_renderableObjects[2]->m_position.y += 1.0f/100.0f;
+    m_renderableObjects[2]->m_position.x = r * glm::cos(g_theta);
+    m_renderableObjects[2]->m_position.z = r * glm::sin(g_theta);
+
+    std::cout << "X pos: " << m_renderableObjects[2]->m_position.x << '\n';
+    std::cout << "Z pos: " << m_renderableObjects[2]->m_position.z << '\n';
+
+    std::cout << "Theta: " << g_theta << '\n';
+
+    g_theta += 0.01f;
+
 
 
 
