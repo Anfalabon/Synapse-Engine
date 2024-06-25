@@ -1686,3 +1686,31 @@ j//
 
 //    m_renderableObjects[lastEntityIndex]->m_model = glm::translate(m_renderableObjects[lastEntityIndex]->m_model,
 //                                                                   currentCameraTargetPos + glm::vec3(0.0f, 0.0f, zToShift));
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    explicit RenderableObject(const char *name,
+                    Vertex *verticies, GLuint totalVerticies,
+                    GLuint *indicies, GLuint totalIndicies) noexcept;
+
+
+    explicit RenderableObject(const char *name, Vertex *verticies, unsigned int *indicies) noexcept{}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+RenderableObject::RenderableObject(const char *name,
+               Vertex *verticies, GLuint totalVerticies,
+               GLuint *indicies, GLuint totalIndicies) noexcept
+    :
+     m_name(name),
+     m_ID(rand()%INT_MAX),  //i know it's bad to use but still...
+     m_VB(totalVerticies, std::move(verticies)),
+     m_EB(totalIndicies, std::move(indicies)){}

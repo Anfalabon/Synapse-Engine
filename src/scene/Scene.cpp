@@ -46,54 +46,61 @@ void Scene::LoadRenderableObjectsStatically()
 {
     namespace data = modelsData;
 
+#if 1
+
     m_renderableObjects.push_back(new RenderableObject(GetModel("Cube")));
     m_renderableObjects.push_back(new RenderableObject(GetModel("Ground")));
     m_renderableObjects.push_back(new RenderableObject(GetModel("Trapizoid")));
     m_renderableObjects.push_back(new RenderableObject(GetModel("Pyramid")));
 
     glm::vec3 positions[4] = {
-            glm::vec3(10.0f, 5.0f, 0.0f),
-            glm::vec3(0.0f, -10.0f, 0.0f),
+            glm::vec3(10.0f, 1.0f, 0.0f),
+            glm::vec3(0.0f, 0.0f, 0.0f),
             glm::vec3(1.0f, 0.0f, 0.0f),
             glm::vec3(9.0f, 3.0f, 9.0f)
     };
-
-
-//    m_renderableObjects.push_back(new RenderableObject());
-//    m_renderableObjects[0]->SetName("Light Source");
-//    m_renderableObjects[0]->SetVerticies(data::cubeTotalVerticies, data::cubeVerticiesData);
-//    m_renderableObjects[0]->SetIndicies(data::cubeTotalIndicies, data::cubeIndiciesData);
-//    m_renderableObjects[0]->m_position = glm::vec3(10.0f, 5.0f, 0.0f);
-//
-//
-//
-//    m_renderableObjects.push_back(new RenderableObject());
-//    m_renderableObjects[1]->SetName("Ground");
-//    m_renderableObjects[1]->SetVerticies(data::groundTotalVerticies, data::groundVerticiesData);
-//    m_renderableObjects[1]->SetIndicies(data::groundTotalIndicies, data::groundIndiciesData);
-//    m_renderableObjects[1]->m_position = glm::vec3(0.0f, 0.0f, 0.0f);
-//
-//
-//
-//    m_renderableObjects.push_back(new RenderableObject());
-//    m_renderableObjects[2]->SetName("3D Trapizium");
-//    m_renderableObjects[2]->SetVerticies(data::trapizoidTotalVerticies, data::trapizoidVerticiesData);
-//    m_renderableObjects[2]->SetIndicies(data::trapizoidTotalIndicies, data::trapizoidIndiciesData);
-//    m_renderableObjects[2]->m_position = glm::vec3(1.0f, 0.0f, 0.0f);
-//
-//
-//
-//    m_renderableObjects.push_back(new RenderableObject());
-//    m_renderableObjects[3]->SetName("Pyramid");
-//    m_renderableObjects[3]->SetVerticies(data::pyramidTotalVerticies, data::pyramidVerticesData);
-//    m_renderableObjects[3]->SetIndicies( data::pyramidTotalIndicies, data::pyramidIndicesData);
-//    m_renderableObjects[3]->m_position = glm::vec3(9.0f, 3.0f, 9.0f);
-
 
     for(std::size_t i=0; i<m_renderableObjects.size(); ++i) [[likely]]
     {
         m_renderableObjects[i]->m_position = positions[i];
     }
+
+
+
+#else
+
+    m_renderableObjects.push_back(new RenderableObject());
+    m_renderableObjects[0]->SetName("Light Source");
+    m_renderableObjects[0]->SetVerticies(data::cubeTotalVerticies, data::cubeVerticiesData);
+    m_renderableObjects[0]->SetIndicies(data::cubeTotalIndicies, data::cubeIndiciesData);
+    m_renderableObjects[0]->m_position = glm::vec3(10.0f, 5.0f, 0.0f);
+
+
+
+    m_renderableObjects.push_back(new RenderableObject());
+    m_renderableObjects[1]->SetName("Ground");
+    m_renderableObjects[1]->SetVerticies(data::groundTotalVerticies, data::groundVerticiesData);
+    m_renderableObjects[1]->SetIndicies(data::groundTotalIndicies, data::groundIndiciesData);
+    m_renderableObjects[1]->m_position = glm::vec3(0.0f, 0.0f, 0.0f);
+
+
+
+    m_renderableObjects.push_back(new RenderableObject());
+    m_renderableObjects[2]->SetName("3D Trapizium");
+    m_renderableObjects[2]->SetVerticies(data::trapizoidTotalVerticies, data::trapizoidVerticiesData);
+    m_renderableObjects[2]->SetIndicies(data::trapizoidTotalIndicies, data::trapizoidIndiciesData);
+    m_renderableObjects[2]->m_position = glm::vec3(1.0f, 0.0f, 0.0f);
+
+
+
+    m_renderableObjects.push_back(new RenderableObject());
+    m_renderableObjects[3]->SetName("Pyramid");
+    m_renderableObjects[3]->SetVerticies(data::pyramidTotalVerticies, data::pyramidVerticesData);
+    m_renderableObjects[3]->SetIndicies( data::pyramidTotalIndicies, data::pyramidIndicesData);
+    m_renderableObjects[3]->m_position = glm::vec3(9.0f, 3.0f, 9.0f);
+
+#endif
+
 
     for(RenderableObject *renderableObject: m_renderableObjects) [[likely]]
     {
@@ -112,17 +119,15 @@ void Scene::LoadRenderableObjectsStatically()
 
 
 
-//have to fix and update this dynamic scene Loader which apparently doesn't work
+
 void Scene::LoadRenderableObjectsDynamically(const glm::vec3 &currentCameraTargetPos)
 {
     m_renderableObjects.push_back(new RenderableObject(GetModel("Pyramid")));
     std::size_t lastEntityIndex = m_renderableObjects.size()-1;
     m_renderableObjects[lastEntityIndex]->LoadVertexObjects();
-
     //camera's target position is only targetting at -z
-    float zToShift = -2.0f;
+    float zToShift = -1.0f;
     m_renderableObjects[lastEntityIndex]->Translate(currentCameraTargetPos + glm::vec3(0.0f, 0.0f, zToShift));
-
     //the model matrix will be modified using 'SendMatrix4ToGPU()'
 }
 
@@ -153,7 +158,7 @@ static void OrbitAround(RenderableObject *renderableObject, const glm::vec3 &pos
     std::cout << "Radius: " << r << '\n';
 
 
-    //renderableObject->m_position.y += 1.0f/100.0f;
+    renderableObject->m_position.y += 1.0f/100.0f;
     renderableObject->m_position.x = r * glm::cos(g_theta);
     renderableObject->m_position.z = r * glm::sin(g_theta);
 
@@ -163,7 +168,7 @@ static void OrbitAround(RenderableObject *renderableObject, const glm::vec3 &pos
 
     std::cout << "Theta: " << g_theta << '\n';
 
-    g_theta += 0.01f;
+    g_theta += 1.0f;
 }
 
 

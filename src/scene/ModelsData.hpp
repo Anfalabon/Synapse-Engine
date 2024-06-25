@@ -157,14 +157,6 @@ inline GLuint *pyramidIndicesData = new GLuint[pyramidTotalIndicies]{
 
 
 
-
-
-
-
-
-
-
-
 }
 
 

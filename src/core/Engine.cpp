@@ -307,7 +307,6 @@ void Engine::Run()
         m_renderer->SetBackGround(0.2f, 0.3f, 0.3f, 1.0f);
         m_renderer->UseZbuffer();
 
-        //m_renderer->_zBufferBg(0.2f, 0.3f, 0.3f, 1.0f);
         //will use 'event' systems for these two bad boys
         m_window->GetKeyboardInput();
         this->SelectCamera();

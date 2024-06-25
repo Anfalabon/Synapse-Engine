@@ -21,16 +21,8 @@ class RenderableObject
 public:
 
     RenderableObject() = default;
-    ~RenderableObject();
-
-    explicit RenderableObject(const char *name,
-                    Vertex *verticies, GLuint totalVerticies,
-                    GLuint *indicies, GLuint totalIndicies) noexcept;
-
-
-    explicit RenderableObject(const char *name, Vertex *verticies, unsigned int *indicies) noexcept{}
-
     explicit RenderableObject(Model modelData);
+    ~RenderableObject();
 
 
     void SetName(const char* name);
@@ -51,7 +43,7 @@ public:
     [[nodiscard]] inline glm::mat4& GetModelMatrix(){return m_model;}
 
     void SetPosition(const glm::vec3 &position){m_position = position;}
-    auto GetPosition()->glm::vec3{return m_position;}
+    [[nodiscard]] inline auto GetPosition()->glm::vec3{return m_position;}
 
 
     void Translate(const glm::vec3 &translationVec);

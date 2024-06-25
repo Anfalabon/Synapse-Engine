@@ -35,6 +35,14 @@ struct Model
 
 
 
+//inline std::unordered_map<std::string, ModelData> model;
+//model["Cube"] = ModelData(cubeVerticiesData, cubeTotalVerticies, cubeIndiciesData, cubeTotalIndicies);
+//model["Ground"] = ModelData(groundVerticiesData, groundTotalVerticies, groundIndiciesData, groundTotalIndicies);
+//model["Trapizoid"] = ModelData(trapizoidVerticiesData, trapizoidTotalVerticies, trapizoidIndiciesData, trapizoidTotalIndicies);
+//model["Pyramid"] = ModelData(pyramidVerticiesData, pyramidTotalVerticies, pyramidIndiciesData, pyramidTotalIndicies);
+
+
+
 inline Model GetModel(const std::string &modelName)
 {
     using namespace modelsData;
@@ -44,7 +52,7 @@ inline Model GetModel(const std::string &modelName)
     }
     else if(modelName == "Ground")
     {
-        return {modelName, ModelData(groundVerticiesData, groundTotalVerticies, groundIndiciesData, groundTotalVerticies)};
+        return {modelName, ModelData(groundVerticiesData, groundTotalVerticies, groundIndiciesData, groundTotalIndicies)};
     }
     else if(modelName == "Trapizoid")
     {

@@ -15,14 +15,6 @@ namespace Synapse
 {
 
 
-RenderableObject::RenderableObject(const char *name,
-               Vertex *verticies, GLuint totalVerticies,
-               GLuint *indicies, GLuint totalIndicies) noexcept
-    :
-     m_name(name),
-     m_ID(rand()%INT_MAX),  //i know it's bad to use but still...
-     m_VB(totalVerticies, std::move(verticies)),
-     m_EB(totalIndicies, std::move(indicies)){}
 
 
 RenderableObject::RenderableObject(Synapse::Model modelData)
@@ -69,9 +61,6 @@ void RenderableObject::LoadVertexObjects()
     m_VA.Unbind();
     m_VB.Unbind();
 }
-
-
-
 
 
 void RenderableObject::Translate(const glm::vec3 &translationVec)
