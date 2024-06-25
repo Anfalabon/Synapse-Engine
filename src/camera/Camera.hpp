@@ -52,6 +52,7 @@ public:
     void SetCurrentObjectInfo(const glm::vec3 &maxObjectRange, const glm::vec3 &minObjectRange);
     auto GetPos()->glm::vec3{return m_physics->m_pos;}
     auto GetTargetPos()->glm::vec3{return m_targetPos;}
+    auto GetFrontVector()->glm::vec3;
 
 
     //this is the physics part

@@ -25,6 +25,13 @@ RenderableObject::RenderableObject(const char *name,
      m_EB(totalIndicies, std::move(indicies)){}
 
 
+RenderableObject::RenderableObject(Synapse::Model modelData)
+    :
+     m_name(modelData.name.c_str()),
+     m_VB(modelData.md._totalVerticies, modelData.md._verticiesData),
+     m_EB(modelData.md._totalIndicies, modelData.md._indiciesData){}
+
+
 void RenderableObject::SetName(const char *name)
 {
     if(name!=nullptr)

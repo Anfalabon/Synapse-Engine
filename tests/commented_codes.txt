@@ -1548,3 +1548,141 @@ j//
 //    m_renderableObjects[0]->m_model = glm::rotate(m_renderableObjects[0]->m_model, glm::radians(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 //
 //    m_renderableObjects[1]->m_model = glm::translate(m_renderableObjects[1]->m_model, glm::vec3(0.0f, -1.0f/100.0f, 0.0f));
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+    //m_renderableObjects[2]->Translate(glm::vec3(0.0f, -1.0f/100.0f, 0.0f));
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    constexpr std::size_t nullEntities = 0;
+
+    //for now this is because of the benchmarking
+    //add null entities
+    for(std::size_t i=m_renderableObjects.size()-1; i<nullEntities; ++i) [[unlikely]]
+    {
+        m_renderableObjects.push_back(new RenderableObject());
+        m_renderableObjects[i]->SetName("Null Entity");
+        m_renderableObjects[i]->SetVerticies(0, nullptr);
+        m_renderableObjects[i]->SetIndicies(0, nullptr);
+    }
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //m_renderableObjects[0]->Translate(glm::vec3(0.0f, 1.0f/100.0f, 0.0f));
+    m_renderableObjects[0]->m_position.y += 1.0f/100.0f;
+    m_renderableObjects[0]->Rotate(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    float deltaX = m_renderableObjects[0]->m_position.x - m_renderableObjects[2]->m_position.x;
+    float deltaZ = m_renderableObjects[0]->m_position.z - m_renderableObjects[2]->m_position.z;
+
+    std::cout << "Delta X: " << deltaX << '\n';
+    std::cout << "Delta Z: " << deltaZ << '\n';
+
+    float r = glm::sqrt(deltaX*deltaX + deltaZ*deltaZ);
+    //float r = 1.0f;
+    std::cout << "Radius: " << r << '\n';
+
+
+    //m_renderableObjects[2]->m_position.y += 1.0f/100.0f;
+    m_renderableObjects[2]->m_position.x = r * glm::cos(g_theta);
+    m_renderableObjects[2]->m_position.z = r * glm::sin(g_theta);
+
+    std::cout << "X pos: " << m_renderableObjects[2]->m_position.x << '\n';
+    std::cout << "Z pos: " << m_renderableObjects[2]->m_position.z << '\n';
+
+    std::cout << "Theta: " << g_theta << '\n';
+
+    g_theta += 0.1f;
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    renderableObject->m_position.x = (positionToOrbit.x - r) * glm::cos(g_theta);
+    renderableObject->m_position.z = (positionToOrbit.z - r) * glm::sin(g_theta);
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//    m_renderableObjects.push_back(new RenderableObject());
+
+//    m_renderableObjects[lastEntityIndex]->SetName("Light Source");
+//    m_renderableObjects[lastEntityIndex]->SetVerticies(data::pyramidTotalVerticies, data::pyramidVertices);
+//    m_renderableObjects[lastEntityIndex]->SetIndicies(data::pyramidTotalIndicies, data::pyramidIndices);
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+//
+//
+//    float deltaX = m_renderableObjects[0]->m_position.x - m_renderableObjects[2]->m_position.x;
+//    float deltaZ = m_renderableObjects[0]->m_position.z - m_renderableObjects[2]->m_position.z;
+//
+//    std::cout << "Delta X: " << deltaX << '\n';
+//    std::cout << "Delta Z: " << deltaZ << '\n';
+//
+//    float r = glm::sqrt(deltaX*deltaX + deltaZ*deltaZ);
+//    //float r = 1.0f;
+//    std::cout << "Radius: " << r << '\n';
+//
+//
+//    //m_renderableObjects[2]->m_position.y += 1.0f/100.0f;
+//    m_renderableObjects[2]->m_position.x = r * glm::cos(g_theta);
+//    m_renderableObjects[2]->m_position.z = r * glm::sin(g_theta);
+//
+//    std::cout << "X pos: " << m_renderableObjects[2]->m_position.x << '\n';
+//    std::cout << "Z pos: " << m_renderableObjects[2]->m_position.z << '\n';
+//
+//    std::cout << "Theta: " << g_theta << '\n';
+//
+//    g_theta += 0.1f;
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//    m_renderableObjects[lastEntityIndex]->m_model = glm::translate(m_renderableObjects[lastEntityIndex]->m_model,
+//                                                                   currentCameraTargetPos + glm::vec3(0.0f, 0.0f, zToShift));

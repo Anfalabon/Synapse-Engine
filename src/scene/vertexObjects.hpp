@@ -21,8 +21,6 @@ typedef struct Vertex
 //        return *this;
 //    }
 
-
-
     inline friend std::ostream &operator<<(std::ostream &os, const struct Vertex &vertex);
 
 }Vertex;

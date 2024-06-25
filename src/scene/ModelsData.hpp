@@ -18,11 +18,11 @@ namespace Synapse
 
 
 
-namespace entitiesData
+namespace modelsData
 {
 
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 inline GLuint cubeTotalVerticies = 8;
 inline GLuint cubeTotalIndicies = 36;
@@ -41,23 +41,6 @@ inline Vertex *cubeVerticiesData = new Vertex[cubeTotalVerticies]{
 };
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//inline std::vector<Vertex> v_cubeVerticiesData = {
-//        //vertex positions      //colors
-//        {{0.5f,  0.5f,  0.5f},  {1.0f, 1.0f, 1.0f}},
-//        {{0.5f,  0.5f,  -0.5f}, {1.0f, 1.0f, 1.0f}},
-//        {{0.5f,  -0.5f, 0.5f},  {1.0f, 1.0f, 1.0f}},
-//        {{0.5f,  -0.5f, -0.5f}, {1.0f, 1.0f, 1.0f}},
-//        {{-0.5f, 0.5f,  0.5f},  {1.0f, 1.0f, 1.0f}},
-//        {{-0.5f, 0.5f,  -0.5f}, {1.0f, 1.0f, 1.0f}},
-//        {{-0.5f, -0.5f, 0.5f},  {1.0f, 1.0f, 1.0f}},
-//        {{-0.5f, -0.5f, -0.5f}, {1.0f, 1.0f, 1.0f}},
-//};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 inline GLuint *cubeIndiciesData = new GLuint[cubeTotalIndicies]{
         //twelf triangles to create a cube(as cube has 6 surfaces and each surface is a rectanle itselft which again is made of 2 triangles)
         0, 1, 2,        //first triangle
@@ -74,7 +57,7 @@ inline GLuint *cubeIndiciesData = new GLuint[cubeTotalIndicies]{
         3, 7, 5,        //twelfth triangle
 };
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -99,14 +82,14 @@ inline GLuint *groundIndiciesData = new GLuint[groundTotalIndicies]{
 
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
+inline GLuint trapizoidTotalVerticies = 8;
+inline GLuint trapizoidTotalIndicies = 36;
 
-inline GLuint anotherCubeTotalVerticies = 8;
-inline GLuint anotherCubeTotalIndicies = 36;
-
-inline Vertex *anotherCubeVerticiesData = new Vertex[anotherCubeTotalVerticies]{
+inline Vertex *trapizoidVerticiesData = new Vertex[trapizoidTotalVerticies]{
         {{3.0f, 0.5f,  1.0f},  {1.0f, 0.0f, 0.0f}},
         {{3.0f, 0.5f,  -1.0f}, {0.0f, 1.0f, 0.0f}},
         {{2.0f, -0.5f, 1.0f},  {0.0f, 0.0f, 1.0f}},
@@ -117,7 +100,7 @@ inline Vertex *anotherCubeVerticiesData = new Vertex[anotherCubeTotalVerticies]{
         {{2.0f, 0.5f,  -1.0f}, {0.5f, 0.0f, 0.5f}},
 };
 
-inline GLuint *anotherCubeIndiciesData = new GLuint[anotherCubeTotalIndicies]{
+inline GLuint *trapizoidIndiciesData = new GLuint[trapizoidTotalIndicies]{
         0, 1, 2,        //first triangle
         1, 2, 3,        //second triangle
         0, 1, 4,        //third triangle
@@ -134,7 +117,68 @@ inline GLuint *anotherCubeIndiciesData = new GLuint[anotherCubeTotalIndicies]{
 
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+inline GLuint pyramidTotalVerticies = 20;
+inline GLuint pyramidTotalIndicies = 12;
+
+
+inline Vertex *pyramidVerticesData = new Vertex[pyramidTotalVerticies]{
+
+        {{0.0f ,1.0f, 0.0f}, {1.0f ,0.0f ,0.0f}},
+        {{-1.0f, -1.0f ,1.0f}, {0.0f ,1.0f ,0.0f}},
+        {{1.0f , -1.0f, 1.0f}, {0.0f ,0.0f, 1.0f}},
+        {{0.0f ,1.0f ,0.0f}, {1.0f ,0.0f ,0.0f}},
+        {{1.0f , -1.0f, 1.0f}, {0.0f ,0.0f ,1.0f}},
+        {{1.0, -1.0, -1.0}, {0.0 ,1.0 ,0.0}},
+        {{0.0, 1.0, 0.0}, {1.0, 0.0, 0.0}},
+        {{1.0,-1.0,-1.0}, {0.0,1.0,0.0}},
+        {{-1.0,-1.0,-1.0}, {0.0,0.0,1.0}},
+        {{0.0,1.0,0.0}, {1.0,0.0,0.0}},
+        {{-1.0,-1.0,-1.0}, {0.0,0.0,1.0}},
+        {{-1.0,-1.0,1.0}, {0.0,1.0,0.0}}
+
+};
+
+
+inline GLuint *pyramidIndicesData = new GLuint[pyramidTotalIndicies]{
+        0, 1, 2,
+        3, 4, 5,
+        6, 7, 8,
+        9, 10, 11,
+};
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }   //Synapse

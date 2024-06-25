@@ -1,7 +1,7 @@
 #include "Scene.hpp"
 #include "../debug/LOG.hpp"
 #include "../window/Window.hpp"
-#include "entitiesAttributesData.hpp"
+#include "ModelsData.hpp"
 #include "../utils/RunParallel.hpp"
 
 #include <GLFW/glfw3.h>
@@ -29,6 +29,13 @@ namespace Synapse
 {
 
 
+
+//inline std::unordered_map<std::string, Model> model = {{"Cube", Model(modelsData::cubeVerticiesData, modelsData::cubeTotalVerticies, modelsData::cubeIndiciesData, modelsData::cubeTotalIndicies)}};
+
+
+
+
+
 void Scene::Init()
 {
     this->LoadRenderableObjectsStatically();
@@ -37,58 +44,61 @@ void Scene::Init()
 
 void Scene::LoadRenderableObjectsStatically()
 {
-    namespace data = entitiesData;
+    namespace data = modelsData;
+
+    m_renderableObjects.push_back(new RenderableObject(GetModel("Cube")));
+    m_renderableObjects.push_back(new RenderableObject(GetModel("Ground")));
+    m_renderableObjects.push_back(new RenderableObject(GetModel("Trapizoid")));
+    m_renderableObjects.push_back(new RenderableObject(GetModel("Pyramid")));
+
+    glm::vec3 positions[4] = {
+            glm::vec3(10.0f, 5.0f, 0.0f),
+            glm::vec3(0.0f, -10.0f, 0.0f),
+            glm::vec3(1.0f, 0.0f, 0.0f),
+            glm::vec3(9.0f, 3.0f, 9.0f)
+    };
 
 
+//    m_renderableObjects.push_back(new RenderableObject());
+//    m_renderableObjects[0]->SetName("Light Source");
+//    m_renderableObjects[0]->SetVerticies(data::cubeTotalVerticies, data::cubeVerticiesData);
+//    m_renderableObjects[0]->SetIndicies(data::cubeTotalIndicies, data::cubeIndiciesData);
+//    m_renderableObjects[0]->m_position = glm::vec3(10.0f, 5.0f, 0.0f);
+//
+//
+//
+//    m_renderableObjects.push_back(new RenderableObject());
+//    m_renderableObjects[1]->SetName("Ground");
+//    m_renderableObjects[1]->SetVerticies(data::groundTotalVerticies, data::groundVerticiesData);
+//    m_renderableObjects[1]->SetIndicies(data::groundTotalIndicies, data::groundIndiciesData);
+//    m_renderableObjects[1]->m_position = glm::vec3(0.0f, 0.0f, 0.0f);
+//
+//
+//
+//    m_renderableObjects.push_back(new RenderableObject());
+//    m_renderableObjects[2]->SetName("3D Trapizium");
+//    m_renderableObjects[2]->SetVerticies(data::trapizoidTotalVerticies, data::trapizoidVerticiesData);
+//    m_renderableObjects[2]->SetIndicies(data::trapizoidTotalIndicies, data::trapizoidIndiciesData);
+//    m_renderableObjects[2]->m_position = glm::vec3(1.0f, 0.0f, 0.0f);
+//
+//
+//
+//    m_renderableObjects.push_back(new RenderableObject());
+//    m_renderableObjects[3]->SetName("Pyramid");
+//    m_renderableObjects[3]->SetVerticies(data::pyramidTotalVerticies, data::pyramidVerticesData);
+//    m_renderableObjects[3]->SetIndicies( data::pyramidTotalIndicies, data::pyramidIndicesData);
+//    m_renderableObjects[3]->m_position = glm::vec3(9.0f, 3.0f, 9.0f);
 
 
-//    m_renderableObjects.push_back(new RenderableObject("Light Source", data::cubeVerticiesData, data::cubeIndiciesData));
-
-
-
-
-    m_renderableObjects.push_back(new RenderableObject());
-    m_renderableObjects[0]->SetName("Light Source");
-    m_renderableObjects[0]->SetVerticies(data::cubeTotalVerticies, data::cubeVerticiesData);
-    m_renderableObjects[0]->SetIndicies(data::cubeTotalIndicies, data::cubeIndiciesData);
-
-    std::cout << "IS running?" << '\n';
-
-
-
-    m_renderableObjects.push_back(new RenderableObject());
-    m_renderableObjects[1]->SetName("Ground");
-    m_renderableObjects[1]->SetVerticies(data::groundTotalVerticies, data::groundVerticiesData);
-    m_renderableObjects[1]->SetIndicies(data::groundTotalIndicies, data::groundIndiciesData);
-
-
-
-    m_renderableObjects.push_back(new RenderableObject());
-    m_renderableObjects[2]->SetName("3D Trapizium");
-    m_renderableObjects[2]->SetVerticies(data::anotherCubeTotalVerticies, data::anotherCubeVerticiesData);
-    m_renderableObjects[2]->SetIndicies(data::anotherCubeTotalIndicies, data::anotherCubeIndiciesData);
-
-
-
-    constexpr std::size_t nullEntities = 0;
-
-    //for now this is because of the benchmarking
-    //add null entities
-    for(std::size_t i=m_renderableObjects.size()-1; i<nullEntities; ++i) [[unlikely]]
+    for(std::size_t i=0; i<m_renderableObjects.size(); ++i) [[likely]]
     {
-        m_renderableObjects.push_back(new RenderableObject());
-        m_renderableObjects[i]->SetName("Null Entity");
-        m_renderableObjects[i]->SetVerticies(0, nullptr);
-        m_renderableObjects[i]->SetIndicies(0, nullptr);
+        m_renderableObjects[i]->m_position = positions[i];
     }
-
 
     for(RenderableObject *renderableObject: m_renderableObjects) [[likely]]
     {
         renderableObject->LoadVertexObjects();
     }
-
-
 
 
 //    m_renderableObjects[0]->Update();
@@ -101,39 +111,63 @@ void Scene::LoadRenderableObjectsStatically()
 }
 
 
+
 //have to fix and update this dynamic scene Loader which apparently doesn't work
 void Scene::LoadRenderableObjectsDynamically(const glm::vec3 &currentCameraTargetPos)
 {
-    namespace data = entitiesData;
-
-    //adding a single scene(which is here a cube) causes adding of other entities.
-    //will need to fix this
-
-
-
-    m_renderableObjects.push_back(new RenderableObject());
-
+    m_renderableObjects.push_back(new RenderableObject(GetModel("Pyramid")));
     std::size_t lastEntityIndex = m_renderableObjects.size()-1;
-
-    m_renderableObjects[lastEntityIndex]->SetName("Light Source");
-    m_renderableObjects[lastEntityIndex]->SetVerticies(data::cubeTotalVerticies, data::cubeVerticiesData);
-    m_renderableObjects[lastEntityIndex]->SetIndicies(data::cubeTotalIndicies, data::cubeIndiciesData);
-
     m_renderableObjects[lastEntityIndex]->LoadVertexObjects();
 
-    float zToShift = -1.0f;
-    m_renderableObjects[lastEntityIndex]->Translate(currentCameraTargetPos + glm::vec3(0.0f, 0.0f, zToShift));  //m_renderableObjects[index].GetPosition();
-
-//    m_renderableObjects[lastEntityIndex]->m_model = glm::translate(m_renderableObjects[lastEntityIndex]->m_model,
-//                                                                   currentCameraTargetPos + glm::vec3(0.0f, 0.0f, zToShift));
+    //camera's target position is only targetting at -z
+    float zToShift = -2.0f;
+    m_renderableObjects[lastEntityIndex]->Translate(currentCameraTargetPos + glm::vec3(0.0f, 0.0f, zToShift));
 
     //the model matrix will be modified using 'SendMatrix4ToGPU()'
 }
 
 
+
+
 bool g_dynamicRenderableObjectLoaderRunning = false;
 bool g_dynamicRenderableObjectDeleterRunning = false;
 float g_theta = 0.0f;
+float g_tempTheta = 0.0f;
+bool g_popBackDone = false;
+
+
+
+static void OrbitAround(RenderableObject *renderableObject, const glm::vec3 &positionToOrbit)
+{
+    //renderableObject->m_position.y += 1.0f/100.0f;
+    //renderableObject->Rotate(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+
+//    float deltaX = renderableObject->m_position.x - positionToOrbit.x;
+//    float deltaZ = renderableObject->m_position.z - positionToOrbit.z;
+
+//    std::cout << "Delta X: " << deltaX << '\n';
+//    std::cout << "Delta Z: " << deltaZ << '\n';
+
+    //float r = glm::sqrt(deltaX*deltaX + deltaZ*deltaZ);
+    float r = 3.0f;
+    std::cout << "Radius: " << r << '\n';
+
+
+    //renderableObject->m_position.y += 1.0f/100.0f;
+    renderableObject->m_position.x = r * glm::cos(g_theta);
+    renderableObject->m_position.z = r * glm::sin(g_theta);
+
+
+    std::cout << "X pos: " << renderableObject->m_position.x << '\n';
+    std::cout << "Z pos: " << renderableObject->m_position.z << '\n';
+
+    std::cout << "Theta: " << g_theta << '\n';
+
+    g_theta += 0.01f;
+}
+
+
+
 
 
 void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos)
@@ -146,6 +180,8 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, 
     //these will be inside the 'EntityLoader' class.
 
     //these will be inside some common function cause there logic is similar
+
+
 
     {
 
@@ -162,6 +198,11 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, 
             g_dynamicRenderableObjectLoaderRunning = true;
             DEBUG::__LOG__MANAGER__::LOG("PRESSED Dynamic Entity Loader!");
             this->LoadRenderableObjectsDynamically(currentCameraTargetPos);
+//            if(g_popBackDone)
+//            {
+//                g_theta = g_tempTheta;
+//                g_popBackDone = false;
+//            }
         }
 
     }
@@ -185,6 +226,8 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, 
             if (m_renderableObjects.size() > 0)
             {
                 m_renderableObjects.pop_back();
+//                g_tempTheta = g_theta;
+//                g_popBackDone = true;
             }
         }
 
@@ -197,28 +240,21 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, 
 
 
     //m_renderableObjects[0]->Translate(glm::vec3(0.0f, 1.0f/100.0f, 0.0f));
+
     m_renderableObjects[0]->m_position.y += 1.0f/100.0f;
-    m_renderableObjects[0]->Rotate(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-
-
-    float r = 3.0f;
-    //m_renderableObjects[2]->Translate(glm::vec3(0.0f, -1.0f/100.0f, 0.0f));
-    m_renderableObjects[2]->m_position.y += 1.0f/100.0f;
-    m_renderableObjects[2]->m_position.x = r * glm::cos(g_theta);
-    m_renderableObjects[2]->m_position.z = r * glm::sin(g_theta);
-
-    std::cout << "X pos: " << m_renderableObjects[2]->m_position.x << '\n';
-    std::cout << "Z pos: " << m_renderableObjects[2]->m_position.z << '\n';
-
-    std::cout << "Theta: " << g_theta << '\n';
-
-    g_theta += 0.01f;
-
-
+    //m_renderableObjects[0]->Rotate(1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 
 
 
     std::size_t lastEntityIndex = m_renderableObjects.size()-1;
+
+    if(m_renderableObjects.size() >= 3)
+    {
+        OrbitAround(m_renderableObjects[3], m_renderableObjects[0]->m_position);
+    }
+
+
+
 
     if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
     {

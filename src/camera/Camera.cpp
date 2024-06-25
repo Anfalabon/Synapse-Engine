@@ -667,6 +667,12 @@ void Camera::LookAtTarget()
     m_view = glm::lookAt(m_physics->m_pos, m_targetPos, m_cameraUpVector);
 }
 
+glm::vec3 Camera::GetFrontVector()
+{
+    return Cursor::g_frontVector;
+}
+
+
 
 void Camera::IsLookingAtEntity()
 {

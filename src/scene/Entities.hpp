@@ -3,18 +3,19 @@
 #include <glad/glad.hpp>
 #include <glm/glm.hpp>
 
-#include "../renderer/shader/Shader.hpp"
+#include "EntityLoader.hpp"
 #include "Transformation.hpp"
 #include "vertexObjects.hpp"
 
 #include <iostream>
+#include <unordered_map>
 
 
 
 namespace Synapse
 {
 
-
+//will name it GameObject
 class RenderableObject
 {
 public:
@@ -28,6 +29,8 @@ public:
 
 
     explicit RenderableObject(const char *name, Vertex *verticies, unsigned int *indicies) noexcept{}
+
+    explicit RenderableObject(Model modelData);
 
 
     void SetName(const char* name);
