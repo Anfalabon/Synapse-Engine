@@ -1,9 +1,11 @@
 #pragma once
 
+#include "../scene/Entities.hpp"
+
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-
+#include <vector>
 
 namespace Synapse
 {
@@ -29,7 +31,7 @@ public:
     void FallDown();
     void Jump();
     void ApplyVerticalMotions();
-    void Apply();
+    void Apply(const std::vector<Synapse::RenderableObject*> &renderableObjects);
 
 
 

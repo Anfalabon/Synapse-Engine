@@ -1,6 +1,7 @@
 #include "PhysicsEngine.hpp"
 
 #include <iostream>
+#include <vector>
 
 
 namespace Synapse
@@ -182,12 +183,9 @@ void Physics::ApplyVerticalMotions()
 
     if (!m_jumped && !m_isAtTheRoof)
     {
-        if (m_pos.y >= 1.2f)
+        if (m_pos.y >= 1.2f)    //right now the roof height is 1.2f but will change it cause it definately depends on the objects roof height
         {
             m_velocity.y = -0.49;
-            //InitVelocity(glm::vec3(0.0f, -0.49f, 0.0f));
-            //initVelocity(Tensor::Vector3(0.0f, -0.49f, 0.0f));
-
             m_timeElapsed = 0.455f;
             m_keepPhysicsRunning = true;
         }
@@ -209,16 +207,37 @@ void Physics::ApplyVerticalMotions()
 
 
 
-void Physics::Apply()
+void Physics::Apply(const std::vector<Synapse::RenderableObject*> &renderableObjects)
 {
     std::cout << "Camera is now in game mode" << '\n';
     this->ApplyVerticalMotions();
 
-    this->SetCurrentObjectInfo(glm::vec3(0.5f, 0.5f, 0.5f),
-                               glm::vec3(-0.5, -0.5f, -0.5f));
+//    this->SetCurrentObjectInfo(glm::vec3(0.5f, 0.5f, 0.5f),
+//                               glm::vec3(-0.5, -0.5f, -0.5f));
 
     m_collided = false;
-    m_collided = this->WasCollided();
+    //m_collided = this->WasCollided();
+
+    for(RenderableObject* renderableObject : renderableObjects)
+    {
+        std::cout << "Checking for collision..." << '\n';
+        this->SetCurrentObjectInfo(glm::vec3(renderableObject->m_position.x + 0.5f, renderableObject->m_position.y + 0.5f, renderableObject->m_position.z + 0.5f),
+                                   glm::vec3(renderableObject->m_position.x - 0.5f, renderableObject->m_position.y - 0.5f, renderableObject->m_position.z - 0.5f));
+
+        std::cout << "Total renderable entities: " << renderableObjects.size() << '\n';
+        std::cout << "x pos: " << renderableObject->m_position.x << '\n';
+        std::cout << "y pos: " << renderableObject->m_position.y << '\n';
+        std::cout << "z pos: " << renderableObject->m_position.z << '\n';
+
+
+        if(this->WasCollided())
+        {
+            std::cout << "Collision detected!" << '\n';
+            m_collided = true;
+            break;
+        }
+    }
+
 }
 
 

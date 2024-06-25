@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 
 #include "../physics/PhysicsEngine.hpp"
+#include "../scene/Entities.hpp"
 //#include "../events/MouseEvents.hpp"
 
 #include <vector>
@@ -70,7 +71,7 @@ public:
     bool KeyPressed(GLFWwindow *m_window, const uint16_t KEYTOKEN);
     void GetKeyboardInput(GLFWwindow *window);
 
-    void Update();
+    void Update(const std::vector<Synapse::RenderableObject*> &renderableObjects);
 
     static void SetupMouse(GLFWwindow *window);
 

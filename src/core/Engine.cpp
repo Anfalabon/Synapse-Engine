@@ -315,7 +315,7 @@ void Engine::Run()
         m_scene->Update(m_window->WindowAddress(), m_cameras[m_currentCameraIndex]->GetTargetPos(), m_cameras[m_currentCameraIndex]->GetPos());
         m_renderer->Render(m_scene);
         //m_physics->Apply(m_cameras[m_currentCameraIndex]);  //PHYSICS_MODE::MINECRAFT
-        m_cameras[m_currentCameraIndex]->Update();
+        m_cameras[m_currentCameraIndex]->Update(m_scene->GetRenderableObjects());
 
         //this is definately not for benchmarking
         renderingInfo::FramesPerSecond();

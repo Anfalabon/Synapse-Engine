@@ -117,7 +117,8 @@ void Scene::LoadRenderableObjectsDynamically(const glm::vec3 &currentCameraTarge
     m_renderableObjects[lastEntityIndex]->LoadVertexObjects();
     //camera's target position is only targetting at -z
     float zToShift = -1.0f;
-    m_renderableObjects[lastEntityIndex]->Translate(currentCameraTargetPos + glm::vec3(0.0f, 0.0f, zToShift));
+    //m_renderableObjects[lastEntityIndex]->Translate(currentCameraTargetPos + glm::vec3(0.0f, 0.0f, zToShift));
+    m_renderableObjects[lastEntityIndex]->m_position += currentCameraTargetPos + glm::vec3(0.0f, 0.0f, zToShift);
     //the model matrix will be modified using 'SendMatrix4ToGPU()'
 }
 
@@ -148,7 +149,7 @@ static void OrbitAround(RenderableObject *renderableObject, const glm::vec3 &pos
     std::cout << "Radius: " << r << '\n';
 
 
-    renderableObject->m_position.y += 1.0f/100.0f;
+    //renderableObject->m_position.y += 1.0f/100.0f;
     renderableObject->m_position.x = r * glm::cos(g_theta);
     renderableObject->m_position.z = r * glm::sin(g_theta);
 
@@ -158,7 +159,7 @@ static void OrbitAround(RenderableObject *renderableObject, const glm::vec3 &pos
 
     std::cout << "Theta: " << g_theta << '\n';
 
-    g_theta += 1.0f;
+    g_theta += 0.1f;
 }
 
 
@@ -243,9 +244,9 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, 
 
     std::size_t lastEntityIndex = m_renderableObjects.size()-1;
 
-    if(m_renderableObjects.size() >= 3)
+    if(m_renderableObjects.size() >= 3 && glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
     {
-        OrbitAround(m_renderableObjects[3], m_renderableObjects[0]->m_position);
+        OrbitAround(m_renderableObjects[lastEntityIndex], m_renderableObjects[0]->m_position);
     }
 
 

@@ -34,6 +34,8 @@ public:
         return (index<0) ? nullptr : m_renderableObjects[index];
     }
 
+    [[nodiscard]] inline std::vector<Synapse::RenderableObject*> GetRenderableObjects(){return m_renderableObjects;}
+
     [[nodiscard]] inline std::size_t GetTotalSceneObjects(){return m_renderableObjects.size();};
 
 private:

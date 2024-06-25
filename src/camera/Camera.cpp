@@ -692,7 +692,7 @@ void Camera::IsLookingAtEntity()
 
 
 
-void Camera::Update()
+void Camera::Update(const std::vector<Synapse::RenderableObject*> &renderableObjects)
 {
     //this->getKeyboardInput();
     std::cout << "Total shader program ID's: " << m_shaderProgramIDs.size() << '\n';
@@ -700,7 +700,7 @@ void Camera::Update()
     //this->ChangeCameraMode();
     //this->UpdateCameraSpeed();
     //this->ApplyPhysics();
-    m_physics->Apply(); //this doesn't check Camera mode and just simply applies physics regarding of cameras actual mode
+    m_physics->Apply(renderableObjects); //this doesn't check Camera mode and just simply applies physics regarding of cameras actual mode
     this->GetViewMatrixLocation();
     this->GetPerspectiveMatrixLocation();
     this->UpdatePerspective();
