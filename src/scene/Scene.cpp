@@ -65,8 +65,6 @@ void Scene::LoadRenderableObjectsStatically()
         m_renderableObjects[i]->m_position = positions[i];
     }
 
-
-
 #else
 
     m_renderableObjects.push_back(new RenderableObject());
@@ -106,14 +104,6 @@ void Scene::LoadRenderableObjectsStatically()
     {
         renderableObject->LoadVertexObjects();
     }
-
-
-//    m_renderableObjects[0]->Update();
-//    m_renderableObjects[0]->GetVA().Bind();
-//    m_renderableObjects[0]->m_model = glm::translate(m_renderableObjects[0]->m_model, glm::vec3(0.0f, -1.0f, 0.0f));
-//    m_renderableObjects[0]->GetShader().SendMatrix4ToGPU("model", m_renderableObjects[0]->m_model);
-
-    //std::cin.get();
 
 }
 
