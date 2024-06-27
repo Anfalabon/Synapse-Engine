@@ -724,7 +724,7 @@ void Camera::Update(const std::vector<Synapse::RenderableObject*> &renderableObj
     //this->ChangeCameraMode();
     //this->UpdateCameraSpeed();
     //this->ApplyPhysics();
-    this->SetCameraMode(CAMERA_MODES::INSPECTION_MODE);
+    this->SetCameraMode(CAMERA_MODES::GAME_MODE);
     if (M_CAMERA_MODE == CAMERA_MODES::GAME_MODE)
     {
         m_physics->Apply(renderableObjects); //this doesn't check Camera mode and just simply applies physics regarding of cameras actual mode

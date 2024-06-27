@@ -78,7 +78,7 @@ void Scene::LoadRenderableObjectsStatically()
 
 
     const std::size_t totalCurrentObjects = m_renderableObjects.size();
-    constexpr std::size_t totalBatchObjects = 3;
+    constexpr std::size_t totalBatchObjects = 1;
     const std::size_t iteratorEdge = totalBatchObjects + totalCurrentObjects;
     for(std::size_t i=totalCurrentObjects-1; i<iteratorEdge; ++i)
     {
