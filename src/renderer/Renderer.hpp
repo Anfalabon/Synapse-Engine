@@ -5,6 +5,7 @@
 
 #include "../scene/Scene.hpp"
 #include "shader/Shader.hpp"
+//#include "../camera/Camera.hpp"   //camera will be inside the 'Renderer class'(for now the SceneRenderer class) not inside 'Engine'
 
 #include <vector>
 #include <unordered_map>
@@ -64,6 +65,7 @@ public:
     Shader& GetShader(std::size_t index)
     {
         return m_sceneShaders[index];
+        //return (index >= m_sceneShaders.size() || index < 0) ? Shader() : m_sceneShaders[index];
     }
 
 
@@ -78,8 +80,8 @@ public:
 private:
 
     Scene *m_scene;
-    //std::unordered_map<std::string, Shader> m_sceneShadersMap;
-    std::vector<Shader> m_sceneShaders;
+    std::vector<Shader>  m_sceneShaders;
+    //std::vector<Camera*> m_cameras;
 
 };
 

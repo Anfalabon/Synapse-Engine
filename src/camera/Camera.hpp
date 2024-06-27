@@ -28,7 +28,7 @@ public:
             : m_physics(new Physics()),
               m_deltaTime(0.0f),
               m_lastFrame(0.0f),
-              M_CAMERA_MODE(CAMERA_MODES::GAME_MODE){}
+              M_CAMERA_MODE(CAMERA_MODES::INSPECTION_MODE){}
 
     ~Camera() = default;
 
@@ -51,9 +51,13 @@ public:
     void IsLookingAtEntity();
     void UpdateSpeed();
     void SetCurrentObjectInfo(const glm::vec3 &maxObjectRange, const glm::vec3 &minObjectRange);
+    void SetDirectionVector();
     auto GetPos()->glm::vec3{return m_physics->m_pos;}
     auto GetTargetPos()->glm::vec3{return m_targetPos;}
     auto GetFrontVector()->glm::vec3;
+    auto GetDirectionVector()->glm::vec3{return m_directionVector;}
+    static float GetYaw();
+    static float GetPitch();
 
 
     //this is the physics part
@@ -95,6 +99,7 @@ public:
     glm::vec3 m_targetPos = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 m_cameraUpVector = glm::vec3(0.0f, 1.0f, 0.0f);   //camera up vector is arbitary
     glm::vec3 m_frontVector = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 m_directionVector = glm::vec3(0.0f, 0.0f, -3.0f);
 
     //glm::vec3 m_cameraVelocity = glm::vec3(0.0f, 0.774f, 0.0f);
 

@@ -62,6 +62,18 @@ inline Model GetModel(const std::string &modelName)
     {
         return {modelName, ModelData(pyramidVerticesData, pyramidTotalVerticies, pyramidIndicesData, pyramidTotalIndicies)};
     }
+    else if(modelName == "Cylinder")
+    {
+        return {modelName, ModelData(cylinderVerticiesData, cylinderTotalVerticies, cylinderIndiciesData, cylinderTotalIndicies)};
+    }
+    else if(modelName == "Icosphere")
+    {
+        return {modelName, ModelData(icosphereVerticiesData, icosphereTotalVerticies, icosphereIndiciesData, icosphereTotalIndicies)};
+    }
+    else if(modelName == "Sphere")
+    {
+        return {modelName, ModelData(sphereVerticieseData2, sphereTotalVerticies, sphereIndiciesData, sphereTotalIndicies)};
+    }
 
     return {modelName, ModelData()};
 }

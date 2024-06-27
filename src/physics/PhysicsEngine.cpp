@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <omp.h>
 
 
 namespace Synapse
@@ -20,7 +21,7 @@ void Physics::SetCurrentObjectInfo(const glm::vec3 &objectMaxSize, const glm::ve
     //initialize the max and min object range
     m_objectMaxSize = objectMaxSize;
     m_objectMinSize = objectMinSize;
-    m_currentObjectHeight = m_objectMaxSize.y + 0.7;
+    m_currentObjectHeight = m_objectMaxSize.y;    //will have to work on this
 }
 
 
@@ -63,7 +64,7 @@ bool Physics::WasCollided()
         //m_cameraPosWhileCollision = m_cameraPos;
     }
 
-    std::cout << std::boolalpha << "Point is inside the object: " << pointsInsideObject << '\n';
+    //std::cout << std::boolalpha << "Point is inside the object: " << pointsInsideObject << '\n';
 
     m_isAtTheRoof = false;
     if (m_pos.x <= m_objectMaxSize.x &&
@@ -183,7 +184,7 @@ void Physics::ApplyVerticalMotions()
 
     if (!m_jumped && !m_isAtTheRoof)
     {
-        if (m_pos.y >= 1.2f)    //right now the roof height is 1.2f but will change it cause it definately depends on the objects roof height
+        if (m_pos.y >= 1.2f + 1.0f)    //right now the roof height is 1.2f but will change it cause it definately depends on the objects roof height
         {
             m_velocity.y = -0.49;
             m_timeElapsed = 0.455f;
@@ -203,6 +204,44 @@ void Physics::ApplyVerticalMotions()
 
 
 
+
+void Physics::OrbitAround(glm::vec3 &renderableObjectsPosition, const glm::vec3 &positionToOrbit, float &g_theta)
+{
+    //renderableObject->m_position.y += 1.0f/100.0f;
+    //renderableObject->Rotate(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+
+//    float deltaX = renderableObject->m_position.x - positionToOrbit.x;
+//    float deltaZ = renderableObject->m_position.z - positionToOrbit.z;
+
+//    std::cout << "Delta X: " << deltaX << '\n';
+//    std::cout << "Delta Z: " << deltaZ << '\n';
+
+    //float r = glm::sqrt(deltaX*deltaX + deltaZ*deltaZ);
+    float r = 3.0f;
+    //std::cout << "Radius: " << r << '\n';
+
+    //std::cout << renderableObjectsPosition.x << '\n';
+
+
+    //renderableObjectsPosition.y += 1.0f/100.0f;
+    renderableObjectsPosition.x = r * glm::cos(g_theta);
+    renderableObjectsPosition.z = r * glm::sin(g_theta);
+
+
+
+    //std::cout << "X pos: " << renderableObjectsPosition.x << '\n';
+    //std::cout << "Z pos: " << renderableObjectsPosition.z << '\n';
+
+    //std::cout << "Is going to crash!" << '\n';
+
+    //std::cout << "Theta: " << g_theta << '\n';
+    //g_theta += 0.1f;
+
+    //std::cout << "Crashed before orbiting!" << '\n';
+}
+
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -218,25 +257,45 @@ void Physics::Apply(const std::vector<Synapse::RenderableObject*> &renderableObj
     m_collided = false;
     //m_collided = this->WasCollided();
 
-    for(RenderableObject* renderableObject : renderableObjects)
+
+    omp_set_num_threads(0x8);
+    #pragma omp parallel for
+    for(std::size_t i=0; i<renderableObjects.size(); ++i)
     {
-        std::cout << "Checking for collision..." << '\n';
-        this->SetCurrentObjectInfo(glm::vec3(renderableObject->m_position.x + 0.5f, renderableObject->m_position.y + 0.5f, renderableObject->m_position.z + 0.5f),
-                                   glm::vec3(renderableObject->m_position.x - 0.5f, renderableObject->m_position.y - 0.5f, renderableObject->m_position.z - 0.5f));
-
-        std::cout << "Total renderable entities: " << renderableObjects.size() << '\n';
-        std::cout << "x pos: " << renderableObject->m_position.x << '\n';
-        std::cout << "y pos: " << renderableObject->m_position.y << '\n';
-        std::cout << "z pos: " << renderableObject->m_position.z << '\n';
-
+        //std::cout << "Checking for collision..." << '\n';
+        this->SetCurrentObjectInfo(glm::vec3(renderableObjects[i]->m_position.x + 0.5f, renderableObjects[i]->m_position.y + 0.5f, renderableObjects[i]->m_position.z + 0.5f),
+                                   glm::vec3(renderableObjects[i]->m_position.x - 0.5f, renderableObjects[i]->m_position.y - 0.5f, renderableObjects[i]->m_position.z - 0.5f));
 
         if(this->WasCollided())
         {
-            std::cout << "Collision detected!" << '\n';
+            //std::cout << "Collision detected!" << '\n';
             m_collided = true;
-            break;
+            i = renderableObjects.size();
+            //break;
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    if(renderableObjects.size() >= 3 && glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+//    {
+//        OrbitAround(renderableObjects, renderableObjects[0]->m_position);
+//    }
 
 }
 

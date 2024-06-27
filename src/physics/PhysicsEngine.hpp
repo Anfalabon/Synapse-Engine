@@ -31,6 +31,7 @@ public:
     void FallDown();
     void Jump();
     void ApplyVerticalMotions();
+    void OrbitAround(glm::vec3 &renderableObjectsPositiont, const glm::vec3 &positionToOrbit, float &g_theta);
     void Apply(const std::vector<Synapse::RenderableObject*> &renderableObjects);
 
 
@@ -58,10 +59,13 @@ public:
 
     //will name it 'm_pos' from 'm_entityPos' and same with 'm_entityVelocity'
 
+    //m_pos, m_velocity, m_objectMaxSize and m_objectMinSize should be inside the renderable objects it self not inside the 'Physics' class
 
+    //these data's don't need to here but inside individual Renderable objects(even the Camera)
     glm::vec3 m_pos = glm::vec3(3.0f, 0.0f, 3.0f);
     glm::vec3 m_velocity = glm::vec3(0.0f, 0.7740f, 0.0f);
 
+    //the following data's are to check for collision and jumping algorithm together
     glm::vec3 m_posWhileCollision;
     glm::vec3 m_objectMaxSize;
     glm::vec3 m_objectMinSize;
@@ -75,14 +79,21 @@ public:
     float m_initialHeight = 0.0f;
     float m_currentObjectHeight = 0.0f;
 
+    //for now this takes care about the speed of the camera
     float m_speedCoefficient;
     float m_timeElapsed = 0.0f;
     float m_deltaTime = 0.0f;
     float m_lastFrame = 0.0f;
 
+    //this is for the orbit part
+    float m_theta = 0.0f;
+
+
 
 };
 
-}
+
+
+}   //namespace Synapse
 
 

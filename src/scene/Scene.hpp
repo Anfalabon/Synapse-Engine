@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Entities.hpp"
+#include "../physics/PhysicsEngine.hpp"
 
 #include <GLFW/glfw3.h>
 
@@ -26,8 +27,8 @@ public:
 
     void Init();
     void LoadRenderableObjectsStatically();
-    void LoadRenderableObjectsDynamically(const glm::vec3 &currentCameraTargetPos);
-    void Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos);
+    void LoadRenderableObjectsDynamically(const glm::vec3 &currentCameraTargetPos, float yaw, float pitch);
+    void Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch);
 
     [[nodiscard]] inline RenderableObject* GetRenderableObject(std::size_t index)
     {
@@ -46,6 +47,7 @@ private:
 #else
     std::vector<Synapse::RenderableObject*> m_renderableObjects;
 #endif
+    Physics *physics;
 
 };
 

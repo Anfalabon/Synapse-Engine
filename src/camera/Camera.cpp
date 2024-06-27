@@ -51,8 +51,9 @@ void Camera::GetViewMatrixLocation()
 
     if(m_shaderProgramIDs.size() > 0)
     {
-        GLuint viewLocation = glGetUniformLocation(m_shaderProgramIDs[0], "view");
-        glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(m_view));
+//        GLuint viewLocation = glGetUniformLocation(m_shaderProgramIDs[0], "view");
+//        glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(m_view));
+        glUniformMatrix4fv(glGetUniformLocation(m_shaderProgramIDs[0], "view"), 1, GL_FALSE, glm::value_ptr(m_view));
     }
 
 }
@@ -71,8 +72,9 @@ void Camera::GetPerspectiveMatrixLocation()
 
     if(m_shaderProgramIDs.size() > 0)
     {
-        GLuint perspectiveLocation = glGetUniformLocation(m_shaderProgramIDs[0], "perspective");
-        glUniformMatrix4fv(perspectiveLocation, 1, GL_FALSE, glm::value_ptr(m_perspective));
+//        GLuint perspectiveLocation = glGetUniformLocation(m_shaderProgramIDs[0], "perspective");
+//        glUniformMatrix4fv(perspectiveLocation, 1, GL_FALSE, glm::value_ptr(m_perspective));
+        glUniformMatrix4fv(glGetUniformLocation(m_shaderProgramIDs[0], "perspective"), 1, GL_FALSE, glm::value_ptr(m_perspective));
     }
 
 }
@@ -456,7 +458,7 @@ void Camera::ApplyMovementInputs(GLFWwindow *m_window)
 
         //in game mode it can freely move in the ground plane only(x, z plane) but It can't move vertically.
         //and in inspection mode it can move in anywhere freely.
-        if (M_CAMERA_MODE == CAMERA_MODES::GAME_MODE) [[likely]]
+        if (M_CAMERA_MODE == CAMERA_MODES::GAME_MODE)
         {
             //if the camera collided with any object then it can't move further.
             //doing action on collision detection like this has a lot of problems
@@ -467,7 +469,7 @@ void Camera::ApplyMovementInputs(GLFWwindow *m_window)
                 m_physics->m_pos.z = m_physics->m_pos.z + m_physics->m_speedCoefficient * Cursor::g_frontVector.z;
             }
         }
-        else if (M_CAMERA_MODE == CAMERA_MODES::INSPECTION_MODE) [[unlikely]]
+        else if (M_CAMERA_MODE == CAMERA_MODES::INSPECTION_MODE)
         {
             m_physics->m_pos = m_physics->m_pos + m_physics->m_speedCoefficient * Cursor::g_frontVector;
         }
@@ -629,7 +631,9 @@ void Camera::GetKeyboardInput(GLFWwindow *m_window)
 
 void Camera::UpdatePerspective()
 {
-    m_perspective = glm::perspective(glm::radians(m_zoomValue), 1920.0f / 1080.0f, 0.1f, 100.0f);
+    float nearFustrum = 0.1f;
+    float farFustrum = 1000.0f;
+    m_perspective = glm::perspective(glm::radians(m_zoomValue), 1920.0f / 1080.0f, nearFustrum, farFustrum);
 }
 
 
@@ -667,9 +671,29 @@ void Camera::LookAtTarget()
     m_view = glm::lookAt(m_physics->m_pos, m_targetPos, m_cameraUpVector);
 }
 
+
+void Camera::SetDirectionVector()
+{
+    //float netAngle = glm::sqrt(Cursor::g_yaw*Cursor::g_yaw + Cursor::g_pitch*Cursor::g_pitch);
+    m_directionVector.x = m_directionVector.x * glm::cos(Cursor::g_yaw) - m_directionVector.y * glm::sin(Cursor::g_yaw);
+    m_directionVector.y = m_directionVector.x * glm::sin(Cursor::g_yaw) + m_directionVector.y * glm::cos(Cursor::g_yaw);
+}
+
+
 glm::vec3 Camera::GetFrontVector()
 {
     return Cursor::g_frontVector;
+}
+
+
+float Camera::GetYaw()
+{
+    return Cursor::g_yaw;
+}
+
+float Camera::GetPitch()
+{
+    return Cursor::g_pitch;
 }
 
 
@@ -700,7 +724,11 @@ void Camera::Update(const std::vector<Synapse::RenderableObject*> &renderableObj
     //this->ChangeCameraMode();
     //this->UpdateCameraSpeed();
     //this->ApplyPhysics();
-    m_physics->Apply(renderableObjects); //this doesn't check Camera mode and just simply applies physics regarding of cameras actual mode
+    this->SetCameraMode(CAMERA_MODES::INSPECTION_MODE);
+    if (M_CAMERA_MODE == CAMERA_MODES::GAME_MODE)
+    {
+        m_physics->Apply(renderableObjects); //this doesn't check Camera mode and just simply applies physics regarding of cameras actual mode
+    }
     this->GetViewMatrixLocation();
     this->GetPerspectiveMatrixLocation();
     this->UpdatePerspective();
