@@ -10,7 +10,7 @@ CXX_OPTIMIZATION_LEVEL=-O3
 
 #also including the custom include flags allows us to include headers with ' <> ' than just ' "" '
 CXX_CUSTOM_INCLUDE_FLAGS=-I../src/core -I../src/window -I../src/physics -I../src/multithreading -I../src/math -I../src/scene -I../src/shader -I../src/renderer -I../src/camera -I../src/debug
-CXX_EXTERNAL_INCLUDE_FLAGS=-I../vendor/GLFW/include -I../vendor/glad/include -I../vendor/glm
+CXX_EXTERNAL_INCLUDE_FLAGS=-I../vendor/GLFW/include -I../vendor/glad/include -I../vendor/glm -I../vendor/imageLoader
 CXX_INCLUDE_FLAGS+=$(CXX_CUSTOM_INCLUDE_FLAGS)
 CXX_INCLUDE_FLAGS+=$(CXX_EXTERNAL_INCLUDE_FLAGS)
 
@@ -39,14 +39,17 @@ LDFLAGS=-L../src/shader -L../vendor/GLFW/lib -lglfw -L../vendor/glad/lib -lGL
 #export LD_LIBRARY_PATH=../src/external/SFML-2.6.1/lib
 
 
-bin/start_game_engine: obj/glad.o obj/PhysicsEngine.o obj/Entities.o obj/vertexObjects.o obj/Shader.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Camera.o obj/Engine.o obj/Application.o obj/main.o
-		$(CXX) $(CXXFLAGS) -o bin/start_game_engine obj/glad.o obj/PhysicsEngine.o obj/Entities.o obj/vertexObjects.o obj/Shader.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Camera.o obj/Engine.o obj/Application.o obj/main.o $(LDFLAGS)
+bin/start_game_engine: obj/glad.o obj/stb_image.o obj/PhysicsEngine.o obj/Entities.o obj/vertexObjects.o obj/Shader.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Camera.o obj/Engine.o obj/Application.o obj/main.o
+		$(CXX) $(CXXFLAGS) -o bin/start_game_engine obj/glad.o obj/stb_image.o obj/PhysicsEngine.o obj/Entities.o obj/vertexObjects.o obj/Shader.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Camera.o obj/Engine.o obj/Application.o obj/main.o $(LDFLAGS)
 
 
 
 
 obj/glad.o: ../vendor/glad/src/glad.cpp ../vendor/glad/include/glad/glad.hpp
 		$(CXX) $(CXXFLAGS) -c ../vendor/glad/src/glad.cpp -o obj/glad.o
+
+obj/stb_image.o: ../vendor/imageLoader/stb_image.cpp ../vendor/imageLoader/stb_image.h
+		$(CXX) $(CXXFLAGS) -c ../vendor/imageLoader/stb_image.cpp -o obj/stb_image.o
 
 
 obj/PhysicsEngine.o: ../src/physics/PhysicsEngine.cpp
@@ -92,6 +95,7 @@ exp:
  
 clear:
 		 rm -f obj/glad.o
+		 rm -f obj/stb_image.o
 		 rm -f obj/PhysicsEngine.o
 		 rm -f obj/Entities.o
 		 rm -f obj/vertexObjects.o

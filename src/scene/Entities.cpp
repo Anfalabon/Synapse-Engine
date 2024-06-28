@@ -3,6 +3,7 @@
 #include "Entities.hpp"
 #include "../utils/MemoryManager.hpp"
 
+#include <stb_image.h>
 
 #ifdef __stdcxx__
     #include <random>
@@ -20,7 +21,7 @@ namespace Synapse
 RenderableObject::RenderableObject(Synapse::Model modelData)
     :
      m_name(modelData.name.c_str()),
-     m_VB(modelData.md._totalVerticies, modelData.md._verticiesData),
+     m_VB(modelData.md._totalVerticies, modelData.md._verticiesData),   //add for ground which has texture
      m_EB(modelData.md._totalIndicies, modelData.md._indiciesData){}
 
 
@@ -45,7 +46,7 @@ void RenderableObject::SetIndicies(GLuint totalIndicies, GLuint *indicies)
 }
 
 
-void RenderableObject::LoadVertexObjects()
+void RenderableObject::LoadVertexObjects(unsigned short objectsInSingleVertex, bool addTexture)
 {
     m_VA.Gen();
     m_VB.Gen();
@@ -55,11 +56,45 @@ void RenderableObject::LoadVertexObjects()
     m_VB.Bind();
     m_EB.Bind();
 
-    m_VA.EnableVertexAttribute(0);
-    m_VA.EnableVertexAttribute(1);
+    m_VA.EnableVertexAttribute(0, 3, objectsInSingleVertex);   //for Position
+    m_VA.EnableVertexAttribute(1, 3, objectsInSingleVertex);   //for Color
+    if(addTexture)
+    {
+        m_VA.EnableVertexAttribute(2, 2, objectsInSingleVertex);   //for Texture  //will have to choose others also 8 if we add texture
+    }
 
     m_VA.Unbind();
     m_VB.Unbind();
+}
+
+
+void RenderableObject::LoadTexture()
+{
+    //unsigned int texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+
+    // set the texture wrapping parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    // set texture filtering parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    // load image, create texture and generate mipmaps
+    int width, height, nrChannels;
+    unsigned char *data = stbi_load("../vendor/imageLoader/groundTexture.jpg", &width, &height, &nrChannels, 0);
+    if (data)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << '\n';
+    }
+    stbi_image_free(data);
 }
 
 

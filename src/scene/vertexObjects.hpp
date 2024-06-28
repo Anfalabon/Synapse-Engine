@@ -35,6 +35,17 @@ std::ostream &operator<<(std::ostream &os, const struct Vertex &vertex)
 }
 
 
+struct GroundVertex
+{
+    GLfloat positions[3];
+    GLfloat colors[3];
+    GLfloat textCoordinate[2];
+};
+
+
+
+
+
 struct VertexObjects
 {
 public:
@@ -218,9 +229,9 @@ struct VertexArray
         glBindVertexArray(0);
     }
 
-    void EnableVertexAttribute(unsigned short vertexAttributeNo)
+    void EnableVertexAttribute(unsigned short vertexAttributeNo, unsigned short objectsInCurrentAttribute, unsigned short objectsInSingleVertex)
     {
-        glVertexAttribPointer(vertexAttributeNo, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3*vertexAttributeNo * sizeof(GLfloat)));
+        glVertexAttribPointer(vertexAttributeNo, objectsInCurrentAttribute, GL_FLOAT, GL_FALSE, objectsInSingleVertex * sizeof(GLfloat), (void*)(3*vertexAttributeNo * sizeof(GLfloat)));
         glEnableVertexAttribArray(vertexAttributeNo);
     }
 
@@ -231,10 +242,12 @@ struct VertexArray
 
 private:
     GLuint _VAO;
+    //unsigned short m_objectsInSingleVertex;
 };
 
 
 typedef struct VertexBuffer VertexBuffer;
+typedef struct GroundVertex GroundVertex;
 typedef struct IndexBuffer IndexBuffer;
 typedef struct VertexArray VertexArray;
 

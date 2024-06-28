@@ -17,7 +17,7 @@ uniform mat4 view;
 uniform mat4 perspective;
 
 void main()
-{   
+{
     //gl_Position = transform * perspective * view * model * vec4(aPosition, 1.0f);
     //gl_Position = transform * vec4(aPosition, 1.0f);
     //gl_Position = vec4(aPosition, 1.0f);
@@ -31,5 +31,3 @@ void main()
     vertexColor = aColor;
     textCoord = aTextCoord;
 }
-
-

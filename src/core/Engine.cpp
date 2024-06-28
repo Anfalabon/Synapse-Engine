@@ -185,7 +185,14 @@ void Engine::LoadRenderer()
     m_renderer->GetShader(0).UseProgram();
 
 
-    //will add other types of renderers for other Game Engine Objects(if needed)
+//    m_renderer->AddShader("../src/renderer/shader/GLSL/vertexShader1.vert",
+//                          "../src/renderer/shader/GLSL/groundFragmentShader.frag");
+//    m_renderer->SetShader();
+//    m_renderer->GetShader(1).UseProgram();
+
+
+
+        //will add other types of renderers for other Game Engine Objects(if needed)
 }
 
 

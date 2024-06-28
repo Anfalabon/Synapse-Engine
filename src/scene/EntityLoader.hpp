@@ -14,12 +14,13 @@ class ModelData
 public:
 
     ModelData() = default;
-    ModelData(Vertex *verticiesData, unsigned int totalVerticies, unsigned int *indiciesData, unsigned int totalIndicies)
-            : _verticiesData(verticiesData), _totalVerticies(totalVerticies),
+    ModelData(Vertex *verticiesData, GroundVertex *gVerticiesData, unsigned int totalVerticies, unsigned int *indiciesData, unsigned int totalIndicies)
+            : _verticiesData(verticiesData), _gVerticiesData(gVerticiesData), _totalVerticies(totalVerticies),
               _indiciesData(indiciesData), _totalIndicies(totalIndicies){}
     ~ModelData() = default;
 
     Vertex *_verticiesData;
+    GroundVertex *_gVerticiesData;
     unsigned int _totalVerticies;
     unsigned int *_indiciesData;
     unsigned int _totalIndicies;
@@ -48,31 +49,32 @@ inline Model GetModel(const std::string &modelName)
     using namespace modelsData;
     if(modelName == "Cube")
     {
-        return {modelName, ModelData(cubeVerticiesData, cubeTotalVerticies, cubeIndiciesData, cubeTotalIndicies)};
+        return {modelName, ModelData(cubeVerticiesData, nullptr, cubeTotalVerticies, cubeIndiciesData, cubeTotalIndicies)};
     }
     else if(modelName == "Ground")
     {
-        return {modelName, ModelData(groundVerticiesData, groundTotalVerticies, groundIndiciesData, groundTotalIndicies)};
+        //return {modelName, ModelData(nullptr, groundVerticiesData, groundTotalVerticies, groundIndiciesData, groundTotalIndicies)};
+        return {modelName, ModelData(groundVerticiesData, groundVerticiesDataText, groundTotalVerticies, groundIndiciesData, groundTotalIndicies)};
     }
     else if(modelName == "Trapizoid")
     {
-        return {modelName, ModelData(trapizoidVerticiesData, trapizoidTotalVerticies, trapizoidIndiciesData, trapizoidTotalIndicies)};
+        return {modelName, ModelData(trapizoidVerticiesData, nullptr, trapizoidTotalVerticies, trapizoidIndiciesData, trapizoidTotalIndicies)};
     }
     else if(modelName == "Pyramid")
     {
-        return {modelName, ModelData(pyramidVerticesData, pyramidTotalVerticies, pyramidIndicesData, pyramidTotalIndicies)};
+        return {modelName, ModelData(pyramidVerticesData, nullptr, pyramidTotalVerticies, pyramidIndicesData, pyramidTotalIndicies)};
     }
     else if(modelName == "Cylinder")
     {
-        return {modelName, ModelData(cylinderVerticiesData, cylinderTotalVerticies, cylinderIndiciesData, cylinderTotalIndicies)};
+        return {modelName, ModelData(cylinderVerticiesData, nullptr, cylinderTotalVerticies, cylinderIndiciesData, cylinderTotalIndicies)};
     }
     else if(modelName == "Icosphere")
     {
-        return {modelName, ModelData(icosphereVerticiesData, icosphereTotalVerticies, icosphereIndiciesData, icosphereTotalIndicies)};
+        return {modelName, ModelData(icosphereVerticiesData, nullptr, icosphereTotalVerticies, icosphereIndiciesData, icosphereTotalIndicies)};
     }
     else if(modelName == "Sphere")
     {
-        return {modelName, ModelData(sphereVerticieseData2, sphereTotalVerticies, sphereIndiciesData, sphereTotalIndicies)};
+        return {modelName, ModelData(sphereVerticieseData2, nullptr, sphereTotalVerticies, sphereIndiciesData, sphereTotalIndicies)};
     }
 
     return {modelName, ModelData()};

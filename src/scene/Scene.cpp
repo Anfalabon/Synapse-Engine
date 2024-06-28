@@ -133,12 +133,24 @@ void Scene::LoadRenderableObjectsStatically()
 
 //    omp_set_num_threads(0x8);
 //    #pragma omp parallel for  //if there are small amount of objects then using pragma won't result the expected
-    for(RenderableObject *renderableObject: m_renderableObjects) [[likely]]
+//    for(RenderableObject *renderableObject: m_renderableObjects) [[likely]]
+//    {
+//        renderableObject->LoadVertexObjects(8, true); //if we add texture then it will be 8
+//    }
+
+    for(std::size_t i=0; i<m_renderableObjects.size(); ++i)
     {
-        renderableObject->LoadVertexObjects();
+//        if(i==1)
+//        {
+//            m_renderableObjects[i]->LoadVertexObjects(8, true);
+//            m_renderableObjects[i]->LoadTexture();
+//        }
+        m_renderableObjects[i]->LoadVertexObjects(6, false);
     }
 
+
 }
+
 
 
 
@@ -146,7 +158,7 @@ void Scene::LoadRenderableObjectDynamically(const glm::vec3 &currentCameraTarget
 {
     m_renderableObjects.push_back(new RenderableObject(GetModel("Sphere")));
     std::size_t lastEntityIndex = m_renderableObjects.size()-1;
-    m_renderableObjects[lastEntityIndex]->LoadVertexObjects();
+    m_renderableObjects[lastEntityIndex]->LoadVertexObjects(6, false); //if we add texture then it will be 8
     //camera's target position is only targetting at -z
     float zToShift = -5.0f;
 

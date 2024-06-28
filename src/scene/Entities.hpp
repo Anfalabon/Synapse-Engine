@@ -31,7 +31,8 @@ public:
     void SetIndicies(GLuint totalIndicies, GLuint *indicies);
     void SetShaderSources(const std::string &vertexShaderSourcePath, const std::string &fragmentShaderSourcePath);
 
-    void LoadVertexObjects();
+    void LoadVertexObjects(unsigned short objectsInSingleVertex = 0, bool addTexture = false);
+    void LoadTexture();
     void LoadShader();
 
     [[nodiscard]] inline struct VertexArray&  GetVA(){return m_VA;}
@@ -68,6 +69,8 @@ public:
     glm::vec3 m_position = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 m_velocity = glm::vec3(1.0f, 0.0f, 1.0f); //the initial velocities will be
     glm::mat4 m_model = glm::mat4(1.0f);
+
+    unsigned int texture;
 };
 
 

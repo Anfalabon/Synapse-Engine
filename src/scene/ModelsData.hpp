@@ -62,14 +62,12 @@ inline GLuint *cubeIndiciesData = new GLuint[cubeTotalIndicies]{
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //for now this will be used for ground texture
-struct GroundVertexTexture
-{
-    GLfloat positions[3];
-    GLfloat colors[3];
-    GLfloat textCoordinate[2];
-};
 
-typedef struct GroundVertexTexture GroundVertexTexture;
+
+//{{960.0f,  -0.5f, 540.0f},  {1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}},
+//{{-960.0f, -0.5f, 540.0f},  {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
+//{{960.0f,  -0.5f, -540.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}},
+//{{-960.0f, -0.5f, -540.0f}, {0.5f, 0.5f, 0.5f}, {0.0f, 1.0f}},
 
 
 inline GLuint groundTotalVerticies = 4;
@@ -81,6 +79,15 @@ inline Vertex *groundVerticiesData = new Vertex[groundTotalVerticies]{
         {{960.0f,  -0.5f, -540.0f}, {0.0f, 0.0f, 1.0f}},
         {{-960.0f, -0.5f, -540.0f}, {0.5f, 0.5f, 0.5f}},
 };
+
+
+inline GroundVertex *groundVerticiesDataText = new GroundVertex[groundTotalVerticies]{
+        {{960.0f,  -0.5f, 540.0f},  {1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}},
+        {{-960.0f, -0.5f, 540.0f},  {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
+        {{960.0f,  -0.5f, -540.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}},
+        {{-960.0f, -0.5f, -540.0f}, {0.5f, 0.5f, 0.5f}, {0.0f, 1.0f}},
+};
+
 
 inline GLuint *groundIndiciesData = new GLuint[groundTotalIndicies]{
         0, 1, 2,
