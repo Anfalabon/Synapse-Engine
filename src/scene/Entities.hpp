@@ -70,7 +70,7 @@ public:
     glm::vec3 m_velocity = glm::vec3(1.0f, 0.0f, 1.0f); //the initial velocities will be
     glm::mat4 m_model = glm::mat4(1.0f);
 
-    unsigned int texture;
+    unsigned int textureID;
 };
 
 

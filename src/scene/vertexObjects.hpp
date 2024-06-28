@@ -27,23 +27,20 @@ typedef struct Vertex
 }Vertex;
 
 
+typedef struct GroundVertex
+{
+    GLfloat positions[3];
+    GLfloat colors[3];
+    GLfloat textCoordinate[2];
+}GroundVertex;
+
+
 
 std::ostream &operator<<(std::ostream &os, const struct Vertex &vertex)
 {
     os << vertex;
     return os;
 }
-
-
-struct GroundVertex
-{
-    GLfloat positions[3];
-    GLfloat colors[3];
-    GLfloat textCoordinate[2];
-};
-
-
-
 
 
 struct VertexObjects
@@ -242,12 +239,11 @@ struct VertexArray
 
 private:
     GLuint _VAO;
-    //unsigned short m_objectsInSingleVertex;
+    //unsigned short objectsInSingleVertex;
 };
 
 
 typedef struct VertexBuffer VertexBuffer;
-typedef struct GroundVertex GroundVertex;
 typedef struct IndexBuffer IndexBuffer;
 typedef struct VertexArray VertexArray;
 

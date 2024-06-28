@@ -74,7 +74,7 @@ inline Model GetModel(const std::string &modelName)
     }
     else if(modelName == "Sphere")
     {
-        return {modelName, ModelData(sphereVerticieseData2, nullptr, sphereTotalVerticies, sphereIndiciesData, sphereTotalIndicies)};
+        return {modelName, ModelData(sphereVerticiesData, nullptr, sphereTotalVerticies, sphereIndiciesData, sphereTotalIndicies)};
     }
 
     return {modelName, ModelData()};

@@ -1181,7 +1181,6 @@ inline Vertex *sphereVerticiesData = new Vertex[sphereTotalVerticies]{
 
 
 
-
 inline Vertex *sphereVerticieseData2 = new Vertex[sphereTotalVerticies]{
         0 ,1 ,0 ,
 
@@ -2065,6 +2064,7 @@ inline Vertex *sphereVerticieseData2 = new Vertex[sphereTotalVerticies]{
 
         -8.74228e-08 ,-1 ,-1.52855e-14 ,
 };
+
 
 
 

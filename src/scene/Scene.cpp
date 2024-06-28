@@ -75,11 +75,6 @@ void Scene::LoadRenderableObjectsStatically()
     }
 
 
-//    m_renderableObjects[6]->m_position = m_renderableObjects[4]->m_position;
-//    m_renderableObjects[6]->m_position.x -= 3.0f;
-//    m_renderableObjects[6]->m_position.z -= 3.0f;
-
-
     std::vector<std::string> modelsName{"Cube", "Trapizoid", "Pyramid", "Cylinder", "Icosphere", "Sphere"};
 
 
