@@ -204,7 +204,6 @@ void Physics::ApplyVerticalMotions()
 
 
 
-
 void Physics::OrbitAround(glm::vec3 &renderableObjectsPosition, const glm::vec3 &positionToOrbit, float &g_theta)
 {
     //renderableObject->m_position.y += 1.0f/100.0f;
@@ -232,12 +231,33 @@ void Physics::OrbitAround(glm::vec3 &renderableObjectsPosition, const glm::vec3 
     //std::cout << "X pos: " << renderableObjectsPosition.x << '\n';
     //std::cout << "Z pos: " << renderableObjectsPosition.z << '\n';
 
-    //std::cout << "Is going to crash!" << '\n';
+    std::cout << "Is going to crash!" << '\n';
 
     //std::cout << "Theta: " << g_theta << '\n';
-    //g_theta += 0.1f;
+    g_theta += 0.1f;
+    //m_theta += 0.1f;
 
     //std::cout << "Crashed before orbiting!" << '\n';
+}
+
+
+
+void Physics::Projectile(glm::vec3 &position, glm::vec3 &velocity, const float deltaTime)
+{
+    float gravity = -0.1;
+    if (position.y < 0)
+    {
+        //gravity = 0.01f;
+        velocity.x = 0.0f;
+        velocity.y = 0.0f;
+        velocity.z = 0.0f;
+    }
+
+    position.x += velocity.x * deltaTime;
+    position.y += velocity.y * deltaTime;
+    position.z += velocity.z * deltaTime;
+
+    velocity.y += gravity * deltaTime;
 }
 
 
@@ -270,23 +290,11 @@ void Physics::Apply(const std::vector<Synapse::RenderableObject*> &renderableObj
         {
             //std::cout << "Collision detected!" << '\n';
             m_collided = true;
+            m_posWhileCollision = m_pos;
             i = renderableObjects.size();
             //break;
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -42,7 +42,7 @@ struct Model
 //model["Pyramid"] = ModelData(pyramidVerticiesData, pyramidTotalVerticies, pyramidIndiciesData, pyramidTotalIndicies);
 
 
-
+//will use an std::unordered_map<> instead of this
 inline Model GetModel(const std::string &modelName)
 {
     using namespace modelsData;

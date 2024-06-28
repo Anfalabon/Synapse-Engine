@@ -32,6 +32,7 @@ public:
     void Jump();
     void ApplyVerticalMotions();
     void OrbitAround(glm::vec3 &renderableObjectsPositiont, const glm::vec3 &positionToOrbit, float &g_theta);
+    void Projectile(glm::vec3 &position, glm::vec3 &velocity, const float deltaTime);
     void Apply(const std::vector<Synapse::RenderableObject*> &renderableObjects);
 
 
@@ -87,6 +88,7 @@ public:
 
     //this is for the orbit part
     float m_theta = 0.0f;
+
 
 
 

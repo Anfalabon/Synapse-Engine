@@ -1728,3 +1728,88 @@ RenderableObject::RenderableObject(const char *name,
 //    m_renderableObjects[0]->GetShader().SendMatrix4ToGPU("model", m_renderableObjects[0]->m_model);
 
     //std::cin.get();
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+    //m_renderableObjects[0]->m_position = currentCameraTargetPos + glm::vec3(0.0f, 0.0f, -3.0f);
+
+//    glm::vec3 pointingVector = glm::vec3(0.0f, 0.0f, 0.0f);
+//    pointingVector = glm::normalize(currentCameraTargetPos);
+//
+//    pointingVector.x += glm::cos(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
+//    pointingVector.y += glm::sin(glm::radians(pitch));
+//    pointingVector.z += glm::sin(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
+//
+//    m_renderableObjects[0]->m_position.z = pointingVector.z - 1.0f;
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//    glm::vec3 pointingVector = glm::vec3(0.0f, 0.0f, 0.0f);
+//    pointingVector = currentCameraTargetPos;
+//
+//    pointingVector.x = glm::cos(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
+//    pointingVector.y = glm::sin(glm::radians(pitch));
+//    pointingVector.z = glm::sin(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//    {
+//
+//        bool leftMouseButtonClicked = true;
+//
+//        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) != GLFW_PRESS)
+//        {
+//            m_dynamicRenderableObjectLoaderRunning = false;
+//            leftMouseButtonClicked = false;
+//        }
+//
+//        if (leftMouseButtonClicked && !m_dynamicRenderableObjectLoaderRunning)
+//        {
+//            m_dynamicRenderableObjectLoaderRunning = true;
+//            DEBUG::__LOG__MANAGER__::LOG("PRESSED Dynamic Entity Loader!");
+//            this->LoadRenderableObjectsDynamically(currentCameraTargetPos, cameraPos, yaw, pitch);
+//        }
+//
+//    }
+//
+//
+//
+//    {
+//
+//        bool rightMouseButtonClicked = true;
+//
+//        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) != GLFW_PRESS)
+//        {
+//            m_dynamicRenderableObjectDeleterRunning = false;
+//            rightMouseButtonClicked = false;
+//        }
+//
+//        if (rightMouseButtonClicked && !m_dynamicRenderableObjectDeleterRunning)
+//        {
+//            m_dynamicRenderableObjectDeleterRunning = true;
+//            DEBUG::__LOG__MANAGER__::LOG("PRESSED Dynamic Entity Deleter!");
+//            if (m_renderableObjects.size() > 0)
+//            {
+//                m_renderableObjects.pop_back();
+//            }
+//        }
+//
+//    }
+

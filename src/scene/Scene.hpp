@@ -27,7 +27,9 @@ public:
 
     void Init();
     void LoadRenderableObjectsStatically();
-    void LoadRenderableObjectsDynamically(const glm::vec3 &currentCameraTargetPos, float yaw, float pitch);
+    void LoadRenderableObjectDynamicallyInput(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch);
+    void RemoveRenderableObjectDynamicallyInput(GLFWwindow *window);
+    void LoadRenderableObjectDynamically(const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch);
     void Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch);
 
     [[nodiscard]] inline RenderableObject* GetRenderableObject(std::size_t index)
@@ -48,6 +50,14 @@ private:
     std::vector<Synapse::RenderableObject*> m_renderableObjects;
 #endif
     Physics *physics;
+
+private:
+    //temp member data's
+    bool m_dynamicRenderableObjectLoaderRunning = false;
+    bool m_dynamicRenderableObjectDeleterRunning = false;
+    float m_theta = 0.0f;   //this will be inside the 'Physics' class
+
+
 
 };
 

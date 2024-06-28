@@ -40,7 +40,7 @@ public:
     void GetViewMatrixLocation();
     void CalculateFrontVector(float yaw, float pitch);
     void UpdatePerspective();
-    void UpdateView(glm::mat4 &view);
+    void UpdateView();
     void IncreaseSpeed(GLFWwindow *m_window);
     void EnableJumpingInput(GLFWwindow *m_window);
     void ResetVerticalPositionInput(GLFWwindow *m_window);

@@ -80,10 +80,21 @@ void Camera::GetPerspectiveMatrixLocation()
 }
 
 
-void Camera::UpdateView(glm::mat4 &view)
+void Camera::UpdateView()
 {
-    view = m_view;
+    //view = m_view;
+    //m_view = glm::translate(m_view, glm::vec3(0.0f, 0.0f, 0.0f));
+    //m_view = glm::mat4(0.0f);
 }
+
+
+void Camera::UpdatePerspective()
+{
+    float nearFustrum = 0.1f;
+    float farFustrum = 1000.0f;
+    m_perspective = glm::perspective(glm::radians(m_zoomValue), 1920.0f / 1080.0f, nearFustrum, farFustrum);
+}
+
 
 
 void Camera::UpdateSpeed()
@@ -629,12 +640,7 @@ void Camera::GetKeyboardInput(GLFWwindow *m_window)
 
 
 
-void Camera::UpdatePerspective()
-{
-    float nearFustrum = 0.1f;
-    float farFustrum = 1000.0f;
-    m_perspective = glm::perspective(glm::radians(m_zoomValue), 1920.0f / 1080.0f, nearFustrum, farFustrum);
-}
+
 
 
 //updateLookingTarget()
@@ -712,6 +718,7 @@ void Camera::IsLookingAtEntity()
     {
         std::cout << "Camera looking at cube!" << '\n';
     }
+
 }
 
 
@@ -724,13 +731,14 @@ void Camera::Update(const std::vector<Synapse::RenderableObject*> &renderableObj
     //this->ChangeCameraMode();
     //this->UpdateCameraSpeed();
     //this->ApplyPhysics();
-    this->SetCameraMode(CAMERA_MODES::GAME_MODE);
+    this->SetCameraMode(CAMERA_MODES::INSPECTION_MODE);
     if (M_CAMERA_MODE == CAMERA_MODES::GAME_MODE)
     {
         m_physics->Apply(renderableObjects); //this doesn't check Camera mode and just simply applies physics regarding of cameras actual mode
     }
     this->GetViewMatrixLocation();
     this->GetPerspectiveMatrixLocation();
+    this->UpdateView(); //if needed
     this->UpdatePerspective();
     this->LookAtTarget();
 }

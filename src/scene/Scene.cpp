@@ -60,8 +60,8 @@ void Scene::LoadRenderableObjectsStatically()
 
 
     glm::vec3 positions[7] = {
-            glm::vec3(10.0f, 1.0f, 0.0f),
-            glm::vec3(0.0f, -0.5f, 0.0f),
+            glm::vec3(0.0f, 0.0f, 0.0f),
+            glm::vec3(0.0f, -0.9f, 0.0f),
             glm::vec3(1.0f, 0.0f, 0.0f),
             glm::vec3(9.0f, 3.0f, 9.0f),
             glm::vec3(10.0, 10.0f, 30.0f),
@@ -74,19 +74,25 @@ void Scene::LoadRenderableObjectsStatically()
         m_renderableObjects[i]->m_position = positions[i];
     }
 
+
+//    m_renderableObjects[6]->m_position = m_renderableObjects[4]->m_position;
+//    m_renderableObjects[6]->m_position.x -= 3.0f;
+//    m_renderableObjects[6]->m_position.z -= 3.0f;
+
+
     std::vector<std::string> modelsName{"Cube", "Trapizoid", "Pyramid", "Cylinder", "Icosphere", "Sphere"};
 
 
-    const std::size_t totalCurrentObjects = m_renderableObjects.size();
-    constexpr std::size_t totalBatchObjects = 1;
-    const std::size_t iteratorEdge = totalBatchObjects + totalCurrentObjects;
-    for(std::size_t i=totalCurrentObjects-1; i<iteratorEdge; ++i)
-    {
-        m_renderableObjects.push_back(new RenderableObject(GetModel(modelsName[5])));
-        m_renderableObjects[i]->m_position.x = rand() % 10;
-        m_renderableObjects[i]->m_position.y = rand() % 10;
-        m_renderableObjects[i]->m_position.z = rand() % 10;
-    }
+//    const std::size_t totalCurrentObjects = m_renderableObjects.size();
+//    constexpr std::size_t totalBatchObjects = 1;
+//    const std::size_t iteratorEdge = totalBatchObjects + totalCurrentObjects;
+//    for(std::size_t i=totalCurrentObjects-1; i<iteratorEdge; ++i)
+//    {
+//        m_renderableObjects.push_back(new RenderableObject(GetModel(modelsName[5])));
+//        m_renderableObjects[i]->m_position.x = rand() % 10;
+//        m_renderableObjects[i]->m_position.y = rand() % 10;
+//        m_renderableObjects[i]->m_position.z = rand() % 10;
+//    }
 
 
 
@@ -136,37 +142,75 @@ void Scene::LoadRenderableObjectsStatically()
 
 
 
-void Scene::LoadRenderableObjectsDynamically(const glm::vec3 &currentCameraTargetPos, float yaw, float pitch)
+void Scene::LoadRenderableObjectDynamically(const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch)
 {
     m_renderableObjects.push_back(new RenderableObject(GetModel("Sphere")));
     std::size_t lastEntityIndex = m_renderableObjects.size()-1;
     m_renderableObjects[lastEntityIndex]->LoadVertexObjects();
     //camera's target position is only targetting at -z
-    float zToShift = -1.0f;
-
-
-
-//    glm::vec3 pointingVector = glm::vec3(0.0f, 0.0f, 0.0f);
-//    pointingVector = currentCameraTargetPos;
-//
-//    pointingVector.x = glm::cos(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
-//    pointingVector.y = glm::sin(glm::radians(pitch));
-//    pointingVector.z = glm::sin(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
-
+    float zToShift = -5.0f;
 
     //m_renderableObjects[lastEntityIndex]->Translate(currentCameraTargetPos + glm::vec3(0.0f, 0.0f, zToShift));
     m_renderableObjects[lastEntityIndex]->m_position += currentCameraTargetPos + glm::vec3(0.0f, 0.0f, zToShift);
     //the model matrix will be modified using 'SendMatrix4ToGPU()'
+
+    glm::vec3 velocity = currentCameraTargetPos - cameraPos;    //don't need to normalize if we access the front vector
+
+    m_renderableObjects[lastEntityIndex]->m_velocity.x = velocity.x;
+    m_renderableObjects[lastEntityIndex]->m_velocity.z = velocity.z;
 }
 
 
 
 
-bool g_dynamicRenderableObjectLoaderRunning = false;
-bool g_dynamicRenderableObjectDeleterRunning = false;
-float g_theta = 0.0f;
-float g_tempTheta = 0.0f;
-bool g_popBackDone = false;
+void Scene::LoadRenderableObjectDynamicallyInput(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch)
+{
+    bool leftMouseButtonClicked = true;
+
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) != GLFW_PRESS)
+    {
+        m_dynamicRenderableObjectLoaderRunning = false;
+        leftMouseButtonClicked = false;
+    }
+
+    if (leftMouseButtonClicked && !m_dynamicRenderableObjectLoaderRunning)
+    {
+        m_dynamicRenderableObjectLoaderRunning = true;
+        DEBUG::__LOG__MANAGER__::LOG("PRESSED Dynamic Entity Loader!");
+        this->LoadRenderableObjectDynamically(currentCameraTargetPos, cameraPos, yaw, pitch);
+    }
+
+}
+
+void Scene::RemoveRenderableObjectDynamicallyInput(GLFWwindow *window)
+{
+    bool rightMouseButtonClicked = true;
+
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) != GLFW_PRESS)
+    {
+        m_dynamicRenderableObjectDeleterRunning = false;
+        rightMouseButtonClicked = false;
+    }
+
+    if (rightMouseButtonClicked && !m_dynamicRenderableObjectDeleterRunning)
+    {
+        m_dynamicRenderableObjectDeleterRunning = true;
+        DEBUG::__LOG__MANAGER__::LOG("PRESSED Dynamic Entity Deleter!");
+        if (m_renderableObjects.size() > 0)
+        {
+            m_renderableObjects.pop_back();
+        }
+    }
+
+}
+
+
+
+//
+//bool g_dynamicRenderableObjectLoaderRunning = false;
+//bool g_dynamicRenderableObjectDeleterRunning = false;
+//float g_theta = 0.0f;
+//
 
 
 
@@ -210,110 +254,30 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, 
         return;
     }
 
-    //these will be inside the 'EntityLoader' class.
-
-    //these will be inside some common function cause there logic is similar
-
-
-
-    {
-
-        bool leftMouseButtonClicked = true;
-
-        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) != GLFW_PRESS)
-        {
-            g_dynamicRenderableObjectLoaderRunning = false;
-            leftMouseButtonClicked = false;
-        }
-
-        if (leftMouseButtonClicked && !g_dynamicRenderableObjectLoaderRunning)
-        {
-            g_dynamicRenderableObjectLoaderRunning = true;
-            DEBUG::__LOG__MANAGER__::LOG("PRESSED Dynamic Entity Loader!");
-            this->LoadRenderableObjectsDynamically(currentCameraTargetPos, yaw, pitch);
-//            if(g_popBackDone)
-//            {
-//                g_theta = g_tempTheta;
-//                g_popBackDone = false;
-//            }
-        }
-
-    }
+    //these will be inside the 'EntityLoader' class(maybe)
+    this->LoadRenderableObjectDynamicallyInput(window, currentCameraTargetPos, cameraPos, yaw, pitch);
+    this->RemoveRenderableObjectDynamicallyInput(window);
 
 
 
-    {
+    //m_renderableObjects[0]->m_position.z += 0.01f;
+    //m_renderableObjects[6]->Rotate(1.0f, glm::vec3(0.0f, -1.0f, 0.0f));
 
-        bool rightMouseButtonClicked = true;
-
-        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) != GLFW_PRESS)
-        {
-            g_dynamicRenderableObjectDeleterRunning = false;
-            rightMouseButtonClicked = false;
-        }
-
-        if (rightMouseButtonClicked && !g_dynamicRenderableObjectDeleterRunning)
-        {
-            g_dynamicRenderableObjectDeleterRunning = true;
-            DEBUG::__LOG__MANAGER__::LOG("PRESSED Dynamic Entity Deleter!");
-            if (m_renderableObjects.size() > 0)
-            {
-                m_renderableObjects.pop_back();
-//                g_tempTheta = g_theta;
-//                g_popBackDone = true;
-            }
-        }
-
-    }
-
-
-
-
-
-
-
-    //m_renderableObjects[0]->Translate(glm::vec3(0.0f, 1.0f/100.0f, 0.0f));
-
-    //m_renderableObjects[0]->m_position.y += 1.0f/100.0f;
-    //m_renderableObjects[0]->Rotate(1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-
-
-    //m_renderableObjects[0]->m_position = currentCameraTargetPos + glm::vec3(0.0f, 0.0f, -3.0f);
-
-//    glm::vec3 pointingVector = glm::vec3(0.0f, 0.0f, 0.0f);
-//    pointingVector = glm::normalize(currentCameraTargetPos);
-//
-//    pointingVector.x += glm::cos(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
-//    pointingVector.y += glm::sin(glm::radians(pitch));
-//    pointingVector.z += glm::sin(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
-//
-//    m_renderableObjects[0]->m_position.z = pointingVector.z - 1.0f;
-
-
-
-
-    //g_frontVector = glm::normalize(frontVector);
-
-
+    std::cout << "Radius of rotation: " << glm::length(m_renderableObjects[6]->m_position) << '\n';
 
     std::size_t lastEntityIndex = m_renderableObjects.size()-1;
 
 
-    //OrbitAround(m_renderableObjects[lastEntityIndex]->m_position, m_renderableObjects[0]->m_position);
-    //physics->OrbitAround(m_renderableObjects[3]->m_position, m_renderableObjects[0]->m_position, g_theta);
+    float deltaTime = 0.27f;    //here made an approximate delta time for this device. will calculate deltaTime
 
-    if(glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
+    //#pragma omp parallel for
+    for (std::size_t i = 6; i < m_renderableObjects.size(); ++i)
     {
-        //#pragma omp parallel for
-        for(std::size_t i=3; i<m_renderableObjects.size(); ++i)
-        {
-            //physics->OrbitAround(m_renderableObjects[i]->m_position, m_renderableObjects[0]->m_position, g_theta);
-            m_renderableObjects[i]->m_position.y += 1.0f/100.0f;
-        }
+        physics->Projectile(m_renderableObjects[i]->m_position, m_renderableObjects[i]->m_velocity, deltaTime);
+        //physics->OrbitAround(m_renderableObjects[i]->m_position, m_renderableObjects[0]->m_position, m_theta);    //right now it's orbiting the origin
     }
 
-    g_theta += 0.1f;
-
+    m_theta += 0.1f;
 
 
     if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)

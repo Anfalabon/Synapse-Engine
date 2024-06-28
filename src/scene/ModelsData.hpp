@@ -61,10 +61,15 @@ inline GLuint *cubeIndiciesData = new GLuint[cubeTotalIndicies]{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//for now this will be used for ground texture
+struct GroundVertexTexture
+{
+    GLfloat positions[3];
+    GLfloat colors[3];
+    GLfloat textCoordinate[2];
+};
 
-
-
-
+typedef struct GroundVertexTexture GroundVertexTexture;
 
 
 inline GLuint groundTotalVerticies = 4;
@@ -81,6 +86,8 @@ inline GLuint *groundIndiciesData = new GLuint[groundTotalIndicies]{
         0, 1, 2,
         1, 2, 3,
 };
+
+
 
 
 

@@ -15,6 +15,7 @@ typedef struct Vertex
 {
     GLfloat positions[3];
     GLfloat colors[3];
+    //GLfloat textCoordinate[2];
 
 //    Vertex &operator[]()
 //    {
@@ -88,7 +89,7 @@ struct VertexBuffer
         //_verticiesData = &_vVerticiesData[0];
         unsigned long TARGET_BUFFER = 0x8892;   //GL_ARRAY_BUFFER
         glBindBuffer(TARGET_BUFFER, _VBO);
-        glBufferData(TARGET_BUFFER, sizeof(Vertex)*_totalVerticies, _verticiesData, GL_DYNAMIC_DRAW);
+        glBufferData(TARGET_BUFFER, sizeof(Vertex)*_totalVerticies, _verticiesData, GL_STATIC_DRAW);
     }
 
     void Unbind()
@@ -163,7 +164,7 @@ struct IndexBuffer
     void Bind()
     {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*_totalIndicies, _indiciesData, GL_DYNAMIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*_totalIndicies, _indiciesData, GL_STATIC_DRAW);
     }
 
     void Unbind()
