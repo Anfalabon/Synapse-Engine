@@ -33,7 +33,7 @@ public:
     void ApplyVerticalMotions();
     void OrbitAround(glm::vec3 &renderableObjectsPositiont, const glm::vec3 &positionToOrbit, float &g_theta);
     void Bounce(glm::vec3 &velocity, glm::vec3 &initialVelocity);
-    void Projectile(glm::vec3 &position, glm::vec3 &velocity, const float deltaTime, glm::vec3 &initialVelocity);
+    void Projectile(glm::vec3 &position, glm::vec3 &velocity, const float deltaTime, glm::vec3 &initialVelocity, bool addBouncing);
     void Apply(const std::vector<Synapse::RenderableObject*> &renderableObjects);
 
 

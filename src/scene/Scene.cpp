@@ -220,7 +220,7 @@ void Scene::RemoveRenderableObjectDynamicallyInput(GLFWwindow *window)
 
 
 
-void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch)
+void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch, float deltaTime)
 {
     if(m_renderableObjects.size() < 0)
     {
@@ -241,12 +241,12 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, 
 
 
 
-    float deltaTime = 0.27f;    //here made an approximate delta time for this device. will calculate deltaTime
+    float deltaTime2 = 0.27f;    //here made an approximate delta time for this device. will calculate deltaTime
 
     //#pragma omp parallel for
     for (std::size_t i = 6; i < m_renderableObjects.size(); ++i)
     {
-        physics->Projectile(m_renderableObjects[i]->m_position, m_renderableObjects[i]->m_velocity, deltaTime, m_renderableObjects[i]->m_initialVelocity);
+        physics->Projectile(m_renderableObjects[i]->m_position, m_renderableObjects[i]->m_velocity, deltaTime2, m_renderableObjects[i]->m_initialVelocity, true);
         //physics->OrbitAround(m_renderableObjects[i]->m_position, m_renderableObjects[0]->m_position, m_theta);    //right now it's orbiting the origin
     }
 

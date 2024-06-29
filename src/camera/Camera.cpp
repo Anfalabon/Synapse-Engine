@@ -106,6 +106,7 @@ void Camera::UpdateSpeed()
     m_physics->m_speedCoefficient = cameraSpeedConstant * m_deltaTime;
 }
 
+
 //float deltaTime()
 //{
 //    float currentFrame = glfwGetTime();

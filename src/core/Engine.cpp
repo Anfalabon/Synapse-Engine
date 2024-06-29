@@ -299,10 +299,18 @@ void Engine::Run()
 
     //m_scene->GetRenderableObject(0)->GetShader().UseProgram();
 
+    float deltaTime = 0.0f;
+    float lastFrame = 0.0f;
 
     //core Engine loop
     while(m_window->IsRunning())
     {
+        float currentFrame = static_cast<float>(glfwGetTime());
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+
+        std::cout << "Delta time is: " << deltaTime << '\n';
+
         //this should be inside 'm_window->GetKeyboardInput();'
         if(this->Restart())
         {
@@ -323,9 +331,8 @@ void Engine::Run()
         m_scene->Update(m_window->WindowAddress(), m_cameras[m_currentCameraIndex]->GetTargetPos(),
                         m_cameras[m_currentCameraIndex]->GetPos(),
                         m_cameras[m_currentCameraIndex]->GetYaw(),
-                        m_cameras[m_currentCameraIndex]->GetPitch());
+                        m_cameras[m_currentCameraIndex]->GetPitch(), deltaTime);
         m_renderer->Render(m_scene);
-        //m_physics->Apply(m_cameras[m_currentCameraIndex]);  //PHYSICS_MODE::MINECRAFT
         m_cameras[m_currentCameraIndex]->Update(m_scene->GetRenderableObjects());
 
         //this is definately not for benchmarking

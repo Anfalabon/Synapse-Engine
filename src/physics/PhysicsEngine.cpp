@@ -241,35 +241,50 @@ void Physics::OrbitAround(glm::vec3 &renderableObjectsPosition, const glm::vec3 
 }
 
 
+static float FastAbs(float value)
+{
+    unsigned int valueIEEE = *(unsigned int*)&value;
+    valueIEEE &= 0x7FFFFFFF;
+    return *(float*)&valueIEEE;
+}
+
+
 //the reaction force with the ground
 void Physics::Bounce(glm::vec3 &velocity, glm::vec3 &initialVelocity)
 {
     float materialConstant = 0.9f;
+#if 1
     velocity.x = initialVelocity.x * materialConstant;
-    velocity.y = glm::abs(initialVelocity.y) * materialConstant;
+    velocity.y = glm::abs(initialVelocity.y) * materialConstant;    //will use faster absulote value function than glm::abs
     velocity.z = initialVelocity.z * materialConstant;
-
-//    velocity.x = velocity.x * materialConstant;
-//    velocity.y = glm::abs(velocity.y) * materialConstant;
-//    velocity.z = velocity.z * materialConstant;
 
     initialVelocity.x = velocity.x;
     initialVelocity.y = velocity.y;
     initialVelocity.z = velocity.z;
+#else
+    velocity.x = velocity.x * materialConstant;
+    velocity.y = FastAbs(velocity.y * materialConstant);
+    velocity.z = velocity.z * materialConstant;
+#endif
 }
 
 
-void Physics::Projectile(glm::vec3 &position, glm::vec3 &velocity, const float deltaTime, glm::vec3 &initialVelocity)
+void Physics::Projectile(glm::vec3 &position, glm::vec3 &velocity, const float deltaTime, glm::vec3 &initialVelocity, bool addBouncing)
 {
     float gravity = -0.1;
     float materialConstant = 0.9f;
     if (position.y < 0)
     {
-        //velocity.x = 0.0f;
-        //velocity.y = 0.0f;
-        //velocity.z = 0.0f;
-
-        this->Bounce(velocity, initialVelocity);
+        if(addBouncing)
+        {
+            this->Bounce(velocity, initialVelocity);
+        }
+        else
+        {
+            velocity.x = 0.0f;
+            velocity.y = 0.0f;
+            velocity.z = 0.0f;
+        }
     }
 
     std::cout << "Projectile!" << '\n';
