@@ -1,8 +1,7 @@
 #include "Scene.hpp"
 #include "../debug/LOG.hpp"
 #include "../window/Window.hpp"
-//#include "ModelsDataVertex.hpp"
-#include "ModelsDataFloat.hpp"
+#include "ModelsData.hpp"
 #include "../utils/RunParallel.hpp"
 
 
@@ -52,7 +51,7 @@ void Scene::LoadRenderableObjectsStatically()
 
 
 
-#if 1
+
     constexpr std::size_t initialRenderableObjects = 7;
 //    //will replace 'GetModel' function with an unordered map
 //    m_renderableObjects.push_back(new RenderableObject(GetModel<float>("Cube")));
@@ -75,7 +74,6 @@ void Scene::LoadRenderableObjectsStatically()
             glm::vec3(9.0f, 0.0f, 0.0f)
     };
 
-
     for(std::size_t i=0; i<initialRenderableObjects; ++i) [[likely]]
     {
         m_renderableObjects.push_back(new RenderableObject(GetModel<float>(modelsName[i])));
@@ -85,53 +83,18 @@ void Scene::LoadRenderableObjectsStatically()
     }
 
 
-//    const std::size_t totalCurrentObjects = m_renderableObjects.size();
-//    constexpr std::size_t totalBatchObjects = 3000;
-//    const std::size_t iteratorEdge = totalBatchObjects + totalCurrentObjects;
-//    for(std::size_t i=totalCurrentObjects-1; i<iteratorEdge; ++i)
-//    {
-//        m_renderableObjects.push_back(new RenderableObject(GetModel<float>(modelsName[rand() % (initialRenderableObjects-1)])));
-//        m_renderableObjects[i]->m_position.x = rand() % 100;
-//        m_renderableObjects[i]->m_position.y = rand() % 100;
-//        m_renderableObjects[i]->m_position.z = rand() % 100;
-//    }
+    const std::size_t totalCurrentObjects = m_renderableObjects.size();
+    constexpr std::size_t totalBatchObjects = 1;
+    const std::size_t iteratorEdge = totalBatchObjects + totalCurrentObjects;
+    for(std::size_t i=totalCurrentObjects-1; i<iteratorEdge; ++i)
+    {
+        m_renderableObjects.push_back(new RenderableObject(GetModel<float>(modelsName[6])));
+        m_renderableObjects[i]->m_position.x = rand() % 100;
+        m_renderableObjects[i]->m_position.y = rand() % 100;
+        m_renderableObjects[i]->m_position.z = rand() % 100;
+    }
 
 
-
-
-#else
-
-    m_renderableObjects.push_back(new RenderableObject());
-    m_renderableObjects[0]->SetName("Light Source");
-    m_renderableObjects[0]->SetVerticies(data::cubeTotalVerticies, data::cubeVerticiesData);
-    m_renderableObjects[0]->SetIndicies(data::cubeTotalIndicies, data::cubeIndiciesData);
-    m_renderableObjects[0]->m_position = glm::vec3(10.0f, 5.0f, 0.0f);
-
-
-
-    m_renderableObjects.push_back(new RenderableObject());
-    m_renderableObjects[1]->SetName("Ground");
-    m_renderableObjects[1]->SetVerticies(data::groundTotalVerticies, data::groundVerticiesData);
-    m_renderableObjects[1]->SetIndicies(data::groundTotalIndicies, data::groundIndiciesData);
-    m_renderableObjects[1]->m_position = glm::vec3(0.0f, 0.0f, 0.0f);
-
-
-
-    m_renderableObjects.push_back(new RenderableObject());
-    m_renderableObjects[2]->SetName("3D Trapizium");
-    m_renderableObjects[2]->SetVerticies(data::trapizoidTotalVerticies, data::trapizoidVerticiesData);
-    m_renderableObjects[2]->SetIndicies(data::trapizoidTotalIndicies, data::trapizoidIndiciesData);
-    m_renderableObjects[2]->m_position = glm::vec3(1.0f, 0.0f, 0.0f);
-
-
-
-    m_renderableObjects.push_back(new RenderableObject());
-    m_renderableObjects[3]->SetName("Pyramid");
-    m_renderableObjects[3]->SetVerticies(data::pyramidTotalVerticies, data::pyramidVerticesData);
-    m_renderableObjects[3]->SetIndicies( data::pyramidTotalIndicies, data::pyramidIndicesData);
-    m_renderableObjects[3]->m_position = glm::vec3(9.0f, 3.0f, 9.0f);
-
-#endif
 
 //    omp_set_num_threads(0x8);
 //    #pragma omp parallel for  //if there are small amount of objects then using pragma won't result the expected

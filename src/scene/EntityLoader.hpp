@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ModelsDataFloat.hpp"
+#include "ModelsData.hpp"
 
 #include <iostream>
 #include <string>

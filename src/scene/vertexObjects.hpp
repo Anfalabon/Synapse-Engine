@@ -125,28 +125,6 @@ private:
     GLuint _VBO;
     GLuint _totalVerticies;
     T *_verticiesData;
-
-//    std::vector<Vertex> _vVerticiesData = {
-//            //vertex positions      //colors
-//            {{0.5f,  0.5f,  0.5f},  {1.0f, 1.0f, 1.0f}},
-//            {{0.5f,  0.5f,  -0.5f}, {1.0f, 1.0f, 1.0f}},
-//            {{0.5f,  -0.5f, 0.5f},  {1.0f, 1.0f, 1.0f}},
-//            {{0.5f,  -0.5f, -0.5f}, {1.0f, 1.0f, 1.0f}},
-//            {{-0.5f, 0.5f,  0.5f},  {1.0f, 1.0f, 1.0f}},
-//            {{-0.5f, 0.5f,  -0.5f}, {1.0f, 1.0f, 1.0f}},
-//            {{-0.5f, -0.5f, 0.5f},  {1.0f, 1.0f, 1.0f}},
-//            {{-0.5f, -0.5f, -0.5f}, {1.0f, 1.0f, 1.0f}}
-//    };
-
-
-//    GLuint groundTotalVerticies = 24;
-//    float *fGroundVerticiesData = new float[24]{
-//            960.0f,  -0.5f, 540.0f, 1.0f, 0.0f, 0.0f,
-//            -960.0f, -0.5f, 540.0f, 0.0f, 1.0f, 0.0f,
-//            960.0f,  -0.5f, -540.0f, 0.0f, 0.0f, 1.0f,
-//            -960.0f, -0.5f, -540.0f, 0.5f, 0.5f, 0.5f
-//    };
-
 };
 
 

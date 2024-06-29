@@ -5,11 +5,12 @@
 
 #include "EntityLoader.hpp"
 #include "Transformation.hpp"
-#include "vertexObjects.hpp"
+//#include "vertexObjects.hpp"
+#include "VertexBuffer.hpp"
+#include "IndexBuffer.hpp"
+#include "VertexArray.hpp"
 
 #include <iostream>
-#include <unordered_map>
-
 
 
 namespace Synapse
