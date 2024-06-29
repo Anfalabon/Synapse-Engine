@@ -241,17 +241,38 @@ void Physics::OrbitAround(glm::vec3 &renderableObjectsPosition, const glm::vec3 
 }
 
 
+//the reaction force with the ground
+void Physics::Bounce(glm::vec3 &velocity, glm::vec3 &initialVelocity)
+{
+    float materialConstant = 0.9f;
+    velocity.x = initialVelocity.x * materialConstant;
+    velocity.y = glm::abs(initialVelocity.y) * materialConstant;
+    velocity.z = initialVelocity.z * materialConstant;
 
-void Physics::Projectile(glm::vec3 &position, glm::vec3 &velocity, const float deltaTime)
+//    velocity.x = velocity.x * materialConstant;
+//    velocity.y = glm::abs(velocity.y) * materialConstant;
+//    velocity.z = velocity.z * materialConstant;
+
+    initialVelocity.x = velocity.x;
+    initialVelocity.y = velocity.y;
+    initialVelocity.z = velocity.z;
+}
+
+
+void Physics::Projectile(glm::vec3 &position, glm::vec3 &velocity, const float deltaTime, glm::vec3 &initialVelocity)
 {
     float gravity = -0.1;
+    float materialConstant = 0.9f;
     if (position.y < 0)
     {
-        //gravity = 0.01f;
-        velocity.x = 0.0f;
-        velocity.y = 0.0f;
-        velocity.z = 0.0f;
+        //velocity.x = 0.0f;
+        //velocity.y = 0.0f;
+        //velocity.z = 0.0f;
+
+        this->Bounce(velocity, initialVelocity);
     }
+
+    std::cout << "Projectile!" << '\n';
 
     position.x += velocity.x * deltaTime;
     position.y += velocity.y * deltaTime;

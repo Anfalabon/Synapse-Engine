@@ -64,10 +64,10 @@ private:
 };
 
 
-struct VertexBuffer
+template<class T> struct VertexBuffer
 {
     VertexBuffer() = default;
-    VertexBuffer(GLuint totalVerticies, Vertex *verticiesData)
+    VertexBuffer(GLuint totalVerticies, T *verticiesData)
     :     _totalVerticies(totalVerticies),
           _verticiesData(verticiesData){}
 
@@ -81,7 +81,7 @@ struct VertexBuffer
         }
     }
 
-    void SetVerticies(GLuint totalVerticies, Vertex *verticiesData)
+    void SetVerticies(GLuint totalVerticies, T *verticiesData)
     {
         _totalVerticies = totalVerticies;
         _verticiesData = std::move(verticiesData);
@@ -97,7 +97,7 @@ struct VertexBuffer
         //_verticiesData = &_vVerticiesData[0];
         unsigned long TARGET_BUFFER = 0x8892;   //GL_ARRAY_BUFFER
         glBindBuffer(TARGET_BUFFER, _VBO);
-        glBufferData(TARGET_BUFFER, sizeof(Vertex)*_totalVerticies, _verticiesData, GL_STATIC_DRAW);
+        glBufferData(TARGET_BUFFER, sizeof(T)*_totalVerticies, _verticiesData, GL_STATIC_DRAW);
     }
 
     void Unbind()
@@ -115,7 +115,7 @@ struct VertexBuffer
         return _totalVerticies;
     }
 
-    Vertex *GetVerticiesData()
+    T *GetVerticiesData()
     {
         //return (Vertex*)_verticiesData;
         return _verticiesData;
@@ -124,7 +124,7 @@ struct VertexBuffer
 private:
     GLuint _VBO;
     GLuint _totalVerticies;
-    Vertex *_verticiesData;
+    T *_verticiesData;
 
 //    std::vector<Vertex> _vVerticiesData = {
 //            //vertex positions      //colors
@@ -137,6 +137,16 @@ private:
 //            {{-0.5f, -0.5f, 0.5f},  {1.0f, 1.0f, 1.0f}},
 //            {{-0.5f, -0.5f, -0.5f}, {1.0f, 1.0f, 1.0f}}
 //    };
+
+
+//    GLuint groundTotalVerticies = 24;
+//    float *fGroundVerticiesData = new float[24]{
+//            960.0f,  -0.5f, 540.0f, 1.0f, 0.0f, 0.0f,
+//            -960.0f, -0.5f, 540.0f, 0.0f, 1.0f, 0.0f,
+//            960.0f,  -0.5f, -540.0f, 0.0f, 0.0f, 1.0f,
+//            -960.0f, -0.5f, -540.0f, 0.5f, 0.5f, 0.5f
+//    };
+
 };
 
 
@@ -243,7 +253,8 @@ private:
 };
 
 
-typedef struct VertexBuffer VertexBuffer;
+//template<class T>
+//using  VertexBuffer<T> = struct VertexBuffer<T>;
 typedef struct IndexBuffer IndexBuffer;
 typedef struct VertexArray VertexArray;
 

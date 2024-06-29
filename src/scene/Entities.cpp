@@ -18,7 +18,7 @@ namespace Synapse
 
 
 
-RenderableObject::RenderableObject(Synapse::Model modelData)
+RenderableObject::RenderableObject(Synapse::Model<float> modelData)
     :
      m_name(modelData.name.c_str()),
      m_VB(modelData.md._totalVerticies, modelData.md._verticiesData),   //add for ground which has texture
@@ -33,7 +33,7 @@ void RenderableObject::SetName(const char *name)
     }
 }
 
-void RenderableObject::SetVerticies(GLuint totalVerticies, Vertex *verticies)
+void RenderableObject::SetVerticies(GLuint totalVerticies, float *verticies)
 {
     //m_VB = struct VertexBuffer(totalVerticies, std::move(verticies));
     m_VB.SetVerticies(totalVerticies, std::move(verticies));

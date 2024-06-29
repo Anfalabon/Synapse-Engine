@@ -1813,3 +1813,66 @@ RenderableObject::RenderableObject(const char *name,
 //
 //    }
 
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+//template<typename T> inline Model<T> GetModel(const std::string &modelName)
+//{
+//    //using namespace modelsData;
+//    if(modelName == "Cube")
+//    {
+//        return {modelName, ModelData<T>(vCubeVerticiesData.data(), cubeTotalVerticies, cubeIndiciesData, cubeTotalIndicies)};
+//    }
+//    else if(modelName == "Ground")
+//    {
+//        //return {modelName, ModelData(nullptr, groundVerticiesData, groundTotalVerticies, groundIndiciesData, groundTotalIndicies)};
+//        return {modelName, ModelData<T>(groundVerticiesData, groundTotalVerticies, groundIndiciesData, groundTotalIndicies)};
+//    }
+//    else if(modelName == "Trapizoid")
+//    {
+//        return {modelName, ModelData<T>(trapizoidVerticiesData, trapizoidTotalVerticies, trapizoidIndiciesData, trapizoidTotalIndicies)};
+//    }
+//    else if(modelName == "Pyramid")
+//    {
+//        return {modelName, ModelData<T>(pyramidVerticesData,  pyramidTotalVerticies, pyramidIndicesData, pyramidTotalIndicies)};
+//    }
+//    else if(modelName == "Cylinder")
+//    {
+//        return {modelName, ModelData<T>(cylinderVerticiesData, cylinderTotalVerticies, cylinderIndiciesData, cylinderTotalIndicies)};
+//    }
+//    else if(modelName == "Icosphere")
+//    {
+//        return {modelName, ModelData<T>(icosphereVerticiesData, icosphereTotalVerticies, icosphereIndiciesData, icosphereTotalIndicies)};
+//    }
+//    else if(modelName == "Sphere")
+//    {
+//        return {modelName, ModelData<T>(sphereVerticiesData, sphereTotalVerticies, sphereIndiciesData, sphereTotalIndicies)};
+//    }
+//
+//    return {modelName, ModelData<T>()};
+//}
+
+
+//inline std::unordered_map<std::string, Model> model = {{"Cube", Model(modelsData::cubeVerticiesData, modelsData::cubeTotalVerticies, modelsData::cubeIndiciesData, modelsData::cubeTotalIndicies)}};
+
+//model["Cube"] = Model(modelsData::cubeVerticiesData, modelsData::cubeTotalVerticies, modelsData::cubeIndiciesData, modelsData::cubeTotalIndicies);

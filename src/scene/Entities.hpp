@@ -21,13 +21,13 @@ class RenderableObject
 public:
 
     RenderableObject() = default;
-    explicit RenderableObject(Model modelData);
+    explicit RenderableObject(Model<float> modelData);
     ~RenderableObject();
 
 
     void SetName(const char* name);
     void SetID(){}
-    void SetVerticies(GLuint totalVerticies, Vertex *verticies);
+    void SetVerticies(GLuint totalVerticies, float *verticies);
     void SetIndicies(GLuint totalIndicies, GLuint *indicies);
     void SetShaderSources(const std::string &vertexShaderSourcePath, const std::string &fragmentShaderSourcePath);
 
@@ -36,7 +36,7 @@ public:
     void LoadShader();
 
     [[nodiscard]] inline struct VertexArray&  GetVA(){return m_VA;}
-    [[nodiscard]] inline struct VertexBuffer& GetVB(){return m_VB;}
+    [[nodiscard]] inline struct VertexBuffer<float>& GetVB(){return m_VB;}
     [[nodiscard]] inline struct IndexBuffer&  GetEB(){return m_EB;}
 
     [[nodiscard]] inline unsigned int GetTotalIndicies(){return m_EB.GetTotalIndicies();}
@@ -62,12 +62,13 @@ private:
     //Shader m_shader = Shader("../src/shader/GLSL/vertexShader1.vert", "../src/shader/GLSL/fragmentShader1.frag");
 private:
     struct VertexArray    m_VA;
-    struct VertexBuffer   m_VB;
+    struct VertexBuffer<float>   m_VB;
     struct IndexBuffer    m_EB;
 
 public:
     glm::vec3 m_position = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 m_velocity = glm::vec3(1.0f, 0.0f, 1.0f); //the initial velocities will be
+    glm::vec3 m_initialVelocity = m_velocity;
     glm::mat4 m_model = glm::mat4(1.0f);
 
     unsigned int textureID;

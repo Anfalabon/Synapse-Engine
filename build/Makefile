@@ -64,7 +64,7 @@ obj/vertexObjects.o: ../src/scene/vertexObjects.cpp ../src/scene/vertexObjects.h
 obj/Shader.o: ../src/renderer/shader/Shader.cpp	../src/renderer/shader/Shader.hpp ../src/debug/LOG.hpp ../src/renderer/shader/GLSL/vertexShader1.vert ../src/renderer/shader/GLSL/fragmentShader1.frag
 		$(CXX) $(CXXFLAGS) -c ../src/renderer/shader/Shader.cpp -o obj/Shader.o
 
-obj/Scene.o: ../src/scene/Scene.cpp ../src/scene/Scene.hpp ../src/scene/Entities.hpp ../src/scene/ModelsData.hpp ../src/window/Window.hpp ../src/utils/RunParallel.hpp ../src/scene/EntityLoader.hpp
+obj/Scene.o: ../src/scene/Scene.cpp ../src/scene/Scene.hpp ../src/scene/Entities.hpp ../src/scene/ModelsDataVertex.hpp ../src/scene/ModelsDataFloat.hpp ../src/window/Window.hpp ../src/utils/RunParallel.hpp ../src/scene/EntityLoader.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/scene/Scene.cpp -o obj/Scene.o
 
 obj/Renderer.o: ../src/renderer/Renderer.cpp ../src/renderer/Renderer.hpp ../src/utils/RunParallel.hpp
