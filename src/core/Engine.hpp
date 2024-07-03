@@ -7,7 +7,7 @@
 #include "../scene/Scene.hpp"
 #include "../renderer/Renderer.hpp"
 #include "../physics/PhysicsEngine.hpp"
-#include "../audio/audio.hpp"
+#include "../audio/Audio.hpp"
 
 #include <vector>
 #include <unordered_map>

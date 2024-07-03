@@ -34,9 +34,9 @@ public:
     void LoadVertexObjects(unsigned short objectsInSingleVertex = 0, bool addTexture = false);
     void LoadTexture();
 
-    [[nodiscard]] inline struct VertexArray&  GetVA(){return m_VA;}
-    [[nodiscard]] inline struct VertexBuffer& GetVB(){return m_VB;}
-    [[nodiscard]] inline struct IndexBuffer&  GetEB(){return m_EB;}
+    [[nodiscard]] inline VertexArray&  GetVA(){return m_VA;}
+    [[nodiscard]] inline VertexBuffer& GetVB(){return m_VB;}
+    [[nodiscard]] inline IndexBuffer&  GetEB(){return m_EB;}
 
     [[nodiscard]] inline unsigned int GetTotalIndicies(){return m_EB.GetTotalIndicies();}
     [[nodiscard]] inline unsigned int GetTotalMeshes(){return m_meshes.size();}
@@ -69,9 +69,9 @@ private:
 
     std::vector<Mesh> m_meshes;
 
-    struct VertexArray    m_VA;
-    struct VertexBuffer   m_VB;
-    struct IndexBuffer    m_EB;
+    VertexArray    m_VA;
+    VertexBuffer   m_VB;
+    IndexBuffer    m_EB;
 
 public:
     glm::vec3 m_position = glm::vec3(0.0f, 0.0f, 0.0f);

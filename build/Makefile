@@ -10,7 +10,7 @@ CXX_OPTIMIZATION_LEVEL=-O3
 
 #also including the custom include flags allows us to include headers with ' <> ' than just ' "" '
 CXX_CUSTOM_INCLUDE_FLAGS=-I../src/core -I../src/window -I../src/physics -I../src/multithreading -I../src/math -I../src/scene -I../src/shader -I../src/renderer -I../src/camera -I../src/debug
-CXX_EXTERNAL_INCLUDE_FLAGS=-I../vendor/GLFW/include -I../vendor/glad/include -I../vendor/glm -I../vendor/imageLoader
+CXX_EXTERNAL_INCLUDE_FLAGS=-I../vendor/GLFW/include -I../vendor/glad/include -I../vendor/glm -I../vendor/imageLoader -I../vendor/irrKlang/include
 CXX_INCLUDE_FLAGS+=$(CXX_CUSTOM_INCLUDE_FLAGS)
 CXX_INCLUDE_FLAGS+=$(CXX_EXTERNAL_INCLUDE_FLAGS)
 
@@ -35,12 +35,12 @@ EXE=start_graphics_engine
 
 #-L../external/SFML-2.6.1/lib
 
-LDFLAGS=-L../src/shader -L../vendor/GLFW/lib -lglfw -L../vendor/glad/lib -lGL
+LDFLAGS=-L../src/shader -L../vendor/GLFW/lib -lglfw -L../vendor/glad/lib -lGL -L../vendor/irrKlang/bin -L../vendor/irrKlang/lib
 #export LD_LIBRARY_PATH=../src/external/SFML-2.6.1/lib
 
 
-bin/start_game_engine: obj/glad.o obj/stb_image.o obj/PhysicsEngine.o obj/VertexArray.o obj/VertexBuffer.o obj/IndexBuffer.o obj/Mesh.o obj/ModelLoader.o obj/Entities.o obj/Transformation.o obj/vertexObjects.o obj/Shader.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Timer.o obj/Camera.o obj/Engine.o obj/Application.o obj/main.o
-		$(CXX) $(CXXFLAGS) -o bin/start_game_engine obj/glad.o obj/stb_image.o obj/PhysicsEngine.o obj/VertexArray.o obj/VertexBuffer.o obj/IndexBuffer.o obj/Mesh.o obj/ModelLoader.o obj/Entities.o obj/Transformation.o obj/vertexObjects.o obj/Shader.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Timer.o obj/Camera.o obj/Engine.o obj/Application.o obj/main.o $(LDFLAGS)
+bin/start_game_engine: obj/glad.o obj/stb_image.o obj/PhysicsEngine.o obj/Buffer.o obj/VertexArray.o obj/VertexBuffer.o obj/IndexBuffer.o obj/Mesh.o obj/ModelLoader.o obj/Entities.o obj/Transformation.o obj/vertexObjects.o obj/Shader.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Audio.o obj/Timer.o obj/Camera.o obj/Engine.o obj/Application.o obj/main.o
+		$(CXX) $(CXXFLAGS) -o bin/start_game_engine obj/glad.o obj/stb_image.o obj/PhysicsEngine.o obj/Buffer.o obj/VertexArray.o obj/VertexBuffer.o obj/IndexBuffer.o obj/Mesh.o obj/ModelLoader.o obj/Entities.o obj/Transformation.o obj/vertexObjects.o obj/Shader.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Audio.o obj/Timer.o obj/Camera.o obj/Engine.o obj/Application.o obj/main.o $(LDFLAGS)
 
 
 
@@ -55,6 +55,8 @@ obj/stb_image.o: ../vendor/imageLoader/stb_image.cpp ../vendor/imageLoader/stb_i
 obj/PhysicsEngine.o: ../src/physics/PhysicsEngine.cpp ../src/physics/PhysicsEngine.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/physics/PhysicsEngine.cpp -o obj/PhysicsEngine.o
 
+obj/Buffer.o: ../src/scene/Buffer.cpp ../src/scene/Buffer.hpp
+		$(CXX) $(CXXFLAGS) -c ../src/scene/Buffer.cpp -o obj/Buffer.o
 
 obj/VertexArray.o: ../src/scene/VertexArray.cpp ../src/scene/VertexArray.hpp ../src/scene/VertexBuffer.hpp ../src/scene/IndexBuffer.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/scene/VertexArray.cpp -o obj/VertexArray.o
@@ -97,6 +99,8 @@ obj/Renderer.o: ../src/renderer/Renderer.cpp ../src/renderer/Renderer.hpp ../src
 obj/Window.o: ../src/window/Window.cpp ../src/window/Window.hpp ../src/debug/LOG.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/window/Window.cpp -o obj/Window.o
 
+obj/Audio.o: ../src/audio/Audio.cpp ../src/audio/Audio.hpp
+		$(CXX) $(CXXFLAGS) -c ../src/audio/Audio.cpp -o obj/Audio.o
 
 obj/Timer.o: ../src/utils/Timer.cpp ../src/utils/Timer.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/utils/Timer.cpp -o obj/Timer.o
@@ -126,6 +130,7 @@ clear:
 		 rm -f obj/glad.o
 		 rm -f obj/stb_image.o
 		 rm -f obj/PhysicsEngine.o
+		 rm -f obj/Buffer.o
 		 rm -f obj/VertexArray.o
 		 rm -f obj/VertexBuffer.o
 		 rm -f obj/IndexBuffer.o
@@ -138,6 +143,7 @@ clear:
 		 rm -f obj/Scene.o
 		 rm -f obj/Renderer.o
 		 rm -f obj/Window.o
+		 rm -f obj/Audio.o
 		 rm -f obj/Timer.o
 		 rm -f obj/Camera.o
 		 rm -f obj/Engine.o

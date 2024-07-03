@@ -3,6 +3,7 @@
 #include "../window/Window.hpp"
 #include "../utils/RunParallel.hpp"
 #include "../math/Transformation.hpp"
+#include "../audio/Audio.hpp"
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -109,6 +110,9 @@ void Scene::LoadRenderableObjectsStatically()
 
 void Scene::CreateRenderableObject(const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch)
 {
+    Synapse::Audio *audio = new Synapse::Audio();
+    audio->Play("../vendor/bell.wav");
+
     m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel("Sphere")));
     //m_renderableObjects.push_back(new RenderableObject(GetMeshes("Sphere")));
 
@@ -135,6 +139,8 @@ void Scene::CreateRenderableObject(const glm::vec3 &currentCameraTargetPos, cons
 
     m_renderableObjects[lastEntityIndex]->m_initialVelocity = m_renderableObjects[lastEntityIndex]->m_velocity;
     m_renderableObjects[lastEntityIndex]->m_initialVelocity.y = cameraPos.y * 0.1f; //here cameras direction vectors 'y' component also matters
+
+    delete audio;
 }
 
 

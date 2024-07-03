@@ -4,6 +4,7 @@
 namespace Synapse
 {
 
+
 class ScriptingEngine
 {
 public:
@@ -11,6 +12,8 @@ public:
     virtual ~ScriptingEngine() = default;
 private:
 };
+
+
 
 }
 

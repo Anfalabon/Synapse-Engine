@@ -62,9 +62,9 @@ public:
     unsigned int _totalIndicies = 0;
 
 
-    struct VertexArray    _VA;
-    struct VertexBuffer   _VB;
-    struct IndexBuffer    _EB;
+    VertexArray    _VA;
+    VertexBuffer   _VB;
+    IndexBuffer    _EB;
 
 };
 
