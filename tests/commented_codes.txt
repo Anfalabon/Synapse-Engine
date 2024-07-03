@@ -1919,3 +1919,231 @@ RenderableObject::RenderableObject(const char *name,
     m_renderableObjects[3]->m_position = glm::vec3(9.0f, 3.0f, 9.0f);
 
 #endif
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+static void LoadVerticies(const std::string &filePath, std::vector<float> &v)
+{
+    std::ifstream verticiesDataFile(filePath);
+    if(verticiesDataFile.fail())
+    {
+        std::cout << "didn't find verticies data file!" << '\n';
+        std::cout << "Model verticies File name: " << filePath << '\n';
+        std::cin.get();
+        return;
+    }
+
+    std::string floatValue;
+    while(verticiesDataFile >> floatValue)
+    {
+        if(floatValue != "," || floatValue != "f")
+        {
+            v.push_back(std::stof(floatValue));
+        }
+    }
+
+    verticiesDataFile.close();
+}
+
+
+static void LoadIndicies(const std::string &filePath, std::vector<unsigned int> &v)
+{
+    std::ifstream indiciesDataFile(filePath);
+    if(indiciesDataFile.fail())
+    {
+        std::cout << "didn't find indicies data file!" << '\n';
+        std::cout << "Model indicies File name: " << filePath << '\n';
+        std::cin.get();
+        return;
+    }
+
+    std::string intValue;
+    while(indiciesDataFile >> intValue)
+    {
+        if(intValue != ",")
+        {
+            v.push_back(std::stoi(intValue));
+        }
+    }
+
+    indiciesDataFile.close();
+
+}
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+void SetVerticies(GLuint totalVerticies, float *verticies);
+void SetIndicies(GLuint totalIndicies, GLuint *indicies);
+void SetShaderSources(const std::string &vertexShaderSourcePath, const std::string &fragmentShaderSourcePath);
+
+
+void RenderableObject::SetName(const char *name)
+{
+    if(name!=nullptr)
+    {
+        m_name = std::move(name);
+    }
+}
+
+void RenderableObject::SetVerticies(GLuint totalVerticies, float *verticies)
+{
+    //m_VB = struct VertexBuffer(totalVerticies, std::move(verticies));
+    m_VB.SetVerticies(totalVerticies, std::move(verticies));
+}
+
+void RenderableObject::SetIndicies(GLuint totalIndicies, GLuint *indicies)
+{
+    //m_EB = struct IndexBuffer(totalIndicies, std::move(indicies));
+    m_EB.SetIndicies(totalIndicies, std::move(indicies));
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+#undef __RUNTIME__MULTITHREADING__
+#define __SINGLETHREADING__
+#ifdef __RUNTIME__MULTITHREADING__
+    unsigned short threadsToUtilize = 0x5;
+    //even ther if given '1, 2' instead of '0' when the total renderable objects are '3', it still works fine.
+    //probably the same error as said previously in the 'LoadRenderableObjectsStatically()'
+    //will fix this error.
+    Threading::S_pragma_omp_parallel_loop<void, std::size_t>(0, m_renderableObjects.size(), threadsToUtilize,
+    [this](auto i) -> void
+    {
+        m_renderableObjects[i]->Update();
+    });
+#elif defined(__SINGLETHREADING__)
+    for(RenderableObject *renderableObject : m_renderableObjects)
+    {
+        break;
+        //renderableObject->Update();
+    }
+#endif
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+//    void SetVerticies(GLuint totalVerticies, float *verticiesData)
+//    {
+//        _totalVerticies = totalVerticies;
+//        _verticiesData = std::move(verticiesData);
+//    }
+//
+//    void Gen()
+//    {
+//        glGenBuffers(1, &_VBO);
+//    }
+//
+//    void Bind()
+//    {
+//        //_verticiesData = &_vVerticiesData[0];
+//        unsigned long TARGET_BUFFER = 0x8892;   //GL_ARRAY_BUFFER
+//        glBindBuffer(TARGET_BUFFER, _VBO);
+//        glBufferData(TARGET_BUFFER, sizeof(float) * _totalVerticies, &_verticiesData[0], GL_STATIC_DRAW);
+//    }
+//
+//    void Unbind()
+//    {
+//        glBindBuffer(GL_ARRAY_BUFFER, 0);
+//    }
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+//    void SetIndicies(GLuint totalIndicies, GLuint *indiciesData)
+//    {
+//        _totalIndicies = totalIndicies;
+//        _indiciesData = std::move(indiciesData);
+//    }
+//
+//    void Gen()
+//    {
+//        glGenBuffers(1, &_EBO);
+//    }
+//
+//    void Bind()
+//    {
+//        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
+//        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*_totalIndicies, _indiciesData, GL_STATIC_DRAW);
+//    }
+//
+//    void Unbind()
+//    {
+//        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+//    }
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//
+//bool g_dynamicRenderableObjectLoaderRunning = false;
+//bool g_dynamicRenderableObjectDeleterRunning = false;
+//float g_theta = 0.0f;
+//
+
+
+
+//static void OrbitAround(glm::vec3 &renderableObjectsPosition, const glm::vec3 &positionToOrbit)
+//{
+//    //renderableObject->m_position.y += 1.0f/100.0f;
+//    //renderableObject->Rotate(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+//
+////    float deltaX = renderableObject->m_position.x - positionToOrbit.x;
+////    float deltaZ = renderableObject->m_position.z - positionToOrbit.z;
+//
+////    std::cout << "Delta X: " << deltaX << '\n';
+////    std::cout << "Delta Z: " << deltaZ << '\n';
+//
+//    //float r = glm::sqrt(deltaX*deltaX + deltaZ*deltaZ);
+//    float r = 3.0f;
+//    std::cout << "Radius: " << r << '\n';
+//
+//
+//    //renderableObject->m_position.y += 1.0f/100.0f;
+//
+//    renderableObjectsPosition.x = r * glm::cos(g_theta);
+//    renderableObjectsPosition.z = r * glm::sin(g_theta);
+//
+//    std::cout << "X pos: " << renderableObjectsPosition.x << '\n';
+//    std::cout << "Z pos: " << renderableObjectsPosition.z << '\n';
+//
+//    std::cout << "Theta: " << g_theta << '\n';
+//
+//    g_theta += 0.1f;
+//}

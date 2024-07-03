@@ -6,15 +6,15 @@
 #include <array>
 #include <vector>
 
-
-
+namespace Synapse
+{
 
 struct IndexBuffer
 {
     IndexBuffer() = default;
     IndexBuffer(GLuint totalIndicies, GLuint *indiciesData)
-            :    _totalIndicies(totalIndicies),
-                 _indiciesData(std::move(indiciesData)){}
+    :    _totalIndicies(totalIndicies),
+         _indiciesData(indiciesData){}
 
     ~IndexBuffer()
     {
@@ -22,50 +22,25 @@ struct IndexBuffer
         if(_indiciesData!=nullptr)
         {
             delete[] _indiciesData;
-            //delete[] (GLuint*)_indiciesData;
         }
     }
 
-    void SetIndicies(GLuint totalIndicies, GLuint *indiciesData)
-    {
-        _totalIndicies = totalIndicies;
-        _indiciesData = std::move(indiciesData);
-    }
+    void SetIndicies(GLuint totalIndicies, GLuint *indiciesData);
+    void Gen();
+    void Bind();
+    void Unbind();
+    GLuint &GetEBO(){return _EBO;}
+    GLuint GetTotalIndicies(){return _totalIndicies;}
+    GLuint *GetIndiciesData(){return _indiciesData;}
 
-    void Gen()
-    {
-        glGenBuffers(1, &_EBO);
-    }
-
-    void Bind()
-    {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*_totalIndicies, _indiciesData, GL_STATIC_DRAW);
-    }
-
-    void Unbind()
-    {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    }
-
-    GLuint &GetEBO()
-    {
-        return _EBO;
-    }
-
-    GLuint GetTotalIndicies()
-    {
-        return _totalIndicies;
-    }
-
-    GLuint *GetIndiciesData()
-    {
-        //return (GLuint*)_indiciesData;
-        return _indiciesData;
-    }
-
-private:
+//private:
     GLuint _EBO;
     GLuint _totalIndicies;
-    GLuint *_indiciesData;
+    GLuint *_indiciesData = nullptr;    //not initializing this pointer to nullptr caused an error
 };
+
+
+
+
+}
+

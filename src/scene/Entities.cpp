@@ -1,5 +1,3 @@
-
-
 #include "Entities.hpp"
 #include "../utils/MemoryManager.hpp"
 
@@ -16,34 +14,55 @@ namespace Synapse
 {
 
 
-
-
-RenderableObject::RenderableObject(Synapse::Model<float> modelData)
+RenderableObject::RenderableObject(const std::pair<std::string, Synapse::Mesh> &model)
     :
-     m_name(modelData.name.c_str()),
-     m_VB(modelData.md._totalVerticies, modelData.md._verticiesData),   //add for ground which has texture
-     m_EB(modelData.md._totalIndicies, modelData.md._indiciesData){}
+     m_name(model.first.c_str()),
+     m_VB(model.second._totalVerticies, model.second._verticiesData),
+     m_EB(model.second._totalIndicies, model.second._indiciesData){}
 
 
-void RenderableObject::SetName(const char *name)
+//RenderableObject::RenderableObject(const std::pair<std::string, Synapse::Mesh> &model)
+//{
+//    m_name = model.first.c_str();
+//    m_meshes[0] = model.second;
+//}
+
+
+//RenderableObject::RenderableObject(Synapse::Model modelData)
+//   :
+//    m_name(modelData.name.c_str()),
+//    m_VB(modelData.md._totalVerticies, modelData.md._verticiesData),   //add for ground which has texture
+//    m_EB(modelData.md._totalIndicies, modelData.md._indiciesData){}
+
+
+RenderableObject::RenderableObject(const std::vector<Mesh> &meshes)
+    :
+    m_name(""),
+    m_meshes(meshes){}
+
+
+
+void RenderableObject::LoadMeshes()
 {
-    if(name!=nullptr)
+    for(std::size_t i=0; i<m_meshes.size(); ++i)
     {
-        m_name = std::move(name);
+        m_meshes[i]._VA.Gen();
+        m_meshes[i]._VB.Gen();
+        m_meshes[i]._EB.Gen();
+
+        m_meshes[i]._VA.Bind();
+        m_meshes[i]._VB.Bind();
+        m_meshes[i]._EB.Bind();
+
+        m_meshes[i]._VA.SetVertexLayout(0, 3, 3);   //for Position
+        m_meshes[i]._VA.SetVertexLayout(1, 3, 3);   //for Color
+
+        m_meshes[i]._VA.Unbind();
+        m_meshes[i]._VB.Unbind();
     }
 }
 
-void RenderableObject::SetVerticies(GLuint totalVerticies, float *verticies)
-{
-    //m_VB = struct VertexBuffer(totalVerticies, std::move(verticies));
-    m_VB.SetVerticies(totalVerticies, std::move(verticies));
-}
 
-void RenderableObject::SetIndicies(GLuint totalIndicies, GLuint *indicies)
-{
-    //m_EB = struct IndexBuffer(totalIndicies, std::move(indicies));
-    m_EB.SetIndicies(totalIndicies, std::move(indicies));
-}
 
 
 void RenderableObject::LoadVertexObjects(unsigned short objectsInSingleVertex, bool addTexture)
@@ -56,8 +75,8 @@ void RenderableObject::LoadVertexObjects(unsigned short objectsInSingleVertex, b
     m_VB.Bind();
     m_EB.Bind();
 
-    m_VA.EnableVertexAttribute(0, 3, objectsInSingleVertex);   //for Position
-    m_VA.EnableVertexAttribute(1, 3, objectsInSingleVertex);   //for Color
+    m_VA.SetVertexLayout(0, 3, objectsInSingleVertex);  //for Position
+    m_VA.SetVertexLayout(1, 3, objectsInSingleVertex);  //for Color
     if(addTexture)
     {
         m_VA.EnableVertexAttribute(2, 2, objectsInSingleVertex);   //for Texture  //will have to choose others also 8 if we add texture
@@ -100,7 +119,6 @@ void RenderableObject::LoadTexture()
 
 void RenderableObject::Translate(const glm::vec3 &translationVec)
 {
-//    m_position += translationVec;
     m_model = glm::translate(m_model, translationVec);
 }
 

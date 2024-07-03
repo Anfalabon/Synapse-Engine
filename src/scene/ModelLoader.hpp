@@ -1,45 +1,36 @@
 #pragma once
 
+#include "Mesh.hpp"
+
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <vector>
+#include <unordered_map>
+
 
 namespace Synapse
 {
 
 
-class Model
+class ModelLoader
 {
 public:
-    Model() = default;
-    ~Model() = default;
+    ModelLoader() = default;
+    ~ModelLoader() = default;
 
-    void SetName();
-    void GetVerticiesData(const std::string &verticiesFilePath);
-    void GetIndiciesData(const std::string &indiciesFilePath);
+    std::vector<float> &LoadVerticiesData(const std::string &filePath);
+    std::vector<unsigned int> &LoadIndiciesData(const std::string &filePath);
+
+    void SetModelsDataMap();
+    std::pair<std::string, Mesh> GetModel(const std::string &modelName);
 
 private:
 
-    const std::string name;
-
-    float *_verticies;
-    GLuint *_indicies;
+    std::unordered_map<std::string, Mesh> m_modelsMap;
 };
 
 
-//
-//void LoadModel(const std::string &modelName)
-//{
-//    Model cube;
-//    cube.SetName(modelName);
-//    cube.GetVerticiesData();
-//    cube.GetIndiciesData();
-//    cube.VerticiesData();
-//    cube.IndiciesData();
-//
-//
-//
-//}
 
 
 

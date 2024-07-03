@@ -2,19 +2,23 @@
 
 #include <glad/glad.hpp>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/ext.hpp>
 
-#include "EntityLoader.hpp"
-#include "Transformation.hpp"
-//#include "vertexObjects.hpp"
+#include "Mesh.hpp"
+//#include "EntityLoader.hpp"
 #include "VertexBuffer.hpp"
 #include "IndexBuffer.hpp"
 #include "VertexArray.hpp"
 
 #include <iostream>
+#include <vector>
 
 
 namespace Synapse
 {
+
 
 //will name it GameObject
 class RenderableObject
@@ -22,25 +26,26 @@ class RenderableObject
 public:
 
     RenderableObject() = default;
-    explicit RenderableObject(Model<float> modelData);
+    explicit RenderableObject(const std::pair<std::string, Mesh> &model);
+    //explicit RenderableObject(Model modelData);
+    explicit RenderableObject(const std::vector<Mesh> &meshes);
     ~RenderableObject();
 
-
-    void SetName(const char* name);
-    void SetID(){}
-    void SetVerticies(GLuint totalVerticies, float *verticies);
-    void SetIndicies(GLuint totalIndicies, GLuint *indicies);
-    void SetShaderSources(const std::string &vertexShaderSourcePath, const std::string &fragmentShaderSourcePath);
-
+    void LoadMeshes();
     void LoadVertexObjects(unsigned short objectsInSingleVertex = 0, bool addTexture = false);
     void LoadTexture();
-    void LoadShader();
 
     [[nodiscard]] inline struct VertexArray&  GetVA(){return m_VA;}
-    [[nodiscard]] inline struct VertexBuffer<float>& GetVB(){return m_VB;}
+    [[nodiscard]] inline struct VertexBuffer& GetVB(){return m_VB;}
     [[nodiscard]] inline struct IndexBuffer&  GetEB(){return m_EB;}
 
     [[nodiscard]] inline unsigned int GetTotalIndicies(){return m_EB.GetTotalIndicies();}
+    [[nodiscard]] inline unsigned int GetTotalMeshes(){return m_meshes.size();}
+
+    [[nodiscard]] inline unsigned int GetMeshTotalIndicies(std::size_t index)
+    {
+        return (index < 0) ? 0 : m_meshes[index]._EB.GetTotalIndicies();
+    }
 
     [[nodiscard]] inline glm::mat4& GetModelMatrix(){return m_model;}
 
@@ -62,8 +67,11 @@ private:
     //we can't use this if the Shader() constructor is explicit
     //Shader m_shader = Shader("../src/shader/GLSL/vertexShader1.vert", "../src/shader/GLSL/fragmentShader1.frag");
 private:
+
+    std::vector<Mesh> m_meshes;
+
     struct VertexArray    m_VA;
-    struct VertexBuffer<float>   m_VB;
+    struct VertexBuffer   m_VB;
     struct IndexBuffer    m_EB;
 
 public:

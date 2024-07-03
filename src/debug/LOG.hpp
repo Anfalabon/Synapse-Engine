@@ -8,8 +8,9 @@
 namespace Synapse
 {
 
-#define __DEBUG__
+#define __DEBUG__   //bad to define it in global scope but will do it for now.
 #ifdef __DEBUG__
+
 
 namespace DEBUG
 {

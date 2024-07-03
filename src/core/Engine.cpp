@@ -297,6 +297,8 @@ void Engine::Run()
 {
     DEBUG::__LOG__MANAGER__::LOG("Going to run the Engine");
 
+    srand(static_cast <unsigned> (time(0)));
+
     //m_scene->GetRenderableObject(0)->GetShader().UseProgram();
 
     float deltaTime = 0.0f;

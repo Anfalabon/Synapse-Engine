@@ -1,9 +1,8 @@
 #include "Scene.hpp"
 #include "../debug/LOG.hpp"
 #include "../window/Window.hpp"
-#include "ModelsData.hpp"
 #include "../utils/RunParallel.hpp"
-
+#include "../math/Transformation.hpp"
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -31,16 +30,13 @@ namespace Synapse
 {
 
 
-
-//inline std::unordered_map<std::string, Model> model = {{"Cube", Model(modelsData::cubeVerticiesData, modelsData::cubeTotalVerticies, modelsData::cubeIndiciesData, modelsData::cubeTotalIndicies)}};
-
-
-
-
-
 void Scene::Init()
 {
-    SetModelsMapData<float>();
+    m_modelLoader = new ModelLoader();
+    m_modelLoader->SetModelsDataMap();
+    physics = new Physics();
+
+    //SetModelsMapData();
     this->LoadRenderableObjectsStatically();
 }
 
@@ -74,25 +70,27 @@ void Scene::LoadRenderableObjectsStatically()
             glm::vec3(9.0f, 0.0f, 0.0f)
     };
 
+    std::cout << "Is Loading?" << '\n';
+
     for(std::size_t i=0; i<initialRenderableObjects; ++i) [[likely]]
     {
-        m_renderableObjects.push_back(new RenderableObject(GetModel<float>(modelsName[i])));
+        m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel(modelsName[i])));
+        //m_renderableObjects.push_back(new RenderableObject(GetMeshes(modelsName[i])));
         std::cout << "Is static scene loader going to crash!" << '\n';
         m_renderableObjects[i]->m_position = positions[i];
-        //m_renderableObjects[i]->LoadVertexObjects(6, false);
     }
 
 
-    const std::size_t totalCurrentObjects = m_renderableObjects.size();
-    constexpr std::size_t totalBatchObjects = 1;
-    const std::size_t iteratorEdge = totalBatchObjects + totalCurrentObjects;
-    for(std::size_t i=totalCurrentObjects-1; i<iteratorEdge; ++i)
-    {
-        m_renderableObjects.push_back(new RenderableObject(GetModel<float>(modelsName[6])));
-        m_renderableObjects[i]->m_position.x = rand() % 100;
-        m_renderableObjects[i]->m_position.y = rand() % 100;
-        m_renderableObjects[i]->m_position.z = rand() % 100;
-    }
+//    const std::size_t totalCurrentObjects = m_renderableObjects.size();
+//    constexpr std::size_t totalBatchObjects = 1;
+//    const std::size_t iteratorEdge = totalBatchObjects + totalCurrentObjects;
+//    for(std::size_t i=totalCurrentObjects-1; i<iteratorEdge; ++i)
+//    {
+//        m_renderableObjects.push_back(new RenderableObject(GetModel<float>(modelsName[6])));
+//        m_renderableObjects[i]->m_position.x = rand() % 100;
+//        m_renderableObjects[i]->m_position.y = rand() % 100;
+//        m_renderableObjects[i]->m_position.z = rand() % 100;
+//    }
 
 
 
@@ -101,21 +99,27 @@ void Scene::LoadRenderableObjectsStatically()
     for(RenderableObject *renderableObject: m_renderableObjects) [[likely]]
     {
         renderableObject->LoadVertexObjects(6, false); //if we add texture then it will be 8
+        //renderableObject->LoadMeshes();
     }
-
-
-//    m_renderableObjects[1]->LoadVertexObjects(6, false);
-
 
 }
 
 
 
 
-void Scene::LoadRenderableObjectDynamically(const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch)
+void Scene::CreateRenderableObject(const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch)
 {
-    m_renderableObjects.push_back(new RenderableObject(GetModel<float>("Sphere")));
+    m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel("Sphere")));
+    //m_renderableObjects.push_back(new RenderableObject(GetMeshes("Sphere")));
+
     std::size_t lastEntityIndex = m_renderableObjects.size()-1;
+
+    //check if the currently loaded renderable object is empty or not
+    if(m_renderableObjects[lastEntityIndex]->GetTotalIndicies() == 0)
+    {
+        m_renderableObjects.pop_back();
+    }
+
     m_renderableObjects[lastEntityIndex]->LoadVertexObjects(6, false); //if we add texture then it will be 8
     //camera's target position is only targetting at -z
     float zToShift = -5.0f;
@@ -136,7 +140,7 @@ void Scene::LoadRenderableObjectDynamically(const glm::vec3 &currentCameraTarget
 
 
 
-void Scene::LoadRenderableObjectDynamicallyInput(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch)
+void Scene::LoadRenderableObjectDynamically(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch)
 {
     bool leftMouseButtonClicked = true;
 
@@ -150,12 +154,14 @@ void Scene::LoadRenderableObjectDynamicallyInput(GLFWwindow *window, const glm::
     {
         m_dynamicRenderableObjectLoaderRunning = true;
         DEBUG::__LOG__MANAGER__::LOG("PRESSED Dynamic Entity Loader!");
-        this->LoadRenderableObjectDynamically(currentCameraTargetPos, cameraPos, yaw, pitch);
+        this->CreateRenderableObject(currentCameraTargetPos, cameraPos, yaw, pitch);
     }
 
 }
 
-void Scene::RemoveRenderableObjectDynamicallyInput(GLFWwindow *window)
+
+
+void Scene::RemoveRenderableObjectDynamically(GLFWwindow *window)
 {
     bool rightMouseButtonClicked = true;
 
@@ -178,60 +184,19 @@ void Scene::RemoveRenderableObjectDynamicallyInput(GLFWwindow *window)
 }
 
 
-
-//
-//bool g_dynamicRenderableObjectLoaderRunning = false;
-//bool g_dynamicRenderableObjectDeleterRunning = false;
-//float g_theta = 0.0f;
-//
-
-
-
-//static void OrbitAround(glm::vec3 &renderableObjectsPosition, const glm::vec3 &positionToOrbit)
-//{
-//    //renderableObject->m_position.y += 1.0f/100.0f;
-//    //renderableObject->Rotate(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-//
-////    float deltaX = renderableObject->m_position.x - positionToOrbit.x;
-////    float deltaZ = renderableObject->m_position.z - positionToOrbit.z;
-//
-////    std::cout << "Delta X: " << deltaX << '\n';
-////    std::cout << "Delta Z: " << deltaZ << '\n';
-//
-//    //float r = glm::sqrt(deltaX*deltaX + deltaZ*deltaZ);
-//    float r = 3.0f;
-//    std::cout << "Radius: " << r << '\n';
-//
-//
-//    //renderableObject->m_position.y += 1.0f/100.0f;
-//
-//    renderableObjectsPosition.x = r * glm::cos(g_theta);
-//    renderableObjectsPosition.z = r * glm::sin(g_theta);
-//
-//    std::cout << "X pos: " << renderableObjectsPosition.x << '\n';
-//    std::cout << "Z pos: " << renderableObjectsPosition.z << '\n';
-//
-//    std::cout << "Theta: " << g_theta << '\n';
-//
-//    g_theta += 0.1f;
-//}
-
-
-
-
-
 void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch, float deltaTime)
 {
-    if(m_renderableObjects.size() < 0)
+    if(m_renderableObjects.size() <= 0)
     {
         return;
     }
 
     //these will be inside the 'EntityLoader' class(maybe)
-    this->LoadRenderableObjectDynamicallyInput(window, currentCameraTargetPos, cameraPos, yaw, pitch);
-    this->RemoveRenderableObjectDynamicallyInput(window);
+    this->LoadRenderableObjectDynamically(window, currentCameraTargetPos, cameraPos, yaw, pitch);
+    this->RemoveRenderableObjectDynamically(window);
 
     std::size_t lastEntityIndex = m_renderableObjects.size()-1;
+
 #if 1
 
     //m_renderableObjects[0]->m_position.z += 0.01f;
@@ -246,8 +211,10 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, 
     //#pragma omp parallel for
     for (std::size_t i = 6; i < m_renderableObjects.size(); ++i)
     {
-        physics->Projectile(m_renderableObjects[i]->m_position, m_renderableObjects[i]->m_velocity, deltaTime2, m_renderableObjects[i]->m_initialVelocity, true);
+        physics->Projectile(m_renderableObjects[i]->m_position, m_renderableObjects[i]->m_velocity, deltaTime2, m_renderableObjects[i]->m_initialVelocity, true, true);
         //physics->OrbitAround(m_renderableObjects[i]->m_position, m_renderableObjects[0]->m_position, m_theta);    //right now it's orbiting the origin
+        //m_renderableObjects[i]->Rotate(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+        //TransformComponent::Translate(m_renderableObjects[i], glm::vec3(0.0, 10.0f, 0.0f));
     }
 
     m_theta += 0.1f;
@@ -283,26 +250,6 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, 
     std::cout << "Total renderable objects: " << m_renderableObjects.size() << '\n';    //this is causing crash
 
 
-#undef __RUNTIME__MULTITHREADING__
-#define __SINGLETHREADING__
-#ifdef __RUNTIME__MULTITHREADING__
-    unsigned short threadsToUtilize = 0x5;
-    //even ther if given '1, 2' instead of '0' when the total renderable objects are '3', it still works fine.
-    //probably the same error as said previously in the 'LoadRenderableObjectsStatically()'
-    //will fix this error.
-    Threading::S_pragma_omp_parallel_loop<void, std::size_t>(0, m_renderableObjects.size(), threadsToUtilize,
-    [this](auto i) -> void
-    {
-        m_renderableObjects[i]->Update();
-    });
-#elif defined(__SINGLETHREADING__)
-    for(RenderableObject *renderableObject : m_renderableObjects)
-    {
-        break;
-        //renderableObject->Update();
-    }
-#endif
-
 
     std::cout << "Completed updating current scene!" << '\n';
 
@@ -314,10 +261,8 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, 
 
 Scene::~Scene()
 {
-    for(std::size_t i=0; i<m_renderableObjects.size(); ++i)
-    {
-        break;
-    }
+    delete m_modelLoader;
+    delete physics;
 }
 
 

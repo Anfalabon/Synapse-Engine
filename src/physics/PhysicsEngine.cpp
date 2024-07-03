@@ -1,7 +1,9 @@
 #include "PhysicsEngine.hpp"
 
 #include <iostream>
+#include <cstdlib>
 #include <vector>
+
 #include <omp.h>
 
 
@@ -250,13 +252,22 @@ static float FastAbs(float value)
 
 
 //the reaction force with the ground
-void Physics::Bounce(glm::vec3 &velocity, glm::vec3 &initialVelocity)
+void Physics::Bounce(glm::vec3 &velocity, glm::vec3 &initialVelocity, bool enableRandomMovement)
 {
     float materialConstant = 0.9f;
 #if 1
-    velocity.x = initialVelocity.x * materialConstant;
-    velocity.y = glm::abs(initialVelocity.y) * materialConstant;    //will use faster absulote value function than glm::abs
-    velocity.z = initialVelocity.z * materialConstant;
+
+    float randomX = 1.0f;
+    float randomY = 1.0f;
+    float randomZ = 1.0f;
+
+    velocity.x = initialVelocity.x * materialConstant * randomX;
+    velocity.y = Synapse::FastAbs(initialVelocity.y * materialConstant* randomY);    //will use faster absulote value function than glm::abs
+    velocity.z = initialVelocity.z * materialConstant * randomZ;
+
+//    velocity.x = (velocity.x - initialVelocity.x) * materialConstant;
+//    velocity.y = Synapse::FastAbs((velocity.y - initialVelocity.y) * materialConstant);
+//    velocity.z = (velocity.z - initialVelocity.z) * materialConstant;
 
     initialVelocity.x = velocity.x;
     initialVelocity.y = velocity.y;
@@ -269,7 +280,7 @@ void Physics::Bounce(glm::vec3 &velocity, glm::vec3 &initialVelocity)
 }
 
 
-void Physics::Projectile(glm::vec3 &position, glm::vec3 &velocity, const float deltaTime, glm::vec3 &initialVelocity, bool addBouncing)
+void Physics::Projectile(glm::vec3 &position, glm::vec3 &velocity, const float deltaTime, glm::vec3 &initialVelocity, bool addBouncing, bool enableRandomMovement)
 {
     float gravity = -0.1;
     float materialConstant = 0.9f;
@@ -277,7 +288,7 @@ void Physics::Projectile(glm::vec3 &position, glm::vec3 &velocity, const float d
     {
         if(addBouncing)
         {
-            this->Bounce(velocity, initialVelocity);
+            this->Bounce(velocity, initialVelocity, enableRandomMovement);
         }
         else
         {

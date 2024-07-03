@@ -8,65 +8,41 @@
 
 
 
-template<class T> struct VertexBuffer
+namespace Synapse
+{
+
+
+struct VertexBuffer
 {
     VertexBuffer() = default;
-    VertexBuffer(GLuint totalVerticies, T *verticiesData)
-            :     _totalVerticies(totalVerticies),
-                  _verticiesData(verticiesData){}
+
+    VertexBuffer(GLuint totalVerticies, float *verticiesData)
+    : _totalVerticies(totalVerticies),
+      _verticiesData(verticiesData){}
 
     ~VertexBuffer()
     {
         glDeleteBuffers(1, &_VBO);
-        if(_verticiesData!=nullptr)
+        if (_verticiesData != nullptr)
         {
             delete[] _verticiesData;
-            //delete[] (Vertex*)_verticiesData;
         }
     }
 
-    void SetVerticies(GLuint totalVerticies, T *verticiesData)
-    {
-        _totalVerticies = totalVerticies;
-        _verticiesData = std::move(verticiesData);
-    }
+    void SetVerticies(GLuint totalVerticies, float *verticiesData);
+    void Gen();
+    void Bind();
+    void Unbind();
+    GLuint &GetVBO(){return _VBO;}
+    GLuint GetTotalVerticies(){return _totalVerticies;}
+    float *GetVerticiesData(){return _verticiesData;}
 
-    void Gen()
-    {
-        glGenBuffers(1, &_VBO);
-    }
-
-    void Bind()
-    {
-        //_verticiesData = &_vVerticiesData[0];
-        unsigned long TARGET_BUFFER = 0x8892;   //GL_ARRAY_BUFFER
-        glBindBuffer(TARGET_BUFFER, _VBO);
-        glBufferData(TARGET_BUFFER, sizeof(T)*_totalVerticies, _verticiesData, GL_STATIC_DRAW);
-    }
-
-    void Unbind()
-    {
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-    }
-
-    GLuint &GetVBO()
-    {
-        return _VBO;
-    }
-
-    GLuint GetTotalVerticies()
-    {
-        return _totalVerticies;
-    }
-
-    T *GetVerticiesData()
-    {
-        //return (Vertex*)_verticiesData;
-        return _verticiesData;
-    }
-
-private:
+//private:
     GLuint _VBO;
     GLuint _totalVerticies;
-    T *_verticiesData;
+    //std::vector<float> _verticiesData;
+    float *_verticiesData = nullptr;    //not initializing this pointer to nullptr caused an error
 };
+
+
+}

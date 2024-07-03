@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Entities.hpp"
+#include "ModelLoader.hpp"
 #include "../physics/PhysicsEngine.hpp"
 
 #include <GLFW/glfw3.h>
@@ -18,7 +19,6 @@
 namespace Synapse
 {
 
-
 class Scene
 {
 public:
@@ -27,9 +27,9 @@ public:
 
     void Init();
     void LoadRenderableObjectsStatically();
-    void LoadRenderableObjectDynamicallyInput(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch);
-    void RemoveRenderableObjectDynamicallyInput(GLFWwindow *window);
-    void LoadRenderableObjectDynamically(const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch);
+    void LoadRenderableObjectDynamically(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch);
+    void RemoveRenderableObjectDynamically(GLFWwindow *window);
+    void CreateRenderableObject(const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch);
     void Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch, float deltaTime);
 
     [[nodiscard]] inline RenderableObject* GetRenderableObject(std::size_t index)
@@ -49,9 +49,11 @@ private:
 #else
     std::vector<Synapse::RenderableObject*> m_renderableObjects;
 #endif
+
+
+    ModelLoader *m_modelLoader;
     Physics *physics;
 
-private:
     //temp member data's
     bool m_dynamicRenderableObjectLoaderRunning = false;
     bool m_dynamicRenderableObjectDeleterRunning = false;

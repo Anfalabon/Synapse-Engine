@@ -139,8 +139,6 @@ void SceneRenderer::Render(Scene *scene)
 
 
 
-
-
     for(std::size_t i=0; i < scene->GetTotalSceneObjects(); ++i)
     {
         //glBindTexture(GL_TEXTURE_2D, scene->GetRenderableObject(1)->texture);
@@ -154,7 +152,13 @@ void SceneRenderer::Render(Scene *scene)
 
         //render every object
         glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->GetTotalIndicies(), GL_UNSIGNED_INT, 0);
-        //glDrawElements(GL_TRIANGLES, *(p + i*sizeof(RenderableObject)), GL_UNSIGNED_INT, 0);
+        //glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->GetTotalIndiciesMesh(0), GL_UNSIGNED_INT, 0);
+
+//        std::size_t currentObjectMeshes = scene->GetRenderableObject(i)->GetMeshTotalIndicies();
+//        for(std::size_t i=0; i<currentObjectMeshes; ++i)
+//        {
+//            glDrawElements(GL_TRIANGLES, currentObjectMeshes, GL_UNSIGNED_INT, 0);
+//        }
     }
 
 #endif
