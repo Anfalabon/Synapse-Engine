@@ -24,21 +24,11 @@ RenderableObject::RenderableObject(const std::pair<std::string, Synapse::Mesh> &
 //RenderableObject::RenderableObject(const std::pair<std::string, Synapse::Mesh> &model)
 //{
 //    m_name = model.first.c_str();
-//    m_meshes[0] = model.second;
+//    std::cout << "Going to load the first model mesh..." << '\n';
+//    m_meshes.push_back(Mesh());
+//    std::cout << "Finished loading the first model mesh..." << '\n';
 //}
 
-
-//RenderableObject::RenderableObject(Synapse::Model modelData)
-//   :
-//    m_name(modelData.name.c_str()),
-//    m_VB(modelData.md._totalVerticies, modelData.md._verticiesData),   //add for ground which has texture
-//    m_EB(modelData.md._totalIndicies, modelData.md._indiciesData){}
-
-
-RenderableObject::RenderableObject(const std::vector<Mesh> &meshes)
-    :
-    m_name(""),
-    m_meshes(meshes){}
 
 
 
@@ -54,8 +44,8 @@ void RenderableObject::LoadMeshes()
         m_meshes[i]._VB.Bind();
         m_meshes[i]._EB.Bind();
 
-        m_meshes[i]._VA.SetVertexLayout(0, 3, 3);   //for Position
-        m_meshes[i]._VA.SetVertexLayout(1, 3, 3);   //for Color
+        m_meshes[i]._VA.SetVertexLayout(0, 3, 6);   //for Position
+        m_meshes[i]._VA.SetVertexLayout(1, 3, 6);   //for Color
 
         m_meshes[i]._VA.Unbind();
         m_meshes[i]._VB.Unbind();

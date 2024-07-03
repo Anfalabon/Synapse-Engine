@@ -184,6 +184,35 @@ void Scene::RemoveRenderableObjectDynamically(GLFWwindow *window)
 }
 
 
+
+void Scene::RenderableObjectKeyboardMovement(GLFWwindow *window, std::size_t index)
+{
+    if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+    {
+        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(0.0f, 1.0f/10.0f, 0.0f));
+        m_renderableObjects[index]->m_position.y += 1.0f/10.0f;
+    }
+
+    if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+    {
+        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(0.0f, -1.0f/10.0f, 0.0f));
+        m_renderableObjects[index]->m_position.y -= 1.0f/10.0f;
+    }
+
+    if(glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+    {
+        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(1.0f/10.0f, 0.0f, 0.0f));
+        m_renderableObjects[index]->m_position.x += 1.0f/10.0f;
+    }
+
+    if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+    {
+        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(-1.0f/10.0f, 0.0f, 0.0f));
+        m_renderableObjects[index]->m_position.x -= 1.0f/10.0f;
+    }
+}
+
+
 void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch, float deltaTime)
 {
     if(m_renderableObjects.size() <= 0)
@@ -197,7 +226,8 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, 
 
     std::size_t lastEntityIndex = m_renderableObjects.size()-1;
 
-#if 1
+#define __APPLY__PHYSICS__
+#ifdef __APPLY__PHYSICS__
 
     //m_renderableObjects[0]->m_position.z += 0.01f;
     //m_renderableObjects[6]->Rotate(1.0f, glm::vec3(0.0f, -1.0f, 0.0f));
@@ -221,39 +251,35 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, 
 
 #endif
 
-    if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-    {
-        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(0.0f, 1.0f/10.0f, 0.0f));
-        m_renderableObjects[lastEntityIndex]->m_position.y += 1.0f/10.0f;
-    }
+    this->RenderableObjectKeyboardMovement(window, lastEntityIndex);
 
-    if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-    {
-        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(0.0f, -1.0f/10.0f, 0.0f));
-        m_renderableObjects[lastEntityIndex]->m_position.y -= 1.0f/10.0f;
-    }
-
-    if(glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-    {
-        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(1.0f/10.0f, 0.0f, 0.0f));
-        m_renderableObjects[lastEntityIndex]->m_position.x += 1.0f/10.0f;
-    }
-
-    if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-    {
-        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(-1.0f/10.0f, 0.0f, 0.0f));
-        m_renderableObjects[lastEntityIndex]->m_position.x -= 1.0f/10.0f;
-    }
-
+//    if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+//    {
+//        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(0.0f, 1.0f/10.0f, 0.0f));
+//        m_renderableObjects[lastEntityIndex]->m_position.y += 1.0f/10.0f;
+//    }
+//
+//    if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+//    {
+//        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(0.0f, -1.0f/10.0f, 0.0f));
+//        m_renderableObjects[lastEntityIndex]->m_position.y -= 1.0f/10.0f;
+//    }
+//
+//    if(glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+//    {
+//        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(1.0f/10.0f, 0.0f, 0.0f));
+//        m_renderableObjects[lastEntityIndex]->m_position.x += 1.0f/10.0f;
+//    }
+//
+//    if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+//    {
+//        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(-1.0f/10.0f, 0.0f, 0.0f));
+//        m_renderableObjects[lastEntityIndex]->m_position.x -= 1.0f/10.0f;
+//    }
 
 
     std::cout << "Total renderable objects: " << m_renderableObjects.size() << '\n';    //this is causing crash
-
-
-
     std::cout << "Completed updating current scene!" << '\n';
-
-
 }
 
 

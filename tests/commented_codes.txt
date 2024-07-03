@@ -2147,3 +2147,28 @@ void RenderableObject::SetIndicies(GLuint totalIndicies, GLuint *indicies)
 //
 //    g_theta += 0.1f;
 //}
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+//RenderableObject::RenderableObject(Synapse::Model modelData)
+//   :
+//    m_name(modelData.name.c_str()),
+//    m_VB(modelData.md._totalVerticies, modelData.md._verticiesData),   //add for ground which has texture
+//    m_EB(modelData.md._totalIndicies, modelData.md._indiciesData){}
+
+
+//RenderableObject::RenderableObject(const std::vector<Mesh> &meshes)
+//    :
+//    m_name(""),
+//    m_meshes(meshes){}
+

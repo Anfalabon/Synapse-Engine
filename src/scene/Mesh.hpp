@@ -31,9 +31,17 @@ public:
          _indiciesData(&indiciesData[0]), _totalIndicies(indiciesData.size()){}
 
 
+
+
+
+
+
+
+
+
 //    Mesh(float *verticiesData, unsigned int totalVerticies, unsigned int *indiciesData, unsigned int totalIndicies)
-//    :    m_VB(totalVerticies, verticiesData),
-//         m_EB(totalIndicies, indiciesData){}
+//    :    _VB(totalVerticies, verticiesData),
+//         _EB(totalIndicies, indiciesData){}
 
 //    Mesh(std::vector<float> &verticiesData, std::vector<unsigned int> &indiciesData)
 //    :    _VB(verticiesData.size(), &verticiesData[0]),

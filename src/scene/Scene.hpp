@@ -27,6 +27,7 @@ public:
 
     void Init();
     void LoadRenderableObjectsStatically();
+    void RenderableObjectKeyboardMovement(GLFWwindow *window, std::size_t index);
     void LoadRenderableObjectDynamically(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch);
     void RemoveRenderableObjectDynamically(GLFWwindow *window);
     void CreateRenderableObject(const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch);

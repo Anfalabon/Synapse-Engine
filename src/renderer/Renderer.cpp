@@ -135,10 +135,6 @@ void SceneRenderer::Render(Scene *scene)
 //                                                            glm::vec3(0.0f, -1.0f/100.0f, 0.0f));
 
 
-
-
-
-
     for(std::size_t i=0; i < scene->GetTotalSceneObjects(); ++i)
     {
         //glBindTexture(GL_TEXTURE_2D, scene->GetRenderableObject(1)->texture);
@@ -151,15 +147,17 @@ void SceneRenderer::Render(Scene *scene)
         //DEBUG::__LOG__MANAGER__::GLM_LOG(scene->GetRenderableObject(i)->m_model);
 
         //render every object
+        //glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->GetTotalIndiciesOfMesh(0), GL_UNSIGNED_INT, 0);
         glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->GetTotalIndicies(), GL_UNSIGNED_INT, 0);
-        //glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->GetTotalIndiciesMesh(0), GL_UNSIGNED_INT, 0);
 
-//        std::size_t currentObjectMeshes = scene->GetRenderableObject(i)->GetMeshTotalIndicies();
-//        for(std::size_t i=0; i<currentObjectMeshes; ++i)
-//        {
-//            glDrawElements(GL_TRIANGLES, currentObjectMeshes, GL_UNSIGNED_INT, 0);
-//        }
+        //std::size_t currentObjectMeshes = scene->GetRenderableObject(i)->GetMeshTotalIndicies();
+        //for(std::size_t i=0; i<currentObjectMeshes; ++i)
+        //{
+        //    glDrawElements(GL_TRIANGLES, currentObjectMeshes, GL_UNSIGNED_INT, 0);
+        //}
     }
+
+
 
 #endif
 

@@ -7,7 +7,6 @@
 #include <glm/ext.hpp>
 
 #include "Mesh.hpp"
-//#include "EntityLoader.hpp"
 #include "VertexBuffer.hpp"
 #include "IndexBuffer.hpp"
 #include "VertexArray.hpp"
@@ -28,7 +27,7 @@ public:
     RenderableObject() = default;
     explicit RenderableObject(const std::pair<std::string, Mesh> &model);
     //explicit RenderableObject(Model modelData);
-    explicit RenderableObject(const std::vector<Mesh> &meshes);
+    //explicit RenderableObject(const std::vector<Mesh> &meshes);
     ~RenderableObject();
 
     void LoadMeshes();
@@ -42,7 +41,7 @@ public:
     [[nodiscard]] inline unsigned int GetTotalIndicies(){return m_EB.GetTotalIndicies();}
     [[nodiscard]] inline unsigned int GetTotalMeshes(){return m_meshes.size();}
 
-    [[nodiscard]] inline unsigned int GetMeshTotalIndicies(std::size_t index)
+    [[nodiscard]] inline unsigned int GetTotalIndiciesOfMesh(std::size_t index)
     {
         return (index < 0) ? 0 : m_meshes[index]._EB.GetTotalIndicies();
     }
