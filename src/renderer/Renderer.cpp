@@ -137,7 +137,7 @@ void SceneRenderer::Render(Scene *scene)
 
     for(std::size_t i=0; i < scene->GetTotalSceneObjects(); ++i)
     {
-        //glBindTexture(GL_TEXTURE_2D, scene->GetRenderableObject(1)->texture);
+        glBindTexture(GL_TEXTURE_2D, scene->GetRenderableObject(i)->textureID);
         scene->GetRenderableObject(i)->GetVA().Bind();
 
         m_sceneShaders[0].SendMatrix4ToGPU("model", scene->GetRenderableObject(i)->m_model);

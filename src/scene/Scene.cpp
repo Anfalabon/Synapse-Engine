@@ -95,11 +95,13 @@ void Scene::LoadRenderableObjectsStatically()
 
 
 
+
 //    omp_set_num_threads(0x8);
 //    #pragma omp parallel for  //if there are small amount of objects then using pragma won't result the expected
     for(RenderableObject *renderableObject: m_renderableObjects) [[likely]]
     {
-        renderableObject->LoadVertexObjects(6, false); //if we add texture then it will be 8
+        renderableObject->LoadVertexObjects(8, true); //if we add texture then it will be 8
+        renderableObject->LoadTexture();
         //renderableObject->LoadMeshes();
     }
 
@@ -249,7 +251,7 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, 
     {
         physics->Projectile(m_renderableObjects[i]->m_position, m_renderableObjects[i]->m_velocity, deltaTime2, m_renderableObjects[i]->m_initialVelocity, true, true);
         //physics->OrbitAround(m_renderableObjects[i]->m_position, m_renderableObjects[0]->m_position, m_theta);    //right now it's orbiting the origin
-        //m_renderableObjects[i]->Rotate(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+        m_renderableObjects[i]->Rotate(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
         //TransformComponent::Translate(m_renderableObjects[i], glm::vec3(0.0, 10.0f, 0.0f));
     }
 

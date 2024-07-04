@@ -2,6 +2,7 @@
 
 //out vec4 FragColor;
 in vec3 vertexColor;
+in vec2 textCoord;
 //in float time;
 
 
@@ -12,6 +13,8 @@ in vec3 vertexColor;
 
 //uniform float time;
 
+uniform sampler2D ourTexture;
+
 
 void main()
 {
@@ -21,7 +24,9 @@ void main()
 
     //vec3 changingColor = 0.5f * (sin(time)+1);
 
-    gl_FragColor = vec4(vertexColor, 1.0f);
+    //gl_FragColor = vec4(vertexColor, 1.0f);
+
+    gl_FragColor = texture(ourTexture, textCoord);
 }
 
 

@@ -74,7 +74,8 @@ int main()
         float g = rand() % 2;
         float b = rand() % 2;
 
-        if(i%3 == 0) std::cout << "}, {" << r << ", " << g << ", " << b << "}},\n\n{{";
+        if(i%3 == 0) std::cout << ", " << r << ", " << g << ", " << b << ", " << 0 << ", " << 0 << ",\n\n";
+
 
         std::cout << vertices[i] << " ,";
     }
