@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <string.h>
+#include <unordered_map>
 
 
 namespace Synapse
@@ -56,14 +57,19 @@ public:
 
 private:
 
+
+     unsigned int GetUniformLocation(const std::string &uniformName);
+
      //ID's of the shaders
      GLuint m_vertexShaderID;
      GLuint m_fragmentShaderID;
 
      GLuint m_shaderProgramID;
-public:
+
      ShaderFile m_vertexShader;
      ShaderFile m_fragmentShader;
+
+     std::unordered_map<std::string, unsigned int> m_uniformLocationCacheMap;
 
 };
 

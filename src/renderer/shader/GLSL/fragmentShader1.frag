@@ -13,7 +13,7 @@ in vec2 textCoord;
 
 //uniform float time;
 
-uniform sampler2D ourTexture;
+uniform sampler2D textureSampler;
 
 
 void main()
@@ -26,7 +26,11 @@ void main()
 
     //gl_FragColor = vec4(vertexColor, 1.0f);
 
-    gl_FragColor = texture(ourTexture, textCoord);
+    //vertexColor = vec3(1.0f, 1.0f, 1.0f);
+
+    //vec4(vertexColor, textCoord)
+
+    gl_FragColor = texture(textureSampler, textCoord);
 }
 
 

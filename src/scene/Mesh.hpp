@@ -3,6 +3,7 @@
 #include "VertexBuffer.hpp"
 #include "IndexBuffer.hpp"
 #include "VertexArray.hpp"
+#include "../renderer/Texture.hpp"
 
 #include <string>
 #include <vector>
@@ -19,16 +20,18 @@ public:
 
     Mesh(const std::string &verticiesFilePath, const std::string &indiciesFilePath){}
 
-    Mesh(float *verticiesData, unsigned int totalVerticies, unsigned int *indiciesData, unsigned int totalIndicies)
+    Mesh(float *verticiesData, unsigned int totalVerticies, unsigned int *indiciesData, unsigned int totalIndicies, const char *textureFilePath = "")
     :    _verticiesData(verticiesData), _totalVerticies(totalVerticies),
-         _indiciesData(indiciesData), _totalIndicies(totalIndicies)
+         _indiciesData(indiciesData), _totalIndicies(totalIndicies),
+         _texture(textureFilePath)
     {
         std::cout << "Initializing the mesh!" << '\n';
     }
 
-    Mesh(std::vector<float> &verticiesData, std::vector<unsigned int> &indiciesData)
+    Mesh(std::vector<float> &verticiesData, std::vector<unsigned int> &indiciesData, const char *textureFilePath = "")
     :    _verticiesData(&verticiesData[0]), _totalVerticies(verticiesData.size()),
-         _indiciesData(&indiciesData[0]), _totalIndicies(indiciesData.size()){}
+         _indiciesData(&indiciesData[0]), _totalIndicies(indiciesData.size()),
+         _texture(textureFilePath){}
 
 
 
@@ -65,6 +68,7 @@ public:
     VertexArray    _VA;
     VertexBuffer   _VB;
     IndexBuffer    _EB;
+    Texture        _texture;
 
 };
 

@@ -8,17 +8,9 @@ inline MouseEvents cursor;
 //calculate the direction where the mouse/cursor is pointing to
 //this calculates the vector where the camera will look at after certain changes in mouse input
 //this should be inside 'Camera' class
-void MouseEvents::CalculateFrontVector()
-{
-    glm::vec3 frontVector;  //using this is maybe waste of memory when everytime mouse is moved
-    frontVector.x = glm::cos(glm::radians(cursor.m_yaw)) * glm::cos(glm::radians(cursor.m_pitch));
-    frontVector.y = glm::sin(glm::radians(cursor.m_pitch));
-    frontVector.z = glm::sin(glm::radians(cursor.m_yaw)) * glm::cos(glm::radians(cursor.m_pitch));
-    cursor.m_frontVector = glm::normalize(cursor.m_frontVector);
-}
 
 
-void MouseEvents::mouseInput(GLFWwindow *window, double xpos, double ypos)
+void MouseEvents::MouseInput(GLFWwindow *window, double xpos, double ypos)
 {
 
 
@@ -54,9 +46,18 @@ void MouseEvents::mouseInput(GLFWwindow *window, double xpos, double ypos)
         cursor.m_pitch = -89.0f;
     }
 
-    //Camera::CalculateFrontVector(cursor.m_yaw, cursor.m_pitch, cursor.m_frontVector);
-    MouseEvents::CalculateFrontVector();
 
+}
+
+
+void MouseEvents::OnMouseMovement(GLFWwindow *windowID, GLFWcursorposfun callback)
+{
+    glfwSetCursorPosCallback(windowID, callback);  //MouseEvents::MouseInput
+}
+
+void MouseEvents::SetInputMode(GLFWwindow *windowID, int mode, int value)
+{
+    glfwSetInputMode(windowID, mode, value);
 }
 
 

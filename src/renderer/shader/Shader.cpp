@@ -238,6 +238,12 @@ void Shader::RemoveProgram()
 }
 
 
+unsigned int Shader::GetUniformLocation(const std::string &uniformName)
+{
+    //if()
+}
+
+
 
 void Shader::SetMatrix4vf(const char *uniformMatrixName, glm::mat4 &model)
 {

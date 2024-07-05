@@ -44,6 +44,11 @@ public:
 
 private:
 
+    inline void AddRenderableObject(const std::string &modelName, const std::string &textureFilePath)
+    {
+        m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel(modelName), textureFilePath.c_str()));
+    }
+
 #if defined (__ENTITY__COMPONENT_SYSTEM__)
     class UUID; //later define if want to add 'ECS'
     std::unordered_map<UUID, RenderableObject*> m_renderableObjectsMap;

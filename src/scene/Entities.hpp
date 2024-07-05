@@ -10,6 +10,7 @@
 #include "VertexBuffer.hpp"
 #include "IndexBuffer.hpp"
 #include "VertexArray.hpp"
+#include "../renderer/Texture.hpp"
 
 #include <iostream>
 #include <vector>
@@ -24,8 +25,8 @@ class RenderableObject
 {
 public:
 
-    RenderableObject() = default;
-    explicit RenderableObject(const std::pair<std::string, Mesh> &model);
+    RenderableObject() = delete;
+    explicit RenderableObject(const std::pair<std::string, Mesh> &model, const char *textureImageFilePath);
     //explicit RenderableObject(Model modelData);
     //explicit RenderableObject(const std::vector<Mesh> &meshes);
     ~RenderableObject();
@@ -40,6 +41,7 @@ public:
 
     [[nodiscard]] inline unsigned int GetTotalIndicies(){return m_EB.GetTotalIndicies();}
     [[nodiscard]] inline unsigned int GetTotalMeshes(){return m_meshes.size();}
+    [[nodiscard]] inline unsigned int GetTextureID(){return m_texture.GetTextureID();}
 
     [[nodiscard]] inline unsigned int GetTotalIndiciesOfMesh(std::size_t index)
     {
@@ -72,6 +74,7 @@ private:
     VertexArray    m_VA;
     VertexBuffer   m_VB;
     IndexBuffer    m_EB;
+    Texture        m_texture;
 
 public:
     glm::vec3 m_position = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -79,7 +82,6 @@ public:
     glm::vec3 m_initialVelocity = m_velocity;
     glm::mat4 m_model = glm::mat4(1.0f);
 
-    unsigned int textureID;
 };
 
 

@@ -280,11 +280,11 @@ void Physics::Bounce(glm::vec3 &velocity, glm::vec3 &initialVelocity, bool enabl
 }
 
 
-void Physics::Projectile(glm::vec3 &position, glm::vec3 &velocity, const float deltaTime, glm::vec3 &initialVelocity, bool addBouncing, bool enableRandomMovement)
+void Physics::Projectile(glm::vec3 &position, glm::vec3 &velocity, const float deltaTime, glm::vec3 &initialVelocity, bool addBouncing, bool enableRandomMovement, float groundVerticalPosition)
 {
     float gravity = -0.1;
     float materialConstant = 0.9f;
-    if (position.y < 0)
+    if (position.y < groundVerticalPosition)
     {
         if(addBouncing)
         {

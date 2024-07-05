@@ -544,7 +544,7 @@ void Camera::ApplyMovementInputs(GLFWwindow *m_window)
 void Camera::ChangeCameraMode(GLFWwindow *m_window)
 {
     //m_changeCameraMode = false;
-    if(glfwGetKey(m_window, GLFW_KEY_O) == GLFW_PRESS)
+    if(glfwGetKey(m_window, GLFW_KEY_M) == GLFW_PRESS)
     {
         //m_changeCameraMode = true;
         if(M_CAMERA_MODE == CAMERA_MODES::GAME_MODE)
@@ -573,6 +573,8 @@ void Camera::EnableJumpingInput(GLFWwindow *m_window)
         m_physics->m_jumped = true;
         m_physics->m_initialHeight = m_physics->m_pos.y;
     }
+
+    //if(m_keyboardEvents->KeyPressed(GLFW_KEY_SPACE))
 }
 
 

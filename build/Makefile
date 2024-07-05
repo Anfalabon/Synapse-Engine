@@ -39,8 +39,8 @@ LDFLAGS=-L../src/shader -L../vendor/GLFW/lib -lglfw -L../vendor/glad/lib -lGL -L
 #export LD_LIBRARY_PATH=../src/external/SFML-2.6.1/lib
 
 
-bin/start_game_engine: obj/glad.o obj/stb_image.o obj/PhysicsEngine.o obj/Buffer.o obj/VertexArray.o obj/VertexBuffer.o obj/IndexBuffer.o obj/Mesh.o obj/ModelLoader.o obj/Entities.o obj/Transformation.o obj/vertexObjects.o obj/Shader.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Audio.o obj/Timer.o obj/Camera.o obj/Engine.o obj/Application.o obj/main.o
-		$(CXX) $(CXXFLAGS) -o bin/start_game_engine obj/glad.o obj/stb_image.o obj/PhysicsEngine.o obj/Buffer.o obj/VertexArray.o obj/VertexBuffer.o obj/IndexBuffer.o obj/Mesh.o obj/ModelLoader.o obj/Entities.o obj/Transformation.o obj/vertexObjects.o obj/Shader.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Audio.o obj/Timer.o obj/Camera.o obj/Engine.o obj/Application.o obj/main.o $(LDFLAGS)
+bin/start_game_engine: obj/glad.o obj/stb_image.o obj/PhysicsEngine.o obj/Buffer.o obj/VertexArray.o obj/VertexBuffer.o obj/IndexBuffer.o obj/Mesh.o obj/ModelLoader.o obj/Entities.o obj/Transformation.o obj/vertexObjects.o obj/Shader.o obj/Texture.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Audio.o obj/Timer.o obj/Camera.o obj/Engine.o obj/Application.o obj/main.o
+		$(CXX) $(CXXFLAGS) -o bin/start_game_engine obj/glad.o obj/stb_image.o obj/PhysicsEngine.o obj/Buffer.o obj/VertexArray.o obj/VertexBuffer.o obj/IndexBuffer.o obj/Mesh.o obj/ModelLoader.o obj/Entities.o obj/Transformation.o obj/vertexObjects.o obj/Shader.o obj/Texture.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Audio.o obj/Timer.o obj/Camera.o obj/Engine.o obj/Application.o obj/main.o $(LDFLAGS)
 
 
 
@@ -89,6 +89,10 @@ obj/vertexObjects.o: ../src/scene/vertexObjects.cpp ../src/scene/vertexObjects.h
 
 obj/Shader.o: ../src/renderer/shader/Shader.cpp	../src/renderer/shader/Shader.hpp ../src/debug/LOG.hpp ../src/renderer/shader/GLSL/vertexShader1.vert ../src/renderer/shader/GLSL/fragmentShader1.frag
 		$(CXX) $(CXXFLAGS) -c ../src/renderer/shader/Shader.cpp -o obj/Shader.o
+
+obj/Texture.o: ../src/renderer/Texture.cpp ../src/renderer/Texture.hpp ../vendor/imageLoader/stb_image.h
+		$(CXX) $(CXXFLAGS) -c ../src/renderer/Texture.cpp -o obj/Texture.o
+
 
 obj/Scene.o: ../src/scene/Scene.cpp ../src/scene/Scene.hpp ../src/scene/Entities.hpp ../src/scene/ModelsDataVertex.hpp ../src/scene/ModelsData.hpp ../src/window/Window.hpp ../src/utils/RunParallel.hpp ../src/scene/EntityLoader.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/scene/Scene.cpp -o obj/Scene.o
@@ -140,6 +144,7 @@ clear:
 		 rm -f obj/Transformation.o
 		 rm -f obj/vertexObjects.o
 		 rm -f obj/Shader.o
+		 rm -f obj/Texture.o
 		 rm -f obj/Scene.o
 		 rm -f obj/Renderer.o
 		 rm -f obj/Window.o

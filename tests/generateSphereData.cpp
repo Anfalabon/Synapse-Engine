@@ -74,10 +74,14 @@ int main()
         float g = rand() % 2;
         float b = rand() % 2;
 
-        if(i%3 == 0) std::cout << ", " << r << ", " << g << ", " << b << ", " << 0 << ", " << 0 << ",\n\n";
+        float txtCoord1 = (1 + rand()) % 2;
+        float txtCoord2 = (1 + rand()) % 2;
 
 
-        std::cout << vertices[i] << " ,";
+        if(i%3 == 0) std::cout << " " << r << ", " << g << ", " << b << ", " << txtCoord1 << ", " << txtCoord2 << ",\n\n";
+
+
+        std::cout << vertices[i] << ", ";
     }
 
     std::cout << "\n\n";
