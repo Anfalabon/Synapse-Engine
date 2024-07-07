@@ -69,15 +69,6 @@ void Texture::Free()
 
 void Texture::Load()
 {
-//    std::ifstream textureImageFile(m_filePath);
-//    if(textureImageFile.fail())
-//    {
-//        std::cout << "didn't find texture image file!" << '\n';
-//        std::cout << "Texture image file name: " << m_filePath << '\n';
-//        std::cin.get();    //this is definately bad for doing
-//        return;
-//    }
-
     //unsigned int texture;
     glGenTextures(1, &m_textureID);
     glBindTexture(GL_TEXTURE_2D, m_textureID); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
@@ -97,10 +88,10 @@ void Texture::Load()
     if(!m_loaded)
     {
         m_imageData = stbi_load(m_filePath, &m_width, &m_height, &m_nrChannels, 0);
-        //std::cin.get();
+        std::cout << "File path: "<< m_filePath << '\n';
     }
 
-    if (m_imageData)
+    if(m_imageData)
     {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGB, GL_UNSIGNED_BYTE, m_imageData);
         glGenerateMipmap(GL_TEXTURE_2D);
@@ -108,15 +99,10 @@ void Texture::Load()
     else
     {
         std::cout << "Failed to load texture" << '\n';
-        //std::cin.get();
     }
 
-    stbi_image_free(m_imageData);
-
-//    if(m_imageData != nullptr)
-//    {
-//        stbi_image_free(m_imageData);
-//    }
+    //don't free the image buffer for later use
+    //stbi_image_free(m_imageData);
 }
 
 

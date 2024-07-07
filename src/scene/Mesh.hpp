@@ -41,15 +41,36 @@ public:
     Mesh(float *verticiesData, unsigned int totalVerticies, unsigned int *indiciesData, unsigned int totalIndicies, const char *textureFilePath = "")
     :    _VB(totalVerticies, verticiesData),
          _EB(totalIndicies, indiciesData),
-         _texture(textureFilePath){}
+         _texture(textureFilePath)
+    {
+
+    }
 
     Mesh(std::vector<float> &verticiesData, std::vector<unsigned int> &indiciesData, const char *textureFilePath = "")
     :    _VB(verticiesData.size(), &verticiesData[0]),
          _EB(indiciesData.size(), &indiciesData[0]),
          _texture(textureFilePath)
-         {
-             DEBUG("Constructing Mesh...");
-         }
+    {
+        DEBUG("Constructing Mesh...");
+    }
+
+    Mesh(std::vector<float> &verticiesData, std::vector<unsigned int> &indiciesData, unsigned char *imageData, int width, int height, int nrChannels)
+    :    _VB(verticiesData.size(), &verticiesData[0]),
+         _EB(indiciesData.size(), &indiciesData[0]),
+         _texture(imageData, width, height, nrChannels)
+    {
+        DEBUG("Constructing Mesh...");
+    }
+
+    Mesh(std::vector<float> &verticiesData, std::vector<unsigned int> &indiciesData, const Texture &texture)
+            :    _VB(verticiesData.size(), &verticiesData[0]),
+                 _EB(indiciesData.size(), &indiciesData[0]),
+                 _texture(texture.m_imageData, texture.m_width, texture.m_height, texture.m_nrChannels)
+    {
+        DEBUG("Constructing Mesh...");
+    }
+
+
 
 #endif
 

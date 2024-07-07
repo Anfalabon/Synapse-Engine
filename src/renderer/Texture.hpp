@@ -21,6 +21,21 @@ public:
         m_loaded = false;
     };
 
+    Texture(unsigned char *imageData, int width, int height, int nrChannels)
+    {
+        std::cout << "Copying the texture..." << '\n';
+        if(imageData != nullptr)
+        {
+            //memcpy(m_imageData, imageData, sizeof(imageData)*width*height);
+            m_imageData = imageData;
+            m_width = width;
+            m_height = height;
+            m_nrChannels = nrChannels;
+
+            m_loaded = true;
+        }
+    }
+
     Texture(const Texture &otherTexture, bool x)    //this bool x is for memory error(Segmentation Fault)
     {
         DEBUG("Running Copy Constructor of Texture...");

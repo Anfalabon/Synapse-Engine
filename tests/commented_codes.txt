@@ -2233,3 +2233,15 @@ void RenderableObject::SetIndicies(GLuint totalIndicies, GLuint *indicies)
 //    }
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//    std::ifstream textureImageFile(m_filePath);
+//    if(textureImageFile.fail())
+//    {
+//        std::cout << "didn't find texture image file!" << '\n';
+//        std::cout << "Texture image file name: " << m_filePath << '\n';
+//        std::cin.get();    //this is definately bad for doing
+//        return;
+//    }

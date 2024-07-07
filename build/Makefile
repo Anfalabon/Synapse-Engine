@@ -39,8 +39,8 @@ LDFLAGS=-L../src/shader -L../vendor/GLFW/lib -lglfw -L../vendor/glad/lib -lGL -L
 #export LD_LIBRARY_PATH=../src/external/SFML-2.6.1/lib
 
 
-bin/start_game_engine: obj/glad.o obj/stb_image.o obj/PhysicsEngine.o obj/Buffer.o obj/VertexArray.o obj/VertexBuffer.o obj/IndexBuffer.o obj/Mesh.o obj/ModelLoader.o obj/Entities.o obj/Transformation.o obj/vertexObjects.o obj/Shader.o obj/Texture.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Audio.o obj/Timer.o obj/Camera.o obj/Engine.o obj/Application.o obj/main.o
-		$(CXX) $(CXXFLAGS) -o bin/start_game_engine obj/glad.o obj/stb_image.o obj/PhysicsEngine.o obj/Buffer.o obj/VertexArray.o obj/VertexBuffer.o obj/IndexBuffer.o obj/Mesh.o obj/ModelLoader.o obj/Entities.o obj/Transformation.o obj/vertexObjects.o obj/Shader.o obj/Texture.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Audio.o obj/Timer.o obj/Camera.o obj/Engine.o obj/Application.o obj/main.o $(LDFLAGS)
+bin/start_game_engine: obj/glad.o obj/stb_image.o obj/LOG.o obj/PhysicsEngine.o obj/Buffer.o obj/VertexArray.o obj/VertexBuffer.o obj/IndexBuffer.o obj/Mesh.o obj/ModelLoader.o obj/Entities.o obj/Transformation.o obj/vertexObjects.o obj/Shader.o obj/Texture.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Audio.o obj/Timer.o obj/Camera.o obj/Engine.o obj/Application.o obj/main.o
+		$(CXX) $(CXXFLAGS) -o bin/start_game_engine obj/glad.o obj/stb_image.o obj/LOG.o obj/PhysicsEngine.o obj/Buffer.o obj/VertexArray.o obj/VertexBuffer.o obj/IndexBuffer.o obj/Mesh.o obj/ModelLoader.o obj/Entities.o obj/Transformation.o obj/vertexObjects.o obj/Shader.o obj/Texture.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Audio.o obj/Timer.o obj/Camera.o obj/Engine.o obj/Application.o obj/main.o $(LDFLAGS)
 
 
 
@@ -50,6 +50,9 @@ obj/glad.o: ../vendor/glad/src/glad.cpp ../vendor/glad/include/glad/glad.hpp
 
 obj/stb_image.o: ../vendor/imageLoader/stb_image.cpp ../vendor/imageLoader/stb_image.h
 		$(CXX) $(CXXFLAGS) -c ../vendor/imageLoader/stb_image.cpp -o obj/stb_image.o
+
+obj/LOG.o: ../src/debug/LOG.cpp ../src/debug/LOG.hpp
+		$(CXX) $(CXXFLAGS) -D __debug__ -c ../src/debug/LOG.cpp -o obj/LOG.o
 
 
 obj/PhysicsEngine.o: ../src/physics/PhysicsEngine.cpp ../src/physics/PhysicsEngine.hpp
@@ -133,6 +136,7 @@ exp:
 clear:
 		 rm -f obj/glad.o
 		 rm -f obj/stb_image.o
+		 rm -f obj/LOG.o
 		 rm -f obj/PhysicsEngine.o
 		 rm -f obj/Buffer.o
 		 rm -f obj/VertexArray.o

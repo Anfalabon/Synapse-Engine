@@ -22,6 +22,7 @@ public:
     static void Translate(RenderableObject *renderableObjet, const glm::vec3 &translationVec);
     static void Rotate(RenderableObject *renderableObject, const float angleToRotateDegrees, const glm::vec3 &rotationVec);
     static void Scale(RenderableObject *renderableObject, const glm::vec3 &scaleVec);
+    static void ApplyQuaternions(RenderableObject *renderableObject, float theta, const glm::vec3 &axisOfRotation);
 
 private:
 };

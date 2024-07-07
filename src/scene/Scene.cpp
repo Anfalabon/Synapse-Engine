@@ -42,6 +42,27 @@ void Scene::Init()
 }
 
 
+//static void Quaternions(float theta, const glm::vec3 &axisOfRotation, glm::vec3 &position)
+//{
+//    theta = glm::radians(theta);
+//
+//    float w = glm::cos(theta/2);
+//    float x = axisOfRotation.x * glm::sin(theta/2);
+//    float y = axisOfRotation.y * glm::sin(theta/2);
+//    float z = axisOfRotation.z * glm::sin(theta/2);
+//
+//    glm::vec4 qPosition = glm::vec4(0, position.x , position.y, position.z);
+//    glm::vec4 q = glm::vec4(w, x, y, z);
+//    glm::vec4 qDash = glm::vec4(w, -1.0f*x, -1.0f*y, -1.0f*z);
+//
+//    glm::vec4 rotatedPoint = q * qPosition * qDash;
+//
+//    position.x = rotatedPoint.x;
+//    position.y = rotatedPoint.y;
+//    position.z = rotatedPoint.z;
+//}
+
+
 void Scene::LoadRenderableObjectsStatically()
 {
     //namespace data = modelsData;
@@ -76,6 +97,8 @@ void Scene::LoadRenderableObjectsStatically()
         m_renderableObjects[i]->m_position = positions[i];
         std::cout << "Created an object successfully!" << '\n';
     }
+
+
 
 
     float tempZ = m_renderableObjects[5]->m_position.z;
@@ -137,7 +160,7 @@ void Scene::LoadRenderableObjectsStatically()
 
 
 #if 1
-    constexpr signed int initialGrounds = 5;
+    constexpr signed int initialGrounds = 10;
     constexpr signed int initialNegGrounds = -1;
 
     //#pragma omp parallel for
@@ -330,6 +353,7 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, 
 
     std::cout << "Radius of rotation: " << glm::length(m_renderableObjects[6]->m_position) << '\n';
 
+    //Quaternions(90.0f, glm::vec3(1.0f, 0.0f, 0.0f), m_renderableObjects[7]->m_position);
 
 
     float deltaTime2 = 0.27f;    //here made an approximate delta time for this device. will calculate deltaTime

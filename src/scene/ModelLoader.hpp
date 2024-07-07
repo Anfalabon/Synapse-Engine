@@ -22,6 +22,8 @@ public:
     std::vector<float> &LoadVerticiesData(const std::string &filePath);
     std::vector<unsigned int> &LoadIndiciesData(const std::string &filePath);
 
+
+    void CreateFrequentlyLoadedTextures();
     void SetModelsDataMap();
     std::pair<std::string, Mesh> GetModel(const std::string &modelName);
 

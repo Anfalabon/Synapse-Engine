@@ -24,19 +24,71 @@ std::vector<unsigned int> LoadIndiciesData(const std::string &filePath)
 }
 
 
+void ModelLoader::CreateFrequentlyLoadedTextures()
+{
+    Texture groundTexture("../vendor/imageLoader/images/clearRoadTexture.jpg");
+    groundTexture.Load();
+
+    Texture sphereTexture("../vendor/imageLoader/images/basketballTexture.jpg");
+    sphereTexture.Load();
+
+    m_modelsMap["Ground"] = Mesh(groundVerticiesData, groundIndiciesData, groundTexture);
+    m_modelsMap["Sphere"] = Mesh(sphereVerticiesData, sphereIndiciesData, sphereTexture);
+
+
+}
+
+
 void ModelLoader::SetModelsDataMap()
 {
     std::cout << "Setting up the models map..." << '\n';
 
 #if 1
 
+//    std::unordered_map<std::string, Texture> textureCacheMap;
+//    textureCacheMap["../vendor/imageLoader/images/clearRoadTexture.jpg"] = texture.m_imageData;
+
+    //initialize the frequently used or loaded textures for performence
+//    Texture groundTexture("../vendor/imageLoader/images/clearRoadTexture.jpg");
+//    groundTexture.Load();
+//
+//    Texture sphereTexture("../vendor/imageLoader/images/basketballTexture.jpg");
+//    sphereTexture.Load();
+
+
+//    m_modelsMap["Ground"] = Mesh(groundVerticiesData, groundIndiciesData,
+//                                 groundTexture.m_imageData, groundTexture.m_width, groundTexture.m_height, groundTexture.m_nrChannels);
+
+//    m_modelsMap["Sphere"] = Mesh(sphereVerticiesData, sphereIndiciesData,
+//                                 sphereTexture.m_imageData, sphereTexture.m_width, sphereTexture.m_height, sphereTexture.m_nrChannels);
+
+
+//    m_modelsMap["Ground"] = Mesh(groundVerticiesData, groundIndiciesData, groundTexture);
+//    m_modelsMap["Sphere"] = Mesh(sphereVerticiesData, sphereIndiciesData, sphereTexture);
+
+    this->CreateFrequentlyLoadedTextures();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     m_modelsMap["Cube"] = Mesh(cubeVerticiesData, cubeIndiciesData, "../vendor/imageLoader/images/grassTexture.jpg");
-    m_modelsMap["Ground"] = Mesh(groundVerticiesData, groundIndiciesData, "../vendor/imageLoader/images/clearRoadTexture.jpg");
+    //m_modelsMap["Ground"] = Mesh(groundVerticiesData, groundIndiciesData, "../vendor/imageLoader/images/clearRoadTexture.jpg");
     m_modelsMap["Trapizoid"] = Mesh(trapizoidVerticiesData, trapizoidIndiciesData, "../vendor/imageLoader/images/groundTexture.jpg");
     m_modelsMap["Pyramid"] = Mesh(pyramidVerticesData, pyramidIndicesData, "../vendor/imageLoader/images/oceanTexture.jpg");
     m_modelsMap["Cylinder"] = Mesh(cylinderVerticiesData, cylinderIndiciesData, "../vendor/imageLoader/images/oceanTexture.jpg");
     m_modelsMap["Icosphere"] = Mesh(icosphereVerticiesData, icosphereIndiciesData, "../vendor/imageLoader/images/groundTexture.jpg");
-    m_modelsMap["Sphere"] = Mesh(sphereVerticiesData, sphereIndiciesData, "../vendor/imageLoader/images/basketballTexture.jpg");
+    //m_modelsMap["Sphere"] = Mesh(sphereVerticiesData, sphereIndiciesData, "../vendor/imageLoader/images/basketballTexture.jpg");
     m_modelsMap["Wall"] = Mesh(wallVerticiesData, wallIndiciesData, "../vendor/imageLoader/images/brickTexture2.jpg");
     m_modelsMap["Door"] = Mesh(doorVerticiesData, doorIndiciesData, "../vendor/imageLoader/images/doorTexture.jpg");
     m_modelsMap["Bullet"] = Mesh(bulletVerticiesData, cylinderIndiciesData, "../vendor/imageLoader/images/clearRoadTexture.jpg");
