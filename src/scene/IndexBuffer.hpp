@@ -3,6 +3,7 @@
 #include <glad/glad.hpp>
 
 #include "Buffer.hpp"
+#include "../debug/LOG.hpp"
 
 #include <iostream>
 #include <array>
@@ -21,11 +22,16 @@ public:
 
     ~IndexBuffer()
     {
+        DEBUG("Running IndexBuffer destructor!");
         glDeleteBuffers(1, &_EBO);
+        //#define __DELETE__BUFFER__
+        #ifdef __DELETE__BUFnFER__
         if(_indiciesData!=nullptr)
         {
             delete[] _indiciesData;
         }
+        #endif
+        DEBUG("Completed running IndexBuffer destructor!");
     }
 
     void SetIndicies(GLuint totalIndicies, GLuint *indiciesData);

@@ -26,7 +26,8 @@ class RenderableObject
 public:
 
     RenderableObject() = delete;
-    explicit RenderableObject(const std::pair<std::string, Mesh> &model, const char *textureImageFilePath);
+    //explicit RenderableObject(const std::pair<std::string, Mesh> &model, const char *textureImageFilePath);
+    explicit RenderableObject(const std::pair<std::string, Mesh> &model);
     //explicit RenderableObject(Model modelData);
     //explicit RenderableObject(const std::vector<Mesh> &meshes);
     ~RenderableObject();
@@ -35,26 +36,41 @@ public:
     void LoadVertexObjects(unsigned short objectsInSingleVertex = 0, bool addTexture = false);
     void LoadTexture();
 
-    [[nodiscard]] inline VertexArray&  GetVA(){return m_VA;}
-    [[nodiscard]] inline VertexBuffer& GetVB(){return m_VB;}
-    [[nodiscard]] inline IndexBuffer&  GetEB(){return m_EB;}
+//    [[nodiscard]] inline VertexArray&  GetVA(){return m_VA;}
+//    [[nodiscard]] inline VertexBuffer& GetVB(){return m_VB;}
+//    [[nodiscard]] inline IndexBuffer&  GetEB(){return m_EB;}
 
-    [[nodiscard]] inline unsigned int GetTotalIndicies(){return m_EB.GetTotalIndicies();}
-    [[nodiscard]] inline unsigned int GetTotalMeshes(){return m_meshes.size();}
-    [[nodiscard]] inline unsigned int GetTextureID(){return m_texture.GetTextureID();}
+//    [[nodiscard]] inline unsigned int GetTotalIndicies(){return m_EB.GetTotalIndicies();}
+//    [[nodiscard]] inline unsigned int GetTotalMeshes(){return m_meshes.size();}
+//    [[nodiscard]] inline unsigned int GetTextureID(){return m_texture.GetTextureID();}
 
     [[nodiscard]] inline unsigned int GetTotalIndiciesOfMesh(std::size_t index)
     {
         return (index < 0) ? 0 : m_meshes[index]._EB.GetTotalIndicies();
     }
 
+    [[nodiscard]] inline Mesh& GetMesh(std::size_t index)
+    {
+        //return (index < 0) ? Mesh() : m_meshes[index];
+        return m_meshes[index];
+    }
+
     [[nodiscard]] inline glm::mat4& GetModelMatrix(){return m_model;}
 
     void SetPosition(const glm::vec3 &position){m_position = position;}
-    [[nodiscard]] inline auto GetPosition()->glm::vec3{return m_position;}
+    [[nodiscard]] inline auto GetPosition()->glm::vec3
+    {
+        glm::mat4 inverseModelMatrix = glm::inverse(m_model);
+        glm::vec3 position = std::move(inverseModelMatrix[3]);
+        position.x *= -1.0f;
+        position.y *= -1.0f;
+        position.z *= -1.0f;
+        return position;
+    }
 
 
     void Translate(const glm::vec3 &translationVec);
+    void Rotate(float angleToRotateDegrees, bool x, bool y, bool z);
     void Rotate(float angleToRotateDegrees, const glm::vec3 &rotationVec);
     void Scale(const glm::vec3 &scaleVec);
 
@@ -71,10 +87,10 @@ private:
 
     std::vector<Mesh> m_meshes;
 
-    VertexArray    m_VA;
-    VertexBuffer   m_VB;
-    IndexBuffer    m_EB;
-    Texture        m_texture;
+//    VertexArray    m_VA;
+//    VertexBuffer   m_VB;
+//    IndexBuffer    m_EB;
+//    Texture        m_texture;
 
 public:
     glm::vec3 m_position = glm::vec3(0.0f, 0.0f, 0.0f);

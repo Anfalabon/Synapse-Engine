@@ -49,17 +49,9 @@ void Scene::LoadRenderableObjectsStatically()
 
 
 
-    constexpr std::size_t initialSceneObjects = 6;
-//    //will replace 'GetModel' function with an unordered map
-//    m_renderableObjects.push_back(new RenderableObject(GetModel<float>("Cube")));
-//    m_renderableObjects.push_back(new RenderableObject(GetModel<float>("Ground")));
-//    m_renderableObjects.push_back(new RenderableObject(GetModel<float>("Trapizoid")));
-//    m_renderableObjects.push_back(new RenderableObject(GetModel<float>("Pyramid")));
-//    m_renderableObjects.push_back(new RenderableObject(GetModel<float>("Cylinder")));
-//    m_renderableObjects.push_back(new RenderableObject(GetModel<float>("Icosphere")));
-//    m_renderableObjects.push_back(new RenderableObject(GetModel<float>("Sphere")));
+    constexpr std::size_t initialSceneObjects = 7;
 
-    std::vector<std::string> modelsName{"Cube", "Trapizoid", "Pyramid", "Cylinder", "Icosphere", "Sphere"};
+    std::vector<std::string> modelsName{"Cube", "Trapizoid", "Pyramid", "Cylinder", "Icosphere", "Black Hole", "Wall"};
 
     glm::vec3 positions[initialSceneObjects] = {
             glm::vec3(0.0f, 0.0f, 0.0f),
@@ -67,22 +59,86 @@ void Scene::LoadRenderableObjectsStatically()
             glm::vec3(9.0f, 3.0f, 9.0f),
             glm::vec3(10.0, 10.0f, 30.0f),
             glm::vec3(10.0f, 0.0f, 10.0f),
-            glm::vec3(9.0f, 0.0f, 0.0f)
+            glm::vec3(100.0f, 0.0f, 100.0f),
+            glm::vec3(0.0f, -1.0f, 0.0f)
     };
 
     std::cout << "Is Loading?" << '\n';
 
+
+
     for(std::size_t i=0; i<initialSceneObjects; ++i) [[likely]]
     {
-        m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel(modelsName[i]), "../vendor/imageLoader/groundTexture.jpg"));
-        //m_renderableObjects.push_back(new RenderableObject(GetMeshes(modelsName[i])));
+        DEBUG("Initializing the initial scene objects...");
+        m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel(modelsName[i])));
+        //this->AddRenderableObject(modelsName[i]);
         std::cout << "Is static scene loader going to crash!" << '\n';
         m_renderableObjects[i]->m_position = positions[i];
+        std::cout << "Created an object successfully!" << '\n';
     }
 
 
+    float tempZ = m_renderableObjects[5]->m_position.z;
+    m_theta = 45.0f;
+    m_theta = glm::radians(m_theta);
+    m_renderableObjects[5]->m_position.z = glm::cos(m_theta)*m_renderableObjects[5]->m_position.z - glm::sin(m_theta)*m_renderableObjects[5]->m_position.y;
+    m_renderableObjects[5]->m_position.y = glm::sin(m_theta)*tempZ + glm::cos(m_theta)*m_renderableObjects[5]->m_position.y;
+
+
+
+    std::cout << "Black Hole z pos: " << m_renderableObjects[5]->m_position.z << '\n';
+    std::cout << "Black Hole y pos: " << m_renderableObjects[5]->m_position.y << '\n';
+    std::cout << "Angle: " << m_theta << '\n';
+
+    std::cout << "Lenght of Black Hole's rotation vector: " << glm::length(m_renderableObjects[5]->m_position) << '\n';
+
+
+
+#if 1
+
+    DEBUG("Walls loading...");
+    m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel("Wall")));
+    m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel("Wall")));
+    m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel("Wall")));
+    m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel("Door")));
+
+//    this->AddRenderableObject("Wall");
+//    this->AddRenderableObject("Wall");
+//    this->AddRenderableObject("Wall");
+//    this->AddRenderableObject("Door");
+
+
+
+    m_renderableObjects[7]->m_position.x -= 14.86f;
+    m_renderableObjects[7]->m_position.y -= 1.0f;
+    m_renderableObjects[7]->m_position.z += 10.0f;
+    m_renderableObjects[7]->Rotate(90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+
+    //m_renderableObjects[7]->Translate(glm::vec3(-14.86f, -1.0f, 10.0f));
+
+
+
+    m_renderableObjects[8]->m_position.x -= 0.0f;
+    m_renderableObjects[8]->m_position.y -= 1.0f;
+    m_renderableObjects[8]->m_position.z += 20.0f;
+
+
+    m_renderableObjects[9]->m_position.y += 1.0f;
+    m_renderableObjects[9]->m_position.z += 100.0f;
+    //m_renderableObjects[9]->Rotate(90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+
+    m_renderableObjects[10]->m_position.x -= 14.86f;
+    m_renderableObjects[10]->m_position.y -= 1.0f;
+    m_renderableObjects[10]->m_position.z -= 10.0f;
+    m_renderableObjects[10]->Scale(glm::vec3(1.0f, 1.0f, 1.0f));
+    m_renderableObjects[10]->Rotate(90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+
+#endif
+
+
+#if 1
     constexpr signed int initialGrounds = 5;
-    constexpr signed int initialNegGrounds = -5;
+    constexpr signed int initialNegGrounds = -1;
 
     //#pragma omp parallel for
     for(signed int j=initialNegGrounds; j<initialGrounds; ++j)
@@ -90,34 +146,19 @@ void Scene::LoadRenderableObjectsStatically()
         //#pragma omp parallel for
         for(signed int i=initialNegGrounds; i<initialGrounds; ++i)
         {
-            m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel("Ground"), "../vendor/imageLoader/clearRoadTexture.jpg"));
+            //m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel("Ground"), "../vendor/imageLoader/clearRoadTexture.jpg"));
+            m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel("Ground")));
             std::size_t lastEntityIndex = m_renderableObjects.size()-1;
             m_renderableObjects[lastEntityIndex]->m_position = glm::vec3(j*(20.0f), -1.0f, i*(20.0f));
         }
     }
+#endif
 
-
-//    const std::size_t totalCurrentObjects = m_renderableObjects.size();
-//    constexpr std::size_t totalBatchObjects = 1;
-//    const std::size_t iteratorEdge = totalBatchObjects + totalCurrentObjects;
-//    for(std::size_t i=totalCurrentObjects-1; i<iteratorEdge; ++i)
-//    {
-//        m_renderableObjects.push_back(new RenderableObject(GetModel<float>(modelsName[6])));
-//        m_renderableObjects[i]->m_position.x = rand() % 100;
-//        m_renderableObjects[i]->m_position.y = rand() % 100;
-//        m_renderableObjects[i]->m_position.z = rand() % 100;
-//    }
-
-
-
-
-//    omp_set_num_threads(0x8);
-//    #pragma omp parallel for  //if there are small amount of objects then using pragma won't result the expected
     for(RenderableObject *renderableObject: m_renderableObjects) [[likely]]
     {
-        renderableObject->LoadVertexObjects(8, true); //if we add texture then it will be 8
-        renderableObject->LoadTexture();
-        //renderableObject->LoadMeshes();
+        renderableObject->LoadMeshes();
+        //renderableObject->LoadVertexObjects(8, true); //if we add texture then it will be 8
+        //renderableObject->LoadTexture();
     }
 
 }
@@ -129,20 +170,24 @@ void Scene::CreateRenderableObject(const glm::vec3 &currentCameraTargetPos, cons
     Synapse::Audio *audio = new Synapse::Audio();
     audio->Play("../vendor/bell.wav");
 
-    m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel("Sphere"), "../vendor/imageLoader/basketballTexture.jpg"));
+    m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel("Sphere")));
     //this->AddRenderableObject("Sphere", "../vendor/imageLoader/basketballTexture.jpg");
     //m_renderableObjects.push_back(new RenderableObject(GetMeshes("Sphere")));
 
     std::size_t lastEntityIndex = m_renderableObjects.size()-1;
 
-    //check if the currently loaded renderable object is empty or not
-    if(m_renderableObjects[lastEntityIndex]->GetTotalIndicies() == 0)
-    {
-        m_renderableObjects.pop_back();
-    }
+//    //check if the currently loaded renderable object is empty or not
+//    if(m_renderableObjects[lastEntityIndex]->GetTotalIndicies() == 0)
+//    {
+//        m_renderableObjects.pop_back();
+//    }
 
-    m_renderableObjects[lastEntityIndex]->LoadVertexObjects(8, true); //if we add texture then it will be 8
-    m_renderableObjects[lastEntityIndex]->LoadTexture();
+//    m_renderableObjects[lastEntityIndex]->LoadVertexObjects(8, true); //if we add texture then it will be 8
+//    m_renderableObjects[lastEntityIndex]->LoadTexture();
+
+    //m_renderableObjects[lastEntityIndex]->Rotate(90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+
+    m_renderableObjects[lastEntityIndex]->LoadMeshes();
     //camera's target position is only targetting at -z
     float zToShift = -5.0f;
 
@@ -237,6 +282,10 @@ void Scene::RenderableObjectKeyboardMovement(GLFWwindow *window, std::size_t ind
 }
 
 
+float g_angleRotated = 0.0f;
+bool  g_stopRotating = false;
+
+
 void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch, float deltaTime)
 {
     if(m_renderableObjects.size() <= 0)
@@ -256,6 +305,29 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, 
     //m_renderableObjects[0]->m_position.z += 0.01f;
     //m_renderableObjects[6]->Rotate(1.0f, glm::vec3(0.0f, -1.0f, 0.0f));
 
+
+//    if(glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+//    {
+//        g_stopRotating = true;
+//    }
+//    else if(glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
+//    {
+//        g_stopRotating = false;
+//    }
+//
+//
+//    if(!g_stopRotating)
+//    {
+//        m_renderableObjects[5]->Rotate(0.05f, glm::vec3(-1.0f, 0.0f, 0.0f));
+//        g_angleRotated += 0.05f;
+//    }
+//
+//    if(g_angleRotated > 180.0f)
+//    {
+//        m_renderableObjects[5]->m_position = glm::vec3(100.0f, 0.0f, 100.0f);
+//        g_angleRotated = 0.0f;
+//    }
+
     std::cout << "Radius of rotation: " << glm::length(m_renderableObjects[6]->m_position) << '\n';
 
 
@@ -270,39 +342,20 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, 
         physics->Projectile(m_renderableObjects[i]->m_position, m_renderableObjects[i]->m_velocity, deltaTime2, m_renderableObjects[i]->m_initialVelocity, true, true, groundVerticalDistance);
         //physics->OrbitAround(m_renderableObjects[i]->m_position, m_renderableObjects[0]->m_position, m_theta);    //right now it's orbiting the origin
         //m_renderableObjects[i]->Rotate(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+        //m_renderableObjects[i]->Rotate(1.0f, true, false, true);
         //TransformComponent::Translate(m_renderableObjects[i], glm::vec3(0.0, 10.0f, 0.0f));
     }
 
-    m_theta += 0.1f;
+    //m_renderableObjects[10]->Rotate(1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+
+
+
+    //m_theta += 0.01f;
+
 
 #endif
 
     this->RenderableObjectKeyboardMovement(window, lastEntityIndex);
-
-//    if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-//    {
-//        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(0.0f, 1.0f/10.0f, 0.0f));
-//        m_renderableObjects[lastEntityIndex]->m_position.y += 1.0f/10.0f;
-//    }
-//
-//    if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-//    {
-//        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(0.0f, -1.0f/10.0f, 0.0f));
-//        m_renderableObjects[lastEntityIndex]->m_position.y -= 1.0f/10.0f;
-//    }
-//
-//    if(glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-//    {
-//        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(1.0f/10.0f, 0.0f, 0.0f));
-//        m_renderableObjects[lastEntityIndex]->m_position.x += 1.0f/10.0f;
-//    }
-//
-//    if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-//    {
-//        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(-1.0f/10.0f, 0.0f, 0.0f));
-//        m_renderableObjects[lastEntityIndex]->m_position.x -= 1.0f/10.0f;
-//    }
-
 
     std::cout << "Total renderable objects: " << m_renderableObjects.size() << '\n';    //this is causing crash
     std::cout << "Completed updating current scene!" << '\n';

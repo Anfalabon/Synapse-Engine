@@ -3,6 +3,7 @@
 #include <glad/glad.hpp>
 
 #include "Buffer.hpp"
+#include "../debug/LOG.hpp"
 
 #include <iostream>
 #include <array>
@@ -21,11 +22,16 @@ public:
 
     ~VertexBuffer()
     {
-        glDeleteBuffers(1, &_VBO);
+        DEBUG("Running VertexBuffer destructor!");
+        //glDeleteBuffers(1, &_VBO);
+        //#define __DELETE__BUFFER__
+        #ifdef __DELETE__BUFFER__
         if (_verticiesData != nullptr)
         {
             delete[] _verticiesData;
         }
+        #endif
+        DEBUG("Completed running VertexBuffer destructor!");
     }
 
     void SetVerticies(GLuint totalVerticies, float *verticiesData);

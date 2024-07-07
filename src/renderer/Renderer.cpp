@@ -87,7 +87,7 @@ void SceneRenderer::Render()
 
 
 
-void SceneRenderer::Render(Scene *scene)
+void SceneRenderer::Render(Scene *scene, Shader *sceneShaders)
 {
 
 
@@ -134,28 +134,25 @@ void SceneRenderer::Render(Scene *scene)
 //    scene->GetRenderableObject(1)->m_model = glm::translate(scene->GetRenderableObject(1)->m_model,
 //                                                            glm::vec3(0.0f, -1.0f/100.0f, 0.0f));
 
-
+    //#pragma omp parallel for
     for(std::size_t i=0; i < scene->GetTotalSceneObjects(); ++i)
     {
-        glBindTexture(GL_TEXTURE_2D, scene->GetRenderableObject(i)->GetTextureID());
-        scene->GetRenderableObject(i)->GetVA().Bind();
+        //glBindTexture(GL_TEXTURE_2D, scene->GetRenderableObject(i)->GetTextureID());
+        //scene->GetRenderableObject(i)->GetVA().Bind();
+
+        //glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, scene->GetRenderableObject(i)->GetMesh(0)._texture.GetTextureID());
+        scene->GetRenderableObject(i)->GetMesh(0)._VA.Bind();
 
         m_sceneShaders[0].SendMatrix4ToGPU("model", scene->GetRenderableObject(i)->m_model);
         m_sceneShaders[0].SendVector3ToGPU("position", scene->GetRenderableObject(i)->m_position);
 
-        //m_sceneShaders[1].UseProgram();
-        //DEBUG::__LOG__MANAGER__::GLM_LOG(scene->GetRenderableObject(i)->m_model);
-
         //render every object
-        //glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->GetTotalIndiciesOfMesh(0), GL_UNSIGNED_INT, 0);
-        glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->GetTotalIndicies(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->GetTotalIndiciesOfMesh(0), GL_UNSIGNED_INT, 0);
+        //glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->GetTotalIndicies(), GL_UNSIGNED_INT, 0);
 
-        //std::size_t currentObjectMeshes = scene->GetRenderableObject(i)->GetMeshTotalIndicies();
-        //for(std::size_t i=0; i<currentObjectMeshes; ++i)
-        //{
-        //    glDrawElements(GL_TRIANGLES, currentObjectMeshes, GL_UNSIGNED_INT, 0);
-        //}
     }
+
 
 
 

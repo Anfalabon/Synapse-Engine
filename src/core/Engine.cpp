@@ -293,6 +293,9 @@ void Engine::Update()
 
 #elif defined(__RUN__ENGINE__)
 
+
+
+
 void Engine::Run()
 {
     DEBUG::__LOG__MANAGER__::LOG("Going to run the Engine");
@@ -303,6 +306,8 @@ void Engine::Run()
 
     float deltaTime = 0.0f;
     float lastFrame = 0.0f;
+
+    float time = 0.0f;
 
     //core Engine loop
     while(m_window->IsRunning())
@@ -322,7 +327,19 @@ void Engine::Run()
         }
 
         //m_renderer->SetBackGround(0.2f, 0.3f, 0.3f, 1.0f);
-        m_renderer->SetBackGround(0.423f, 0.646f, 0.738f, 1.0f);
+        //will use sin function to move around day and night after a certain period
+
+        float r = 0.423f*0.5f*(1.0f+sin(time));
+        float g = 0.646f*0.5f*(1.0f+sin(time));
+        float b = 0.738f*0.5f*(1.0f+sin(time));
+        //m_renderer->SetBackGround(r, g, b, 1.0f);
+        m_renderer->SetBackGround(0.33899, 0.517702, 0.59143, 1.0f);
+        //m_renderer->SetBackGround(0.423f, 0.646f, 0.738f, 1.0f);    //day
+        //m_renderer->SetBackGround(0.0f, 0.0f, 0.0f, 1.0f);    //night
+
+
+
+
         m_renderer->UseZbuffer();
 
         //will use 'event' systems for these two bad boys
@@ -337,8 +354,13 @@ void Engine::Run()
         m_renderer->Render(m_scene);
         m_cameras[m_currentCameraIndex]->Update(m_scene->GetRenderableObjects());
 
+
+        std::cout << '\n' << r << ", " << g << ", " << b << '\n';
+
         //this is definately not for benchmarking
         renderingInfo::FramesPerSecond();
+
+        time += 0.001f;
 
         m_window->SwapBuffers();
         m_window->PollEvents();

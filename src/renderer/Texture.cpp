@@ -3,6 +3,8 @@
 #include <glad/glad.hpp>
 
 #include <iostream>
+#include <fstream>
+#include <string.h>
 
 
 namespace Synapse
@@ -67,6 +69,15 @@ void Texture::Free()
 
 void Texture::Load()
 {
+//    std::ifstream textureImageFile(m_filePath);
+//    if(textureImageFile.fail())
+//    {
+//        std::cout << "didn't find texture image file!" << '\n';
+//        std::cout << "Texture image file name: " << m_filePath << '\n';
+//        std::cin.get();    //this is definately bad for doing
+//        return;
+//    }
+
     //unsigned int texture;
     glGenTextures(1, &m_textureID);
     glBindTexture(GL_TEXTURE_2D, m_textureID); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
@@ -79,14 +90,19 @@ void Texture::Load()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    stbi_set_flip_vertically_on_load(true);
+    //stbi_set_flip_vertically_on_load(true);
 
     // load image, create texture and generate mipmaps
     int width, height, nrChannels;
-    m_imageData = stbi_load(m_filePath, &width, &height, &nrChannels, 0);
+    if(!m_loaded)
+    {
+        m_imageData = stbi_load(m_filePath, &m_width, &m_height, &m_nrChannels, 0);
+        //std::cin.get();
+    }
+
     if (m_imageData)
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, m_imageData);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGB, GL_UNSIGNED_BYTE, m_imageData);
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     else
@@ -94,7 +110,13 @@ void Texture::Load()
         std::cout << "Failed to load texture" << '\n';
         //std::cin.get();
     }
+
     stbi_image_free(m_imageData);
+
+//    if(m_imageData != nullptr)
+//    {
+//        stbi_image_free(m_imageData);
+//    }
 }
 
 

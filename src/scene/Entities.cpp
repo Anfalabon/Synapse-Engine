@@ -14,21 +14,22 @@ namespace Synapse
 {
 
 
-RenderableObject::RenderableObject(const std::pair<std::string, Synapse::Mesh> &model, const char *textureImageFilePath)
-    :
-     m_name(model.first.c_str()),
-     m_VB(model.second._totalVerticies, model.second._verticiesData),
-     m_EB(model.second._totalIndicies, model.second._indiciesData),
-     m_texture(textureImageFilePath){}
+//RenderableObject::RenderableObject(const std::pair<std::string, Synapse::Mesh> &model, const char *textureImageFilePath)
+//    :
+//     m_name(model.first.c_str()),
+//     m_VB(model.second._totalVerticies, model.second._verticiesData),
+//     m_EB(model.second._totalIndicies, model.second._indiciesData),
+//     m_texture(textureImageFilePath){}
 
 
-//RenderableObject::RenderableObject(const std::pair<std::string, Synapse::Mesh> &model)
-//{
-//    m_name = model.first.c_str();
-//    std::cout << "Going to load the first model mesh..." << '\n';
-//    m_meshes.push_back(Mesh());
-//    std::cout << "Finished loading the first model mesh..." << '\n';
-//}
+RenderableObject::RenderableObject(const std::pair<std::string, Synapse::Mesh> &model)
+{
+    std::cout << "Constructing an RenderableObject..." << '\n';
+    m_name = model.first.c_str();
+    std::cout << "Is mesh loading going to crash..." << '\n';
+    m_meshes.push_back(model.second);
+    std::cout << "Loaded mesh successfully!" << '\n';
+}
 
 
 
@@ -51,7 +52,15 @@ void RenderableObject::LoadMeshes()
 
         m_meshes[i]._VA.Unbind();
         m_meshes[i]._VB.Unbind();
+
+        //m_meshes[i]._texture.Load();
     }
+
+    for(std::size_t i=0; i<m_meshes.size(); ++i)
+    {
+        m_meshes[i]._texture.Load();
+    }
+
 }
 
 
@@ -59,29 +68,32 @@ void RenderableObject::LoadMeshes()
 
 void RenderableObject::LoadVertexObjects(unsigned short objectsInSingleVertex, bool addTexture)
 {
-    m_VA.Gen();
-    m_VB.Gen();
-    m_EB.Gen();
-
-    m_VA.Bind();
-    m_VB.Bind();
-    m_EB.Bind();
-
-    m_VA.SetVertexLayout(0, 3, objectsInSingleVertex);  //for Position
-    m_VA.SetVertexLayout(1, 3, objectsInSingleVertex);  //for Color
-    if(addTexture)
-    {
-        m_VA.EnableVertexAttribute(2, 2, objectsInSingleVertex);   //for Texture  //will have to choose others also 8 if we add texture
-    }
-
-    m_VA.Unbind();
-    m_VB.Unbind();
+//    std::cin.get();
+//    m_VA.Gen();
+//    m_VB.Gen();
+//    m_EB.Gen();
+//
+//    m_VA.Bind();
+//    m_VB.Bind();
+//    m_EB.Bind();
+//
+//    m_VA.SetVertexLayout(0, 3, objectsInSingleVertex);  //for Position
+//    m_VA.SetVertexLayout(1, 3, objectsInSingleVertex);  //for Color
+//    if(addTexture)
+//    {
+//        m_VA.EnableVertexAttribute(2, 2, objectsInSingleVertex);   //for Texture  //will have to choose others also 8 if we add texture
+//    }
+//
+//    m_VA.Unbind();
+//    m_VB.Unbind();
+//    //m_EB.Unbind();
 }
 
 
 void RenderableObject::LoadTexture()
 {
-    m_texture.Load();
+//    std::cin.get();
+//    m_texture.Load();
 }
 
 
@@ -94,6 +106,29 @@ void RenderableObject::Translate(const glm::vec3 &translationVec)
 void RenderableObject::Rotate(float angleToRotateDegrees, const glm::vec3 &rotationVec)
 {
     m_model = glm::rotate(m_model, glm::radians(angleToRotateDegrees), rotationVec);
+}
+
+
+static void RotateAroundTwoAxis(float &firstAxisPos, float &secondAxisPos, float m_theta)
+{
+    float tempZ = firstAxisPos;
+    firstAxisPos = glm::cos(m_theta)*firstAxisPos - glm::sin(m_theta)*secondAxisPos;
+    secondAxisPos = glm::sin(m_theta)*tempZ + glm::cos(m_theta)*secondAxisPos;
+}
+
+
+void RenderableObject::Rotate(float angleToRotateDegrees, bool x, bool y, bool z)
+{
+//    float m_theta = glm::radians(angleToRotateDegrees);
+
+    if(x && y)
+        RotateAroundTwoAxis(m_position.x, m_position.y, glm::radians(angleToRotateDegrees));
+    if(x && z)
+        RotateAroundTwoAxis(m_position.x, m_position.z, glm::radians(angleToRotateDegrees));
+    if(y && z)
+        RotateAroundTwoAxis(m_position.y, m_position.z, glm::radians(angleToRotateDegrees));
+
+
 }
 
 

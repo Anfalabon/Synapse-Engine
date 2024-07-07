@@ -238,11 +238,16 @@ void Shader::RemoveProgram()
 }
 
 
-unsigned int Shader::GetUniformLocation(const std::string &uniformName)
+unsigned int Shader::GetUniformLocation(const char *uniformName)
 {
-    //if()
+    if(m_uniformLocationCacheMap.find(uniformName) == m_uniformLocationCacheMap.end())
+    {
+        unsigned int uniformLocation = glGetUniformLocation(m_shaderProgramID, uniformName);
+        m_uniformLocationCacheMap[uniformName] = uniformLocation;
+        return uniformLocation;
+    }
+    return m_uniformLocationCacheMap[uniformName];
 }
-
 
 
 void Shader::SetMatrix4vf(const char *uniformMatrixName, glm::mat4 &model)
@@ -252,13 +257,15 @@ void Shader::SetMatrix4vf(const char *uniformMatrixName, glm::mat4 &model)
 
 void Shader::SendMatrix4ToGPU(const char *uniformMatrixName, glm::mat4 &model)
 {
-    glUniformMatrix4fv(glGetUniformLocation(m_shaderProgramID, uniformMatrixName), 1, GL_FALSE, glm::value_ptr(model));
+    glUniformMatrix4fv(this->GetUniformLocation(uniformMatrixName), 1, GL_FALSE, glm::value_ptr(model));
+    //glUniformMatrix4fv(glGetUniformLocation(m_shaderProgramID, uniformMatrixName), 1, GL_FALSE, glm::value_ptr(model));
 }
 
 
 void Shader::SendVector3ToGPU(const char *uniformVectorName, glm::vec3 &vector)
 {
-    glUniform3fv(glGetUniformLocation(m_shaderProgramID, uniformVectorName), 1, glm::value_ptr(vector));
+    glUniform3fv(this->GetUniformLocation(uniformVectorName), 1, glm::value_ptr(vector));
+    //glUniform3fv(glGetUniformLocation(m_shaderProgramID, uniformVectorName), 1, glm::value_ptr(vector));
 }
 
 

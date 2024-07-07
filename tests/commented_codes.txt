@@ -2172,3 +2172,64 @@ void RenderableObject::SetIndicies(GLuint totalIndicies, GLuint *indicies)
 //    m_name(""),
 //    m_meshes(meshes){}
 
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//std::size_t currentObjectMeshes = scene->GetRenderableObject(i)->GetMeshTotalIndicies();
+//for(std::size_t i=0; i<currentObjectMeshes; ++i)
+//{
+//    glDrawElements(GL_TRIANGLES, currentObjectMeshes, GL_UNSIGNED_INT, 0);
+//}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//m_renderableObjects.push_back(new RenderableObject(GetMeshes(modelsName[i])));
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel(modelsName[i]), "../vendor/imageLoader/groundTexture.jpg"));
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//    //will replace 'GetModel' function with an unordered map
+//    m_renderableObjects.push_back(new RenderableObject(GetModel<float>("Cube")));
+//    m_renderableObjects.push_back(new RenderableObject(GetModel<float>("Ground")));
+//    m_renderableObjects.push_back(new RenderableObject(GetModel<float>("Trapizoid")));
+//    m_renderableObjects.push_back(new RenderableObject(GetModel<float>("Pyramid")));
+//    m_renderableObjects.push_back(new RenderableObject(GetModel<float>("Cylinder")));
+//    m_renderableObjects.push_back(new RenderableObject(GetModel<float>("Icosphere")));
+//    m_renderableObjects.push_back(new RenderableObject(GetModel<float>("Sphere")));
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+//    const std::size_t totalCurrentObjects = m_renderableObjects.size();
+//    constexpr std::size_t totalBatchObjects = 1;
+//    const std::size_t iteratorEdge = totalBatchObjects + totalCurrentObjects;
+//    for(std::size_t i=totalCurrentObjects-1; i<iteratorEdge; ++i)
+//    {
+//        m_renderableObjects.push_back(new RenderableObject(GetModel<float>(modelsName[6])));
+//        m_renderableObjects[i]->m_position.x = rand() % 100;
+//        m_renderableObjects[i]->m_position.y = rand() % 100;
+//        m_renderableObjects[i]->m_position.z = rand() % 100;
+//    }
+
+

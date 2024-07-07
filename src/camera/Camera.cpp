@@ -678,6 +678,16 @@ void Camera::LookAtTarget()
 //    m_cameraUpVector = glm::normalize(glm::cross(m_cameraRightVector, Calculate::m_frontVector));
 
     m_view = glm::lookAt(m_physics->m_pos, m_targetPos, m_cameraUpVector);
+
+    glm::mat4 inverseViewMatrix = glm::inverse(m_view);
+    glm::vec3 cameraPos(inverseViewMatrix[3]);
+
+    if(cameraPos == m_physics->m_pos)
+    {
+        DEBUG("They are equal!");
+        //std::cin.get();
+    }
+
     //m_view = glm::rotate(m_view, 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 

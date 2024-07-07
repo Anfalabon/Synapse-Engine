@@ -30,13 +30,21 @@ void ModelLoader::SetModelsDataMap()
 
 #if 1
 
-    m_modelsMap["Cube"] = Mesh(cubeVerticiesData, cubeIndiciesData);
-    m_modelsMap["Ground"] = Mesh(groundVerticiesData, groundIndiciesData);
-    m_modelsMap["Trapizoid"] = Mesh(trapizoidVerticiesData, trapizoidIndiciesData);
-    m_modelsMap["Pyramid"] = Mesh(pyramidVerticesData, pyramidIndicesData);
-    m_modelsMap["Cylinder"] = Mesh(cylinderVerticiesData, cylinderIndiciesData);
-    m_modelsMap["Icosphere"] = Mesh(icosphereVerticiesData, icosphereIndiciesData);
-    m_modelsMap["Sphere"] = Mesh(sphereVerticiesData, sphereIndiciesData);
+    m_modelsMap["Cube"] = Mesh(cubeVerticiesData, cubeIndiciesData, "../vendor/imageLoader/images/grassTexture.jpg");
+    m_modelsMap["Ground"] = Mesh(groundVerticiesData, groundIndiciesData, "../vendor/imageLoader/images/clearRoadTexture.jpg");
+    m_modelsMap["Trapizoid"] = Mesh(trapizoidVerticiesData, trapizoidIndiciesData, "../vendor/imageLoader/images/groundTexture.jpg");
+    m_modelsMap["Pyramid"] = Mesh(pyramidVerticesData, pyramidIndicesData, "../vendor/imageLoader/images/oceanTexture.jpg");
+    m_modelsMap["Cylinder"] = Mesh(cylinderVerticiesData, cylinderIndiciesData, "../vendor/imageLoader/images/oceanTexture.jpg");
+    m_modelsMap["Icosphere"] = Mesh(icosphereVerticiesData, icosphereIndiciesData, "../vendor/imageLoader/images/groundTexture.jpg");
+    m_modelsMap["Sphere"] = Mesh(sphereVerticiesData, sphereIndiciesData, "../vendor/imageLoader/images/basketballTexture.jpg");
+    m_modelsMap["Wall"] = Mesh(wallVerticiesData, wallIndiciesData, "../vendor/imageLoader/images/brickTexture2.jpg");
+    m_modelsMap["Door"] = Mesh(doorVerticiesData, doorIndiciesData, "../vendor/imageLoader/images/doorTexture.jpg");
+    m_modelsMap["Bullet"] = Mesh(bulletVerticiesData, cylinderIndiciesData, "../vendor/imageLoader/images/clearRoadTexture.jpg");
+    m_modelsMap["Black Hole"] = Mesh(interstellerObjectVerticiesData, sphereIndiciesData, "");
+
+    //m_modelsMap["House"] = Mesh(doorVerticiesData, roofVerticiesData, wallVerticiesData, groundVerticiesData,
+    //                            doorIndiciesData, roofIndiciesData, wallIndiciesData, groundIndiciesData,
+    //                            "doorTexture.jpg", "roofTexture.jpg", "wallTexture.jpg", "groundTexture.jpg");
 
 #else
 

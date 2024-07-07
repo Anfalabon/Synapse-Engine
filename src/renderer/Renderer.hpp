@@ -70,7 +70,7 @@ public:
 
 
     void Render() override;
-    void Render(Scene *scene);  //will add std::vector<Shader> sceneShaders
+    void Render(Scene *scene, Shader *sceneShaders = new Shader());  //will add std::vector<Shader> sceneShaders
 
 #if defined(__UTILIZE__STANDARDCXX__THREADING___)
     void renderEntitiesPartially(std::size_t start, std::size_t end);

@@ -58,7 +58,7 @@ public:
 private:
 
 
-     unsigned int GetUniformLocation(const std::string &uniformName);
+     unsigned int GetUniformLocation(const char *uniformName);
 
      //ID's of the shaders
      GLuint m_vertexShaderID;
@@ -69,7 +69,7 @@ private:
      ShaderFile m_vertexShader;
      ShaderFile m_fragmentShader;
 
-     std::unordered_map<std::string, unsigned int> m_uniformLocationCacheMap;
+     std::unordered_map<const char*, unsigned int> m_uniformLocationCacheMap;   //utilizing the cache by validating it.
 
 };
 

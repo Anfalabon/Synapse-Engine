@@ -59,7 +59,7 @@ std::vector<unsigned int> generateSphereIndices(int latSegments, int longSegment
 
 int main()
 {
-    float radius = 1.0f;
+    float radius = 10.0f;
     int latSegments = 20;
     int longSegments = 20;
 
@@ -70,13 +70,12 @@ int main()
 
     for(std::size_t i=0; i<vertices.size(); ++i)
     {
-        float r = rand() % 2;
-        float g = rand() % 2;
-        float b = rand() % 2;
+        float r = 1;
+        float g = 1;
+        float b = 1;
 
-        float txtCoord1 = (1 + rand()) % 2;
-        float txtCoord2 = (1 + rand()) % 2;
-
+        float txtCoord1 = 0;
+        float txtCoord2 = 0;
 
         if(i%3 == 0) std::cout << " " << r << ", " << g << ", " << b << ", " << txtCoord1 << ", " << txtCoord2 << ",\n\n";
 
