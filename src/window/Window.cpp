@@ -1,27 +1,11 @@
+#include "../renderer/FrameBuffer.hpp"  //here including it before the 'Window.hpp' becuase glad should be included before any(or here GLFW) header
 #include "Window.hpp"
 
 namespace Synapse
 {
 
 
-//Window::Window(GLfloat WIDTH, GLfloat HEIGHT, const char* TITLE)
-//        : m_WIDTH(WIDTH), m_HEIGHT(HEIGHT), m_TITLE(TITLE)
-//{
-//    LOG("Running log from Window::Window()");
-//
-//    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-//    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-//    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-//
-//    m_window = glfwCreateWindow(m_WIDTH, m_HEIGHT, m_TITLE, NULL, NULL);
-//    if(!m_window)
-//    {
-//        std::cerr << "Failed to initialize window!" << '\n';
-//        terminate();
-//    }
-//    glfwMakeContextCurrent(m_window);
-//}
-//
+
 
 
 Window::Window(GLfloat WIDTH, GLfloat HEIGHT, const char* TITLE)
@@ -29,6 +13,15 @@ Window::Window(GLfloat WIDTH, GLfloat HEIGHT, const char* TITLE)
 {
     //m_window = glfwCreateWindow(m_WIDTH, m_HEIGHT, m_TITLE, NULL, NULL);
 }
+
+
+
+//void Window::FrameBufferSizeCallback(GLFWwindow *window, int WIDTH, int HEIGHT)
+//{
+//    glViewport(0, 0, WIDTH, HEIGHT);
+//}
+
+
 
 int8_t Window::Init()
 {
@@ -44,6 +37,8 @@ int8_t Window::Init()
         return -1;
     }
     glfwMakeContextCurrent(m_windowAddress);
+    glfwSetFramebufferSizeCallback(m_windowAddress, FrameBuffer::FrameBufferSizeCallBack);
+
     return 1;
 }
 

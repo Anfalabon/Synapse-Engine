@@ -52,6 +52,12 @@ void Engine::LoadWindow()
 
     m_window = new Window(1920.0f, 1080.0f, "Simulation Engine");
     bool isWindowInitSuccess = m_window->Init();
+    if(isWindowInitSuccess)
+    {
+        //Window::FrameBufferSizeCallback();
+        //std::cout << "Failed to initialize the window!" << '\n';
+        return;
+    }
     std::cout << "Initialized the window!" << '\n';
 }
 
@@ -65,13 +71,6 @@ int8_t Engine::LoadGLAD()
     }
     return 0;
 }
-
-
-void Engine::SetViewPort()
-{
-    glViewport(0, 0, m_window->WIDTH(), m_window->HEIGHT());
-}
-
 
 
 void Engine::LoadAudioEngine()
@@ -213,7 +212,7 @@ int8_t Engine::Init()
     this->LoadGLFW();
     this->LoadWindow(); //not loading the 'Window' causes uninitialization of GLAD too!
     this->LoadGLAD();
-    this->SetViewPort();
+    //this->SetViewPort();
     this->LoadAudioEngine();
     this->LoadScene();
     this->LoadRenderer();
@@ -370,8 +369,8 @@ void Engine::Run()
 
         time += 0.001f;
 
-        m_window->SwapBuffers();
-        //m_frameBuffer->SwapBuffers();
+        //m_window->SwapBuffers();
+        m_frameBuffer->SwapBuffers(m_window->WindowAddress());
         m_window->PollEvents();
     }
 

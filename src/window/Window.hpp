@@ -22,6 +22,7 @@ public:
 
 
     [[nodiscard]] int8_t Init();
+    //static void FrameBufferSizeCallback(GLFWwindow *window, int WIDTH, int HEIGHT);
     void Resize();
     void ExitOnEscape();
     void KeyPressedLog(){ DEBUG::__LOG__MANAGER__::LOG("key pressed!"); }

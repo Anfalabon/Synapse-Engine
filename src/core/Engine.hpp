@@ -9,6 +9,7 @@
 #include "../physics/PhysicsEngine.hpp"
 #include "../audio/Audio.hpp"
 #include "../scripts/ScriptingEngine.hpp"
+#include "../renderer/FrameBuffer.hpp"
 
 #include <vector>
 #include <unordered_map>
@@ -29,7 +30,6 @@ public:
     int8_t LoadGLFW();
     void   LoadWindow();
     int8_t LoadGLAD();
-    void   SetViewPort();
     void   LoadUI(){}
     void   LoadPhysicsEngine(){}
     void   LoadAudioEngine();
@@ -65,6 +65,7 @@ private:
     Synapse::Physics         *m_physics;
     Synapse::Audio           *m_audio;
     Synapse::ScriptingEngine *m_script;
+    Synapse::FrameBuffer     *m_frameBuffer;
 
     std::vector<Synapse::Camera*> m_cameras;
     unsigned short       m_currentCameraIndex;
