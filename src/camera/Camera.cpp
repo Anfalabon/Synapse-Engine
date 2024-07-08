@@ -554,7 +554,8 @@ void Camera::ChangeCameraMode(GLFWwindow *m_window)
         else if(M_CAMERA_MODE == CAMERA_MODES::INSPECTION_MODE)
         {
             M_CAMERA_MODE = CAMERA_MODES::GAME_MODE;
-            this->FallDown();
+            m_physics->FallDown();
+            //this->FallDown();
             //m_cameraPos.y = 0.0f;
         }
     }

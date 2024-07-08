@@ -60,18 +60,6 @@ public:
     static float GetPitch();
 
 
-    //this is the physics part
-    //will separate this physics part and generalize meaning the physics will work not only for the Camera but also for other Entities
-    //for some general physics stuffs will keep them in the Physics Engine class
-    bool WasCollided(){}
-    void InitVelocity(const glm::vec3 &velocity); //throw with initial velocity
-    void FallDown(){}
-    void Jump(){}
-    void ApplyVerticalMotions(){}
-
-    void ApplyPhysics(){}
-
-
     bool KeyPressed(GLFWwindow *m_window, const uint16_t KEYTOKEN);
     void GetKeyboardInput(GLFWwindow *window);
 

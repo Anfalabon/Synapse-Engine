@@ -30,16 +30,50 @@ CXXFLAGS+=$(CXX_INCLUDE_FLAGS)
 
 #SRC_FILES=../external/glad/src/glad.cpp ../src/Shader.cpp ../src/Window.cpp ../src/Camera.cpp ../src/core.cpp
 
-SRC_FILES=../src/scene/Entities.cpp ../src/entity/vertexObjects.cpp ../src/shader/Shader.cpp ../src/renderer/Renderer.cpp ../src/window/Window.cpp ../src/camera/Camera.cpp ../src/core/InitializeEngine.cpp ../src/core/main.cpp
+#SRC_FILES=../src/scene/Entities.cpp ../src/entity/vertexObjects.cpp ../src/shader/Shader.cpp ../src/renderer/Renderer.cpp ../src/window/Window.cpp ../src/camera/Camera.cpp ../src/core/InitializeEngine.cpp ../src/core/main.cpp
 EXTERNAL_SRC_FILES=../vendor/glad/src/glad.cpp
 OBJ_FILES=$(SRC_FILES:.cpp=.o)
 EXE=start_graphics_engine
 
-OBJ_FILES=obj/glad.o obj/stb_image.o obj/LOG.o obj/PhysicsEngine.o obj/Buffer.o obj/VertexArray.o obj/VertexBuffer.o obj/IndexBuffer.o obj/Mesh.o obj/ModelLoader.o obj/Entities.o obj/Transformation.o obj/vertexObjects.o obj/Shader.o obj/Texture.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Audio.o obj/Timer.o obj/Camera.o obj/ScriptingEngine.o obj/Engine.o obj/Application.o obj/main.o
+
+
+#SRC_FILES=obj/glad.cpp obj/stb_image.cpp obj/LOG.cpp obj/PhysicsEngine.cpp obj/Buffer.cpp obj/VertexArray.cpp obj/VertexBuffer.cpp obj/IndexBuffer.cpp obje/Mesh.cpp obj/ModelLoader.cpp obj/Entities.cpp obj/Transformation.cpp obje/vertexObjects.cpp obj/Shader.cpp obj/Texture.cpp obj/Scene.cpp obj/Renderer.cpp obj/Window.cpp obj/Audio.cpp obj/Timer.cpp obj/Camera.cpp obj/ScriptingEngine.cpp obj/Engine.cpp obj/Application.cpp obj/main.cpp
+
+
+OBJ_FILES=obj/glad.o \
+			obj/stb_image.o \
+			obj/LOG.o \
+			obj/PhysicsEngine.o \
+			obj/Buffer.o \
+			obj/VertexArray.o \
+			obj/VertexBuffer.o \
+			obj/IndexBuffer.o \
+			obj/Mesh.o \
+			obj/ModelLoader.o \
+			obj/Entities.o \
+			obj/Transformation.o \
+			obj/vertexObjects.o \
+			obj/Shader.o \
+			obj/Texture.o \
+			obj/Scene.o \
+			obj/Renderer.o \
+			obj/Window.o \
+			obj/Audio.o \
+			obj/Timer.o \
+			obj/Camera.o \
+			obj/ScriptingEngine.o \
+			obj/Engine.o \
+			obj/Application.o \
+			obj/main.o
 
 #-L../external/SFML-2.6.1/lib
 
-LDFLAGS=-L../src/shader -L../vendor/GLFW/lib -lglfw -L../vendor/glad/lib -lGL -L../vendor/irrKlang/bin/linux-gcc-64 -lIrrKlang -L../vendor/irrKlang/lib -lIrrKlang -L../vendor/LuaScriptingLibs -llua
+LDFLAGS=-L../src/shader \
+		-L../vendor/GLFW/lib -lglfw \
+		-L../vendor/glad/lib -lGL \
+		-L../vendor/irrKlang/bin/linux-gcc-64 -lIrrKlang -Wl, -rpath ../vendor/irrKlang/bin/linux-gcc-64 \
+		-L../vendor/irrKlang/lib -lIrrKlang \
+		-L../vendor/LuaScriptingLibs -llua \
 #export LD_LIBRARY_PATH=../src/external/SFML-2.6.1/lib
 
 
@@ -127,7 +161,7 @@ obj/ScriptingEngine.o: ../src/scripts/ScriptingEngine.cpp ../src/scripts/Scripti
 		$(CXX) $(CXXFLAGS) -c ../src/scripts/ScriptingEngine.cpp -o obj/ScriptingEngine.o
 
 
-obj/Engine.o: ../src/core/Engine.cpp ../src/core/Engine.hpp ../src/debug/LOG.hpp ../src/scene/Scene.hpp ../src/debug/RenderingInfoLog.hpp ../src/renderer/shader/Shader.hpp ../src/renderer/Renderer.hpp ../src/utils/RunParallel.hpp
+obj/Engine.o: ../src/core/Engine.cpp ../src/core/Engine.hpp ../src/debug/LOG.hpp ../src/scene/Scene.hpp ../src/debug/RenderingInfoLog.hpp ../src/renderer/shader/Shader.hpp ../src/renderer/Renderer.hpp ../src/utils/RunParallel.hpp ../src/audio/Audio.hpp ../src/scripts/ScriptingEngine.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/core/Engine.cpp -o obj/Engine.o
 
 obj/Application.o: ../src/core/Application.cpp ../src/core/Application.hpp ../src/core/Engine.hpp

@@ -3,6 +3,7 @@
 #include "../window/Window.hpp"
 #include "../utils/RunParallel.hpp"
 #include "../math/Transformation.hpp"
+#include "../utils/MemoryManager.hpp"
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -398,20 +399,20 @@ void Scene::Update(GLFWwindow *window, Synapse::Camera *camera, float deltaTime)
 
 void Scene::Clear()
 {
-    if(m_modelLoader != nullptr || m_physics != nullptr)
-    {
-        delete m_modelLoader;
-        delete m_physics;
-    }
+    MemoryManager::Clean<Synapse::ModelLoader>(m_modelLoader);
+    MemoryManager::Clean<Synapse::Physics>(m_physics);
+
+    m_wasClearMethodCalled = true;
 }
 
 
+//may cause error if 'Clear()' is already called for cleaning up all the memories allocated by Scene object
 Scene::~Scene()
 {
-    if(m_modelLoader != nullptr || m_physics != nullptr)
+    if(!m_wasClearMethodCalled)
     {
-        delete m_modelLoader;
-        delete m_physics;
+        MemoryManager::Clean<Synapse::ModelLoader>(m_modelLoader);
+        MemoryManager::Clean<Synapse::Physics>(m_physics);
     }
 }
 

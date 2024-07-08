@@ -43,7 +43,7 @@ public:
     bool   Restart();
     void   SelectCamera();
 
-    Window* GetWindow(){return m_window;}   //will remove this cause window will be inside 'Application' anyway
+    Synapse::Window* GetWindow(){return m_window;}   //will remove this cause window will be inside 'Application' anyway
 
     [[nodiscard]] int8_t Init();
 

@@ -2563,3 +2563,23 @@ float b = 0.738f*0.5f*(1.0f+sin(time));
 //                        m_cameras[m_currentCameraIndex]->GetPos(),
 //                        m_cameras[m_currentCameraIndex]->GetYaw(),
 //                        m_cameras[m_currentCameraIndex]->GetPitch(), deltaTime);
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//this is the physics part
+//will separate this physics part and generalize meaning the physics will work not only for the Camera but also for other Entities
+//for some general physics stuffs will keep them in the Physics Engine class
+bool WasCollided(){}
+void InitVelocity(const glm::vec3 &velocity); //throw with initial velocity
+void FallDown(){}
+void Jump(){}
+void ApplyVerticalMotions(){}
+
+void ApplyPhysics(){}

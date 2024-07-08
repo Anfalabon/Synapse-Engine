@@ -79,6 +79,10 @@ private:
 
 
 
+    bool m_wasClearMethodCalled = false;    //this is for preventing double free(once in 'Clear()' method and again in the destructor)
+
+
+
 };
 
 

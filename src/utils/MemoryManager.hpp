@@ -1,11 +1,12 @@
 #pragma once
 
-
+namespace Synapse
+{
 
 namespace MemoryManager
 {
 
-static bool g_wasShutDownMethodCalled = false;
+inline bool g_wasShutDownMethodCalled = false;
 
 static void Initializer()
 {
@@ -35,4 +36,9 @@ unsigned int GetPointerArraySize(T *arr)
 }
 
 }   //namespace MemoryManager
+
+
+}
+
+
 

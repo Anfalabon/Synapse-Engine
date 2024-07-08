@@ -270,9 +270,10 @@ void Engine::SelectCamera()
 
 bool Engine::Restart()
 {
-    return (glfwGetKey(m_window->WindowAddress(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
+    return ((glfwGetKey(m_window->WindowAddress(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
             glfwGetKey(m_window->WindowAddress(), GLFW_KEY_LEFT_ALT) == GLFW_PRESS &&
-            glfwGetKey(m_window->WindowAddress(), GLFW_KEY_R) == GLFW_PRESS) ? true : false;
+            glfwGetKey(m_window->WindowAddress(), GLFW_KEY_R) == GLFW_PRESS) ||
+            m_script->Changed()) ? true : false;
 }
 
 
@@ -318,6 +319,12 @@ void Engine::Run()
 
     float time = 0.0f;
 
+    //once it starts to play it won't stop (even for the entire life of the program)
+    //will make a function called 'Stop()' or 'Pause()' to stop it.
+
+    //m_audio->Play("../vendor/bell.wav");
+    //m_audio->Play("../vendor/Alexander-blu-music-style.wav");
+
     //core Engine loop
     while(m_window->IsRunning())
     {
@@ -332,14 +339,16 @@ void Engine::Run()
         {
             m_engineRestart = true;
             m_window->ShutDown();
+            //exit(1);
             break;
         }
-
 
         //restart the engine whenever the script changes
         if(m_script->Changed())
         {
-            m_engineRestart = true;
+            return;
+            system("make run");
+            exit(1);
         }
 
         m_renderer->SetBackGround(0.2f, 0.3f, 0.3f, 1.0f);
@@ -350,15 +359,11 @@ void Engine::Run()
         //will use 'event' systems for these two bad boys
         m_window->GetKeyboardInput();
 
-        //m_audio->Play("../vendor/bell.wav");
-
         this->SelectCamera();
         m_cameras[m_currentCameraIndex]->GetKeyboardInput(m_window->WindowAddress());
         m_scene->Update(m_window->WindowAddress(), m_cameras[m_currentCameraIndex], deltaTime);
         m_renderer->Render(m_scene);
         m_cameras[m_currentCameraIndex]->Update(m_scene->GetRenderableObjects());
-
-
 
         //this is definately not for benchmarking
         renderingInfo::FramesPerSecond();
@@ -377,6 +382,8 @@ void Engine::Run()
 
 void Engine::ShutDown()
 {
+    m_scene->Clear();
+
     //thought of letting the os do this.
     //but more writing is kind of fun :)
     MemoryManager::Clean<Synapse::Camera>(m_camera);
