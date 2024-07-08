@@ -8,6 +8,7 @@
 #include "../renderer/Renderer.hpp"
 #include "../physics/PhysicsEngine.hpp"
 #include "../audio/Audio.hpp"
+#include "../scripts/ScriptingEngine.hpp"
 
 #include <vector>
 #include <unordered_map>
@@ -31,7 +32,7 @@ public:
     void   SetViewPort();
     void   LoadUI(){}
     void   LoadPhysicsEngine(){}
-    void   LoadAudioEngine(){}
+    void   LoadAudioEngine();
     void   LoadNetworkEngine(){}
     void   LoadAIEngine(){}
     void   LoadScene();
@@ -57,14 +58,15 @@ public:
 
 private:
 
-    Window          *m_window;
-    Camera          *m_camera;
-    Scene           *m_scene;
-    SceneRenderer   *m_renderer;
-    Physics         *m_physics;
-//    Audio           *m_audio;
+    Synapse::Window          *m_window;
+    Synapse::Camera          *m_camera;
+    Synapse::Scene           *m_scene;
+    Synapse::SceneRenderer   *m_renderer;
+    Synapse::Physics         *m_physics;
+    Synapse::Audio           *m_audio;
+    Synapse::ScriptingEngine *m_script;
 
-    std::vector<Camera*> m_cameras;
+    std::vector<Synapse::Camera*> m_cameras;
     unsigned short       m_currentCameraIndex;
 public:
     bool                 m_engineRestart : 1;   //using bit fields for decreasing the size of a bool from 1 byte to 1 bit

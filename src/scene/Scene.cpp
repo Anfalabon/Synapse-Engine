@@ -3,7 +3,6 @@
 #include "../window/Window.hpp"
 #include "../utils/RunParallel.hpp"
 #include "../math/Transformation.hpp"
-#include "../audio/Audio.hpp"
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -33,12 +32,12 @@ namespace Synapse
 
 void Scene::Init()
 {
-    m_modelLoader = new ModelLoader();
+    m_modelLoader = new Synapse::ModelLoader();
     m_modelLoader->SetModelsDataMap();
-    physics = new Physics();
+    m_physics = new Synapse::Physics();
 
     //SetModelsMapData();
-    this->LoadRenderableObjectsStatically();
+    this->LoadInitialRenderableObjects();
 }
 
 
@@ -63,7 +62,7 @@ void Scene::Init()
 //}
 
 
-void Scene::LoadRenderableObjectsStatically()
+void Scene::LoadInitialRenderableObjects()
 {
     //namespace data = modelsData;
 
@@ -188,51 +187,58 @@ void Scene::LoadRenderableObjectsStatically()
 
 
 
-void Scene::CreateRenderableObject(const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch)
+void lm()
 {
-    Synapse::Audio *audio = new Synapse::Audio();
-    audio->Play("../vendor/bell.wav");
+    std::cin.get();
+}
+
+
+
+void Scene::CreateRenderableObject(Synapse::Camera const *camera)
+{
 
     m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel("Sphere")));
-    //this->AddRenderableObject("Sphere", "../vendor/imageLoader/basketballTexture.jpg");
-    //m_renderableObjects.push_back(new RenderableObject(GetMeshes("Sphere")));
 
     std::size_t lastEntityIndex = m_renderableObjects.size()-1;
 
-//    //check if the currently loaded renderable object is empty or not
-//    if(m_renderableObjects[lastEntityIndex]->GetTotalIndicies() == 0)
-//    {
-//        m_renderableObjects.pop_back();
-//    }
+    //check if the currently loaded renderable object is empty or not
+    if(m_renderableObjects[lastEntityIndex]->GetTotalIndiciesOfMesh(0) == 0)
+    {
+        m_renderableObjects.pop_back();
+        return;
+    }
 
-//    m_renderableObjects[lastEntityIndex]->LoadVertexObjects(8, true); //if we add texture then it will be 8
-//    m_renderableObjects[lastEntityIndex]->LoadTexture();
-
-    //m_renderableObjects[lastEntityIndex]->Rotate(90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+    //m_audio->Play("../vendor/bell.wav");
+    //delete m_audio;
+    std::cout << "Total renderable objects2: " << m_renderableObjects.size() << '\n';    //this is causing crash
+    //lm();
 
     m_renderableObjects[lastEntityIndex]->LoadMeshes();
+    //m_renderableObjects[lastEntityIndex]->Rotate(90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+
     //camera's target position is only targetting at -z
     float zToShift = -5.0f;
 
-    //m_renderableObjects[lastEntityIndex]->Translate(currentCameraTargetPos + glm::vec3(0.0f, 0.0f, zToShift));
-    m_renderableObjects[lastEntityIndex]->m_position += currentCameraTargetPos + glm::vec3(0.0f, 0.0f, zToShift);
+    //m_renderableObjects[lastEntityIndex]->m_position += currentCameraTargetPos + glm::vec3(0.0f, 0.0f, zToShift);
+    m_renderableObjects[lastEntityIndex]->m_position += camera->GetTargetPos() + glm::vec3(0.0f, 0.0f, zToShift);
+
     //the model matrix will be modified using 'SendMatrix4ToGPU()'
 
-    glm::vec3 velocity = currentCameraTargetPos - cameraPos;    //don't need to normalize if we access the front vector
+    //glm::vec3 velocity = currentCameraTargetPos - cameraPos;    //don't need to normalize if we access the front vector
+    glm::vec3 velocity = camera->GetTargetPos() - camera->GetPos();
 
     m_renderableObjects[lastEntityIndex]->m_velocity.x = velocity.x;
     m_renderableObjects[lastEntityIndex]->m_velocity.z = velocity.z;
 
     m_renderableObjects[lastEntityIndex]->m_initialVelocity = m_renderableObjects[lastEntityIndex]->m_velocity;
-    m_renderableObjects[lastEntityIndex]->m_initialVelocity.y = glm::abs(cameraPos.y) * 0.1f; //here cameras direction vectors 'y' component also matters
+    m_renderableObjects[lastEntityIndex]->m_initialVelocity.y = glm::abs(camera->GetPos().y) * 0.1f; //here cameras direction vectors 'y' component also matters
 
-    delete audio;
 }
 
 
 
 
-void Scene::LoadRenderableObjectDynamically(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch)
+void Scene::LoadRenderableObjectDynamically(GLFWwindow *window, Synapse::Camera const *camera)
 {
     bool leftMouseButtonClicked = true;
 
@@ -246,7 +252,7 @@ void Scene::LoadRenderableObjectDynamically(GLFWwindow *window, const glm::vec3 
     {
         m_dynamicRenderableObjectLoaderRunning = true;
         DEBUG::__LOG__MANAGER__::LOG("PRESSED Dynamic Entity Loader!");
-        this->CreateRenderableObject(currentCameraTargetPos, cameraPos, yaw, pitch);
+        this->CreateRenderableObject(camera);
     }
 
 }
@@ -309,7 +315,8 @@ float g_angleRotated = 0.0f;
 bool  g_stopRotating = false;
 
 
-void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch, float deltaTime)
+//void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch, float deltaTime)
+void Scene::Update(GLFWwindow *window, Synapse::Camera const *camera, float deltaTime)
 {
     if(m_renderableObjects.size() <= 0)
     {
@@ -317,7 +324,7 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, 
     }
 
     //these will be inside the 'EntityLoader' class(maybe)
-    this->LoadRenderableObjectDynamically(window, currentCameraTargetPos, cameraPos, yaw, pitch);
+    this->LoadRenderableObjectDynamically(window, camera);
     this->RemoveRenderableObjectDynamically(window);
 
     std::size_t lastEntityIndex = m_renderableObjects.size()-1;
@@ -363,7 +370,7 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, 
     //#pragma omp parallel for
     for (std::size_t i = 6; i < m_renderableObjects.size(); ++i)
     {
-        physics->Projectile(m_renderableObjects[i]->m_position, m_renderableObjects[i]->m_velocity, deltaTime2, m_renderableObjects[i]->m_initialVelocity, true, true, groundVerticalDistance);
+        m_physics->Projectile(m_renderableObjects[i]->m_position, m_renderableObjects[i]->m_velocity, deltaTime2, m_renderableObjects[i]->m_initialVelocity, true, true, groundVerticalDistance);
         //physics->OrbitAround(m_renderableObjects[i]->m_position, m_renderableObjects[0]->m_position, m_theta);    //right now it's orbiting the origin
         //m_renderableObjects[i]->Rotate(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
         //m_renderableObjects[i]->Rotate(1.0f, true, false, true);
@@ -381,17 +388,31 @@ void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, 
 
     this->RenderableObjectKeyboardMovement(window, lastEntityIndex);
 
+
     std::cout << "Total renderable objects: " << m_renderableObjects.size() << '\n';    //this is causing crash
     std::cout << "Completed updating current scene!" << '\n';
+
 }
 
 
 
+void Scene::Clear()
+{
+    if(m_modelLoader != nullptr || m_physics != nullptr)
+    {
+        delete m_modelLoader;
+        delete m_physics;
+    }
+}
+
 
 Scene::~Scene()
 {
-    delete m_modelLoader;
-    delete physics;
+    if(m_modelLoader != nullptr || m_physics != nullptr)
+    {
+        delete m_modelLoader;
+        delete m_physics;
+    }
 }
 
 

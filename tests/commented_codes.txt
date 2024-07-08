@@ -2245,3 +2245,314 @@ void RenderableObject::SetIndicies(GLuint totalIndicies, GLuint *indicies)
 //        std::cin.get();    //this is definately bad for doing
 //        return;
 //    }
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+void LoadVertexObjects(unsigned short objectsInSingleVertex = 0, bool addTexture = false);
+void LoadTexture();
+
+
+void RenderableObject::LoadVertexObjects(unsigned short objectsInSingleVertex, bool addTexture)
+{
+//    std::cin.get();
+//    m_VA.Gen();
+//    m_VB.Gen();
+//    m_EB.Gen();
+//
+//    m_VA.Bind();
+//    m_VB.Bind();
+//    m_EB.Bind();
+//
+//    m_VA.SetVertexLayout(0, 3, objectsInSingleVertex);  //for Position
+//    m_VA.SetVertexLayout(1, 3, objectsInSingleVertex);  //for Color
+//    if(addTexture)
+//    {
+//        m_VA.EnableVertexAttribute(2, 2, objectsInSingleVertex);   //for Texture  //will have to choose others also 8 if we add texture
+//    }
+//
+//    m_VA.Unbind();
+//    m_VB.Unbind();
+//    //m_EB.Unbind();
+}
+
+
+void RenderableObject::LoadTexture()
+{
+//    std::cin.get();
+//    m_texture.Load();
+}
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+//    [[nodiscard]] inline VertexArray&  GetVA(){return m_VA;}
+//    [[nodiscard]] inline VertexBuffer& GetVB(){return m_VB;}
+//    [[nodiscard]] inline IndexBuffer&  GetEB(){return m_EB;}
+
+//    [[nodiscard]] inline unsigned int GetTotalIndicies(){return m_EB.GetTotalIndicies();}
+//    [[nodiscard]] inline unsigned int GetTotalMeshes(){return m_meshes.size();}
+//    [[nodiscard]] inline unsigned int GetTextureID(){return m_texture.GetTextureID();}
+
+
+
+//    VertexArray    m_VA;
+//    VertexBuffer   m_VB;
+//    IndexBuffer    m_EB;
+//    Texture        m_texture;
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//RenderableObject::RenderableObject(const std::pair<std::string, Synapse::Mesh> &model, const char *textureImageFilePath)
+//    :
+//     m_name(model.first.c_str()),
+//     m_VB(model.second._totalVerticies, model.second._verticiesData),
+//     m_EB(model.second._totalIndicies, model.second._indiciesData),
+//     m_texture(textureImageFilePath){}
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    //this is for faster memory access
+    //unsigned int *p = &scene->m_renderableObjects[0]->m_EB._totalIndicies;
+    //unsigned int *p = &scene->GetRenderableObject(0)->GetEB().GetTotalIndicies();
+    //*(p + i*sizeof(RenderableObject));
+
+//    scene->GetRenderableObject(0)->GetShader().SendMatrix4ToGPU("model", scene->GetRenderableObject(0)->m_model);
+
+
+
+
+//    scene->GetRenderableObject(0)->m_model = glm::translate(scene->GetRenderableObject(0)->m_model,
+//                                                            glm::vec3(0.0f, 1.0f/100.0f, 0.0f));
+//
+//    scene->GetRenderableObject(1)->m_model = glm::translate(scene->GetRenderableObject(1)->m_model,
+//                                                            glm::vec3(0.0f, -1.0f/100.0f, 0.0f));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+#pragma once
+
+#include "Mesh.hpp"
+#include "ModelsData.hpp"
+//#include "ModelsDataVector.hpp"
+
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+
+
+namespace Synapse
+{
+
+
+
+//ModelLoader *modelLoader = new ModelLoader();
+//
+//g_modelMap["Cube"] = Model(modelLoader->LoadVerticies("filePath", "txt"), modelLoader->LoadIndicies("filePath", "txt"));
+//
+////do error checking eg. if the models verticies and indicies data's were loaded correctly
+//
+//delete modelLoader;
+
+
+
+struct Model
+{
+    const std::string name;
+    Mesh md;
+};
+
+//inline std::unordered_map<std::string, std::vector<Mesh>> g_modelMap;
+inline std::unordered_map<std::string, Mesh> g_modelMap;
+
+
+inline void SetModelsMapData()
+{
+    //g_modelMap["Cube"] = Mesh("../src/scene/models/sphere/verticies.txt", "../src/scene/models/sphere/indicies.txt");
+#if 0
+
+    g_modelMap["House"] = Mesh();
+    g_modelMap["Cube"] = Mesh(cubeVerticiesData, cubeIndiciesData);
+    g_modelMap["Ground"] = Mesh(groundVerticiesData, groundIndiciesData);
+    g_modelMap["Trapizoid"] = Mesh(trapizoidVerticiesData, trapizoidIndiciesData);
+    g_modelMap["Pyramid"] = Mesh(pyramidVerticesData, pyramidIndicesData);
+    g_modelMap["Cylinder"] = Mesh(cylinderVerticiesData, cylinderIndiciesData);
+    g_modelMap["Icosphere"] = Mesh(icosphereVerticiesData, icosphereIndiciesData);
+    g_modelMap["Sphere"] = Mesh(sphereVerticiesData, sphereIndiciesData);
+//    g_modelMap["Street Light"] = Mesh(cubeVerticiesData, cubeIndiciesData), Mesh(cylinderVerticiesData, cylinderIndiciesData);
+
+#else
+
+    //std::cout << "Cube is going to load..." << '\n';
+
+    //Mesh m = Mesh();
+
+    g_modelMap["house"] = Mesh();
+
+    g_modelMap["Cube"] = Mesh(cubeVerticiesData, cubeTotalVerticies, cubeIndiciesData, cubeTotalIndicies);
+    g_modelMap["Ground"] = Mesh(groundVerticiesData, groundTotalVerticies, groundIndiciesData, groundTotalIndicies);
+    g_modelMap["Trapizoid"] = Mesh(trapizoidVerticiesData, trapizoidTotalVerticies, trapizoidIndiciesData, trapizoidTotalIndicies);
+    g_modelMap["Pyramid"] = Mesh(pyramidVerticesData,  pyramidTotalVerticies, pyramidIndicesData, pyramidTotalIndicies);
+    g_modelMap["Cylinder"] = Mesh(cylinderVerticiesData, cylinderTotalVerticies, cylinderIndiciesData, cylinderTotalIndicies);
+    g_modelMap["Icosphere"] = Mesh(icosphereVerticiesData, icosphereTotalVerticies, icosphereIndiciesData, icosphereTotalIndicies);
+    g_modelMap["Sphere"] = Mesh(sphereVerticiesData, sphereTotalVerticies, sphereIndiciesData, sphereTotalIndicies);
+
+
+#endif
+}
+
+
+
+inline Model GetModel(const std::string &modelName)
+{
+    if(g_modelMap.begin() != g_modelMap.end())
+    {
+        return {modelName, g_modelMap[modelName]};
+    }
+    return {modelName, Mesh()};
+}
+
+
+inline Mesh GetMeshes(const std::string &modelsName)
+{
+    if(g_modelMap.begin() != g_modelMap.end())
+    {
+        return g_modelMap[modelsName];
+    }
+    return Mesh();
+}
+
+
+
+
+//#include <iostream>
+//#include <vector>
+//#include <unordered_map>
+//
+//
+//class Mesh
+//{
+//public:
+//    Mesh(const std::string &&){};
+//    ~Mesh() = default;
+//};
+//
+//
+//inline std::unordered_map<std::string, std::vector<Mesh>> g_modelsMap;
+//
+//
+//void SetModelsMap()
+//{
+//    g_modelsMap["Cube"] = {Mesh("Cube")};
+//    g_modelsMap["House"] = {Mesh("Ground"), Mesh("Door"), Mesh("Balcony"), Mesh("Tree"), Mesh("Roof")};
+//}
+//
+//
+//std::vector<Mesh> GetMeshes(const std::string &modelName)
+//{
+//    if(g_modelsMap.begin() != g_modelsMap.end())
+//    {
+//        return g_modelsMap[modelName];
+//    }
+//    return {};
+//}
+//
+//
+//class GameObject
+//{
+//public:
+//    GameObject() = default;
+//    explicit GameObject(const std::vector<Mesh> &&meshes)
+//    {
+//        m_meshes = std::move(meshes);
+//    }
+//    ~GameObject() = default;
+//private:
+//    std::vector<Mesh> m_meshes;
+//};
+//
+//
+//int main()
+//{
+//    SetModelsMap();
+//    GameObject *house = new GameObject(GetMeshes("House"));
+//
+//    delete house;
+//
+//    return 0;
+//}
+
+
+
+
+
+}
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+float r = 0.423f*0.5f*(1.0f+sin(time));
+float g = 0.646f*0.5f*(1.0f+sin(time));
+float b = 0.738f*0.5f*(1.0f+sin(time));
+//m_renderer->SetBackGround(r, g, b, 1.0f);
+//m_renderer->SetBackGround(0.33899, 0.517702, 0.59143, 1.0f);
+//m_renderer->SetBackGround(0.423f, 0.646f, 0.738f, 1.0f);    //day
+//m_renderer->SetBackGround(0.0f, 0.0f, 0.0f, 1.0f);    //night
+
+

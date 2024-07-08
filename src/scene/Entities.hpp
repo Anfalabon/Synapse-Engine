@@ -28,21 +28,11 @@ public:
     RenderableObject() = delete;
     //explicit RenderableObject(const std::pair<std::string, Mesh> &model, const char *textureImageFilePath);
     explicit RenderableObject(const std::pair<std::string, Mesh> &model);
-    //explicit RenderableObject(Model modelData);
     //explicit RenderableObject(const std::vector<Mesh> &meshes);
     ~RenderableObject();
 
     void LoadMeshes();
-    void LoadVertexObjects(unsigned short objectsInSingleVertex = 0, bool addTexture = false);
-    void LoadTexture();
 
-//    [[nodiscard]] inline VertexArray&  GetVA(){return m_VA;}
-//    [[nodiscard]] inline VertexBuffer& GetVB(){return m_VB;}
-//    [[nodiscard]] inline IndexBuffer&  GetEB(){return m_EB;}
-
-//    [[nodiscard]] inline unsigned int GetTotalIndicies(){return m_EB.GetTotalIndicies();}
-//    [[nodiscard]] inline unsigned int GetTotalMeshes(){return m_meshes.size();}
-//    [[nodiscard]] inline unsigned int GetTextureID(){return m_texture.GetTextureID();}
 
     [[nodiscard]] inline unsigned int GetTotalIndiciesOfMesh(std::size_t index)
     {
@@ -86,11 +76,6 @@ private:
 private:
 
     std::vector<Mesh> m_meshes;
-
-//    VertexArray    m_VA;
-//    VertexBuffer   m_VB;
-//    IndexBuffer    m_EB;
-//    Texture        m_texture;
 
 public:
     glm::vec3 m_position = glm::vec3(0.0f, 0.0f, 0.0f);

@@ -52,8 +52,8 @@ public:
     void UpdateSpeed();
     void SetCurrentObjectInfo(const glm::vec3 &maxObjectRange, const glm::vec3 &minObjectRange);
     void SetDirectionVector();
-    auto GetPos()->glm::vec3{return m_physics->m_pos;}
-    auto GetTargetPos()->glm::vec3{return m_targetPos;}
+    inline auto GetPos()->glm::vec3 const {return m_physics->m_pos;}
+    inline auto GetTargetPos()->glm::vec3 const {return m_targetPos;}
     auto GetFrontVector()->glm::vec3;
     auto GetDirectionVector()->glm::vec3{return m_directionVector;}
     static float GetYaw();

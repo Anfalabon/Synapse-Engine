@@ -70,6 +70,7 @@ public:
 
 
     void Render() override;
+    static void RenderScenePartially(Scene *scene, std::vector<Shader> &sceneShaders, std::size_t first, std::size_t last);   //this is for the Parallelism
     void Render(Scene *scene, Shader *sceneShaders = new Shader());  //will add std::vector<Shader> sceneShaders
 
 #if defined(__UTILIZE__STANDARDCXX__THREADING___)

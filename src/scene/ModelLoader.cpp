@@ -32,10 +32,12 @@ void ModelLoader::CreateFrequentlyLoadedTextures()
     Texture sphereTexture("../vendor/imageLoader/images/basketballTexture.jpg");
     sphereTexture.Load();
 
+    //Texture bulletTexture("../vendor/imageLoader/images/clearRoadTexture.jpg");
+    //bulletTexture.Load();
+
     m_modelsMap["Ground"] = Mesh(groundVerticiesData, groundIndiciesData, groundTexture);
     m_modelsMap["Sphere"] = Mesh(sphereVerticiesData, sphereIndiciesData, sphereTexture);
-
-
+    m_modelsMap["Bullet"] = Mesh(bulletVerticiesData, cylinderIndiciesData, "");
 }
 
 
@@ -71,17 +73,6 @@ void ModelLoader::SetModelsDataMap()
 
 
 
-
-
-
-
-
-
-
-
-
-
-
     m_modelsMap["Cube"] = Mesh(cubeVerticiesData, cubeIndiciesData, "../vendor/imageLoader/images/grassTexture.jpg");
     //m_modelsMap["Ground"] = Mesh(groundVerticiesData, groundIndiciesData, "../vendor/imageLoader/images/clearRoadTexture.jpg");
     m_modelsMap["Trapizoid"] = Mesh(trapizoidVerticiesData, trapizoidIndiciesData, "../vendor/imageLoader/images/groundTexture.jpg");
@@ -91,7 +82,7 @@ void ModelLoader::SetModelsDataMap()
     //m_modelsMap["Sphere"] = Mesh(sphereVerticiesData, sphereIndiciesData, "../vendor/imageLoader/images/basketballTexture.jpg");
     m_modelsMap["Wall"] = Mesh(wallVerticiesData, wallIndiciesData, "../vendor/imageLoader/images/brickTexture2.jpg");
     m_modelsMap["Door"] = Mesh(doorVerticiesData, doorIndiciesData, "../vendor/imageLoader/images/doorTexture.jpg");
-    m_modelsMap["Bullet"] = Mesh(bulletVerticiesData, cylinderIndiciesData, "../vendor/imageLoader/images/clearRoadTexture.jpg");
+    //m_modelsMap["Bullet"] = Mesh(bulletVerticiesData, cylinderIndiciesData, "../vendor/imageLoader/images/clearRoadTexture.jpg");
     m_modelsMap["Black Hole"] = Mesh(interstellerObjectVerticiesData, sphereIndiciesData, "");
 
     //m_modelsMap["House"] = Mesh(doorVerticiesData, roofVerticiesData, wallVerticiesData, groundVerticiesData,

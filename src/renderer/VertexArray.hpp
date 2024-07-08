@@ -5,6 +5,10 @@
 #include "VertexBuffer.hpp"
 #include "IndexBuffer.hpp"
 
+//#include <src/scene/VertexBuffer.hpp>
+//#include <src/scene/IndexBuffer.hpp>
+
+
 #include <iostream>
 #include <array>
 #include <vector>

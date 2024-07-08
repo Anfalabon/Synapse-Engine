@@ -29,7 +29,6 @@ struct Threading
 }
 
 
-
 ////For instance it works like this
 inline void compute_in_parallel()
 {

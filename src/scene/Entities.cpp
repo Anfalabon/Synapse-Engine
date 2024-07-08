@@ -14,14 +14,6 @@ namespace Synapse
 {
 
 
-//RenderableObject::RenderableObject(const std::pair<std::string, Synapse::Mesh> &model, const char *textureImageFilePath)
-//    :
-//     m_name(model.first.c_str()),
-//     m_VB(model.second._totalVerticies, model.second._verticiesData),
-//     m_EB(model.second._totalIndicies, model.second._indiciesData),
-//     m_texture(textureImageFilePath){}
-
-
 RenderableObject::RenderableObject(const std::pair<std::string, Synapse::Mesh> &model)
 {
     std::cout << "Constructing an RenderableObject..." << '\n';
@@ -64,39 +56,6 @@ void RenderableObject::LoadMeshes()
 }
 
 
-
-
-void RenderableObject::LoadVertexObjects(unsigned short objectsInSingleVertex, bool addTexture)
-{
-//    std::cin.get();
-//    m_VA.Gen();
-//    m_VB.Gen();
-//    m_EB.Gen();
-//
-//    m_VA.Bind();
-//    m_VB.Bind();
-//    m_EB.Bind();
-//
-//    m_VA.SetVertexLayout(0, 3, objectsInSingleVertex);  //for Position
-//    m_VA.SetVertexLayout(1, 3, objectsInSingleVertex);  //for Color
-//    if(addTexture)
-//    {
-//        m_VA.EnableVertexAttribute(2, 2, objectsInSingleVertex);   //for Texture  //will have to choose others also 8 if we add texture
-//    }
-//
-//    m_VA.Unbind();
-//    m_VB.Unbind();
-//    //m_EB.Unbind();
-}
-
-
-void RenderableObject::LoadTexture()
-{
-//    std::cin.get();
-//    m_texture.Load();
-}
-
-
 void RenderableObject::Translate(const glm::vec3 &translationVec)
 {
     m_model = glm::translate(m_model, translationVec);
@@ -119,7 +78,7 @@ static void RotateAroundTwoAxis(float &firstAxisPos, float &secondAxisPos, float
 
 void RenderableObject::Rotate(float angleToRotateDegrees, bool x, bool y, bool z)
 {
-//    float m_theta = glm::radians(angleToRotateDegrees);
+    //float m_theta = glm::radians(angleToRotateDegrees);
 
     if(x && y)
         RotateAroundTwoAxis(m_position.x, m_position.y, glm::radians(angleToRotateDegrees));

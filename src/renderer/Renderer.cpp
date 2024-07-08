@@ -9,7 +9,7 @@
 
 
 #include <vector>
-
+#include <thread>
 
 
 //#define __MULTITHREADING__RENDERER__
@@ -86,6 +86,23 @@ void SceneRenderer::Render()
 
 
 
+void SceneRenderer::RenderScenePartially(Scene *scene, std::vector<Shader> &sceneShaders, std::size_t first, std::size_t last)
+{
+    for(std::size_t i=first; i<last; ++i)
+    {
+        //glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, scene->GetRenderableObject(i)->GetMesh(0)._texture.GetTextureID());
+        scene->GetRenderableObject(i)->GetMesh(0)._VA.Bind();
+
+        sceneShaders[0].SendMatrix4ToGPU("model", scene->GetRenderableObject(i)->m_model);
+        sceneShaders[0].SendVector3ToGPU("position", scene->GetRenderableObject(i)->m_position);
+
+        //render every object
+        glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->GetTotalIndiciesOfMesh(0), GL_UNSIGNED_INT, 0);
+    }
+}
+
+
 
 void SceneRenderer::Render(Scene *scene, Shader *sceneShaders)
 {
@@ -118,22 +135,12 @@ void SceneRenderer::Render(Scene *scene, Shader *sceneShaders)
 
 
 
-    //this is for faster memory access
-    //unsigned int *p = &scene->m_renderableObjects[0]->m_EB._totalIndicies;
-    //unsigned int *p = &scene->GetRenderableObject(0)->GetEB().GetTotalIndicies();
-    //*(p + i*sizeof(RenderableObject));
 
-//    scene->GetRenderableObject(0)->GetShader().SendMatrix4ToGPU("model", scene->GetRenderableObject(0)->m_model);
+    //unsigned int *ptr = &scene->GetRenderableObject(0)->GetTotalIndiciesOfMesh(0);
+    //*(ptr + i*sizeof(Scene))
 
 
-
-
-//    scene->GetRenderableObject(0)->m_model = glm::translate(scene->GetRenderableObject(0)->m_model,
-//                                                            glm::vec3(0.0f, 1.0f/100.0f, 0.0f));
-//
-//    scene->GetRenderableObject(1)->m_model = glm::translate(scene->GetRenderableObject(1)->m_model,
-//                                                            glm::vec3(0.0f, -1.0f/100.0f, 0.0f));
-
+#if 1
     //#pragma omp parallel for
     for(std::size_t i=0; i < scene->GetTotalSceneObjects(); ++i)
     {
@@ -152,6 +159,16 @@ void SceneRenderer::Render(Scene *scene, Shader *sceneShaders)
         //glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->GetTotalIndicies(), GL_UNSIGNED_INT, 0);
 
     }
+#endif
+
+
+//    std::thread sceneRendererThread1(RenderScenePartially, scene, m_sceneShaders, 0, scene->GetTotalSceneObjects()/2);
+//    std::thread sceneRendererThread2(RenderScenePartially, scene, m_sceneShaders, scene->GetTotalSceneObjects()/2, scene->GetTotalSceneObjects());
+//
+//
+//    sceneRendererThread1.join();
+//    sceneRendererThread2.join();
+
 
 
 

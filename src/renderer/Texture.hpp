@@ -24,9 +24,11 @@ public:
     Texture(unsigned char *imageData, int width, int height, int nrChannels)
     {
         std::cout << "Copying the texture..." << '\n';
+        //std::cout << "File path: " << m_filePath << '\n';
         if(imageData != nullptr)
         {
-            //memcpy(m_imageData, imageData, sizeof(imageData)*width*height);
+            //std::cout << "Image Buffer size: " << sizeof(imageData)*width*height << '\n';
+            //std::memcpy(m_imageData, imageData, sizeof(imageData)*width*height);
             m_imageData = imageData;
             m_width = width;
             m_height = height;

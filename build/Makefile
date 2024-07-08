@@ -9,8 +9,9 @@ CXX_DEBUGGING_FLAGS=-g
 CXX_OPTIMIZATION_LEVEL=-O3
 
 #also including the custom include flags allows us to include headers with ' <> ' than just ' "" '
-CXX_CUSTOM_INCLUDE_FLAGS=-I../src/core -I../src/window -I../src/physics -I../src/multithreading -I../src/math -I../src/scene -I../src/shader -I../src/renderer -I../src/camera -I../src/debug
-CXX_EXTERNAL_INCLUDE_FLAGS=-I../vendor/GLFW/include -I../vendor/glad/include -I../vendor/glm -I../vendor/imageLoader -I../vendor/irrKlang/include
+#CXX_CUSTOM_INDLUDE_FLAGS=-I../src
+CXX_CUSTOM_INCLUDE_FLAGS=-I../src/core -I../src/window -I../src/physics -I../src/utils -I../src/math -I../src/scene -I../src/renderer -I../src/camera -I../src/debug -I../src/scripts -I../src/events -I../src/audio
+CXX_EXTERNAL_INCLUDE_FLAGS=-I../vendor/GLFW/include -I../vendor/glad/include -I../vendor/glm -I../vendor/imageLoader -I../vendor/irrKlang/include -I../vendor/include/LuaScriptingLibs
 CXX_INCLUDE_FLAGS+=$(CXX_CUSTOM_INCLUDE_FLAGS)
 CXX_INCLUDE_FLAGS+=$(CXX_EXTERNAL_INCLUDE_FLAGS)
 
@@ -26,6 +27,7 @@ CXXFLAGS+=$(CXXLDFLAGS)
 CXXFLAGS+=$(CXX_INCLUDE_FLAGS)
 
 
+
 #SRC_FILES=../external/glad/src/glad.cpp ../src/Shader.cpp ../src/Window.cpp ../src/Camera.cpp ../src/core.cpp
 
 SRC_FILES=../src/scene/Entities.cpp ../src/entity/vertexObjects.cpp ../src/shader/Shader.cpp ../src/renderer/Renderer.cpp ../src/window/Window.cpp ../src/camera/Camera.cpp ../src/core/InitializeEngine.cpp ../src/core/main.cpp
@@ -33,14 +35,18 @@ EXTERNAL_SRC_FILES=../vendor/glad/src/glad.cpp
 OBJ_FILES=$(SRC_FILES:.cpp=.o)
 EXE=start_graphics_engine
 
+OBJ_FILES=obj/glad.o obj/stb_image.o obj/LOG.o obj/PhysicsEngine.o obj/Buffer.o obj/VertexArray.o obj/VertexBuffer.o obj/IndexBuffer.o obj/Mesh.o obj/ModelLoader.o obj/Entities.o obj/Transformation.o obj/vertexObjects.o obj/Shader.o obj/Texture.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Audio.o obj/Timer.o obj/Camera.o obj/ScriptingEngine.o obj/Engine.o obj/Application.o obj/main.o
+
 #-L../external/SFML-2.6.1/lib
 
-LDFLAGS=-L../src/shader -L../vendor/GLFW/lib -lglfw -L../vendor/glad/lib -lGL -L../vendor/irrKlang/bin -L../vendor/irrKlang/lib
+LDFLAGS=-L../src/shader -L../vendor/GLFW/lib -lglfw -L../vendor/glad/lib -lGL -L../vendor/irrKlang/bin/linux-gcc-64 -lIrrKlang -L../vendor/irrKlang/lib -lIrrKlang -L../vendor/LuaScriptingLibs -llua
 #export LD_LIBRARY_PATH=../src/external/SFML-2.6.1/lib
 
 
-bin/start_game_engine: obj/glad.o obj/stb_image.o obj/LOG.o obj/PhysicsEngine.o obj/Buffer.o obj/VertexArray.o obj/VertexBuffer.o obj/IndexBuffer.o obj/Mesh.o obj/ModelLoader.o obj/Entities.o obj/Transformation.o obj/vertexObjects.o obj/Shader.o obj/Texture.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Audio.o obj/Timer.o obj/Camera.o obj/Engine.o obj/Application.o obj/main.o
-		$(CXX) $(CXXFLAGS) -o bin/start_game_engine obj/glad.o obj/stb_image.o obj/LOG.o obj/PhysicsEngine.o obj/Buffer.o obj/VertexArray.o obj/VertexBuffer.o obj/IndexBuffer.o obj/Mesh.o obj/ModelLoader.o obj/Entities.o obj/Transformation.o obj/vertexObjects.o obj/Shader.o obj/Texture.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Audio.o obj/Timer.o obj/Camera.o obj/Engine.o obj/Application.o obj/main.o $(LDFLAGS)
+########################################################################################################################
+bin/start_game_engine: $(OBJ_FILES)
+		$(CXX) $(CXXFLAGS) -o bin/start_game_engine $(OBJ_FILES) $(LDFLAGS)
+
 
 
 
@@ -61,8 +67,8 @@ obj/PhysicsEngine.o: ../src/physics/PhysicsEngine.cpp ../src/physics/PhysicsEngi
 obj/Buffer.o: ../src/scene/Buffer.cpp ../src/scene/Buffer.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/scene/Buffer.cpp -o obj/Buffer.o
 
-obj/VertexArray.o: ../src/scene/VertexArray.cpp ../src/scene/VertexArray.hpp ../src/scene/VertexBuffer.hpp ../src/scene/IndexBuffer.hpp
-		$(CXX) $(CXXFLAGS) -c ../src/scene/VertexArray.cpp -o obj/VertexArray.o
+obj/VertexArray.o: ../src/renderer/VertexArray.cpp ../src/renderer/VertexArray.hpp ../src/scene/VertexBuffer.hpp ../src/scene/IndexBuffer.hpp
+		$(CXX) $(CXXFLAGS) -c ../src/renderer/VertexArray.cpp -o obj/VertexArray.o
 
 
 obj/VertexBuffer.o: ../src/scene/VertexBuffer.cpp ../src/scene/VertexBuffer.hpp
@@ -97,7 +103,7 @@ obj/Texture.o: ../src/renderer/Texture.cpp ../src/renderer/Texture.hpp ../vendor
 		$(CXX) $(CXXFLAGS) -c ../src/renderer/Texture.cpp -o obj/Texture.o
 
 
-obj/Scene.o: ../src/scene/Scene.cpp ../src/scene/Scene.hpp ../src/scene/Entities.hpp ../src/scene/ModelsDataVertex.hpp ../src/scene/ModelsData.hpp ../src/window/Window.hpp ../src/utils/RunParallel.hpp ../src/scene/EntityLoader.hpp
+obj/Scene.o: ../src/scene/Scene.cpp ../src/scene/Scene.hpp ../src/scene/Entities.hpp ../src/scene/ModelsDataVertex.hpp ../src/scene/ModelsData.hpp ../src/scene/ModelsDataVector.hpp ../src/window/Window.hpp ../src/utils/RunParallel.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/scene/Scene.cpp -o obj/Scene.o
 
 obj/Renderer.o: ../src/renderer/Renderer.cpp ../src/renderer/Renderer.hpp ../src/utils/RunParallel.hpp
@@ -116,6 +122,11 @@ obj/Timer.o: ../src/utils/Timer.cpp ../src/utils/Timer.hpp
 obj/Camera.o: ../src/camera/Camera.cpp	../src/camera/Camera.hpp ../src/debug/LOG.hpp ../src/debug/RenderingInfoLog.hpp ../src/physics/PhysicsEngine.hpp ../src/camera/Cursor.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/camera/Camera.cpp -o obj/Camera.o
 
+
+obj/ScriptingEngine.o: ../src/scripts/ScriptingEngine.cpp ../src/scripts/ScriptingEngine.hpp
+		$(CXX) $(CXXFLAGS) -c ../src/scripts/ScriptingEngine.cpp -o obj/ScriptingEngine.o
+
+
 obj/Engine.o: ../src/core/Engine.cpp ../src/core/Engine.hpp ../src/debug/LOG.hpp ../src/scene/Scene.hpp ../src/debug/RenderingInfoLog.hpp ../src/renderer/shader/Shader.hpp ../src/renderer/Renderer.hpp ../src/utils/RunParallel.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/core/Engine.cpp -o obj/Engine.o
 
@@ -123,12 +134,10 @@ obj/Application.o: ../src/core/Application.cpp ../src/core/Application.hpp ../sr
 		$(CXX) $(CXXFLAGS) -c ../src/core/Application.cpp -o obj/Application.o
 
 
-#
-#obj/core.o: ../src/core/core.cpp ../src/shader/Shader.hpp ../src/window/Window.hpp ../src/camera/Camera.hpp ../src/scene/Entities.hpp ../src/scene/CoordinateTransformation.hpp ../src/core/InitializeEngine.hpp ../src/debug/LOG.hpp
-#	    $(CXX) $(CXXFLAGS) -c ../src/core/core.cpp -o obj/core.o
-
 obj/main.o: ../src/core/main.cpp ../src/core/Application.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/core/main.cpp -o obj/main.o
+
+########################################################################################################################
 
 exp:	
 		export LD_LIBRARY_PATH=../vendor/SFML-2.6.1/lib
@@ -155,6 +164,7 @@ clear:
 		 rm -f obj/Audio.o
 		 rm -f obj/Timer.o
 		 rm -f obj/Camera.o
+		 rm -f obj/ScriptingEngine.o
 		 rm -f obj/Engine.o
 		 rm -f obj/Application.o
 		 rm -f obj/main.o
@@ -192,3 +202,15 @@ c:
 # Rule to run make only if it compiles
 #run_make_only_if_compiles: $(TARGET)
 #	./$(TARGET)
+
+
+#
+#obj/core.o: ../src/core/core.cpp ../src/shader/Shader.hpp ../src/window/Window.hpp ../src/camera/Camera.hpp ../src/scene/Entities.hpp ../src/scene/CoordinateTransformation.hpp ../src/core/InitializeEngine.hpp ../src/debug/LOG.hpp
+#	    $(CXX) $(CXXFLAGS) -c ../src/core/core.cpp -o obj/core.o
+
+
+
+
+#Will make it automatic instead of adding object file every time here
+#bin/start_game_engine: obj/glad.o obj/stb_image.o obj/LOG.o obj/PhysicsEngine.o obj/Buffer.o obj/VertexArray.o obj/VertexBuffer.o obj/IndexBuffer.o obj/Mesh.o obj/ModelLoader.o obj/Entities.o obj/Transformation.o obj/vertexObjects.o obj/Shader.o obj/Texture.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Audio.o obj/Timer.o obj/Camera.o obj/ScriptingEngine.o obj/Engine.o obj/Application.o obj/main.o
+#		$(CXX) $(CXXFLAGS) -o bin/start_game_engine obj/glad.o obj/stb_image.o obj/LOG.o obj/PhysicsEngine.o obj/Buffer.o obj/VertexArray.o obj/VertexBuffer.o obj/IndexBuffer.o obj/Mesh.o obj/ModelLoader.o obj/Entities.o obj/Transformation.o obj/vertexObjects.o obj/Shader.o obj/Texture.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Audio.o obj/Timer.o obj/Camera.o obj/ScriptingEngine.o obj/Engine.o obj/Application.o obj/main.o $(LDFLAGS)

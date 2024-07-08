@@ -73,6 +73,14 @@ void Engine::SetViewPort()
 }
 
 
+
+void Engine::LoadAudioEngine()
+{
+    m_audio = new Synapse::Audio();
+}
+
+
+
 void Engine::LoadScene()
 {
     std::cout << "Initialized initial scene" << '\n';
@@ -206,6 +214,7 @@ int8_t Engine::Init()
     this->LoadWindow(); //not loading the 'Window' causes uninitialization of GLAD too!
     this->LoadGLAD();
     this->SetViewPort();
+    this->LoadAudioEngine();
     this->LoadScene();
     this->LoadRenderer();
     this->LoadCameras();
@@ -326,36 +335,35 @@ void Engine::Run()
             break;
         }
 
-        //m_renderer->SetBackGround(0.2f, 0.3f, 0.3f, 1.0f);
+        if(m_script->Changed())
+        {
+            m_engineRestart = true;
+        }
+
+        m_renderer->SetBackGround(0.2f, 0.3f, 0.3f, 1.0f);
         //will use sin function to move around day and night after a certain period
-
-        float r = 0.423f*0.5f*(1.0f+sin(time));
-        float g = 0.646f*0.5f*(1.0f+sin(time));
-        float b = 0.738f*0.5f*(1.0f+sin(time));
-        //m_renderer->SetBackGround(r, g, b, 1.0f);
-        m_renderer->SetBackGround(0.33899, 0.517702, 0.59143, 1.0f);
-        //m_renderer->SetBackGround(0.423f, 0.646f, 0.738f, 1.0f);    //day
-        //m_renderer->SetBackGround(0.0f, 0.0f, 0.0f, 1.0f);    //night
-
-
-
 
         m_renderer->UseZbuffer();
 
         //will use 'event' systems for these two bad boys
         m_window->GetKeyboardInput();
+
+        //m_audio->Play("../vendor/bell.wav");
+
         this->SelectCamera();
         m_cameras[m_currentCameraIndex]->GetKeyboardInput(m_window->WindowAddress());
 
-        m_scene->Update(m_window->WindowAddress(), m_cameras[m_currentCameraIndex]->GetTargetPos(),
-                        m_cameras[m_currentCameraIndex]->GetPos(),
-                        m_cameras[m_currentCameraIndex]->GetYaw(),
-                        m_cameras[m_currentCameraIndex]->GetPitch(), deltaTime);
+//        m_scene->Update(m_window->WindowAddress(), m_cameras[m_currentCameraIndex]->GetTargetPos(),
+//                        m_cameras[m_currentCameraIndex]->GetPos(),
+//                        m_cameras[m_currentCameraIndex]->GetYaw(),
+//                        m_cameras[m_currentCameraIndex]->GetPitch(), deltaTime);
+
+        m_scene->Update(m_window->WindowAddress(), m_cameras[m_currentCameraIndex], deltaTime);
+
         m_renderer->Render(m_scene);
         m_cameras[m_currentCameraIndex]->Update(m_scene->GetRenderableObjects());
 
 
-        std::cout << '\n' << r << ", " << g << ", " << b << '\n';
 
         //this is definately not for benchmarking
         renderingInfo::FramesPerSecond();
@@ -363,6 +371,7 @@ void Engine::Run()
         time += 0.001f;
 
         m_window->SwapBuffers();
+        //m_frameBuffer->SwapBuffers();
         m_window->PollEvents();
     }
 
@@ -375,10 +384,11 @@ void Engine::ShutDown()
 {
     //thought of letting the os do this.
     //but more writing is kind of fun :)
-    MemoryManager::Clean<Camera>(m_camera);
-    MemoryManager::Clean<Window>(m_window);
-    MemoryManager::Clean<Scene>(m_scene);
-    MemoryManager::Clean<Renderer>(m_renderer);
+    MemoryManager::Clean<Synapse::Camera>(m_camera);
+    MemoryManager::Clean<Synapse::Window>(m_window);
+    MemoryManager::Clean<Synapse::Scene>(m_scene);
+    MemoryManager::Clean<Synapse::Renderer>(m_renderer);
+    MemoryManager::Clean<Synapse::Audio>(m_audio);
 
     MemoryManager::g_wasShutDownMethodCalled = true;
 }

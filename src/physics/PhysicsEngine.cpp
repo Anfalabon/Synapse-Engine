@@ -306,7 +306,7 @@ void Physics::Projectile(glm::vec3 &position, glm::vec3 &velocity, const float d
         }
     }
 
-    std::cout << "Projectile!" << '\n';
+    //std::cout << "Projectile!" << '\n';
 
     position.x += velocity.x * deltaTime;
     position.y += velocity.y * deltaTime;

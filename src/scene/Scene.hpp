@@ -3,6 +3,7 @@
 #include "Entities.hpp"
 #include "ModelLoader.hpp"
 #include "../physics/PhysicsEngine.hpp"
+#include "../camera/Camera.hpp"
 
 #include <GLFW/glfw3.h>
 
@@ -26,12 +27,22 @@ public:
     ~Scene();
 
     void Init();
-    void LoadRenderableObjectsStatically();
-    void RenderableObjectKeyboardMovement(GLFWwindow *window, std::size_t index);
-    void LoadRenderableObjectDynamically(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch);
+    void LoadInitialRenderableObjects();
+    void CreateRenderableObject(Synapse::Camera const *camera);
+    void LoadRenderableObjectDynamically(GLFWwindow *window, Synapse::Camera const *camera);
     void RemoveRenderableObjectDynamically(GLFWwindow *window);
-    void CreateRenderableObject(const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch);
-    void Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch, float deltaTime);
+    void RenderableObjectKeyboardMovement(GLFWwindow *window, std::size_t index);
+    void Update(GLFWwindow *window, Synapse::Camera const *camera, float deltaTime);
+    void Clear();
+
+
+    //void LoadRenderableObjectDynamically(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch);
+    //void CreateRenderableObject(const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch);
+    //void Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch, float deltaTime);
+
+    //const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch
+
+
 
     [[nodiscard]] inline RenderableObject* GetRenderableObject(std::size_t index)
     {
@@ -57,8 +68,8 @@ private:
 #endif
 
 
-    ModelLoader *m_modelLoader;
-    Physics *physics;
+    Synapse::ModelLoader *m_modelLoader;
+    Synapse::Physics *m_physics;
 
     //temp member data's
     bool m_dynamicRenderableObjectLoaderRunning = false;

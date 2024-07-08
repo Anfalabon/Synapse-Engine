@@ -3,6 +3,9 @@
 
 namespace Synapse
 {
+
+extern void lm();
+
 //#define __debug__
 //#ifdef __debug__
 //    #define DEBUG(__debug__message__) std::cout << "In FILE: " << __FILE__ << ", FUNCTION: " << __func__ << ", LINE: " << __LINE__ << " ==> " \
