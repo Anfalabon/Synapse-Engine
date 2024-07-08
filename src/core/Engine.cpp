@@ -335,6 +335,8 @@ void Engine::Run()
             break;
         }
 
+
+        //restart the engine whenever the script changes
         if(m_script->Changed())
         {
             m_engineRestart = true;
@@ -352,14 +354,7 @@ void Engine::Run()
 
         this->SelectCamera();
         m_cameras[m_currentCameraIndex]->GetKeyboardInput(m_window->WindowAddress());
-
-//        m_scene->Update(m_window->WindowAddress(), m_cameras[m_currentCameraIndex]->GetTargetPos(),
-//                        m_cameras[m_currentCameraIndex]->GetPos(),
-//                        m_cameras[m_currentCameraIndex]->GetYaw(),
-//                        m_cameras[m_currentCameraIndex]->GetPitch(), deltaTime);
-
         m_scene->Update(m_window->WindowAddress(), m_cameras[m_currentCameraIndex], deltaTime);
-
         m_renderer->Render(m_scene);
         m_cameras[m_currentCameraIndex]->Update(m_scene->GetRenderableObjects());
 

@@ -2556,3 +2556,10 @@ float b = 0.738f*0.5f*(1.0f+sin(time));
 //m_renderer->SetBackGround(0.0f, 0.0f, 0.0f, 1.0f);    //night
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//        m_scene->Update(m_window->WindowAddress(), m_cameras[m_currentCameraIndex]->GetTargetPos(),
+//                        m_cameras[m_currentCameraIndex]->GetPos(),
+//                        m_cameras[m_currentCameraIndex]->GetYaw(),
+//                        m_cameras[m_currentCameraIndex]->GetPitch(), deltaTime);

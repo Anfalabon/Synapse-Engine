@@ -194,7 +194,7 @@ void lm()
 
 
 
-void Scene::CreateRenderableObject(Synapse::Camera const *camera)
+void Scene::CreateRenderableObject(Synapse::Camera *camera)
 {
 
     m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel("Sphere")));
@@ -238,7 +238,7 @@ void Scene::CreateRenderableObject(Synapse::Camera const *camera)
 
 
 
-void Scene::LoadRenderableObjectDynamically(GLFWwindow *window, Synapse::Camera const *camera)
+void Scene::LoadRenderableObjectDynamically(GLFWwindow *window, Synapse::Camera *camera)
 {
     bool leftMouseButtonClicked = true;
 
@@ -316,7 +316,7 @@ bool  g_stopRotating = false;
 
 
 //void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch, float deltaTime)
-void Scene::Update(GLFWwindow *window, Synapse::Camera const *camera, float deltaTime)
+void Scene::Update(GLFWwindow *window, Synapse::Camera *camera, float deltaTime)
 {
     if(m_renderableObjects.size() <= 0)
     {

@@ -28,11 +28,11 @@ public:
 
     void Init();
     void LoadInitialRenderableObjects();
-    void CreateRenderableObject(Synapse::Camera const *camera);
-    void LoadRenderableObjectDynamically(GLFWwindow *window, Synapse::Camera const *camera);
+    void CreateRenderableObject(Synapse::Camera *camera);   //make the camera parameter const
+    void LoadRenderableObjectDynamically(GLFWwindow *window, Synapse::Camera *camera);  //make the camera parameter const
     void RemoveRenderableObjectDynamically(GLFWwindow *window);
     void RenderableObjectKeyboardMovement(GLFWwindow *window, std::size_t index);
-    void Update(GLFWwindow *window, Synapse::Camera const *camera, float deltaTime);
+    void Update(GLFWwindow *window, Synapse::Camera *camera, float deltaTime);  //make the camera parameter const
     void Clear();
 
 
@@ -49,7 +49,7 @@ public:
         return (index<0) ? nullptr : m_renderableObjects[index];
     }
 
-    [[nodiscard]] inline std::vector<Synapse::RenderableObject*> GetRenderableObjects(){return m_renderableObjects;}
+    [[nodiscard]] inline std::vector<Synapse::RenderableObject*> &GetRenderableObjects(){return m_renderableObjects;}
 
     [[nodiscard]] inline std::size_t GetTotalSceneObjects(){return m_renderableObjects.size();};
 

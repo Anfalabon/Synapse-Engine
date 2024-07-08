@@ -86,7 +86,7 @@ obj/ModelLoader.o: ../src/scene/ModelLoader.cpp ../src/scene/ModelLoader.hpp ../
 		$(CXX) $(CXXFLAGS) -c ../src/scene/ModelLoader.cpp -o obj/ModelLoader.o
 
 
-obj/Entities.o: ../src/scene/Entities.cpp ../src/scene/Entities.hpp ../src/scene/Transformation.hpp ../src/scene/vertexObjects.hpp ../src/physics/PhysicsEngine.hpp ../src/scene/VertexBuffer.hpp ../src/scene/IndexBuffer.hpp ../src/scene/VertexArray.hpp
+obj/Entities.o: ../src/scene/Entities.cpp ../src/scene/Entities.hpp ../src/scene/Transformation.hpp ../src/scene/vertexObjects.hpp ../src/physics/PhysicsEngine.hpp ../src/scene/VertexBuffer.hpp ../src/scene/IndexBuffer.hpp ../src/renderer/VertexArray.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/scene/Entities.cpp -o obj/Entities.o
 
 obj/Transformation.o: ../src/math/Transformation.cpp ../src/math/Transformation.hpp ../src/scene/Entities.hpp
