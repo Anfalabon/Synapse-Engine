@@ -75,7 +75,7 @@ private:
     //Shader m_shader = Shader("../src/shader/GLSL/vertexShader1.vert", "../src/shader/GLSL/fragmentShader1.frag");
 private:
 
-    std::vector<Mesh> m_meshes;
+    std::vector<Synapse::Mesh> m_meshes;
 
 public:
     glm::vec3 m_position = glm::vec3(0.0f, 0.0f, 0.0f);

@@ -29,7 +29,7 @@ public:
     void ShutDown();
 
 private:
-    Engine *m_engine;
+    Synapse::Engine *m_engine;
 public:
     bool    m_applicationRestart = false;
 private:

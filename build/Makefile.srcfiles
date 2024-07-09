@@ -1,0 +1,25 @@
+SRC_FILES=glad.cpp \
+		LOG.cpp \
+		FrameBuffer.cpp \
+		PhysicsEngine.cpp \
+		Buffer.cpp \
+		VertexArray.cpp \
+		VertexBuffer.cpp \
+		IndexBuffer.cpp \
+		Mesh.cpp \
+		ModelLoader.cpp \
+		Entities.cpp \
+		Transformation.cpp \
+		vertexObjects.cpp \
+		Shader.cpp \
+		Texture.cpp \
+		Scene.cpp \
+		Renderer.cpp \
+		Window.cpp \
+		Audio.cpp \
+		Timer.cpp \
+		Camera.cpp \
+		ScriptingEngine.cpp \
+		Engine.cpp \
+		Application.cpp \
+		main.cpp

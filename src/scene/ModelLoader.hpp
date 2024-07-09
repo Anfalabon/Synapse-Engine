@@ -25,11 +25,11 @@ public:
 
     void CreateFrequentlyLoadedTextures();
     void SetModelsDataMap();
-    std::pair<std::string, Mesh> GetModel(const std::string &modelName);
+    std::pair<std::string, Synapse::Mesh> GetModel(const std::string &modelName);
 
 private:
 
-    std::unordered_map<std::string, Mesh> m_modelsMap;
+    std::unordered_map<std::string, Synapse::Mesh> m_modelsMap;
 };
 
 

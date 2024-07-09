@@ -1,5 +1,7 @@
 
 
+#############################################---ALL PRIMARY FLAGS---####################################################
+
 CXX=clang++
 CXXVERSION=-std=c++17
 CXX_AGGRESSIVE_WARNINGS=-Werror
@@ -7,6 +9,11 @@ CXX_WARNING_FLAGS=-Wall -Wextra
 CXX_MEMORY_DEBUGGER=-fsanitize=address
 CXX_DEBUGGING_FLAGS=-g
 CXX_OPTIMIZATION_LEVEL=-O3
+CXX_DEPENDENCIES_FLAGS=-MMD -MP
+
+
+#############################################---INCLUDE FLAGS---########################################################
+
 
 #also including the custom include flags allows us to include headers with ' <> ' than just ' "" '
 #CXX_CUSTOM_INDLUDE_FLAGS=-I../src
@@ -15,7 +22,8 @@ CXX_EXTERNAL_INCLUDE_FLAGS=-I../vendor/GLFW/include -I../vendor/glad/include -I.
 CXX_INCLUDE_FLAGS+=$(CXX_CUSTOM_INCLUDE_FLAGS)
 CXX_INCLUDE_FLAGS+=$(CXX_EXTERNAL_INCLUDE_FLAGS)
 
-#CXXFLAGS=-std=c++17 -Wall -Wextra -O3
+
+#############################################---MERGE ALL CXX FLAGS---##################################################
 
 CXXFLAGS+=$(CXXVERSION)
 CXXFLAGS+=$(CXX_WARNING_FLAGS)
@@ -23,75 +31,63 @@ CXXFLAGS+=$(CXX_DEBUGGING_FLAGS)
 CXXFLAGS+=$(CXX_OPTIMIZATION_LEVEL)
 
 CXXLDFLAGS=-fopenmp
+CXXFLAGS+=$(CXX_DEPENDENCIES_FLAGS)
 CXXFLAGS+=$(CXXLDFLAGS)
 CXXFLAGS+=$(CXX_INCLUDE_FLAGS)
 
+#####################################---GENERATE OBJ AND DEP FILES FROM SRC FILES---####################################
+
+include Makefile.srcfiles
 
 
-#SRC_FILES=../external/glad/src/glad.cpp ../src/Shader.cpp ../src/Window.cpp ../src/Camera.cpp ../src/core.cpp
-
-#SRC_FILES=../src/scene/Entities.cpp ../src/entity/vertexObjects.cpp ../src/shader/Shader.cpp ../src/renderer/Renderer.cpp ../src/window/Window.cpp ../src/camera/Camera.cpp ../src/core/InitializeEngine.cpp ../src/core/main.cpp
-EXTERNAL_SRC_FILES=../vendor/glad/src/glad.cpp
-OBJ_FILES=$(SRC_FILES:.cpp=.o)
-EXE=start_graphics_engine
+OBJ_DIR=obj
+DEP_DIR=dep
 
 
+OBJ_FILES=$(SRC_FILES:%.cpp=$(OBJ_DIR)/%.o)
+DEP_FILES=$(SRC_FILES:%.cpp=$(DEP_DIR)/%.d)
 
-#SRC_FILES=obj/glad.cpp obj/stb_image.cpp obj/LOG.cpp obj/FrameBuffer.o obj/PhysicsEngine.cpp obj/Buffer.cpp obj/VertexArray.cpp obj/VertexBuffer.cpp obj/IndexBuffer.cpp obje/Mesh.cpp obj/ModelLoader.cpp obj/Entities.cpp obj/Transformation.cpp obje/vertexObjects.cpp obj/Shader.cpp obj/Texture.cpp obj/Scene.cpp obj/Renderer.cpp obj/Window.cpp obj/Audio.cpp obj/Timer.cpp obj/Camera.cpp obj/ScriptingEngine.cpp obj/Engine.cpp obj/Application.cpp obj/main.cpp
+
+###########################################---DEFINE MAIN EXECUTABLE FILE---############################################
 
 
-OBJ_FILES=obj/glad.o \
-			obj/stb_image.o \
-			obj/LOG.o \
-			obj/FrameBuffer.o \
-			obj/PhysicsEngine.o \
-			obj/Buffer.o \
-			obj/VertexArray.o \
-			obj/VertexBuffer.o \
-			obj/IndexBuffer.o \
-			obj/Mesh.o \
-			obj/ModelLoader.o \
-			obj/Entities.o \
-			obj/Transformation.o \
-			obj/vertexObjects.o \
-			obj/Shader.o \
-			obj/Texture.o \
-			obj/Scene.o \
-			obj/Renderer.o \
-			obj/Window.o \
-			obj/Audio.o \
-			obj/Timer.o \
-			obj/Camera.o \
-			obj/ScriptingEngine.o \
-			obj/Engine.o \
-			obj/Application.o \
-			obj/main.o
+EXECUTABLE=bin/start_game_engine
 
-#-L../external/SFML-2.6.1/lib
+
+#################################################---LINKING FLAGS---####################################################
+
 
 LDFLAGS=-L../src/shader \
 		-L../vendor/GLFW/lib -lglfw \
 		-L../vendor/glad/lib -lGL \
+		-L../vendor/imageLoader -lstbimage -Wl, -rpath ../vendor/imageLoader \
 		-L../vendor/irrKlang/bin/linux-gcc-64 -lIrrKlang -Wl, -rpath ../vendor/irrKlang/bin/linux-gcc-64 \
 		-L../vendor/irrKlang/lib -lIrrKlang \
 		-L../vendor/LuaScriptingLibs -llua \
-#export LD_LIBRARY_PATH=../src/external/SFML-2.6.1/lib
 
 
+################################################---LINK OBJ FILES---####################################################
+$(EXECUTABLE): $(OBJ_FILES)
+		$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 ########################################################################################################################
-bin/start_game_engine: $(OBJ_FILES)
-		$(CXX) $(CXXFLAGS) -o bin/start_game_engine $(OBJ_FILES) $(LDFLAGS)
 
 
 
+#$(OBJ_FILES)/%.o: $(SRC_FILES)/%.cpp
+#		$(CXX) $(CXXFLAGS) -c $< -o $@
 
+
+
+###########################################---COMPILE SOURCE FILES TO OBJ FILES---######################################
 
 obj/glad.o: ../vendor/glad/src/glad.cpp ../vendor/glad/include/glad/glad.hpp
-		$(CXX) $(CXXFLAGS) -c ../vendor/glad/src/glad.cpp -o obj/glad.o
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
-obj/stb_image.o: ../vendor/imageLoader/stb_image.cpp ../vendor/imageLoader/stb_image.h
-		$(CXX) $(CXXFLAGS) -c ../vendor/imageLoader/stb_image.cpp -o obj/stb_image.o
+#created a shadred library for this because of it's slow compilation
+#obj/stb_image.o: ../vendor/imageLoader/stb_image.cpp ../vendor/imageLoader/stb_image.h
+#		$(CXX) $(CXXFLAGS) -c ../vendor/imageLoader/stb_image.cpp -o obj/stb_image.o
+
 
 
 obj/LOG.o: ../src/debug/LOG.cpp ../src/debug/LOG.hpp
@@ -190,10 +186,19 @@ obj/main.o: ../src/core/main.cpp ../src/core/Application.hpp
 		$(CXX) $(CXXFLAGS) -c ../src/core/main.cpp -o obj/main.o
 
 
-########################################################################################################################
+
+######################################---INCLUDE DEPENDENCIES FOR SOURCE FILES---#######################################
+
+-include $(DEP_FILES)
+
+###########################---MANUALLY SET THE ENVIROMENTAL VARIABLE FOR SHADRED LIBS---################################
 
 exp:	
 		export LD_LIBRARY_PATH=../vendor/SFML-2.6.1/lib
+
+
+###############################---REMOVE ALL THE PRODUCED FILES BY MAKEFILE SCRIPT---###################################
+
 
 clear:
 		 rm -f obj/glad.o
@@ -222,21 +227,42 @@ clear:
 		 rm -f obj/Engine.o
 		 rm -f obj/Application.o
 		 rm -f obj/main.o
-run:
-		./bin/start_game_engine
 
-run_make_only_if_compiles: bin/start_game_engine
-		./bin/start_game_engine
+
+clearAll:
+		rm -rf $(POBJ_FILES) $(DEP_FILES)
+
+run:
+		./$(EXECUTABLE)
+
+run_make_only_if_compiles: $(EXECUTABLE)
+		./$(EXECUTABLE)
 		
 c:
-		rm -f bin/start_game_engine
+		rm -f $(EXECUTABLE)
 
 
 
 
 
 
-######################################_Not Needed_########################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###################################################_Not Needed_#########################################################
 
 #CXXFLAGS=-std=c++17 -Wall -O3 -I../include -I../../../../../usr/include -I../../../../../Downloads/glad/include
 
@@ -268,3 +294,43 @@ c:
 #Will make it automatic instead of adding object file every time here
 #bin/start_game_engine: obj/glad.o obj/stb_image.o obj/LOG.o obj/PhysicsEngine.o obj/Buffer.o obj/VertexArray.o obj/VertexBuffer.o obj/IndexBuffer.o obj/Mesh.o obj/ModelLoader.o obj/Entities.o obj/Transformation.o obj/vertexObjects.o obj/Shader.o obj/Texture.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Audio.o obj/Timer.o obj/Camera.o obj/ScriptingEngine.o obj/Engine.o obj/Application.o obj/main.o
 #		$(CXX) $(CXXFLAGS) -o bin/start_game_engine obj/glad.o obj/stb_image.o obj/LOG.o obj/PhysicsEngine.o obj/Buffer.o obj/VertexArray.o obj/VertexBuffer.o obj/IndexBuffer.o obj/Mesh.o obj/ModelLoader.o obj/Entities.o obj/Transformation.o obj/vertexObjects.o obj/Shader.o obj/Texture.o obj/Scene.o obj/Renderer.o obj/Window.o obj/Audio.o obj/Timer.o obj/Camera.o obj/ScriptingEngine.o obj/Engine.o obj/Application.o obj/main.o $(LDFLAGS)
+
+
+
+
+
+
+
+
+
+#export LD_LIBRARY_PATH=../src/external/SFML-2.6.1/lib
+
+
+
+
+
+
+
+
+
+
+
+
+#SRC_FILES=../external/glad/src/glad.cpp ../src/Shader.cpp ../src/Window.cpp ../src/Camera.cpp ../src/core.cpp
+#SRC_FILES=../src/scene/Entities.cpp ../src/entity/vertexObjects.cpp ../src/shader/Shader.cpp ../src/renderer/Renderer.cpp ../src/window/Window.cpp ../src/camera/Camera.cpp ../src/core/InitializeEngine.cpp ../src/core/main.cpp
+#EXTERNAL_SRC_FILES=../vendor/glad/src/glad.cpp
+#OBJ_FILES=$(SRC_FILES:.cpp=.o)
+
+
+
+
+
+
+#CXXFLAGS=-std=c++17 -Wall -Wextra -O3
+
+
+
+
+
+
+#-L../external/SFML-2.6.1/lib

@@ -80,8 +80,8 @@ public:
 
 private:
 
-    Scene *m_scene;
-    std::vector<Shader>  m_sceneShaders;
+    Synapse::Scene *m_scene;
+    std::vector<Synapse::Shader>  m_sceneShaders;
     //std::vector<Camera*> m_cameras;
 
 };

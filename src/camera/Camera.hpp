@@ -48,7 +48,7 @@ public:
     void ApplyCrouchInput(GLFWwindow *m_window);
     void ApplyMovementInputs(GLFWwindow *m_window);
     void LookAtTarget();   //this is the overloaded function of glm::lookAt(). So the it will return : return glm::lookAt(cameraPos, targetPos, upVecPos)
-    void IsLookingAtEntity();
+    void IsLookingAtEntity();   //use Ray-Casting for this
     void UpdateSpeed();
     void SetCurrentObjectInfo(const glm::vec3 &maxObjectRange, const glm::vec3 &minObjectRange);
     void SetDirectionVector();
