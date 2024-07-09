@@ -3,6 +3,7 @@
 #include "../debug/LOG.hpp"
 
 #include <glm/glm.hpp>
+#include <glm/ext/matrix_clip_space.hpp>
 
 #include <iostream>
 
@@ -60,7 +61,7 @@ void Camera::GetViewMatrixLocation()
 
 //get the location of perspective matrix uniform in vertex shader
 //void Camera::perspectiveLocation(GLuint shaderProgramID)
-void Camera::GetPerspectiveMatrixLocation()
+void Camera::GetProjectionMatrixLocation()
 {
 //    for (auto shaderProgramID: m_shaderProgramIDs)
 //    {
@@ -74,7 +75,7 @@ void Camera::GetPerspectiveMatrixLocation()
     {
 //        GLuint perspectiveLocation = glGetUniformLocation(m_shaderProgramIDs[0], "perspective");
 //        glUniformMatrix4fv(perspectiveLocation, 1, GL_FALSE, glm::value_ptr(m_perspective));
-        glUniformMatrix4fv(glGetUniformLocation(m_shaderProgramIDs[0], "perspective"), 1, GL_FALSE, glm::value_ptr(m_perspective));
+        glUniformMatrix4fv(glGetUniformLocation(m_shaderProgramIDs[0], "projection"), 1, GL_FALSE, glm::value_ptr(m_projection));
     }
 
 }
@@ -88,11 +89,12 @@ void Camera::UpdateView()
 }
 
 
-void Camera::UpdatePerspective()
+void Camera::UpdateProjectionMatrix()
 {
     float nearFustrum = 0.1f;
     float farFustrum = 1000.0f;
-    m_perspective = glm::perspective(glm::radians(m_zoomValue), 1920.0f / 1080.0f, nearFustrum, farFustrum);
+    m_projection = glm::perspective(glm::radians(m_zoomValue), 1920.0f / 1080.0f, nearFustrum, farFustrum);
+    //m_projection = glm::ortho(0.0f, 1920.0f, 1080.0f, 0.0f, nearFustrum, farFustrum);
 }
 
 
@@ -677,6 +679,9 @@ void Camera::LookAtTarget()
     DEBUG::__LOG__MANAGER__::LOG(m_deltaTime);
     DEBUG::__LOG__MANAGER__::LOG('\n');
 
+
+
+
     //glm::vec3 m_cameraWorldUp = glm::vec3(m_cameraUpVector.x , m_cameraUpVector.y, m_cameraUpVector.z);
 
     //this is for slow speed when the camera is pointing towards up-most or down-most
@@ -761,9 +766,9 @@ void Camera::Update(const std::vector<Synapse::RenderableObject*> &renderableObj
         m_physics->Apply(renderableObjects); //this doesn't check Camera mode and just simply applies physics regarding of cameras actual mode
     }
     this->GetViewMatrixLocation();
-    this->GetPerspectiveMatrixLocation();
+    this->GetProjectionMatrixLocation();
     this->UpdateView(); //if needed
-    this->UpdatePerspective();
+    this->UpdateProjectionMatrix();
     this->LookAtTarget();
 }
 

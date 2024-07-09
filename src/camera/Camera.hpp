@@ -44,11 +44,10 @@ public:
     void SetCameraMode(CAMERA_MODES M);
     void ChangeCameraMode(GLFWwindow *m_window);
     void AddShaderProgramID(GLuint shaderProgramID);
-    //will name it 'Projection' instead of 'Perspective'
-    void GetPerspectiveMatrixLocation();
+    void GetProjectionMatrixLocation();
     void GetViewMatrixLocation();
     void CalculateFrontVector(float yaw, float pitch);
-    void UpdatePerspective();
+    void UpdateProjectionMatrix();
     void UpdateView();
     void IncreaseSpeed(GLFWwindow *m_window);
     void EnableJumpingInput(GLFWwindow *m_window);
@@ -103,7 +102,7 @@ public:
 
     //Physics motion(m_cameraPos, m_cameraVelocity);
 
-    glm::mat4 m_perspective = glm::mat4(1.0f);
+    glm::mat4 m_projection = glm::mat4(1.0f);
     glm::mat4 m_view = glm::mat4(1.0f);
 
     //glm::vec3 m_objectMaxSize = glm::vec3(0.0f, 0.0f, 0.0f);

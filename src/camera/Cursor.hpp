@@ -32,6 +32,8 @@ public:
 };
 
 
+//definately using global variables are bad in this case where other good alternatives can be used instead
+//Will remove these global variables and work with a safer one
 inline std::vector<CursorData> g_cursorsData;
 inline std::size_t g_cameraIndex;
 

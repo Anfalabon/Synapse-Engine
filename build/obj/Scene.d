@@ -8,8 +8,9 @@ obj/Scene.o: ../src/scene/Scene.cpp ../src/scene/Scene.hpp \
   ../src/scene/ModelLoader.hpp ../src/scene/../physics/PhysicsEngine.hpp \
   ../src/physics/../scene/Entities.hpp ../src/scene/../camera/Camera.hpp \
   ../src/camera/../physics/PhysicsEngine.hpp \
-  ../src/camera/../scene/Entities.hpp ../src/scene/../window/Window.hpp \
-  ../src/window/../debug/LOG.hpp ../src/scene/../utils/RunParallel.hpp \
+  ../src/camera/../scene/Entities.hpp ../src/scene/../core/Macros.hpp \
+  ../src/scene/../window/Window.hpp ../src/window/../debug/LOG.hpp \
+  ../src/scene/../utils/RunParallel.hpp \
   ../src/scene/../math/Transformation.hpp \
   ../src/math/../scene/Entities.hpp \
   ../src/scene/../utils/MemoryManager.hpp
@@ -32,6 +33,7 @@ obj/Scene.o: ../src/scene/Scene.cpp ../src/scene/Scene.hpp \
 ../src/scene/../camera/Camera.hpp:
 ../src/camera/../physics/PhysicsEngine.hpp:
 ../src/camera/../scene/Entities.hpp:
+../src/scene/../core/Macros.hpp:
 ../src/scene/../window/Window.hpp:
 ../src/window/../debug/LOG.hpp:
 ../src/scene/../utils/RunParallel.hpp:

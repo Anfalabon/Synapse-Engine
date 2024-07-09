@@ -4,6 +4,7 @@
 #include "ModelLoader.hpp"
 #include "../physics/PhysicsEngine.hpp"
 #include "../camera/Camera.hpp"
+#include "../core/Macros.hpp"
 
 #include <GLFW/glfw3.h>
 
@@ -44,18 +45,17 @@ public:
 
 
 
-    [[nodiscard]] inline RenderableObject* GetRenderableObject(std::size_t index)
+    [[nodiscard]] __ALWAYS__INLINE__ RenderableObject* GetRenderableObject(std::size_t index)
     {
         return (index<0) ? nullptr : m_renderableObjects[index];
     }
 
-    [[nodiscard]] inline std::vector<Synapse::RenderableObject*> &GetRenderableObjects(){return m_renderableObjects;}
-
-    [[nodiscard]] inline std::size_t GetTotalSceneObjects(){return m_renderableObjects.size();};
+    [[nodiscard]] __ALWAYS__INLINE__ std::vector<Synapse::RenderableObject*> &GetRenderableObjects(){return m_renderableObjects;}
+    [[nodiscard]] __ALWAYS__INLINE__ std::size_t GetTotalSceneObjects(){return m_renderableObjects.size();};
 
 private:
 
-    inline void AddRenderableObject(const std::string &modelName)
+    __ALWAYS__INLINE__ void AddRenderableObject(const std::string &modelName)
     {
         m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel(modelName)));
     }
@@ -72,6 +72,7 @@ private:
     Synapse::Physics *m_physics;
 
     //temp member data's
+    std::size_t m_cameraIndex = 0;
     bool m_dynamicRenderableObjectLoaderRunning = false;
     bool m_dynamicRenderableObjectDeleterRunning = false;
     bool m_rotatorKeyPressed = false;

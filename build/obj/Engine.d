@@ -12,7 +12,8 @@ obj/Engine.o: ../src/core/Engine.cpp ../src/core/Engine.hpp \
   ../src/camera/../scene/Entities.hpp ../src/core/../scene/Scene.hpp \
   ../src/scene/Entities.hpp ../src/scene/ModelLoader.hpp \
   ../src/scene/../physics/PhysicsEngine.hpp \
-  ../src/scene/../camera/Camera.hpp ../src/core/../renderer/Renderer.hpp \
+  ../src/scene/../camera/Camera.hpp ../src/scene/../core/Macros.hpp \
+  ../src/core/../renderer/Renderer.hpp \
   ../src/renderer/../scene/Scene.hpp ../src/renderer/shader/Shader.hpp \
   ../src/core/../physics/PhysicsEngine.hpp \
   ../src/core/../audio/Audio.hpp \
@@ -67,6 +68,7 @@ obj/Engine.o: ../src/core/Engine.cpp ../src/core/Engine.hpp \
 ../src/scene/ModelLoader.hpp:
 ../src/scene/../physics/PhysicsEngine.hpp:
 ../src/scene/../camera/Camera.hpp:
+../src/scene/../core/Macros.hpp:
 ../src/core/../renderer/Renderer.hpp:
 ../src/renderer/../scene/Scene.hpp:
 ../src/renderer/shader/Shader.hpp:

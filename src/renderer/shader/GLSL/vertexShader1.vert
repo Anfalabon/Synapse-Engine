@@ -14,7 +14,7 @@ uniform vec3 position;  //this should be 'translate' but for now let's keep it l
 
 uniform mat4 model;
 uniform mat4 view;
-uniform mat4 perspective;
+uniform mat4 projection;
 
 void main()
 {   
@@ -24,7 +24,7 @@ void main()
 
 
 
-    mat4 localToCamera = perspective * view * model;
+    mat4 localToCamera = projection * view * model;
     gl_Position = localToCamera * vec4(aPosition + position, 1.0f);
 
 

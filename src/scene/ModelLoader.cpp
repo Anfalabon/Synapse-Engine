@@ -84,6 +84,7 @@ void ModelLoader::SetModelsDataMap()
     m_modelsMap["Door"] = Mesh(doorVerticiesData, doorIndiciesData, "../vendor/imageLoader/images/doorTexture.jpg");
     //m_modelsMap["Bullet"] = Mesh(bulletVerticiesData, cylinderIndiciesData, "../vendor/imageLoader/images/clearRoadTexture.jpg");
     m_modelsMap["Black Hole"] = Mesh(interstellerObjectVerticiesData, sphereIndiciesData, "");
+    m_modelsMap["Camera"] = Mesh(cameraVerticiesData, cameraIndiciesData, "../vendor/imageLoader/images/oceanTexture.jpg");
 
     //m_modelsMap["House"] = Mesh(doorVerticiesData, roofVerticiesData, wallVerticiesData, groundVerticiesData,
     //                            doorIndiciesData, roofIndiciesData, wallIndiciesData, groundIndiciesData,

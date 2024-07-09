@@ -177,6 +177,18 @@ void Scene::LoadInitialRenderableObjects()
     }
 #endif
 
+
+    m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel("Camera")));
+    std::size_t lastEntityIndex = m_renderableObjects.size()-1;
+    m_cameraIndex = lastEntityIndex;
+
+    //m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel("Camera")));
+    //m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel("Camera")));
+
+    m_renderableObjects[m_cameraIndex]->m_position = glm::vec3(10.0f, 10.0f,10.0f);
+
+
+
     for(RenderableObject *renderableObject: m_renderableObjects) [[likely]]
     {
         renderableObject->LoadMeshes();
@@ -328,6 +340,10 @@ void Scene::Update(GLFWwindow *window, Synapse::Camera *camera, float deltaTime)
     this->LoadRenderableObjectDynamically(window, camera);
     this->RemoveRenderableObjectDynamically(window);
 
+
+    //m_renderableObjects[m_cameraIndex]->m_position = camera->GetPos();
+
+
     std::size_t lastEntityIndex = m_renderableObjects.size()-1;
 
 #define __APPLY__PHYSICS__
@@ -371,7 +387,10 @@ void Scene::Update(GLFWwindow *window, Synapse::Camera *camera, float deltaTime)
     //#pragma omp parallel for
     for (std::size_t i = 6; i < m_renderableObjects.size(); ++i)
     {
-        m_physics->Projectile(m_renderableObjects[i]->m_position, m_renderableObjects[i]->m_velocity, deltaTime2, m_renderableObjects[i]->m_initialVelocity, true, true, groundVerticalDistance);
+        if(i != m_cameraIndex)
+        {
+            m_physics->Projectile(m_renderableObjects[i]->m_position, m_renderableObjects[i]->m_velocity, deltaTime2, m_renderableObjects[i]->m_initialVelocity, true, true, groundVerticalDistance);
+        }
         //physics->OrbitAround(m_renderableObjects[i]->m_position, m_renderableObjects[0]->m_position, m_theta);    //right now it's orbiting the origin
         //m_renderableObjects[i]->Rotate(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
         //m_renderableObjects[i]->Rotate(1.0f, true, false, true);

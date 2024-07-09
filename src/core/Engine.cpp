@@ -242,17 +242,14 @@ void Engine::SelectCamera()
     if(glfwGetKey(m_window->WindowAddress(), GLFW_KEY_F1) == GLFW_PRESS)    //290
     {
         m_currentCameraIndex = 0;
-        Cursor::g_cameraIndex = m_currentCameraIndex;
     }
     else if(glfwGetKey(m_window->WindowAddress(), GLFW_KEY_F2) == GLFW_PRESS)
     {
         m_currentCameraIndex = 1;
-        Cursor::g_cameraIndex = m_currentCameraIndex;
     }
     else if(glfwGetKey(m_window->WindowAddress(), GLFW_KEY_F3) == GLFW_PRESS)
     {
         m_currentCameraIndex = 2;
-        Cursor::g_cameraIndex = m_currentCameraIndex;
     }
 
 
@@ -356,6 +353,7 @@ void Engine::Run()
         m_cameras[m_currentCameraIndex]->GetKeyboardInput(m_window->WindowAddress());
         m_scene->Update(m_window->WindowAddress(), m_cameras[m_currentCameraIndex], deltaTime);
         m_renderer->Render(m_scene);
+        Cursor::g_cameraIndex = m_currentCameraIndex;
         m_cameras[m_currentCameraIndex]->Update(m_scene->GetRenderableObjects());
 
         //this is definately not for benchmarking
