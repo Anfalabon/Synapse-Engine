@@ -17,5 +17,18 @@ void Audio::Play(const char *audioFilePath)
 }
 
 
+void Audio::Pause(const char *audioFilePath = "")
+{
+    //Will add code for pausing the current audio
+}
+
+void Audio::Stop(const char *audioFilePath = "")
+{
+    //Will add code for stoping the current audio
+}
+
+
+
+
 }
 

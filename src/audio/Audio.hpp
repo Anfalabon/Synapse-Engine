@@ -15,10 +15,14 @@ public:
     Audio() : m_soundEngine(createIrrKlangDevice()), m_audioBuffer(0){}
     ~Audio() = default;
 
-    virtual void Play(const char *audioFilePath);
+    virtual void Play(const char *audioFilePath = "");
+    virtual void Pause(const char *audioFilePath = "");
+    virtual void Stop(const char *audioFilePath = "");
+
 private:
     ISoundEngine *m_soundEngine = nullptr;
     unsigned long *m_audioBuffer = nullptr;
+    const char *m_currentAudioFilePath = "";
 };
 
 
