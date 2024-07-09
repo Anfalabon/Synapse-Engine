@@ -37,8 +37,9 @@ obj/main.o: ../src/core/main.cpp ../src/core/Application.hpp \
   ../vendor/irrKlang/include/ik_ISoundStopEventReceiver.h \
   ../vendor/irrKlang/include/ik_ISoundDeviceList.h \
   ../vendor/irrKlang/include/ik_IAudioRecorder.h \
-  ../src/core/../scripts/ScriptingEngine.hpp \
-  ../src/scripts/../scene/Entities.hpp ../src/scripts/../scene/Scene.hpp \
+  ../src/core/../scripting/ScriptingEngine.hpp \
+  ../src/core/../scripting/../scene/Entities.hpp \
+  ../src/core/../scripting/../scene/Scene.hpp \
   ../src/core/../renderer/FrameBuffer.hpp \
   ../src/core/../utils/Asserts.hpp
 ../src/core/Application.hpp:
@@ -91,8 +92,8 @@ obj/main.o: ../src/core/main.cpp ../src/core/Application.hpp \
 ../vendor/irrKlang/include/ik_ISoundStopEventReceiver.h:
 ../vendor/irrKlang/include/ik_ISoundDeviceList.h:
 ../vendor/irrKlang/include/ik_IAudioRecorder.h:
-../src/core/../scripts/ScriptingEngine.hpp:
-../src/scripts/../scene/Entities.hpp:
-../src/scripts/../scene/Scene.hpp:
+../src/core/../scripting/ScriptingEngine.hpp:
+../src/core/../scripting/../scene/Entities.hpp:
+../src/core/../scripting/../scene/Scene.hpp:
 ../src/core/../renderer/FrameBuffer.hpp:
 ../src/core/../utils/Asserts.hpp:

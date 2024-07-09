@@ -477,13 +477,13 @@ void Camera::ApplyMovementInputs(GLFWwindow *m_window)
             //wil fix it.
             if (!m_physics->m_collided)
             {
-                m_physics->m_pos.x = m_physics->m_pos.x + m_physics->m_speedCoefficient * Cursor::g_cursorsData[M_CAMERA_INDEX_ID].m_frontVector.x;
-                m_physics->m_pos.z = m_physics->m_pos.z + m_physics->m_speedCoefficient * Cursor::g_cursorsData[M_CAMERA_INDEX_ID].m_frontVector.z;
+                m_physics->m_pos.x = m_physics->m_pos.x + m_physics->m_speedCoefficient * Cursor::g_frontVector.x;
+                m_physics->m_pos.z = m_physics->m_pos.z + m_physics->m_speedCoefficient * Cursor::g_frontVector.z;
             }
         }
         else if (M_CAMERA_MODE == CAMERA_MODES::INSPECTION_MODE)
         {
-            m_physics->m_pos = m_physics->m_pos + m_physics->m_speedCoefficient * Cursor::g_cursorsData[M_CAMERA_INDEX_ID].m_frontVector;
+            m_physics->m_pos = m_physics->m_pos + m_physics->m_speedCoefficient * Cursor::g_frontVector;
         }
 
     }
@@ -491,8 +491,8 @@ void Camera::ApplyMovementInputs(GLFWwindow *m_window)
     {
         //        if(!m_collided && M_ENGINE_MODE == 1)
         //        {
-        m_physics->m_pos.x = m_physics->m_pos.x - m_physics->m_speedCoefficient * Cursor::g_cursorsData[M_CAMERA_INDEX_ID].m_frontVector.x;
-        m_physics->m_pos.z = m_physics->m_pos.z - m_physics->m_speedCoefficient * Cursor::g_cursorsData[M_CAMERA_INDEX_ID].m_frontVector.z;
+        m_physics->m_pos.x = m_physics->m_pos.x - m_physics->m_speedCoefficient * Cursor::g_frontVector.x;
+        m_physics->m_pos.z = m_physics->m_pos.z - m_physics->m_speedCoefficient * Cursor::g_frontVector.z;
         //        }
         //        else if(M_ENGINE_MODE == 0)
         //        {
@@ -501,13 +501,11 @@ void Camera::ApplyMovementInputs(GLFWwindow *m_window)
     }
     else if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
     {
-        m_physics->m_pos += m_physics->m_speedCoefficient * glm::normalize(glm::cross(Cursor::g_cursorsData[M_CAMERA_INDEX_ID].m_frontVector,
-                                                                                      m_cameraUpVector));
+        m_physics->m_pos += m_physics->m_speedCoefficient * glm::normalize(glm::cross(Cursor::g_frontVector, m_cameraUpVector));
     }
     else if (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
     {
-        m_physics->m_pos -= m_physics->m_speedCoefficient * glm::normalize(glm::cross(Cursor::g_cursorsData[M_CAMERA_INDEX_ID].m_frontVector,
-                                                                                      m_cameraUpVector));
+        m_physics->m_pos -= m_physics->m_speedCoefficient * glm::normalize(glm::cross(Cursor::g_frontVector, m_cameraUpVector));
     }
 
 
@@ -515,29 +513,25 @@ void Camera::ApplyMovementInputs(GLFWwindow *m_window)
     if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS && glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
     {
         std::cout << "W and A pressed!" << '\n';
-        m_physics->m_pos -= 1.0f * m_physics->m_speedCoefficient * glm::normalize(glm::cross(Cursor::g_cursorsData[M_CAMERA_INDEX_ID].m_frontVector,
-                                                                                             m_cameraUpVector));
+        m_physics->m_pos -= 1.0f * m_physics->m_speedCoefficient * glm::normalize(glm::cross(Cursor::g_frontVector, m_cameraUpVector));
     }
 
     if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS && glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
     {
         std::cout << "W and D pressed!" << '\n';
-        m_physics->m_pos += 1.0f * m_physics->m_speedCoefficient * glm::normalize(glm::cross(Cursor::g_cursorsData[M_CAMERA_INDEX_ID].m_frontVector,
-                                                                                             m_cameraUpVector));
+        m_physics->m_pos += 1.0f * m_physics->m_speedCoefficient * glm::normalize(glm::cross(Cursor::g_frontVector, m_cameraUpVector));
     }
 
     if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS && glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
     {
         std::cout << "S and A pressed!" << '\n';
-        m_physics->m_pos -= 1.0f * m_physics->m_speedCoefficient * glm::normalize(glm::cross(Cursor::g_cursorsData[M_CAMERA_INDEX_ID].m_frontVector,
-                                                                                             m_cameraUpVector));
+        m_physics->m_pos -= 1.0f * m_physics->m_speedCoefficient * glm::normalize(glm::cross(Cursor::g_frontVector, m_cameraUpVector));
     }
 
     if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS && glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
     {
         std::cout << "S and D pressed!" << '\n';
-        m_physics->m_pos += 1.0f * m_physics->m_speedCoefficient * glm::normalize(glm::cross(Cursor::g_cursorsData[M_CAMERA_INDEX_ID].m_frontVector,
-                                                                                             m_cameraUpVector));
+        m_physics->m_pos += 1.0f * m_physics->m_speedCoefficient * glm::normalize(glm::cross(Cursor::g_frontVector, m_cameraUpVector));
     }
 
 
@@ -657,11 +651,11 @@ void Camera::GetKeyboardInput(GLFWwindow *m_window)
 //updateViewMatrix()
 void Camera::LookAtTarget()
 {
-    m_targetPos = m_physics->m_pos + Cursor::g_cursorsData[M_CAMERA_INDEX_ID].m_frontVector;
+    m_targetPos = m_physics->m_pos + Cursor::g_frontVector;
 
     DEBUG::__LOG__MANAGER__::LOG('\n');
     DEBUG::__LOG__MANAGER__::LOG("Camera's direction vector: ");
-    DEBUG::__LOG__MANAGER__::GLM_LOG(Cursor::g_cursorsData[M_CAMERA_INDEX_ID].m_frontVector);
+    DEBUG::__LOG__MANAGER__::GLM_LOG(Cursor::g_frontVector);
     DEBUG::__LOG__MANAGER__::LOG('\n');
 
     DEBUG::__LOG__MANAGER__::LOG("Camera's current Position: ");
@@ -703,27 +697,25 @@ void Camera::LookAtTarget()
 void Camera::SetDirectionVector()
 {
     //float netAngle = glm::sqrt(Cursor::g_yaw*Cursor::g_yaw + Cursor::g_pitch*Cursor::g_pitch);
-
-    //m_directionVector.x = m_directionVector.x * glm::cos(Cursor::g_yaw) - m_directionVector.y * glm::sin(Cursor::g_yaw);
-    //m_directionVector.y = m_directionVector.x * glm::sin(Cursor::g_yaw) + m_directionVector.y * glm::cos(Cursor::g_yaw);
+    m_directionVector.x = m_directionVector.x * glm::cos(Cursor::g_yaw) - m_directionVector.y * glm::sin(Cursor::g_yaw);
+    m_directionVector.y = m_directionVector.x * glm::sin(Cursor::g_yaw) + m_directionVector.y * glm::cos(Cursor::g_yaw);
 }
 
 
 glm::vec3 Camera::GetFrontVector()
 {
-    //return Cursor::g_frontVector;
-    return Cursor::g_cursorsData[M_CAMERA_INDEX_ID].m_frontVector;
+    return Cursor::g_frontVector;
 }
 
 
 float Camera::GetYaw()
 {
-    //return Cursor::g_yaw;
+    return Cursor::g_yaw;
 }
 
 float Camera::GetPitch()
 {
-    //return Cursor::g_pitch;
+    return Cursor::g_pitch;
 }
 
 
@@ -731,7 +723,7 @@ float Camera::GetPitch()
 void Camera::IsLookingAtEntity()
 {
     glm::vec3 entityPos = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 differenceVec = entityPos - Cursor::g_cursorsData[M_CAMERA_INDEX_ID].m_frontVector;
+    glm::vec3 differenceVec = entityPos - Cursor::g_frontVector;
 
     if (differenceVec.x <= m_physics->m_objectMaxSize.x &&
         differenceVec.x >= m_physics->m_objectMinSize.x &&
@@ -771,16 +763,6 @@ void Camera::Update(const std::vector<Synapse::RenderableObject*> &renderableObj
 //non-static function
 void Camera::SetupMouse(GLFWwindow *window)
 {
-    if(M_CAMERA_INDEX_ID < 0)
-    {
-        return;
-    }
-
-    std::cout << M_CAMERA_INDEX_ID << '\n';
-    //std::cin.get();
-
-    Cursor::g_cursorsData.push_back(Cursor::CursorData());
-    //Cursor::g_cameraIndex = M_CAMERA_INDEX_ID;
     glfwSetCursorPosCallback(window, Cursor::mouseInput);  //MouseEvents::mouseInput
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }

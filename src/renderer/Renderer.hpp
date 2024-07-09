@@ -68,6 +68,11 @@ public:
         //return (index >= m_sceneShaders.size() || index < 0) ? Shader() : m_sceneShaders[index];
     }
 
+    std::size_t GetTotalShaders()
+    {
+        return m_sceneShaders.size();
+    }
+
 
     void Render() override;
     static void RenderScenePartially(Scene *scene, std::vector<Shader> &sceneShaders, std::size_t first, std::size_t last);   //this is for the Parallelism

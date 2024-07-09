@@ -2,6 +2,7 @@
 #include "../debug/LOG.hpp"
 #include "../debug/RenderingInfoLog.hpp"
 #include "../utils/MemoryManager.hpp"
+#include "../camera/Cursor.hpp"
 
 #include <glad/glad.hpp>
 #include <GLFW/glfw3.h>
@@ -113,16 +114,20 @@ void Engine::LoadCameras()
     std::size_t totalCameras = 3;
     for(std::size_t i=0; i<totalCameras; ++i)
     {
-        m_cameras.push_back(new Camera());
+        m_cameras.push_back(new Camera(i));
     }
 
     std::cout << "pushed cameras to the std::vector!" << '\n';
 
 #endif
 
-   //we need multiple of these
-   //right now we can't as it is a static function
-    Camera::SetupMouse(m_window->WindowAddress());
+    //we need multiple of these
+    //right now we can't as it is a static function
+    //Camera::SetupMouse(m_window->WindowAddress());
+    for(std::size_t i=0; i<m_cameras.size(); ++i)
+    {
+        m_cameras[i]->SetupMouse(m_window->WindowAddress());
+    }
 
 #ifdef __LOADTIME__MULTITHREADING__
     omp_set_num_threads(4);
@@ -130,23 +135,20 @@ void Engine::LoadCameras()
 #endif
 
 
-//    for(std::size_t j=0; j<totalCameras; ++j)
-//    {
-//        for(std::size_t i=0; i<m_scene->GetTotalSceneObjects(); ++i)
-//        {
-//            m_cameras[j]->AddShaderProgramID(m_scene->GetRenderableObject(i)->GetShader().ProgramID());
-//        }
-//    }
+    for(std::size_t j=0; j<m_cameras.size(); ++j)
+    {
+        for(std::size_t i=0; i<m_renderer->GetTotalShaders(); ++i)
+        {
+            m_cameras[j]->AddShaderProgramID(m_renderer->GetShader(i).GetProgramID());
+        }
+    }
 
     // std::cout << "Initialized the Camera" << '\n'; 
 
-    std::size_t j = 0;
-    std::size_t i = 0;
-    for(; i<m_scene->GetTotalSceneObjects() && j<m_cameras.size(); ++i, ++j)
-    {
-        //m_cameras[j]->AddShaderProgramID(m_scene->GetRenderableObject(i)->GetShader().ProgramID());
-        m_cameras[j]->AddShaderProgramID(m_renderer->GetShader(0).GetProgramID());
-    }
+
+    std::cout << "Total Scene shaders: " << m_renderer->GetTotalShaders() << '\n';
+    std::cout << "Total Scene objects: " << m_scene->GetTotalSceneObjects() << '\n';
+
 
 //    for(std::size_t i=0; i<m_scene->GetTotalSceneObjects(); ++i)
 //    {
@@ -156,10 +158,7 @@ void Engine::LoadCameras()
 
 
     std::cout << "Initialized the Camera" << '\n';
-    //giving one single shader program id of single scene object also renders all the other objects
-    //will fix this
-    //m_camera->AddShaderProgramID(m_scene->GetRenderableObject(0)->GetShader().ProgramID());
-    //m_camera->AddShaderProgramID(m_entities[0]->GetShader().ProgramID());
+
 
 }
 
@@ -191,15 +190,7 @@ void Engine::LoadRenderer()
     m_renderer->SetShader();
     m_renderer->GetShader(0).UseProgram();
 
-
-//    m_renderer->AddShader("../src/renderer/shader/GLSL/vertexShader1.vert",
-//                          "../src/renderer/shader/GLSL/groundFragmentShader.frag");
-//    m_renderer->SetShader();
-//    m_renderer->GetShader(1).UseProgram();
-
-
-
-        //will add other types of renderers for other Game Engine Objects(if needed)
+    //will add other types of renderers for Game Engine (if needed)
 }
 
 
@@ -251,14 +242,17 @@ void Engine::SelectCamera()
     if(glfwGetKey(m_window->WindowAddress(), GLFW_KEY_F1) == GLFW_PRESS)    //290
     {
         m_currentCameraIndex = 0;
+        Cursor::g_cameraIndex = m_currentCameraIndex;
     }
     else if(glfwGetKey(m_window->WindowAddress(), GLFW_KEY_F2) == GLFW_PRESS)
     {
         m_currentCameraIndex = 1;
+        Cursor::g_cameraIndex = m_currentCameraIndex;
     }
     else if(glfwGetKey(m_window->WindowAddress(), GLFW_KEY_F3) == GLFW_PRESS)
     {
         m_currentCameraIndex = 2;
+        Cursor::g_cameraIndex = m_currentCameraIndex;
     }
 
 

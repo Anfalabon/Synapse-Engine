@@ -3,24 +3,116 @@
 #include <glm/glm.hpp>
 #include <GLFW/glfw3.h>
 
+#include <iostream>
+#include <vector>
 
 namespace Synapse
 {
 
 
-
-struct CursorData
+namespace Cursor
 {
-    bool  m_movedForTheFirstTime;
-    float m_lastX;
-    float m_lastY;
-    float m_yaw;
-    float m_pitch;
-    const float m_sensitivity;
-    bool  m_isMoving;
-    glm::vec3 m_frontVector;
+
+class CursorData
+{
+public:
+    CursorData() = default;
+    ~CursorData() = default;
+
+    float m_lastX = 1920.0f / 2.0f;
+    float m_lastY = 1080.0f / 2.0f;
+    float m_yaw = -90.0f;
+    float m_pitch = 0.0f;
+    const float m_sensitivity = 0.1f;
+
+    bool m_movedMouseForTheFirstTime = true;
+    bool m_isMouseMoving = false;
+    glm::vec3 m_frontVector = glm::vec3(0.0f, 0.0f, 0.0f);
+
 };
 
+
+inline std::vector<CursorData> g_cursorsData;
+inline std::size_t g_cameraIndex;
+
+
+static void mouseInput(GLFWwindow *window, double xpos, double ypos)
+{
+
+    std::cout << "Current Camera Index: " << g_cameraIndex << '\n';
+    //std::cin.get();
+
+
+    //MouseEvents cursor;
+
+    if (g_cursorsData[g_cameraIndex].m_movedMouseForTheFirstTime)
+    {
+        g_cursorsData[g_cameraIndex].m_lastX = xpos;
+        g_cursorsData[g_cameraIndex].m_lastY = ypos;
+
+        g_cursorsData[g_cameraIndex].m_movedMouseForTheFirstTime = false;
+    }
+
+    float Xoffset = xpos - g_cursorsData[g_cameraIndex].m_lastX;
+    float Yoffset = g_cursorsData[g_cameraIndex].m_lastY - ypos;
+
+    g_cursorsData[g_cameraIndex].m_lastX = xpos;
+    g_cursorsData[g_cameraIndex].m_lastY = ypos;
+
+    //calculate the offset
+    Xoffset = Xoffset * g_cursorsData[g_cameraIndex].m_sensitivity;
+    Yoffset = Yoffset * g_cursorsData[g_cameraIndex].m_sensitivity;
+
+    //calculate yaw and pitch
+    g_cursorsData[g_cameraIndex].m_yaw = g_cursorsData[g_cameraIndex].m_yaw + Xoffset;
+    g_cursorsData[g_cameraIndex].m_pitch = g_cursorsData[g_cameraIndex].m_pitch + Yoffset;
+    //set the moving speed constant of the camera when't it's pointing at 90 degree or right angle
+    //cause camera speed is slower at 90 or -90 degree pitch //but this is still not that good cause it only works for some degrees
+    if (g_cursorsData[g_cameraIndex].m_pitch > 89.0f)
+    {
+        g_cursorsData[g_cameraIndex].m_pitch = 89.0f;
+    }
+    else if (g_cursorsData[g_cameraIndex].m_pitch < -89.0f)
+    {
+        g_cursorsData[g_cameraIndex].m_pitch = -89.0f;
+    }
+
+    glm::vec3 frontVector;  //using this is maybe waste of memory when everytime mouse is moved
+    frontVector.x = glm::cos(glm::radians(g_cursorsData[g_cameraIndex].m_yaw)) * glm::cos(glm::radians(g_cursorsData[g_cameraIndex].m_pitch));
+    frontVector.y = glm::sin(glm::radians(g_cursorsData[g_cameraIndex].m_pitch));
+    frontVector.z = glm::sin(glm::radians(g_cursorsData[g_cameraIndex].m_yaw)) * glm::cos(glm::radians(g_cursorsData[g_cameraIndex].m_pitch));
+    g_cursorsData[g_cameraIndex].m_frontVector = glm::normalize(frontVector);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 
 
 //may make it a struct called "Cursor" and the mouseInput will be inside Calculate::Cursor
@@ -91,52 +183,11 @@ static void mouseInput(GLFWwindow *window, double xpos, double ypos)
 }
 
 
-
-static void MultipleMouseInput(GLFWwindow *window, double xpos, double ypos)
-{
-    //m_cameras[m_currentCameraIndex]->cursor.g_movedMouseForTheFirstTime
-    if (g_movedMouseForTheFirstTime)
-    {
-        g_lastX = xpos;
-        g_lastY = ypos;
-
-        g_movedMouseForTheFirstTime = false;
-    }
-
-    float Xoffset = xpos - g_lastX;
-    float Yoffset = g_lastY - ypos;
-
-    g_lastX = xpos;
-    g_lastY = ypos;
-
-    //calculate the offset
-    Xoffset = Xoffset * g_sensitivity;
-    Yoffset = Yoffset * g_sensitivity;
-
-    //calculate yaw and pitch
-    g_yaw = g_yaw + Xoffset;
-    g_pitch = g_pitch + Yoffset;
-    //set the moving speed constant of the camera when't it's pointing at 90 degree or right angle
-    //cause camera speed is slower at 90 or -90 degree pitch //but this is still not that good cause it only works for some degrees
-    if (g_pitch > 89.0f)
-    {
-        g_pitch = 89.0f;
-    }
-    else if (g_pitch < -89.0f)
-    {
-        g_pitch = -89.0f;
-    }
-
-    CalculateFrontVector();
-
-    //m_cameras[m_currentCameraIndex]->CalculateFrontVector();
-
 }
 
+*/
 
 
-
-}
 
 
 

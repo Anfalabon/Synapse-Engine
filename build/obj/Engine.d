@@ -37,11 +37,13 @@ obj/Engine.o: ../src/core/Engine.cpp ../src/core/Engine.hpp \
   ../vendor/irrKlang/include/ik_ISoundStopEventReceiver.h \
   ../vendor/irrKlang/include/ik_ISoundDeviceList.h \
   ../vendor/irrKlang/include/ik_IAudioRecorder.h \
-  ../src/core/../scripts/ScriptingEngine.hpp \
-  ../src/scripts/../scene/Entities.hpp ../src/scripts/../scene/Scene.hpp \
+  ../src/core/../scripting/ScriptingEngine.hpp \
+  ../src/core/../scripting/../scene/Entities.hpp \
+  ../src/core/../scripting/../scene/Scene.hpp \
   ../src/core/../renderer/FrameBuffer.hpp ../src/core/../debug/LOG.hpp \
   ../src/core/../debug/RenderingInfoLog.hpp \
-  ../src/core/../utils/MemoryManager.hpp
+  ../src/core/../utils/MemoryManager.hpp \
+  ../src/core/../camera/Cursor.hpp
 ../src/core/Engine.hpp:
 ../vendor/glad/include/glad/glad.hpp:
 ../vendor/glad/include/KHR/khrplatform.h:
@@ -91,10 +93,11 @@ obj/Engine.o: ../src/core/Engine.cpp ../src/core/Engine.hpp \
 ../vendor/irrKlang/include/ik_ISoundStopEventReceiver.h:
 ../vendor/irrKlang/include/ik_ISoundDeviceList.h:
 ../vendor/irrKlang/include/ik_IAudioRecorder.h:
-../src/core/../scripts/ScriptingEngine.hpp:
-../src/scripts/../scene/Entities.hpp:
-../src/scripts/../scene/Scene.hpp:
+../src/core/../scripting/ScriptingEngine.hpp:
+../src/core/../scripting/../scene/Entities.hpp:
+../src/core/../scripting/../scene/Scene.hpp:
 ../src/core/../renderer/FrameBuffer.hpp:
 ../src/core/../debug/LOG.hpp:
 ../src/core/../debug/RenderingInfoLog.hpp:
 ../src/core/../utils/MemoryManager.hpp:
+../src/core/../camera/Cursor.hpp:

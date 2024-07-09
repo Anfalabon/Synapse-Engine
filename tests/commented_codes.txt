@@ -2623,3 +2623,97 @@ void Engine::SetViewPort()
 //    glfwMakeContextCurrent(m_window);
 //}
 //
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+//    std::size_t j = 0;
+//    std::size_t i = 0;
+//    for(; i<m_renderer->GetTotalShaders() && j<m_cameras.size(); ++i, ++j)
+//    {
+//        //m_cameras[j]->AddShaderProgramID(m_scene->GetRenderableObject(i)->GetShader().ProgramID());
+//        m_cameras[j]->AddShaderProgramID(m_renderer->GetShader(i).GetProgramID());
+//    }
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+    //giving one single shader program id of single scene object also renders all the other objects
+    //will fix this
+    //m_camera->AddShaderProgramID(m_scene->GetRenderableObject(0)->GetShader().ProgramID());
+    //m_camera->AddShaderProgramID(m_entities[0]->GetShader().ProgramID());
+
+
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+static void MultipleMouseInput(GLFWwindow *window, double xpos, double ypos)
+{
+    //m_cameras[m_currentCameraIndex]->cursor.g_movedMouseForTheFirstTime
+    if (g_movedMouseForTheFirstTime)
+    {
+        g_lastX = xpos;
+        g_lastY = ypos;
+
+        g_movedMouseForTheFirstTime = false;
+    }
+
+    float Xoffset = xpos - g_lastX;
+    float Yoffset = g_lastY - ypos;
+
+    g_lastX = xpos;
+    g_lastY = ypos;
+
+    //calculate the offset
+    Xoffset = Xoffset * g_sensitivity;
+    Yoffset = Yoffset * g_sensitivity;
+
+    //calculate yaw and pitch
+    g_yaw = g_yaw + Xoffset;
+    g_pitch = g_pitch + Yoffset;
+    //set the moving speed constant of the camera when't it's pointing at 90 degree or right angle
+    //cause camera speed is slower at 90 or -90 degree pitch //but this is still not that good cause it only works for some degrees
+    if (g_pitch > 89.0f)
+    {
+        g_pitch = 89.0f;
+    }
+    else if (g_pitch < -89.0f)
+    {
+        g_pitch = -89.0f;
+    }
+
+    CalculateFrontVector();
+
+    //m_cameras[m_currentCameraIndex]->CalculateFrontVector();
+
+}

@@ -8,7 +8,7 @@ CXX_AGGRESSIVE_WARNINGS=-Werror
 CXX_WARNING_FLAGS=-Wall -Wextra
 CXX_MEMORY_DEBUGGER=-fsanitize=address
 CXX_DEBUGGING_FLAGS=-g
-CXX_OPTIMIZATION_LEVEL=-O3
+CXX_OPTIMIZATION_LEVEL=-Ofast
 CXX_DEPENDENCIES_FLAGS=-MMD -MP
 
 
@@ -37,15 +37,46 @@ CXXFLAGS+=$(CXX_INCLUDE_FLAGS)
 
 #####################################---GENERATE OBJ AND DEP FILES FROM SRC FILES---####################################
 
-include Makefile.srcfiles
+#include Makefile.srcfiles
+
+SRC_FILES=glad.cpp \
+		LOG.cpp \
+		FrameBuffer.cpp \
+		PhysicsEngine.cpp \
+		Buffer.cpp \
+		VertexArray.cpp \
+		VertexBuffer.cpp \
+		IndexBuffer.cpp \
+		Mesh.cpp \
+		ModelLoader.cpp \
+		Entities.cpp \
+		Transformation.cpp \
+		vertexObjects.cpp \
+		Shader.cpp \
+		Texture.cpp \
+		Scene.cpp \
+		Renderer.cpp \
+		Window.cpp \
+		Audio.cpp \
+		Timer.cpp \
+		Camera.cpp \
+		ScriptingEngine.cpp \
+		Engine.cpp \
+		Application.cpp \
+		main.cpp
+
+
+
+
 
 
 OBJ_DIR=obj
-DEP_DIR=dep
+DEP_DIR=dependencies
 
 
 OBJ_FILES=$(SRC_FILES:%.cpp=$(OBJ_DIR)/%.o)
-DEP_FILES=$(SRC_FILES:%.cpp=$(DEP_DIR)/%.d)
+#DEP_FILES=$(SRC_FILES:%.cpp=$(DEP_DIR)/%.d)
+#DEP_FILES=$(OBJ_FILES)
 
 
 ###########################################---DEFINE MAIN EXECUTABLE FILE---############################################
@@ -57,10 +88,9 @@ EXECUTABLE=bin/start_game_engine
 #################################################---LINKING FLAGS---####################################################
 
 
-LDFLAGS=-L../src/shader \
-		-L../vendor/GLFW/lib -lglfw \
+LDFLAGS=-L../vendor/GLFW/lib -lglfw \
 		-L../vendor/glad/lib -lGL \
-		-L../vendor/imageLoader -lstbimage -Wl, -rpath ../vendor/imageLoader \
+		-L../vendor/imageLoader/lib -lstbimage -Wl, -rpath ../vendor/imageLoader/lib \
 		-L../vendor/irrKlang/bin/linux-gcc-64 -lIrrKlang -Wl, -rpath ../vendor/irrKlang/bin/linux-gcc-64 \
 		-L../vendor/irrKlang/lib -lIrrKlang \
 		-L../vendor/LuaScriptingLibs -llua \
@@ -72,13 +102,17 @@ $(EXECUTABLE): $(OBJ_FILES)
 ########################################################################################################################
 
 
-
 #$(OBJ_FILES)/%.o: $(SRC_FILES)/%.cpp
 #		$(CXX) $(CXXFLAGS) -c $< -o $@
 
-
-
 ###########################################---COMPILE SOURCE FILES TO OBJ FILES---######################################
+
+
+# '$<' means the first dependency of current target
+# '$@' means the target or targets
+
+
+#include Makefile.compilesrcs
 
 obj/glad.o: ../vendor/glad/src/glad.cpp ../vendor/glad/include/glad/glad.hpp
 		$(CXX) $(CXXFLAGS) -c $< -o $@
@@ -86,105 +120,104 @@ obj/glad.o: ../vendor/glad/src/glad.cpp ../vendor/glad/include/glad/glad.hpp
 
 #created a shadred library for this because of it's slow compilation
 #obj/stb_image.o: ../vendor/imageLoader/stb_image.cpp ../vendor/imageLoader/stb_image.h
-#		$(CXX) $(CXXFLAGS) -c ../vendor/imageLoader/stb_image.cpp -o obj/stb_image.o
+#		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 
 obj/LOG.o: ../src/debug/LOG.cpp ../src/debug/LOG.hpp
-		$(CXX) $(CXXFLAGS) -D __debug__ -c ../src/debug/LOG.cpp -o obj/LOG.o
+		$(CXX) $(CXXFLAGS) -D __debug__ -c $< -o $@
 
 
 obj/FrameBuffer.o: ../src/renderer/FrameBuffer.cpp ../src/renderer/FrameBuffer.hpp
-		$(CXX) $(CXXFLAGS) -c ../src/renderer/FrameBuffer.cpp -o obj/FrameBuffer.o
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 obj/PhysicsEngine.o: ../src/physics/PhysicsEngine.cpp ../src/physics/PhysicsEngine.hpp
-		$(CXX) $(CXXFLAGS) -c ../src/physics/PhysicsEngine.cpp -o obj/PhysicsEngine.o
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 obj/Buffer.o: ../src/scene/Buffer.cpp ../src/scene/Buffer.hpp
-		$(CXX) $(CXXFLAGS) -c ../src/scene/Buffer.cpp -o obj/Buffer.o
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 obj/VertexArray.o: ../src/renderer/VertexArray.cpp ../src/renderer/VertexArray.hpp ../src/scene/VertexBuffer.hpp ../src/scene/IndexBuffer.hpp
-		$(CXX) $(CXXFLAGS) -c ../src/renderer/VertexArray.cpp -o obj/VertexArray.o
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 obj/VertexBuffer.o: ../src/scene/VertexBuffer.cpp ../src/scene/VertexBuffer.hpp
-		$(CXX) $(CXXFLAGS) -c ../src/scene/VertexBuffer.cpp -o obj/VertexBuffer.o
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 obj/IndexBuffer.o: ../src/scene/IndexBuffer.cpp ../src/scene/IndexBuffer.hpp
-		$(CXX) $(CXXFLAGS) -c ../src/scene/IndexBuffer.cpp -o obj/IndexBuffer.o
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 obj/Mesh.o: ../src/scene/Mesh.cpp ../src/scene/Mesh.hpp
-		$(CXX) $(CXXFLAGS) -c ../src/scene/Mesh.cpp -o obj/Mesh.o
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 obj/ModelLoader.o: ../src/scene/ModelLoader.cpp ../src/scene/ModelLoader.hpp ../src/scene/Mesh.hpp
-		$(CXX) $(CXXFLAGS) -c ../src/scene/ModelLoader.cpp -o obj/ModelLoader.o
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 obj/Entities.o: ../src/scene/Entities.cpp ../src/scene/Entities.hpp ../src/scene/Transformation.hpp ../src/scene/vertexObjects.hpp ../src/physics/PhysicsEngine.hpp ../src/scene/VertexBuffer.hpp ../src/scene/IndexBuffer.hpp ../src/renderer/VertexArray.hpp
-		$(CXX) $(CXXFLAGS) -c ../src/scene/Entities.cpp -o obj/Entities.o
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 obj/Transformation.o: ../src/math/Transformation.cpp ../src/math/Transformation.hpp ../src/scene/Entities.hpp
-		$(CXX) $(CXXFLAGS) -c ../src/math/Transformation.cpp -o obj/Transformation.o
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 obj/vertexObjects.o: ../src/scene/vertexObjects.cpp ../src/scene/vertexObjects.hpp
-		$(CXX) $(CXXFLAGS) -c ../src/scene/vertexObjects.cpp -o obj/vertexObjects.o
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 obj/Shader.o: ../src/renderer/shader/Shader.cpp	../src/renderer/shader/Shader.hpp ../src/debug/LOG.hpp ../src/renderer/shader/GLSL/vertexShader1.vert ../src/renderer/shader/GLSL/fragmentShader1.frag
-		$(CXX) $(CXXFLAGS) -c ../src/renderer/shader/Shader.cpp -o obj/Shader.o
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 obj/Texture.o: ../src/renderer/Texture.cpp ../src/renderer/Texture.hpp ../vendor/imageLoader/stb_image.h
-		$(CXX) $(CXXFLAGS) -c ../src/renderer/Texture.cpp -o obj/Texture.o
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 obj/Scene.o: ../src/scene/Scene.cpp ../src/scene/Scene.hpp ../src/scene/Entities.hpp ../src/scene/ModelsDataVertex.hpp ../src/scene/ModelsData.hpp ../src/scene/ModelsDataVector.hpp ../src/window/Window.hpp ../src/utils/RunParallel.hpp
-		$(CXX) $(CXXFLAGS) -c ../src/scene/Scene.cpp -o obj/Scene.o
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 obj/Renderer.o: ../src/renderer/Renderer.cpp ../src/renderer/Renderer.hpp ../src/utils/RunParallel.hpp
-		$(CXX) $(CXXFLAGS) -c ../src/renderer/Renderer.cpp -o obj/Renderer.o
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 obj/Window.o: ../src/window/Window.cpp ../src/window/Window.hpp ../src/debug/LOG.hpp
-		$(CXX) $(CXXFLAGS) -c ../src/window/Window.cpp -o obj/Window.o
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 obj/Audio.o: ../src/audio/Audio.cpp ../src/audio/Audio.hpp
-		$(CXX) $(CXXFLAGS) -c ../src/audio/Audio.cpp -o obj/Audio.o
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 obj/Timer.o: ../src/utils/Timer.cpp ../src/utils/Timer.hpp
-		$(CXX) $(CXXFLAGS) -c ../src/utils/Timer.cpp -o obj/Timer.o
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 obj/Camera.o: ../src/camera/Camera.cpp	../src/camera/Camera.hpp ../src/debug/LOG.hpp ../src/debug/RenderingInfoLog.hpp ../src/physics/PhysicsEngine.hpp ../src/camera/Cursor.hpp
-		$(CXX) $(CXXFLAGS) -c ../src/camera/Camera.cpp -o obj/Camera.o
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
-obj/ScriptingEngine.o: ../src/scripts/ScriptingEngine.cpp ../src/scripts/ScriptingEngine.hpp
-		$(CXX) $(CXXFLAGS) -c ../src/scripts/ScriptingEngine.cpp -o obj/ScriptingEngine.o
+obj/ScriptingEngine.o: ../src/scripting/ScriptingEngine.cpp ../src/scripting/ScriptingEngine.hpp
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
-obj/Engine.o: ../src/core/Engine.cpp ../src/core/Engine.hpp ../src/debug/LOG.hpp ../src/scene/Scene.hpp ../src/debug/RenderingInfoLog.hpp ../src/renderer/shader/Shader.hpp ../src/renderer/Renderer.hpp ../src/utils/RunParallel.hpp ../src/audio/Audio.hpp ../src/scripts/ScriptingEngine.hpp
-		$(CXX) $(CXXFLAGS) -c ../src/core/Engine.cpp -o obj/Engine.o
+obj/Engine.o: ../src/core/Engine.cpp ../src/core/Engine.hpp ../src/debug/LOG.hpp ../src/scene/Scene.hpp ../src/debug/RenderingInfoLog.hpp ../src/renderer/shader/Shader.hpp ../src/renderer/Renderer.hpp ../src/utils/RunParallel.hpp ../src/audio/Audio.hpp ../src/scripting/ScriptingEngine.hpp
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 obj/Application.o: ../src/core/Application.cpp ../src/core/Application.hpp ../src/core/Engine.hpp
-		$(CXX) $(CXXFLAGS) -c ../src/core/Application.cpp -o obj/Application.o
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 obj/main.o: ../src/core/main.cpp ../src/core/Application.hpp
-		$(CXX) $(CXXFLAGS) -c ../src/core/main.cpp -o obj/main.o
-
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 ######################################---INCLUDE DEPENDENCIES FOR SOURCE FILES---#######################################

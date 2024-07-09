@@ -18,25 +18,17 @@ class Camera
 {
 public:
 
-    enum PROJECTION_TYPE
-    {
-        PERSPECTIVE = 0x0,
-        ORTHOGONAL = 0X1
-    };
-
     enum CAMERA_MODES
     {
         GAME_MODE = 0x0,
         INSPECTION_MODE = 0x1,
     };
 
-
-    explicit Camera(const std::size_t &CAMERA_INDEX_ID = 0)
+    explicit Camera()
             : m_physics(new Physics()),
               m_deltaTime(0.0f),
               m_lastFrame(0.0f),
-              M_CAMERA_MODE(CAMERA_MODES::INSPECTION_MODE),
-              M_CAMERA_INDEX_ID(CAMERA_INDEX_ID){}
+              M_CAMERA_MODE(CAMERA_MODES::INSPECTION_MODE){}
 
     ~Camera() = default;
 
@@ -44,7 +36,6 @@ public:
     void SetCameraMode(CAMERA_MODES M);
     void ChangeCameraMode(GLFWwindow *m_window);
     void AddShaderProgramID(GLuint shaderProgramID);
-    //will name it 'Projection' instead of 'Perspective'
     void GetPerspectiveMatrixLocation();
     void GetViewMatrixLocation();
     void CalculateFrontVector(float yaw, float pitch);
@@ -153,8 +144,6 @@ public:
 
 
     CAMERA_MODES M_CAMERA_MODE;
-
-    const std::size_t M_CAMERA_INDEX_ID;
 
 };
 

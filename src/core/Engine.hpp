@@ -1,5 +1,8 @@
 #pragma once
 
+//#include "../../Synapse.hpp"
+
+
 #include <glad/glad.hpp>
 
 #include "../window/Window.hpp"
@@ -8,8 +11,9 @@
 #include "../renderer/Renderer.hpp"
 #include "../physics/PhysicsEngine.hpp"
 #include "../audio/Audio.hpp"
-#include "../scripts/ScriptingEngine.hpp"
+#include "../scripting/ScriptingEngine.hpp"
 #include "../renderer/FrameBuffer.hpp"
+
 
 #include <vector>
 #include <unordered_map>
@@ -67,13 +71,14 @@ private:
     Synapse::ScriptingEngine *m_script;
     Synapse::FrameBuffer     *m_frameBuffer;
 
+    //Synapse::Editor          *m_editor;
+
     std::vector<Synapse::Camera*> m_cameras;
     unsigned short       m_currentCameraIndex;
 public:
     bool                 m_engineRestart : 1;   //using bit fields for decreasing the size of a bool from 1 byte to 1 bit
 private:
-    //std::unordered_map<std::size_t, Camera*> m_cameras;
-    //Renderer      *m_renderer;
+    //Synapse::Renderer      *m_renderer;
 
 };
 

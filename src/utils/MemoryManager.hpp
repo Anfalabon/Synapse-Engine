@@ -3,10 +3,24 @@
 namespace Synapse
 {
 
+
 namespace MemoryManager
 {
 
+
+
+template<class T> class Ref
+{
+
+};
+
+
+
+
+
 inline bool g_wasShutDownMethodCalled = false;
+
+
 
 static void Initializer()
 {

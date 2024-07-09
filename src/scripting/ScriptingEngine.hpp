@@ -33,6 +33,8 @@ public:
     void Init();
     void AddData();
     void SetData();
+    void SendData();
+    void ReciveData();
     void AddFunctions();
     void SetFunctions();
     static void Run();

@@ -25,6 +25,19 @@ void ScriptingEngine::SetData()
 }
 
 
+void ScriptingEngine::SendData()
+{
+
+}
+
+
+
+void ScriptingEngine::ReciveData()
+{
+
+}
+
+
 
 void ScriptingEngine::AddFunctions()
 {
