@@ -3,7 +3,7 @@
 #include <glad/glad.hpp>
 #include <glm/glm.hpp>
 
-#include <vertexObjects.hpp>
+#include "scene/vertexObjects.hpp"
 #include <vector>
 #include <math.h>
 

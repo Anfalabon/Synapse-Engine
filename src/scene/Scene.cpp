@@ -1,9 +1,9 @@
 #include "Scene.hpp"
-#include "../debug/LOG.hpp"
-#include "../window/Window.hpp"
-#include "../utils/RunParallel.hpp"
-#include "../math/Transformation.hpp"
-#include "../utils/MemoryManager.hpp"
+#include "debug/LOG.hpp"
+#include "window/Window.hpp"
+#include "core/RunParallel.hpp"
+#include "math/Transformation.hpp"
+#include "core/MemoryManager.hpp"
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -179,15 +179,21 @@ void Scene::LoadInitialRenderableObjects()
 
 
     m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel("Camera")));
-    std::size_t lastEntityIndex = m_renderableObjects.size()-1;
-    m_cameraIndex = lastEntityIndex;
 
-    //m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel("Camera")));
-    //m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel("Camera")));
+    {
+        std::size_t lastEntityIndex = m_renderableObjects.size()-1;
+        m_firstCameraIndex = lastEntityIndex;
+    }
 
-    m_renderableObjects[m_cameraIndex]->m_position = glm::vec3(10.0f, 10.0f,10.0f);
+    m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel("Camera")));
+    m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel("Camera")));
 
 
+    //m_renderableObjects[m_firstCameraIndex]->m_position = glm::vec3(10.0f, 10.0f,10.0f);
+
+
+    //m_renderableObjects.push_back(new Player(m_modelLoader->GetModel("Male")));
+    //m_renderableObjects.push_back(new NonPlayableCharacter(m_modelLoader->GetModel("Male")));
 
     for(RenderableObject *renderableObject: m_renderableObjects) [[likely]]
     {
@@ -214,31 +220,26 @@ void Scene::CreateRenderableObject(Synapse::Camera *camera)
 
     std::size_t lastEntityIndex = m_renderableObjects.size()-1;
 
-    //check if the currently loaded renderable object is empty or not
+    //check if the currently loaded renderable object is renderable or not
     if(m_renderableObjects[lastEntityIndex]->GetTotalIndiciesOfMesh(0) == 0)
     {
         m_renderableObjects.pop_back();
         return;
     }
 
-    //m_audio->Play("../vendor/bell.wav");
-    //delete m_audio;
     std::cout << "Total renderable objects2: " << m_renderableObjects.size() << '\n';    //this is causing crash
-    //lm();
 
     m_renderableObjects[lastEntityIndex]->LoadMeshes();
     //m_renderableObjects[lastEntityIndex]->Rotate(90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 
-    //camera's target position is only targetting at -z
-    float zToShift = -5.0f;
+    glm::vec3 scaledFrontVector = 3.0f * camera->GetFrontVector();   //scale the direction vector
 
-    //m_renderableObjects[lastEntityIndex]->m_position += currentCameraTargetPos + glm::vec3(0.0f, 0.0f, zToShift);
-    m_renderableObjects[lastEntityIndex]->m_position += camera->GetTargetPos() + glm::vec3(0.0f, 0.0f, zToShift);
+    m_renderableObjects[lastEntityIndex]->m_position = scaledFrontVector;  //first assign it's position to the scaled normalized direction vector
+    m_renderableObjects[lastEntityIndex]->m_position += camera->GetPos();   //then translate it the position of Camera's current position
 
     //the model matrix will be modified using 'SendMatrix4ToGPU()'
 
-    //glm::vec3 velocity = currentCameraTargetPos - cameraPos;    //don't need to normalize if we access the front vector
-    glm::vec3 velocity = camera->GetTargetPos() - camera->GetPos();
+    glm::vec3 velocity = camera->GetFrontVector();
 
     m_renderableObjects[lastEntityIndex]->m_velocity.x = velocity.x;
     m_renderableObjects[lastEntityIndex]->m_velocity.z = velocity.z;
@@ -329,7 +330,7 @@ bool  g_stopRotating = false;
 
 
 //void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch, float deltaTime)
-void Scene::Update(GLFWwindow *window, Synapse::Camera *camera, float deltaTime)
+void Scene::Update(GLFWwindow *window, Synapse::Camera *camera, std::size_t currentCameraIndex, float deltaTime)
 {
     if(m_renderableObjects.size() <= 0)
     {
@@ -341,7 +342,8 @@ void Scene::Update(GLFWwindow *window, Synapse::Camera *camera, float deltaTime)
     this->RemoveRenderableObjectDynamically(window);
 
 
-    //m_renderableObjects[m_cameraIndex]->m_position = camera->GetPos();
+    //m_renderableObjects[m_firstCameraIndex + currentCameraIndex]->m_position = camera->GetPos();
+    //m_renderableObjects[m_firstCameraIndex + currentCameraIndex]->m_position.z -= 2.0f;
 
 
     std::size_t lastEntityIndex = m_renderableObjects.size()-1;
@@ -349,31 +351,6 @@ void Scene::Update(GLFWwindow *window, Synapse::Camera *camera, float deltaTime)
 #define __APPLY__PHYSICS__
 #ifdef __APPLY__PHYSICS__
 
-    //m_renderableObjects[0]->m_position.z += 0.01f;
-    //m_renderableObjects[6]->Rotate(1.0f, glm::vec3(0.0f, -1.0f, 0.0f));
-
-
-//    if(glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
-//    {
-//        g_stopRotating = true;
-//    }
-//    else if(glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
-//    {
-//        g_stopRotating = false;
-//    }
-//
-//
-//    if(!g_stopRotating)
-//    {
-//        m_renderableObjects[5]->Rotate(0.05f, glm::vec3(-1.0f, 0.0f, 0.0f));
-//        g_angleRotated += 0.05f;
-//    }
-//
-//    if(g_angleRotated > 180.0f)
-//    {
-//        m_renderableObjects[5]->m_position = glm::vec3(100.0f, 0.0f, 100.0f);
-//        g_angleRotated = 0.0f;
-//    }
 
     std::cout << "Radius of rotation: " << glm::length(m_renderableObjects[6]->m_position) << '\n';
 
@@ -387,7 +364,7 @@ void Scene::Update(GLFWwindow *window, Synapse::Camera *camera, float deltaTime)
     //#pragma omp parallel for
     for (std::size_t i = 6; i < m_renderableObjects.size(); ++i)
     {
-        if(i != m_cameraIndex)
+        if(i != m_firstCameraIndex + 0 && i != m_firstCameraIndex + 1 && i != m_firstCameraIndex + 2)
         {
             m_physics->Projectile(m_renderableObjects[i]->m_position, m_renderableObjects[i]->m_velocity, deltaTime2, m_renderableObjects[i]->m_initialVelocity, true, true, groundVerticalDistance);
         }

@@ -2717,3 +2717,98 @@ static void MultipleMouseInput(GLFWwindow *window, double xpos, double ypos)
     //m_cameras[m_currentCameraIndex]->CalculateFrontVector();
 
 }
+
+
+
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+    //m_renderableObjects[lastEntityIndex]->m_position += currentCameraTargetPos + glm::vec3(0.0f, 0.0f, zToShift);
+    //m_renderableObjects[lastEntityIndex]->m_position += camera->GetFrontVector() + glm::vec3(0.0f, 0.0f, zToShift);
+
+
+    //glm::vec3 velocity = currentCameraTargetPos - cameraPos;    //don't need to normalize if we access the front vector
+    //glm::vec3 velocity = camera->GetTargetPos() - camera->GetPos();
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+        //restart the engine whenever the script changes
+        if(m_script->Changed())
+        {
+            return;
+            system("make run");
+            exit(1);
+        }
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    //m_renderableObjects[0]->m_position.z += 0.01f;
+    //m_renderableObjects[6]->Rotate(1.0f, glm::vec3(0.0f, -1.0f, 0.0f));
+
+
+//    if(glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+//    {
+//        g_stopRotating = true;
+//    }
+//    else if(glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
+//    {
+//        g_stopRotating = false;
+//    }
+//
+//
+//    if(!g_stopRotating)
+//    {
+//        m_renderableObjects[5]->Rotate(0.05f, glm::vec3(-1.0f, 0.0f, 0.0f));
+//        g_angleRotated += 0.05f;
+//    }
+//
+//    if(g_angleRotated > 180.0f)
+//    {
+//        m_renderableObjects[5]->m_position = glm::vec3(100.0f, 0.0f, 100.0f);
+//        g_angleRotated = 0.0f;
+//    }
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+//    if(this->WasShaderFileModified("../src/renderer/shader/GLSL/vertexShader1.vert"))
+//    {
+//        //std::cout << "File was modified!" << '\n';
+//        //std::cin.get();
+//
+//        //this->SetShader(0);
+//        //m_sceneShaders[0].UseProgram();
+//    }

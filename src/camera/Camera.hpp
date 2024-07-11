@@ -4,8 +4,8 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-#include "../physics/PhysicsEngine.hpp"
-#include "../scene/Entities.hpp"
+#include "physics/PhysicsEngine.hpp"
+#include "scene/Entities.hpp"
 //#include "../events/MouseEvents.hpp"
 
 #include <vector>

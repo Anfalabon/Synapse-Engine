@@ -2,7 +2,7 @@
 
 #include <stb_image.h>
 
-#include "../debug/LOG.hpp"
+#include "debug/LOG.hpp"
 
 #include <iostream>
 #include <memory.h>

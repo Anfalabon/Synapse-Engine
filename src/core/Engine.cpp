@@ -1,8 +1,9 @@
 #include "Engine.hpp"
-#include "../debug/LOG.hpp"
-#include "../debug/RenderingInfoLog.hpp"
-#include "../utils/MemoryManager.hpp"
-#include "../camera/Cursor.hpp"
+#include "debug/LOG.hpp"
+#include "debug/RenderingInfoLog.hpp"
+#include "core/MemoryManager.hpp"
+#include "camera/Cursor.hpp"
+
 
 #include <glad/glad.hpp>
 #include <GLFW/glfw3.h>
@@ -267,6 +268,9 @@ bool Engine::Restart()
 }
 
 
+
+
+
 #ifdef __UPDATE__ENGINE__
 
 void Engine::Update()
@@ -333,14 +337,6 @@ void Engine::Run()
             break;
         }
 
-        //restart the engine whenever the script changes
-        if(m_script->Changed())
-        {
-            return;
-            system("make run");
-            exit(1);
-        }
-
         m_renderer->SetBackGround(0.2f, 0.3f, 0.3f, 1.0f);
         //will use sin function to move around day and night after a certain period
 
@@ -351,7 +347,8 @@ void Engine::Run()
 
         this->SelectCamera();
         m_cameras[m_currentCameraIndex]->GetKeyboardInput(m_window->WindowAddress());
-        m_scene->Update(m_window->WindowAddress(), m_cameras[m_currentCameraIndex], deltaTime);
+        m_scene->Update(m_window->WindowAddress(), m_cameras[m_currentCameraIndex], m_currentCameraIndex, deltaTime);
+
         m_renderer->Render(m_scene);
         Cursor::g_cameraIndex = m_currentCameraIndex;
         m_cameras[m_currentCameraIndex]->Update(m_scene->GetRenderableObjects());

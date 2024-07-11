@@ -16,8 +16,8 @@ CXX_DEPENDENCIES_FLAGS=-MMD -MP
 
 
 #also including the custom include flags allows us to include headers with ' <> ' than just ' "" '
-#CXX_CUSTOM_INDLUDE_FLAGS=-I../src
-CXX_CUSTOM_INCLUDE_FLAGS=-I../src/core -I../src/window -I../src/physics -I../src/utils -I../src/math -I../src/scene -I../src/renderer -I../src/camera -I../src/debug -I../src/scripts -I../src/events -I../src/audio
+CXX_CUSTOM_INCLUDE_FLAGS=-I../src
+#CXX_CUSTOM_INCLUDE_FLAGS+=-I../src/core -I../src/window -I../src/physics -I../src/utils -I../src/math -I../src/scene -I../src/renderer -I../src/camera -I../src/debug -I../src/scripting -I../src/events -I../src/audio
 CXX_EXTERNAL_INCLUDE_FLAGS=-I../vendor/GLFW/include -I../vendor/glad/include -I../vendor/glm -I../vendor/imageLoader -I../vendor/irrKlang/include -I../vendor/include/LuaScriptingLibs
 CXX_INCLUDE_FLAGS+=$(CXX_CUSTOM_INCLUDE_FLAGS)
 CXX_INCLUDE_FLAGS+=$(CXX_EXTERNAL_INCLUDE_FLAGS)
@@ -44,6 +44,7 @@ SRC_FILES=glad.cpp \
 		FrameBuffer.cpp \
 		PhysicsEngine.cpp \
 		Buffer.cpp \
+		Filesystem.cpp \
 		VertexArray.cpp \
 		VertexBuffer.cpp \
 		IndexBuffer.cpp \
@@ -140,6 +141,11 @@ obj/Buffer.o: ../src/scene/Buffer.cpp ../src/scene/Buffer.hpp
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
+obj/Filesystem.o: ../src/core/Filesystem.cpp ../src/core/Filesystem.hpp
+		$(CXX) $(CXXFLAGS) -c $< -o $@
+
+
+
 obj/VertexArray.o: ../src/renderer/VertexArray.cpp ../src/renderer/VertexArray.hpp ../src/scene/VertexBuffer.hpp ../src/scene/IndexBuffer.hpp
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
@@ -180,11 +186,11 @@ obj/Texture.o: ../src/renderer/Texture.cpp ../src/renderer/Texture.hpp ../vendor
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
-obj/Scene.o: ../src/scene/Scene.cpp ../src/scene/Scene.hpp ../src/scene/Entities.hpp ../src/scene/ModelsDataVertex.hpp ../src/scene/ModelsData.hpp ../src/scene/ModelsDataVector.hpp ../src/window/Window.hpp ../src/utils/RunParallel.hpp
+obj/Scene.o: ../src/scene/Scene.cpp ../src/scene/Scene.hpp ../src/scene/Entities.hpp ../src/scene/ModelsDataVertex.hpp ../src/scene/ModelsData.hpp ../src/scene/ModelsDataVector.hpp ../src/window/Window.hpp ../src/core/RunParallel.hpp
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
-obj/Renderer.o: ../src/renderer/Renderer.cpp ../src/renderer/Renderer.hpp ../src/utils/RunParallel.hpp
+obj/Renderer.o: ../src/renderer/Renderer.cpp ../src/renderer/Renderer.hpp ../src/core/RunParallel.hpp
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
@@ -196,7 +202,7 @@ obj/Audio.o: ../src/audio/Audio.cpp ../src/audio/Audio.hpp
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
-obj/Timer.o: ../src/utils/Timer.cpp ../src/utils/Timer.hpp
+obj/Timer.o: ../src/core/Timer.cpp ../src/core/Timer.hpp
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
@@ -208,7 +214,7 @@ obj/ScriptingEngine.o: ../src/scripting/ScriptingEngine.cpp ../src/scripting/Scr
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
-obj/Engine.o: ../src/core/Engine.cpp ../src/core/Engine.hpp ../src/debug/LOG.hpp ../src/scene/Scene.hpp ../src/debug/RenderingInfoLog.hpp ../src/renderer/shader/Shader.hpp ../src/renderer/Renderer.hpp ../src/utils/RunParallel.hpp ../src/audio/Audio.hpp ../src/scripting/ScriptingEngine.hpp
+obj/Engine.o: ../src/core/Engine.cpp ../src/core/Engine.hpp ../src/debug/LOG.hpp ../src/scene/Scene.hpp ../src/debug/RenderingInfoLog.hpp ../src/renderer/shader/Shader.hpp ../src/renderer/Renderer.hpp ../src/core/RunParallel.hpp ../src/audio/Audio.hpp ../src/scripting/ScriptingEngine.hpp
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 

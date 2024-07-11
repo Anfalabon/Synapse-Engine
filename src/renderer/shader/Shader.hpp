@@ -3,6 +3,8 @@
 #include <glad/glad.hpp>
 #include <glm/glm.hpp>
 
+#include "core/Macros.hpp"
+
 #include <iostream>
 #include <string.h>
 #include <unordered_map>
@@ -51,6 +53,9 @@ public:
      void SetMatrix4vf(const char *uniformMatrixName, glm::mat4 &model);
      void SendMatrix4ToGPU(const char *uniformMatrixName, glm::mat4 &model);
      void SendVector3ToGPU(const char *uniformVectorName, glm::vec3 &vector);
+
+     __ALWAYS__INLINE__ std::string GetVertexShaderFilePath() const {return m_vertexShader.path;}
+     __ALWAYS__INLINE__ std::string GetFragmentShaderFilePath() const {return m_fragmentShader.path;}
 
 
 

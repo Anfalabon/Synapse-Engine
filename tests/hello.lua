@@ -7,6 +7,9 @@ function printStr(str)
 end
 
 
+
+--local define
+
 --local str;
 
 

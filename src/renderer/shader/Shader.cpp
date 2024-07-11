@@ -1,5 +1,6 @@
 #include "Shader.hpp"
-#include "../debug/LOG.hpp"
+#include "debug/LOG.hpp"
+#include "core/Filesystem.hpp"
 
 #include <fstream>
 #include <stdlib.h>
@@ -160,7 +161,12 @@ unsigned int Shader::Compile(unsigned int type, const char *shaderSource)
 
 void Shader::Compile()
 {
-    this->ReadSources();
+    //this->ReadSources();
+
+
+    m_vertexShader.source = std::move(Filesystem::ReadFileContent(m_vertexShader.path));
+    m_fragmentShader.source = std::move(Filesystem::ReadFileContent(m_fragmentShader.path));
+
     if(m_vertexShader.source == "" || m_fragmentShader.source == "")
     {
         return;

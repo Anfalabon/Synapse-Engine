@@ -2,8 +2,8 @@
 
 #include <glad/glad.hpp>
 
-#include "VertexBuffer.hpp"
-#include "IndexBuffer.hpp"
+#include "scene/VertexBuffer.hpp"
+#include "scene/IndexBuffer.hpp"
 
 //#include <src/scene/VertexBuffer.hpp>
 //#include <src/scene/IndexBuffer.hpp>

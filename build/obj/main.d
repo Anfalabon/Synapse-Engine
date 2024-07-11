@@ -1,21 +1,14 @@
 obj/main.o: ../src/core/main.cpp ../src/core/Application.hpp \
   ../src/core/Engine.hpp ../vendor/glad/include/glad/glad.hpp \
-  ../vendor/glad/include/KHR/khrplatform.h \
-  ../src/core/../window/Window.hpp ../src/window/../debug/LOG.hpp \
-  ../src/core/../camera/Camera.hpp \
-  ../src/camera/../physics/PhysicsEngine.hpp \
-  ../src/physics/../scene/Entities.hpp ../src/scene/Mesh.hpp \
-  ../src/scene/VertexBuffer.hpp ../src/scene/Buffer.hpp \
-  ../src/scene/../debug/LOG.hpp ../src/scene/IndexBuffer.hpp \
-  ../src/renderer/VertexArray.hpp ../src/scene/../renderer/Texture.hpp \
-  ../vendor/imageLoader/stb_image.h ../src/renderer/../debug/LOG.hpp \
-  ../src/camera/../scene/Entities.hpp ../src/core/../scene/Scene.hpp \
-  ../src/scene/Entities.hpp ../src/scene/ModelLoader.hpp \
-  ../src/scene/../physics/PhysicsEngine.hpp \
-  ../src/scene/../camera/Camera.hpp ../src/core/../renderer/Renderer.hpp \
-  ../src/renderer/../scene/Scene.hpp ../src/renderer/shader/Shader.hpp \
-  ../src/core/../physics/PhysicsEngine.hpp \
-  ../src/core/../audio/Audio.hpp \
+  ../vendor/glad/include/KHR/khrplatform.h ../src/window/Window.hpp \
+  ../src/core/Macros.hpp ../src/debug/LOG.hpp ../src/camera/Camera.hpp \
+  ../src/physics/PhysicsEngine.hpp ../src/scene/Entities.hpp \
+  ../src/scene/Mesh.hpp ../src/scene/VertexBuffer.hpp \
+  ../src/scene/Buffer.hpp ../src/scene/IndexBuffer.hpp \
+  ../src/renderer/VertexArray.hpp ../src/renderer/Texture.hpp \
+  ../vendor/imageLoader/stb_image.h ../src/scene/Scene.hpp \
+  ../src/scene/ModelLoader.hpp ../src/renderer/Renderer.hpp \
+  ../src/renderer/shader/Shader.hpp ../src/audio/Audio.hpp \
   ../src/audio/../../vendor/irrKlang/include/irrKlang.h \
   ../vendor/irrKlang/include/ik_irrKlangTypes.h \
   ../vendor/irrKlang/include/ik_vec3d.h \
@@ -37,40 +30,32 @@ obj/main.o: ../src/core/main.cpp ../src/core/Application.hpp \
   ../vendor/irrKlang/include/ik_ISoundStopEventReceiver.h \
   ../vendor/irrKlang/include/ik_ISoundDeviceList.h \
   ../vendor/irrKlang/include/ik_IAudioRecorder.h \
-  ../src/core/../scripting/ScriptingEngine.hpp \
-  ../src/core/../scripting/../scene/Entities.hpp \
-  ../src/core/../scripting/../scene/Scene.hpp \
-  ../src/core/../renderer/FrameBuffer.hpp \
-  ../src/core/../utils/Asserts.hpp
+  ../src/scripting/ScriptingEngine.hpp \
+  ../src/scripting/../scene/Entities.hpp \
+  ../src/scripting/../scene/Scene.hpp ../src/renderer/FrameBuffer.hpp \
+  ../src/core/Asserts.hpp
 ../src/core/Application.hpp:
 ../src/core/Engine.hpp:
 ../vendor/glad/include/glad/glad.hpp:
 ../vendor/glad/include/KHR/khrplatform.h:
-../src/core/../window/Window.hpp:
-../src/window/../debug/LOG.hpp:
-../src/core/../camera/Camera.hpp:
-../src/camera/../physics/PhysicsEngine.hpp:
-../src/physics/../scene/Entities.hpp:
+../src/window/Window.hpp:
+../src/core/Macros.hpp:
+../src/debug/LOG.hpp:
+../src/camera/Camera.hpp:
+../src/physics/PhysicsEngine.hpp:
+../src/scene/Entities.hpp:
 ../src/scene/Mesh.hpp:
 ../src/scene/VertexBuffer.hpp:
 ../src/scene/Buffer.hpp:
-../src/scene/../debug/LOG.hpp:
 ../src/scene/IndexBuffer.hpp:
 ../src/renderer/VertexArray.hpp:
-../src/scene/../renderer/Texture.hpp:
+../src/renderer/Texture.hpp:
 ../vendor/imageLoader/stb_image.h:
-../src/renderer/../debug/LOG.hpp:
-../src/camera/../scene/Entities.hpp:
-../src/core/../scene/Scene.hpp:
-../src/scene/Entities.hpp:
+../src/scene/Scene.hpp:
 ../src/scene/ModelLoader.hpp:
-../src/scene/../physics/PhysicsEngine.hpp:
-../src/scene/../camera/Camera.hpp:
-../src/core/../renderer/Renderer.hpp:
-../src/renderer/../scene/Scene.hpp:
+../src/renderer/Renderer.hpp:
 ../src/renderer/shader/Shader.hpp:
-../src/core/../physics/PhysicsEngine.hpp:
-../src/core/../audio/Audio.hpp:
+../src/audio/Audio.hpp:
 ../src/audio/../../vendor/irrKlang/include/irrKlang.h:
 ../vendor/irrKlang/include/ik_irrKlangTypes.h:
 ../vendor/irrKlang/include/ik_vec3d.h:
@@ -92,8 +77,8 @@ obj/main.o: ../src/core/main.cpp ../src/core/Application.hpp \
 ../vendor/irrKlang/include/ik_ISoundStopEventReceiver.h:
 ../vendor/irrKlang/include/ik_ISoundDeviceList.h:
 ../vendor/irrKlang/include/ik_IAudioRecorder.h:
-../src/core/../scripting/ScriptingEngine.hpp:
-../src/core/../scripting/../scene/Entities.hpp:
-../src/core/../scripting/../scene/Scene.hpp:
-../src/core/../renderer/FrameBuffer.hpp:
-../src/core/../utils/Asserts.hpp:
+../src/scripting/ScriptingEngine.hpp:
+../src/scripting/../scene/Entities.hpp:
+../src/scripting/../scene/Scene.hpp:
+../src/renderer/FrameBuffer.hpp:
+../src/core/Asserts.hpp:

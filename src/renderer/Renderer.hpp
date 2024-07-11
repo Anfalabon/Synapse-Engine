@@ -3,12 +3,16 @@
 
 #include <glad/glad.hpp>
 
-#include "../scene/Scene.hpp"
+#include "scene/Scene.hpp"
 #include "shader/Shader.hpp"
+#include "core/Macros.hpp"
+#include "core/Filesystem.hpp"
 //#include "../camera/Camera.hpp"   //camera will be inside the 'Renderer class'(for now the SceneRenderer class) not inside 'Engine'
 
 #include <vector>
 #include <unordered_map>
+#include <sys/stat.h>
+#include <ctime>
 
 
 
@@ -54,7 +58,7 @@ public:
         m_sceneShaders.push_back(Shader(vertexShaderPath, fragmentShaderPath));
     }
 
-    void SetShader()
+    void SetShader(std::size_t index = 0)
     {
         std::size_t lastIndex = m_sceneShaders.size() - 1;
         m_sceneShaders[lastIndex].Compile();
@@ -73,6 +77,8 @@ public:
         return m_sceneShaders.size();
     }
 
+    __ALWAYS__INLINE__ bool WasShaderFileModified(const std::string &filePathStr);
+
 
     void Render() override;
     static void RenderScenePartially(Scene *scene, std::vector<Shader> &sceneShaders, std::size_t first, std::size_t last);   //this is for the Parallelism
@@ -85,9 +91,14 @@ public:
 
 private:
 
-    Synapse::Scene *m_scene;
+    Synapse::Scene               *m_scene;
     std::vector<Synapse::Shader>  m_sceneShaders;
+    Synapse::Filesystem           m_fileWatcher;
+
+    std::time_t lastModificationTime = 0;
+
     //std::vector<Camera*> m_cameras;
+
 
 };
 

@@ -1,6 +1,9 @@
 #pragma once
 
-#include "../debug/LOG.hpp"
+#include <core/Macros.hpp>
+#include "debug/LOG.hpp"
+
+//#include "../debug/LOG.hpp"
 
 #include <GLFW/glfw3.h>
 

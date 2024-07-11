@@ -1,5 +1,5 @@
 #include "Entities.hpp"
-#include "../utils/MemoryManager.hpp"
+#include "core/MemoryManager.hpp"
 
 #include <stb_image.h>
 

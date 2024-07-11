@@ -1,10 +1,10 @@
 #pragma once
 
-#include "VertexBuffer.hpp"
-#include "IndexBuffer.hpp"
-#include "VertexArray.hpp"
-#include "../renderer/Texture.hpp"
-#include "../debug/LOG.hpp"
+#include "scene/VertexBuffer.hpp"
+#include "scene/IndexBuffer.hpp"
+#include "renderer/VertexArray.hpp"
+#include "renderer/Texture.hpp"
+#include "debug/LOG.hpp"
 
 #include <string>
 #include <vector>

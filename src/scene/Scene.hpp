@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Entities.hpp"
-#include "ModelLoader.hpp"
-#include "../physics/PhysicsEngine.hpp"
-#include "../camera/Camera.hpp"
-#include "../core/Macros.hpp"
+#include "scene/Entities.hpp"
+#include "scene/ModelLoader.hpp"
+#include "physics/PhysicsEngine.hpp"
+#include "camera/Camera.hpp"
+#include "core/Macros.hpp"
 
 #include <GLFW/glfw3.h>
 
@@ -33,7 +33,7 @@ public:
     void LoadRenderableObjectDynamically(GLFWwindow *window, Synapse::Camera *camera);  //make the camera parameter const
     void RemoveRenderableObjectDynamically(GLFWwindow *window);
     void RenderableObjectKeyboardMovement(GLFWwindow *window, std::size_t index);
-    void Update(GLFWwindow *window, Synapse::Camera *camera, float deltaTime);  //make the camera parameter const
+    void Update(GLFWwindow *window, Synapse::Camera *camera, std::size_t currentCameraIndex, float deltaTime);  //make the camera parameter const
     void Clear();
 
 
@@ -72,7 +72,7 @@ private:
     Synapse::Physics *m_physics;
 
     //temp member data's
-    std::size_t m_cameraIndex = 0;
+    std::size_t m_firstCameraIndex = 0;
     bool m_dynamicRenderableObjectLoaderRunning = false;
     bool m_dynamicRenderableObjectDeleterRunning = false;
     bool m_rotatorKeyPressed = false;

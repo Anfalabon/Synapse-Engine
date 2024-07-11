@@ -1,5 +1,6 @@
-#include "Application.hpp"
-#include "../utils/Asserts.hpp"
+#include "core/Application.hpp"
+#include "core/Asserts.hpp"
+
 
 #include <memory>
 

@@ -1,15 +1,22 @@
 #include "Renderer.hpp"
-#include "../scene/Scene.hpp"
-#include "../utils/RunParallel.hpp"
-#include "../debug/LOG.hpp"
+#include "scene/Scene.hpp"
+#include "core/RunParallel.hpp"
+#include "debug/LOG.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/ext.hpp>
 
 
+#include <iostream>
 #include <vector>
 #include <thread>
+#include <filesystem>
+#include <sys/stat.h>
+#include <chrono>
+#include <ctime>
+
+
 
 
 //#define __MULTITHREADING__RENDERER__
@@ -104,6 +111,45 @@ void SceneRenderer::RenderScenePartially(Scene *scene, std::vector<Shader> &scen
 
 
 
+
+
+//track the file creation time and last file modification time.
+//if the last file modification time > creation time then file was modified.
+//assign the last modification time to current time(the current time was was checked).
+
+//again if the current modification time > last modification time then file was modified.
+
+
+bool SceneRenderer::WasShaderFileModified(const std::string &filePathStr)
+{
+    //const char *filePath = filePathStr.c_str();
+    struct stat fileInfo;
+    std::time_t currentLastModificationTime;
+
+    if(struct stat fileInfo; stat(filePathStr.c_str(), &fileInfo) == 0)
+    {
+        currentLastModificationTime = fileInfo.st_mtime;
+        if(fileInfo.st_mtime > lastModificationTime)
+        {
+            lastModificationTime = fileInfo.st_mtime;
+            return true;
+        }
+    }
+
+    if(currentLastModificationTime > lastModificationTime)
+    {
+        lastModificationTime = currentLastModificationTime;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
+}
+
+
+
 void SceneRenderer::Render(Scene *scene, Shader *sceneShaders)
 {
 
@@ -141,6 +187,14 @@ void SceneRenderer::Render(Scene *scene, Shader *sceneShaders)
 
 
 #if 1
+
+
+    if(m_fileWatcher.WasFileModified("../src/renderer/shader/GLSL/vertexShader1.vert"))
+    {
+        std::cin.get();
+    }
+
+
     //#pragma omp parallel for
     for(std::size_t i=0; i < scene->GetTotalSceneObjects(); ++i)
     {
@@ -159,6 +213,8 @@ void SceneRenderer::Render(Scene *scene, Shader *sceneShaders)
         //glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->GetTotalIndicies(), GL_UNSIGNED_INT, 0);
 
     }
+
+
 #endif
 
 

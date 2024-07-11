@@ -2,8 +2,8 @@
 
 #include <glad/glad.hpp>
 
-#include "Buffer.hpp"
-#include "../debug/LOG.hpp"
+#include "scene/Buffer.hpp"
+#include "debug/LOG.hpp"
 
 #include <iostream>
 #include <array>

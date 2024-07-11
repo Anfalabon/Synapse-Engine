@@ -1,6 +1,6 @@
 #include "Camera.hpp"
-#include "Cursor.hpp"   //include 'Cursor.hpp' after 'Camera.hpp' cause cursor includes GLFW and glm followed by and camera's inclusion of glad
-#include "../debug/LOG.hpp"
+#include "camera/Cursor.hpp"   //include 'Cursor.hpp' after 'Camera.hpp' cause cursor includes GLFW and glm followed by and camera's inclusion of glad
+#include "debug/LOG.hpp"
 
 #include <glm/glm.hpp>
 

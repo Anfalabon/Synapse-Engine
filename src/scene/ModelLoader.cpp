@@ -1,5 +1,5 @@
-#include "ModelLoader.hpp"
-#include "ModelsDataVector.hpp"
+#include "scene/ModelLoader.hpp"
+#include "scene/ModelsDataVector.hpp"
 //#include "ModelsData.hpp"
 
 #include <iostream>

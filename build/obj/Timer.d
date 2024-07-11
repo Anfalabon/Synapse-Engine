@@ -1,2 +1,2 @@
-obj/Timer.o: ../src/utils/Timer.cpp ../src/utils/Timer.hpp
-../src/utils/Timer.hpp:
+obj/Timer.o: ../src/core/Timer.cpp ../src/core/Timer.hpp
+../src/core/Timer.hpp:

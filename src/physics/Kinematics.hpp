@@ -1,6 +1,6 @@
 #pragma once
 
-#include "PhysicsEngine.hpp"
+#include "physics/PhysicsEngine.hpp"
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>

@@ -6,11 +6,11 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/ext.hpp>
 
-#include "Mesh.hpp"
-#include "VertexBuffer.hpp"
-#include "IndexBuffer.hpp"
-#include "VertexArray.hpp"
-#include "../renderer/Texture.hpp"
+#include "scene/Mesh.hpp"
+#include "scene/VertexBuffer.hpp"
+#include "scene/IndexBuffer.hpp"
+#include "renderer/VertexArray.hpp"
+#include "renderer/Texture.hpp"
 
 #include <iostream>
 #include <vector>

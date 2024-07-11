@@ -6,7 +6,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/ext.hpp>
 
-#include "../scene/Entities.hpp"
+#include "scene/Entities.hpp"
 
 
 namespace Synapse
