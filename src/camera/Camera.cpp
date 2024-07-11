@@ -667,15 +667,6 @@ void Camera::LookAtTarget()
     DEBUG::__LOG__MANAGER__::GLM_LOG(Cursor::g_cursorsData[M_CAMERA_INDEX_ID].m_frontVector);
     DEBUG::__LOG__MANAGER__::LOG('\n');
 
-
-
-    DEBUG::__LOG__MANAGER__::LOG('\n');
-    //this is the vector which represents where the camera is pointing at
-    DEBUG::__LOG__MANAGER__::LOG("Camera's direction vector(Normalized): ");
-    DEBUG::__LOG__MANAGER__::GLM_LOG(glm::normalize(Cursor::g_cursorsData[M_CAMERA_INDEX_ID].m_frontVector));
-    DEBUG::__LOG__MANAGER__::LOG('\n');
-
-
     DEBUG::__LOG__MANAGER__::LOG("Camera's current Position: ");
     DEBUG::__LOG__MANAGER__::GLM_LOG(m_physics->m_pos);
     DEBUG::__LOG__MANAGER__::LOG('\n');
@@ -684,12 +675,9 @@ void Camera::LookAtTarget()
     DEBUG::__LOG__MANAGER__::GLM_LOG(m_targetPos);
     DEBUG::__LOG__MANAGER__::LOG('\n');
 
-
     DEBUG::__LOG__MANAGER__::LOG("Camera's delta time: ");
     DEBUG::__LOG__MANAGER__::LOG(m_deltaTime);
     DEBUG::__LOG__MANAGER__::LOG('\n');
-
-
 
 
     //glm::vec3 m_cameraWorldUp = glm::vec3(m_cameraUpVector.x , m_cameraUpVector.y, m_cameraUpVector.z);

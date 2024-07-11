@@ -8,8 +8,10 @@
 namespace Synapse
 {
 
+
+#define __DEBUG__
 //#define __debug__
-#ifdef __debug__
+#ifdef __DEBUG__
     #define DEBUG(__debug__message__) std::cout << "In FILE: " << __FILE__ << ", FUNCTION: " << __func__ << ", LINE: " << __LINE__ << " ==> " \
                                             << "\e[31m" << __debug__message__ << "\e[0m" << '\n'
 #else
@@ -18,16 +20,15 @@ namespace Synapse
 
 
 
-#define __DEBUG__   //bad to define it in global scope but will do it for now.
-#ifdef __DEBUG__
-
 
 namespace DEBUG
 {
+
+
 struct __LOG__MANAGER__
 {
-//#define LOG(__log__txt__) std::clog << "In FILE: " << __FILE__ << ", FUNCTION: " << __func__ << ", LINE: " << __LINE__ << " " << __log__txt__ << '\n'
 
+#ifdef __DEBUG__
     inline static void LOG(){}
     template<typename T, typename... Args> inline static void LOG(T __log__txt__, Args ... args) __attribute__((always_inline))
     {
@@ -49,6 +50,15 @@ struct __LOG__MANAGER__
 //#define LOG(log_message) LOG(log_message, __FILE__, __func__, __LINE__)
 //#define LOG(_log_message_) std::clog << "In FILE: " << __FILE__ << ", FUNCTION: " << __func__ << ", LINE: " << __LINE__ << " " << _log_message_ << '\n'
 
+#else
+
+    template<typename T, typename... Args> inline static void LOG(T __log__txt__, Args ... args){}
+    template<typename T> inline static void GLM_LOG(T __glm__func__){}
+    template<typename T> inline static void SYSTEM_LOG(T __system__cmd__){}
+
+#endif
+
+
 
 };
 
@@ -56,7 +66,7 @@ struct __LOG__MANAGER__
 
 }
 
-#endif
+//#endif
 
 //#ifdef __DEBUG__
 //    #undef __DEBUG__

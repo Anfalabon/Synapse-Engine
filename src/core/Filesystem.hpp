@@ -33,11 +33,19 @@ namespace Synapse
 class Filesystem
 {
 public:
+
+    enum WRITE_MODE
+    {
+        WRITE_AT_END,
+        WRITE_AT_BEGINNING,
+        WRITE_AT_SPECIFIC_POINT
+    };
+
     Filesystem() = default;
     ~Filesystem() = default;
 
     static std::string ReadFileContent(const std::string &filePath);
-    static void WriteContentToFile(const std::string &filePath);
+    static void WriteContentToFile(const std::string &filePath, const std::string &content, WRITE_MODE placeToWrite = WRITE_AT_END);
 
     static std::time_t FileCreationTime(const std::string &filePath);
     static std::time_t FileLastModificationTime(const std::string &filePath);

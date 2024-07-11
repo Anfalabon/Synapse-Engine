@@ -126,7 +126,7 @@ obj/glad.o: ../vendor/glad/src/glad.cpp ../vendor/glad/include/glad/glad.hpp
 
 
 obj/LOG.o: ../src/debug/LOG.cpp ../src/debug/LOG.hpp
-		$(CXX) $(CXXFLAGS) -D __debug__ -c $< -o $@
+		$(CXX) $(CXXFLAGS) -D __DEBUG__ -c $< -o $@
 
 
 obj/FrameBuffer.o: ../src/renderer/FrameBuffer.cpp ../src/renderer/FrameBuffer.hpp

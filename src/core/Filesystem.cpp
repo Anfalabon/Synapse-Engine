@@ -33,7 +33,7 @@ std::string Filesystem::ReadFileContent(const std::string &filePath)
 
 
 
-void Filesystem::WriteContentToFile(const std::string &filePath){}
+void Filesystem::WriteContentToFile(const std::string &filePath, const std::string &content, WRITE_MODE placeToWrite){}
 std::time_t Filesystem::FileCreationTime(const std::string &filePath){}
 
 
@@ -58,6 +58,7 @@ bool Filesystem::WasFileModified(const std::string &filePath)
             return true;
         }
     }
+
     return false;
 }
 

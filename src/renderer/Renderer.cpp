@@ -197,6 +197,10 @@ void SceneRenderer::Render(Scene *scene, Shader *sceneShaders)
         m_sceneShaders[0].UseProgram();
     }
 
+
+    //Filesystem::WriteContentToFile("../src/renderer/shader/GLSL/vertexShader.1vert", "hello world", Filesystem::WRITE_AT_END);
+
+
     //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
 
     //#pragma omp parallel for
