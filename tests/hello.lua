@@ -8,7 +8,6 @@ end
 
 
 
---local define
 
 --local str;
 
@@ -28,15 +27,15 @@ end
 function SpeakOnce(index)
     index = 1;
     repeat
-        printStr("Again Nothing To Say!");
+        printStr("Hello Running this in a loop");
         index = index + 1;
     until index < 10
 end
 
 
 function main()
-    RepeatedlySpeak("AnyWay");
-    --SpeakOnce();
+    --RepeatedlySpeak("AnyWay");
+    SpeakOnce();
 end
 
 

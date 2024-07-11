@@ -145,7 +145,6 @@ obj/Filesystem.o: ../src/core/Filesystem.cpp ../src/core/Filesystem.hpp
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
-
 obj/VertexArray.o: ../src/renderer/VertexArray.cpp ../src/renderer/VertexArray.hpp ../src/scene/VertexBuffer.hpp ../src/scene/IndexBuffer.hpp
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 

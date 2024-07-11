@@ -311,8 +311,6 @@ void Engine::Run()
     float deltaTime = 0.0f;
     float lastFrame = 0.0f;
 
-    float time = 0.0f;
-
     //once it starts to play it won't stop (even for the entire life of the program)
     //will make a function called 'Stop()' or 'Pause()' to stop it.
 
@@ -355,8 +353,6 @@ void Engine::Run()
 
         //this is definately not for benchmarking
         renderingInfo::FramesPerSecond();
-
-        time += 0.001f;
 
         //m_window->SwapBuffers();
         m_frameBuffer->SwapBuffers(m_window->WindowAddress());

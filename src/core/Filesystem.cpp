@@ -35,7 +35,16 @@ std::string Filesystem::ReadFileContent(const std::string &filePath)
 
 void Filesystem::WriteContentToFile(const std::string &filePath){}
 std::time_t Filesystem::FileCreationTime(const std::string &filePath){}
-std::time_t Filesystem::FileLastModificationTime(const std::string &filePath){}
+
+
+std::time_t Filesystem::FileLastModificationTime(const std::string &filePath)
+{
+    if(struct stat fileInfo; stat(filePath.c_str(), &fileInfo) == 0)
+    {
+        return fileInfo.st_mtime;
+    }
+    return -1;
+}
 
 
 

@@ -182,6 +182,7 @@ void SceneRenderer::Render(Scene *scene, Shader *sceneShaders)
 
 
 
+
     //unsigned int *ptr = &scene->GetRenderableObject(0)->GetTotalIndiciesOfMesh(0);
     //*(ptr + i*sizeof(Scene))
 
@@ -189,11 +190,14 @@ void SceneRenderer::Render(Scene *scene, Shader *sceneShaders)
 #if 1
 
 
-    if(m_fileWatcher.WasFileModified("../src/renderer/shader/GLSL/vertexShader1.vert"))
+    if(m_fileWatcher.WasFileModified("../src/renderer/shader/GLSL/vertexShader1.vert") ||
+       m_fileWatcher.WasFileModified("../src/renderer/shader/GLSL/fragmentShader1.frag"))
     {
-        std::cin.get();
+        this->SetShader();
+        m_sceneShaders[0].UseProgram();
     }
 
+    //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
 
     //#pragma omp parallel for
     for(std::size_t i=0; i < scene->GetTotalSceneObjects(); ++i)
