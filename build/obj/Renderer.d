@@ -8,7 +8,8 @@ obj/Renderer.o: ../src/renderer/Renderer.cpp ../src/renderer/Renderer.hpp \
   ../vendor/imageLoader/stb_image.h ../src/scene/ModelLoader.hpp \
   ../src/physics/PhysicsEngine.hpp ../src/camera/Camera.hpp \
   ../src/core/Macros.hpp ../src/renderer/shader/Shader.hpp \
-  ../src/core/Filesystem.hpp ../src/core/RunParallel.hpp
+  ../src/core/Filesystem.hpp ../src/core/RunParallel.hpp \
+  ../src/core/Timer.hpp ../src/core/Benchmark.hpp
 ../src/renderer/Renderer.hpp:
 ../vendor/glad/include/glad/glad.hpp:
 ../vendor/glad/include/KHR/khrplatform.h:
@@ -29,3 +30,5 @@ obj/Renderer.o: ../src/renderer/Renderer.cpp ../src/renderer/Renderer.hpp \
 ../src/renderer/shader/Shader.hpp:
 ../src/core/Filesystem.hpp:
 ../src/core/RunParallel.hpp:
+../src/core/Timer.hpp:
+../src/core/Benchmark.hpp:

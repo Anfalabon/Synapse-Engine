@@ -30,6 +30,11 @@ namespace Synapse
 {
 
 
+class FileWriter;
+class FileReader;
+class FileFormatConverter;
+
+
 class Filesystem
 {
 public:

@@ -2,6 +2,8 @@
 #include "scene/Scene.hpp"
 #include "core/RunParallel.hpp"
 #include "debug/LOG.hpp"
+#include "core/Timer.hpp"
+#include "core/Benchmark.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -201,7 +203,7 @@ void SceneRenderer::Render(Scene *scene, Shader *sceneShaders)
     //Filesystem::WriteContentToFile("../src/renderer/shader/GLSL/vertexShader.1vert", "hello world", Filesystem::WRITE_AT_END);
 
 
-    //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
+    S_START_BENCHMARKING();
 
     //#pragma omp parallel for
     for(std::size_t i=0; i < scene->GetTotalSceneObjects(); ++i)
@@ -221,6 +223,19 @@ void SceneRenderer::Render(Scene *scene, Shader *sceneShaders)
         //glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->GetTotalIndicies(), GL_UNSIGNED_INT, 0);
 
     }
+
+    S_END_BENCHMARKING();
+    S_PRINT_BENCHMARKING_RESULT();
+    S_SHUTDOWN_BENCHMARKER();
+
+
+    //S_PAUSE_FOR_READING();
+
+
+
+
+
+
 
 
 #endif
