@@ -3,18 +3,16 @@
 namespace Synapse
 {
 
-template<class T>
-class Ref
+
+template<class T> class Ref
 {
 public:
-    Ref() = default;
-    ~Ref() = default;
+    Ref(T& ref) : m_ref(ref){}
 
-    void SetValue(){}
-    T &GetValue(){}
+    T& Get() const {return m_ref;}
 
 private:
-    T &Ref;
+    T& m_ref;
 };
 
 

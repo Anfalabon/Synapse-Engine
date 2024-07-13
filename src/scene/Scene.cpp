@@ -458,9 +458,6 @@ void Scene::SelectRenderableObjectTemp(GLFWwindow *window, Synapse::Camera *came
 
     //DEBUG::__LOG__MANAGER__::GLM_LOG();
 
-
-
-
     float dotProduct = glm::dot(distanceVector, directionVector);
     float lengthsProduct = length1 * glm::length(directionVector);
 
@@ -490,6 +487,7 @@ void Scene::SelectRenderableObjectTemp(GLFWwindow *window, Synapse::Camera *came
     if(holdingLeftMouseButton && lookingAtRenderableObject)
     {
         DEBUG("Renderable object to choose: ");
+        ////////////////////////////////here multiply the front vector by 'm_physics->m_speedCoefficiet'
         m_renderableObjects[currentRenderableObjectIndex]->m_position = std::move(directionVector);
         std::cout << currentRenderableObjectIndex << '\n';
     }

@@ -32,9 +32,7 @@ obj/Application.o: ../src/core/Application.cpp \
   ../vendor/irrKlang/include/ik_ISoundStopEventReceiver.h \
   ../vendor/irrKlang/include/ik_ISoundDeviceList.h \
   ../vendor/irrKlang/include/ik_IAudioRecorder.h \
-  ../src/scripting/ScriptingEngine.hpp \
-  ../src/scripting/../scene/Entities.hpp \
-  ../src/scripting/../scene/Scene.hpp ../src/renderer/FrameBuffer.hpp
+  ../src/scripting/ScriptingEngine.hpp ../src/renderer/FrameBuffer.hpp
 ../src/core/Application.hpp:
 ../src/core/Engine.hpp:
 ../vendor/glad/include/glad/glad.hpp:
@@ -80,6 +78,4 @@ obj/Application.o: ../src/core/Application.cpp \
 ../vendor/irrKlang/include/ik_ISoundDeviceList.h:
 ../vendor/irrKlang/include/ik_IAudioRecorder.h:
 ../src/scripting/ScriptingEngine.hpp:
-../src/scripting/../scene/Entities.hpp:
-../src/scripting/../scene/Scene.hpp:
 ../src/renderer/FrameBuffer.hpp:
