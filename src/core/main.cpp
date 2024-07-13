@@ -1,5 +1,7 @@
 #include "core/Application.hpp"
 #include "core/Asserts.hpp"
+#include "core/Benchmark.hpp"
+#include "core/Macros.hpp"
 
 
 #include <memory>
@@ -24,7 +26,17 @@ int Main()   //will place 'main.cpp' in the 'Engine' directory instead of 'Engin
         //Application &application = Application::getApplication();
         Application *application = new Application();
         S_NULL_ASSERT(application, "Application is NULL!");
-        S_CORE_INITIALIZATION_ASSERT(application->Init(), "Failed to Initialize Application!");
+
+
+        S_BENCHMARK
+        (
+            S_CORE_INITIALIZATION_ASSERT(application->Init(), "Failed to Initialize Application!");
+            std::cout << "Ready to run the Engine..." << '\n';
+        );
+
+        S_PAUSE_FOR_READING();
+
+
         application->Run();
         if(!application->IsRestart())
         {

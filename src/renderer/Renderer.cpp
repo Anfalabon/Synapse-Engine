@@ -171,7 +171,6 @@ void SceneRenderer::Render(Scene *scene, Shader *sceneShaders)
     //Filesystem::WriteContentToFile("../src/renderer/shader/GLSL/vertexShader.1vert", "hello world", Filesystem::WRITE_AT_END);
 
 
-    S_START_BENCHMARKING();
 
     //#pragma omp parallel for
     for(std::size_t i=0; i < scene->GetTotalSceneObjects(); ++i)
@@ -192,9 +191,8 @@ void SceneRenderer::Render(Scene *scene, Shader *sceneShaders)
 
     }
 
-    S_END_BENCHMARKING();
-    S_PRINT_BENCHMARKING_RESULT();
-    S_SHUTDOWN_BENCHMARKER();
+
+
 
 
     //S_PAUSE_FOR_READING();

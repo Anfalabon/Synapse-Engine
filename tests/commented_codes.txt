@@ -2905,3 +2905,26 @@ bool SceneRenderer::WasShaderFileModified(const std::string &filePathStr)
 //            currentRenderableObjectIndex = i;
 //        }
 //    }
+
+
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+#obj/vertexObjects.o: ../src/scene/vertexObjects.cpp ../src/scene/vertexObjects.hpp
+#		$(CXX) $(CXXFLAGS) -c $< -o $@
+

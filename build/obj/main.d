@@ -32,7 +32,8 @@ obj/main.o: ../src/core/main.cpp ../src/core/Application.hpp \
   ../vendor/irrKlang/include/ik_ISoundDeviceList.h \
   ../vendor/irrKlang/include/ik_IAudioRecorder.h \
   ../src/scripting/ScriptingEngine.hpp ../src/renderer/FrameBuffer.hpp \
-  ../src/core/Asserts.hpp
+  ../src/core/Asserts.hpp ../src/core/Benchmark.hpp \
+  ../src/core/Timer.hpp
 ../src/core/Application.hpp:
 ../src/core/Engine.hpp:
 ../vendor/glad/include/glad/glad.hpp:
@@ -80,3 +81,5 @@ obj/main.o: ../src/core/main.cpp ../src/core/Application.hpp \
 ../src/scripting/ScriptingEngine.hpp:
 ../src/renderer/FrameBuffer.hpp:
 ../src/core/Asserts.hpp:
+../src/core/Benchmark.hpp:
+../src/core/Timer.hpp:

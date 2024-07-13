@@ -52,7 +52,6 @@ SRC_FILES=glad.cpp \
 		ModelLoader.cpp \
 		Entities.cpp \
 		Transformation.cpp \
-		vertexObjects.cpp \
 		Shader.cpp \
 		Texture.cpp \
 		Scene.cpp \
@@ -60,6 +59,7 @@ SRC_FILES=glad.cpp \
 		Window.cpp \
 		Audio.cpp \
 		Timer.cpp \
+		Benchmark.cpp \
 		Camera.cpp \
 		ScriptingEngine.cpp \
 		Engine.cpp \
@@ -110,7 +110,6 @@ $(EXECUTABLE): $(OBJ_FILES)
 
 
 
-
 include ../src/Makefile
 
 
@@ -150,6 +149,7 @@ clear:
 		 rm -f obj/Window.o
 		 rm -f obj/Audio.o
 		 rm -f obj/Timer.o
+		 rm -f obj/Benchmark.o
 		 rm -f obj/Camera.o
 		 rm -f obj/ScriptingEngine.o
 		 rm -f obj/Engine.o
@@ -158,7 +158,7 @@ clear:
 
 
 clearAll:
-		rm -rf $(POBJ_FILES) $(DEP_FILES)
+		make clear; make c; rm -rf obj; mkdir obj
 
 run:
 		./$(EXECUTABLE)

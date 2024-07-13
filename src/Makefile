@@ -53,15 +53,11 @@ obj/ModelLoader.o: ../src/scene/ModelLoader.cpp ../src/scene/ModelLoader.hpp ../
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
-obj/Entities.o: ../src/scene/Entities.cpp ../src/scene/Entities.hpp ../src/scene/Transformation.hpp ../src/scene/vertexObjects.hpp ../src/physics/PhysicsEngine.hpp ../src/scene/VertexBuffer.hpp ../src/scene/IndexBuffer.hpp ../src/renderer/VertexArray.hpp
+obj/Entities.o: ../src/scene/Entities.cpp ../src/scene/Entities.hpp ../src/scene/Transformation.hpp ../../DustBin/vertexObjects.hpp ../src/physics/PhysicsEngine.hpp ../src/scene/VertexBuffer.hpp ../src/scene/IndexBuffer.hpp ../src/renderer/VertexArray.hpp
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 obj/Transformation.o: ../src/math/Transformation.cpp ../src/math/Transformation.hpp ../src/scene/Entities.hpp
-		$(CXX) $(CXXFLAGS) -c $< -o $@
-
-
-obj/vertexObjects.o: ../src/scene/vertexObjects.cpp ../src/scene/vertexObjects.hpp
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
@@ -93,6 +89,12 @@ obj/Timer.o: ../src/core/Timer.cpp ../src/core/Timer.hpp
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
+
+obj/Benchmark.o: ../src/core/Benchmark.cpp ../src/core/Benchmark.hpp ../src/core/Timer.hpp
+		$(CXX) $(CXXFLAGS) -c $< -o $@
+
+
+
 obj/Camera.o: ../src/camera/Camera.cpp	../src/camera/Camera.hpp ../src/debug/LOG.hpp ../src/debug/RenderingInfoLog.hpp ../src/physics/PhysicsEngine.hpp ../src/camera/Cursor.hpp
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
@@ -110,4 +112,4 @@ obj/Application.o: ../src/core/Application.cpp ../src/core/Application.hpp ../sr
 
 
 obj/main.o: ../src/core/main.cpp ../src/core/Application.hpp
-		$(CXX) $(CXXFLAGS) -c $< -o $@
+		$(CXX) $(CXXFLAGS) -fblocks -c $< -o $@
