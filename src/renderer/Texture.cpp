@@ -12,16 +12,17 @@
 namespace Synapse
 {
 
-    __declspecUnix()
 
 extern "C"{
 
 #if defined(MSVC)
     __declspec() STBIDEF stbi_uc *stbi_load(char const *filename, int *x, int *y, int *channels_in_file, int desired_channels);
     __declspec() STBIDEF void     stbi_image_free(void *retval_from_stbi_load);
+    __declspec() STBIDEF void stbi_set_flip_vertically_on_load(int flag_true_if_should_flip);
 #elif defined(__linux__) || defined(__unix__)
     __declspecUnix() STBIDEF stbi_uc *stbi_load(char const *filename, int *x, int *y, int *channels_in_file, int desired_channels);
     __declspecUnix() STBIDEF void     stbi_image_free(void *retval_from_stbi_load);
+    __declspecUnix() STBIDEF void stbi_set_flip_vertically_on_load(int flag_true_if_should_flip);
 #elif defined(MAC)
 
 #endif

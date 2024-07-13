@@ -4,7 +4,7 @@
 
 
 obj/glad.o: ../vendor/glad/src/glad.cpp ../vendor/glad/include/glad/glad.hpp
-		$(CXX) $(CXXFLAGS) -c $< -o $@
+		$(CXX) $(CXXFLAGS) -D __DEBUG__ -c $< -o $@
 
 
 #created a shadred library for this because of it's slow compilation
@@ -14,7 +14,7 @@ obj/glad.o: ../vendor/glad/src/glad.cpp ../vendor/glad/include/glad/glad.hpp
 
 
 obj/LOG.o: ../src/debug/LOG.cpp ../src/debug/LOG.hpp
-		$(CXX) $(CXXFLAGS) -D __DEBUG__ -c $< -o $@
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 obj/FrameBuffer.o: ../src/renderer/FrameBuffer.cpp ../src/renderer/FrameBuffer.hpp
