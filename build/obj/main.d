@@ -6,10 +6,9 @@ obj/main.o: ../src/core/main.cpp ../src/core/Application.hpp \
   ../src/scene/Mesh.hpp ../src/scene/VertexBuffer.hpp \
   ../src/scene/Buffer.hpp ../src/scene/IndexBuffer.hpp \
   ../src/renderer/VertexArray.hpp ../src/renderer/Texture.hpp \
-  ../vendor/imageLoader/stb_image.h ../src/scene/Scene.hpp \
-  ../src/scene/ModelLoader.hpp ../src/renderer/Renderer.hpp \
-  ../src/renderer/shader/Shader.hpp ../src/core/Filesystem.hpp \
-  ../src/audio/Audio.hpp \
+  ../src/scene/Scene.hpp ../src/scene/ModelLoader.hpp \
+  ../src/renderer/Renderer.hpp ../src/renderer/shader/Shader.hpp \
+  ../src/core/Filesystem.hpp ../src/audio/Audio.hpp \
   ../src/audio/../../vendor/irrKlang/include/irrKlang.h \
   ../vendor/irrKlang/include/ik_irrKlangTypes.h \
   ../vendor/irrKlang/include/ik_vec3d.h \
@@ -50,7 +49,6 @@ obj/main.o: ../src/core/main.cpp ../src/core/Application.hpp \
 ../src/scene/IndexBuffer.hpp:
 ../src/renderer/VertexArray.hpp:
 ../src/renderer/Texture.hpp:
-../vendor/imageLoader/stb_image.h:
 ../src/scene/Scene.hpp:
 ../src/scene/ModelLoader.hpp:
 ../src/renderer/Renderer.hpp:

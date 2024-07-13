@@ -1,7 +1,5 @@
 #pragma once
 
-#include <stb_image.h>
-
 #include "debug/LOG.hpp"
 
 #include <iostream>

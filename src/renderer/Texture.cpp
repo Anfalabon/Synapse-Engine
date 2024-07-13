@@ -1,14 +1,34 @@
 #include "Texture.hpp"
+#include "core/Macros.hpp"
 
 #include <glad/glad.hpp>
+#include <stb_image.h>
 
-#include <iostream>
+
 #include <fstream>
 #include <string.h>
 
 
 namespace Synapse
 {
+
+    __declspecUnix()
+
+extern "C"{
+
+#if defined(MSVC)
+    __declspec() STBIDEF stbi_uc *stbi_load(char const *filename, int *x, int *y, int *channels_in_file, int desired_channels);
+    __declspec() STBIDEF void     stbi_image_free(void *retval_from_stbi_load);
+#elif defined(__linux__) || defined(__unix__)
+    __declspecUnix() STBIDEF stbi_uc *stbi_load(char const *filename, int *x, int *y, int *channels_in_file, int desired_channels);
+    __declspecUnix() STBIDEF void     stbi_image_free(void *retval_from_stbi_load);
+#elif defined(MAC)
+
+#endif
+
+}
+
+
 
 void Texture::Gen()
 {
