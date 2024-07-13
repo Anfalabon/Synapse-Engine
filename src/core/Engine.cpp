@@ -263,8 +263,7 @@ bool Engine::Restart()
 {
     return ((glfwGetKey(m_window->WindowAddress(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
             glfwGetKey(m_window->WindowAddress(), GLFW_KEY_LEFT_ALT) == GLFW_PRESS &&
-            glfwGetKey(m_window->WindowAddress(), GLFW_KEY_R) == GLFW_PRESS) ||
-            m_script->Changed()) ? true : false;
+            glfwGetKey(m_window->WindowAddress(), GLFW_KEY_R) == GLFW_PRESS)) ? true : false;
 }
 
 
@@ -345,6 +344,7 @@ void Engine::Run()
 
         this->SelectCamera();
         m_cameras[m_currentCameraIndex]->GetKeyboardInput(m_window->WindowAddress());
+        //m_scriptingEngine->UpdateScene(m_scene);
         m_scene->Update(m_window->WindowAddress(), m_cameras[m_currentCameraIndex], m_currentCameraIndex, deltaTime);
 
         m_renderer->Render(m_scene);

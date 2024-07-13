@@ -177,6 +177,12 @@ void Scene::LoadInitialRenderableObjects()
     }
 #endif
 
+//    minX = -20.0f;
+//    maxX = 180.0f;
+//
+//    minZ = -20.0f;
+//    maxX = 180.0f;
+
 
     m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel("Camera")));
 
@@ -297,8 +303,35 @@ void Scene::RemoveRenderableObjectDynamically(GLFWwindow *window)
 
 
 
+static std::size_t SelectObjectByIndex(GLFWwindow *window)
+{
+
+    for(std::size_t i=0; i<10; ++i)
+    {
+        if(glfwGetKey(window, GLFW_KEY_0 + i) == GLFW_PRESS)
+        {
+            return (GLFW_KEY_0 + i);
+        }
+    }
+
+}
+
+
+static bool keepingLeftMouseButtonHolding(GLFWwindow *window)
+{
+    if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+    {
+        return true;
+    }
+    return false;
+}
+
+
+
 void Scene::RenderableObjectKeyboardMovement(GLFWwindow *window, std::size_t index)
 {
+    //index = SelectObjectByIndex(window);
+
     if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
     {
         //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(0.0f, 1.0f/10.0f, 0.0f));
@@ -329,6 +362,173 @@ float g_angleRotated = 0.0f;
 bool  g_stopRotating = false;
 
 
+
+int64_t Scene::RenderableObjectCameraLookingAt(Synapse::Camera *camera)
+{
+    std::size_t currentRenderableObjectIndex = 0;
+
+    glm::vec3 distanceVector = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 directionVector = 3.0f * camera->GetFrontVector();    //here directionVector length will be always '3.0f'
+    glm::vec3 cameraPos = camera->GetPos();
+
+
+    float minDistance = glm::length(cameraPos - m_renderableObjects[0]->m_position);
+
+
+    //find the renderable object which distance vector length is minimum
+    for(std::size_t i=0; i<m_renderableObjects.size(); ++i)
+    {
+        distanceVector = cameraPos - m_renderableObjects[i]->m_position;
+        float distanceLength = glm::length(distanceVector);
+        if(distanceLength < minDistance)
+        {
+            minDistance = distanceLength;
+            currentRenderableObjectIndex = i;
+        }
+
+
+
+    }
+
+    float length2 = glm::length(directionVector);
+    //directionVector += camera->GetPos();
+
+    if((glm::dot(distanceVector, directionVector) == minDistance * length2) || (minDistance <= length2))
+    {
+        lookingAtRenderableObject = true;
+        return (int64_t)currentRenderableObjectIndex;
+    }
+
+    return -1;
+}
+
+
+
+void Scene::SelectRenderableObject(GLFWwindow *window, Synapse::Camera *camera)
+{
+    bool holdingLeftMouseButton = false;
+    int64_t index = -1;
+
+    if(!keepingLeftMouseButtonHolding(window))
+    {
+        lookingAtRenderableObject = false;
+    }
+    else
+    {
+        holdingLeftMouseButton = true;
+        index = this->RenderableObjectCameraLookingAt(camera);
+        std::cout << "Selected Renderable Object Index: " << index << '\n';
+        if(index < 0)
+        {
+            lookingAtRenderableObject = false;
+        }
+    }
+
+    if(holdingLeftMouseButton && lookingAtRenderableObject)
+    {
+        glm::vec3 translatedDirectionVector = 3.0f * camera->GetFrontVector();
+        translatedDirectionVector += camera->GetPos();
+        m_renderableObjects[index]->m_position = std::move(translatedDirectionVector);
+    }
+}
+
+
+
+
+
+
+
+void Scene::SelectRenderableObjectTemp(GLFWwindow *window, Synapse::Camera *camera, const char &)
+{
+    std::size_t currentRenderableObjectIndex = 2;
+
+    glm::vec3 directionVector = 6.0f * camera->GetFrontVector();
+
+    float length2 = glm::length(directionVector);
+
+    directionVector += camera->GetPos();
+
+
+    glm::vec3 Vec1 = m_renderableObjects[currentRenderableObjectIndex]->m_position;
+    glm::vec3 Vec2 = camera->GetPos();
+    glm::vec3 distanceVector = Vec2 - Vec1;
+
+    float length1 = glm::length(distanceVector);
+
+
+    //DEBUG::__LOG__MANAGER__::GLM_LOG();
+
+
+
+
+    float dotProduct = glm::dot(distanceVector, directionVector);
+    float lengthsProduct = length1 * glm::length(directionVector);
+
+    float angle = glm::degrees(glm::acos(dotProduct/lengthsProduct));
+    //glm::dot(distanceVector, directionVector) == length1 * length2)
+
+
+    std::cout << "Angle: " << angle << '\n';
+
+    if(glm::abs(angle) < 90.0f && (length1 <= length2))
+    {
+        lookingAtRenderableObject = true;
+    }
+
+    bool holdingLeftMouseButton = false;
+
+    if(!keepingLeftMouseButtonHolding(window))
+    {
+        lookingAtRenderableObject = false;
+    }
+    else
+    {
+        holdingLeftMouseButton = true;
+    }
+
+
+    if(holdingLeftMouseButton && lookingAtRenderableObject)
+    {
+        DEBUG("Renderable object to choose: ");
+        m_renderableObjects[currentRenderableObjectIndex]->m_position = std::move(directionVector);
+        std::cout << currentRenderableObjectIndex << '\n';
+    }
+
+}
+
+
+
+
+void Scene::KeepRenderableObjectsUnderBoundry()
+{
+    for(std::size_t i=0; i<m_renderableObjects.size(); ++i)
+    {
+        if(i != m_firstCameraIndex + 0 && i != m_firstCameraIndex + 1 && i != m_firstCameraIndex + 2)
+        {
+            glm::vec3 pos = m_renderableObjects[i]->m_position;
+            bool isInsideGroundRegion = false;
+            if(pos.x >= -20.0f && pos.x <= 180.0f &&
+               pos.z >= -20.0f && pos.z <= 180.0f)
+            {
+                //S_PAUSE_FOR_READING();
+                DEBUG("Inside the Ground Region!");
+                isInsideGroundRegion = true;
+            }
+
+            if(!isInsideGroundRegion)
+            {
+                float gravity = -0.1f;
+                float deltaTime = 0.27f;
+                m_renderableObjects[i]->m_position.y += m_renderableObjects[i]->m_velocity.y * deltaTime;
+                m_renderableObjects[i]->m_velocity.y += gravity * deltaTime;
+            }
+        }
+    }
+
+}
+
+
+
 //void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch, float deltaTime)
 void Scene::Update(GLFWwindow *window, Synapse::Camera *camera, std::size_t currentCameraIndex, float deltaTime)
 {
@@ -338,8 +538,21 @@ void Scene::Update(GLFWwindow *window, Synapse::Camera *camera, std::size_t curr
     }
 
     //these will be inside the 'EntityLoader' class(maybe)
+
+
     this->LoadRenderableObjectDynamically(window, camera);
     this->RemoveRenderableObjectDynamically(window);
+
+#if 0
+    this->SelectRenderableObject(window, camera);
+#else
+    this->SelectRenderableObjectTemp(window, camera, 'c');
+#endif
+
+    //this->KeepRenderableObjectsUnderBoundry();
+
+
+    //m_scriptingEngine->AddData<float>();
 
 
     //m_renderableObjects[m_firstCameraIndex + currentCameraIndex]->m_position = camera->GetPos();

@@ -11,8 +11,6 @@
 
 #include <vector>
 #include <unordered_map>
-#include <sys/stat.h>
-#include <ctime>
 
 
 
@@ -76,9 +74,6 @@ public:
     {
         return m_sceneShaders.size();
     }
-
-    __ALWAYS__INLINE__ bool WasShaderFileModified(const std::string &filePathStr);
-
 
     void Render() override;
     static void RenderScenePartially(Scene *scene, std::vector<Shader> &sceneShaders, std::size_t first, std::size_t last);   //this is for the Parallelism

@@ -2812,3 +2812,96 @@ static void MultipleMouseInput(GLFWwindow *window, double xpos, double ypos)
 //        //this->SetShader(0);
 //        //m_sceneShaders[0].UseProgram();
 //    }
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+bool SceneRenderer::WasShaderFileModified(const std::string &filePathStr)
+{
+    //const char *filePath = filePathStr.c_str();
+    struct stat fileInfo;
+    std::time_t currentLastModificationTime;
+
+    if(struct stat fileInfo; stat(filePathStr.c_str(), &fileInfo) == 0)
+    {
+        currentLastModificationTime = fileInfo.st_mtime;
+        if(fileInfo.st_mtime > lastModificationTime)
+        {
+            lastModificationTime = fileInfo.st_mtime;
+            return true;
+        }
+    }
+
+    if(currentLastModificationTime > lastModificationTime)
+    {
+        lastModificationTime = currentLastModificationTime;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
+}
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    for(std::size_t i=0; i<m_renderableObjects.size(); ++i)
+    {
+        if(directionVector.x > m_renderableObjects[i]->m_position.x &&
+           directionVector.y > m_renderableObjects[i]->m_position.y &&
+           directionVector.z > m_renderableObjects[i]->m_position.z)
+        {
+            currentRenderableObjectIndex = i;
+        }
+    }
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+//    float cameraPosLength = glm::length(camera->GetPos());
+//
+//    for(std::size_t i=0; i<m_renderableObjects.size(); ++i)
+//    {
+////        if(glm::length(directionVector - m_renderableObjects[i]->m_position) <= cameraPosLength)
+////        {
+////            currentRenderableObjectIndex = i;
+////        }
+//
+//        if(((glm::abs(directionVector.x - m_renderableObjects[i]->m_position.x)) <= camera->GetPos().x) &&
+//           ((glm::abs(directionVector.y - m_renderableObjects[i]->m_position.y)) <= camera->GetPos().y) &&
+//           ((glm::abs(directionVector.z - m_renderableObjects[i]->m_position.z)) <= camera->GetPos().z))
+//        {
+//            currentRenderableObjectIndex = i;
+//        }
+//    }

@@ -31,9 +31,7 @@ obj/Engine.o: ../src/core/Engine.cpp ../src/core/Engine.hpp \
   ../vendor/irrKlang/include/ik_ISoundStopEventReceiver.h \
   ../vendor/irrKlang/include/ik_ISoundDeviceList.h \
   ../vendor/irrKlang/include/ik_IAudioRecorder.h \
-  ../src/scripting/ScriptingEngine.hpp \
-  ../src/scripting/../scene/Entities.hpp \
-  ../src/scripting/../scene/Scene.hpp ../src/renderer/FrameBuffer.hpp \
+  ../src/scripting/ScriptingEngine.hpp ../src/renderer/FrameBuffer.hpp \
   ../src/debug/RenderingInfoLog.hpp ../src/core/MemoryManager.hpp \
   ../src/camera/Cursor.hpp
 ../src/core/Engine.hpp:
@@ -80,8 +78,6 @@ obj/Engine.o: ../src/core/Engine.cpp ../src/core/Engine.hpp \
 ../vendor/irrKlang/include/ik_ISoundDeviceList.h:
 ../vendor/irrKlang/include/ik_IAudioRecorder.h:
 ../src/scripting/ScriptingEngine.hpp:
-../src/scripting/../scene/Entities.hpp:
-../src/scripting/../scene/Scene.hpp:
 ../src/renderer/FrameBuffer.hpp:
 ../src/debug/RenderingInfoLog.hpp:
 ../src/core/MemoryManager.hpp:

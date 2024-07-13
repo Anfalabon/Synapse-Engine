@@ -33,6 +33,10 @@ public:
     void LoadRenderableObjectDynamically(GLFWwindow *window, Synapse::Camera *camera);  //make the camera parameter const
     void RemoveRenderableObjectDynamically(GLFWwindow *window);
     void RenderableObjectKeyboardMovement(GLFWwindow *window, std::size_t index);
+    int64_t RenderableObjectCameraLookingAt(Synapse::Camera *camera);
+    void SelectRenderableObject(GLFWwindow *window, Synapse::Camera *camera);
+    void SelectRenderableObjectTemp(GLFWwindow *window, Synapse::Camera *camera, const char &);
+    void KeepRenderableObjectsUnderBoundry();
     void Update(GLFWwindow *window, Synapse::Camera *camera, std::size_t currentCameraIndex, float deltaTime);  //make the camera parameter const
     void Clear();
 
@@ -78,6 +82,8 @@ private:
     bool m_rotatorKeyPressed = false;
     float m_theta = 0.0f;   //this will be inside the 'Physics' class
 
+
+    bool lookingAtRenderableObject = false;
 
 
     bool m_wasClearMethodCalled = false;    //this is for preventing double free(once in 'Clear()' method and again in the destructor)

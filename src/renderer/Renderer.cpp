@@ -9,14 +9,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/ext.hpp>
 
-
 #include <iostream>
 #include <vector>
 #include <thread>
-#include <filesystem>
-#include <sys/stat.h>
-#include <chrono>
-#include <ctime>
 
 
 
@@ -122,33 +117,6 @@ void SceneRenderer::RenderScenePartially(Scene *scene, std::vector<Shader> &scen
 //again if the current modification time > last modification time then file was modified.
 
 
-bool SceneRenderer::WasShaderFileModified(const std::string &filePathStr)
-{
-    //const char *filePath = filePathStr.c_str();
-    struct stat fileInfo;
-    std::time_t currentLastModificationTime;
-
-    if(struct stat fileInfo; stat(filePathStr.c_str(), &fileInfo) == 0)
-    {
-        currentLastModificationTime = fileInfo.st_mtime;
-        if(fileInfo.st_mtime > lastModificationTime)
-        {
-            lastModificationTime = fileInfo.st_mtime;
-            return true;
-        }
-    }
-
-    if(currentLastModificationTime > lastModificationTime)
-    {
-        lastModificationTime = currentLastModificationTime;
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-
-}
 
 
 
@@ -230,12 +198,6 @@ void SceneRenderer::Render(Scene *scene, Shader *sceneShaders)
 
 
     //S_PAUSE_FOR_READING();
-
-
-
-
-
-
 
 
 #endif

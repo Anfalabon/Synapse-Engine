@@ -11,83 +11,38 @@ void ScriptingEngine::Init()
 }
 
 
-
-void ScriptingEngine::AddData()
+template<typename T> void ScriptingEngine::AddData(T data)
 {
-
+    lua_pushstring(L, "");
 }
 
 
 
-void ScriptingEngine::SetData()
+template<typename T> void ScriptingEngine::SetData(T data)
 {
-
-}
-
-
-void ScriptingEngine::SendData()
-{
-
-}
-
-
-
-void ScriptingEngine::ReciveData()
-{
-
-}
-
-
-
-void ScriptingEngine::AddFunctions()
-{
-
-}
-
-
-
-void ScriptingEngine::SetFunctions()
-{
-
-}
-
-
-void ScriptingEngine::Run()
-{
-    lua_State* L = luaL_newstate();
-    lua_pushstring(L, "Anfal");
     lua_setglobal(L, "str");
     luaL_openlibs(L);
-    if(luaL_dofile(L, "hello.lua"))
+}
+
+
+
+
+
+void ScriptingEngine::UpdateSceneObject(Synapse::Scene *scene)
+{
+    if(m_fileWatcher.WasFileModified(m_scriptingFilePath))
     {
-        std::cout << "Error: " << lua_tostring(L, -1) << "\n";
-    }
-    lua_close(L);
-
-}
-
-
-void ScriptingEngine::CheckErrors()
-{
-    if(luaL_dofile(L, scriptingFilePath))
-    {
-        std::cout << "Error: " << lua_tostring(L, -1) << "\n";
+        //luaL_openlibs(L);
+        this->AddData<float>(scene->GetRenderableObject(0)->m_position.x);
+        if(luaL_dofile(L, m_scriptingFilePath.c_str()))
+        {
+            std::cout << "Error: " << lua_tostring(L, -1) << "\n";
+        }
     }
 }
 
 
 
-void ScriptingEngine::UpdateSceneObject(Scene *scene)
-{
-
-}
-
-
-
-bool ScriptingEngine::Changed()
-{
-    return false;
-}
 
 
 void ScriptingEngine::ShutDown()

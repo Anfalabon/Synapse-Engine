@@ -485,7 +485,9 @@ void Camera::ApplyMovementInputs(GLFWwindow *m_window)
         }
         else if (M_CAMERA_MODE == CAMERA_MODES::INSPECTION_MODE)
         {
-            m_physics->m_pos = m_physics->m_pos + m_physics->m_speedCoefficient * Cursor::g_cursorsData[M_CAMERA_INDEX_ID].m_frontVector;
+            //Cursor::g_cursorsData[M_CAMERA_INDEX_ID].m_frontVector *= m_physics->m_speedCoefficient;
+            //m_physics->m_pos = m_physics->m_pos + Cursor::g_cursorsData[M_CAMERA_INDEX_ID].m_frontVector;
+            m_physics->m_pos += m_physics->m_speedCoefficient * Cursor::g_cursorsData[M_CAMERA_INDEX_ID].m_frontVector;
         }
 
     }

@@ -15,8 +15,9 @@
 
 //#include <Synapse/src/scene/Entities.hpp>
 
-#include "../scene/Entities.hpp"
-#include "../scene/Scene.hpp"
+#include "scene/Entities.hpp"
+#include "scene/Scene.hpp"
+#include "core/Filesystem.hpp"
 
 
 
@@ -31,21 +32,17 @@ public:
     ~ScriptingEngine() = default;
 
     void Init();
-    void AddData();
-    void SetData();
-    void SendData();
-    void ReciveData();
-    void AddFunctions();
-    void SetFunctions();
-    static void Run();
-    void CheckErrors();
-    void UpdateSceneObject(Scene *scene);
-    bool Changed();
+    template<typename T> void AddData(T data);
+    template<typename T> void SetData(T data);
+
+    void UpdateSceneObject(Synapse::Scene *scene);
     void ShutDown();
+
 
 private:
     lua_State *L;
-    const char *scriptingFilePath;
+    std::string m_scriptingFilePath;
+    Synapse::Filesystem m_fileWatcher;
 };
 
 
