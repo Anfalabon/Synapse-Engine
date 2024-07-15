@@ -313,8 +313,8 @@ void Engine::Run()
     //once it starts to play it won't stop (even for the entire life of the program)
     //will make a function called 'Stop()' or 'Pause()' to stop it.
 
-    //m_audio->Play("../vendor/bell.wav");
-    //m_audio->Play("../vendor/Alexander-blu-music-style.wav");
+    //m_audio->Play("../vendor/irrKlang/bell.wav");
+    //m_audio->Play("../vendor/irrKlang/Alexander-blu-music-style.wav");
 
     //core Engine loop
     while(m_window->IsRunning())

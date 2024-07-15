@@ -12,6 +12,9 @@
 namespace Synapse
 {
 
+
+//#undef __DEBUG__
+
 class VertexBuffer
 {
 public:
@@ -29,13 +32,6 @@ public:
     {
         DEBUG("Running VertexBuffer destructor!");
         //glDeleteBuffers(1, &_VBO);
-        //#define __DELETE__BUFFER__
-        #ifdef __DELETE__BUFFER__
-        if (_verticiesData != nullptr)
-        {
-            delete[] _verticiesData;
-        }
-        #endif
         DEBUG("Completed running VertexBuffer destructor!");
     }
 

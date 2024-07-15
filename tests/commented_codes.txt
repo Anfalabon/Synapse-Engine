@@ -2956,10 +2956,49 @@ bool SceneRenderer::WasShaderFileModified(const std::string &filePathStr)
 
 
 
-########################################################################################################################
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 # Find all source files recursively from multiple directories, excluding specified directories
 #SRC_FILES = $(foreach dir, $(SRCDIRS), $(shell find $(dir) -type d \( $(foreach ex_dir, $(EXCLUDE_DIRS), -path $(ex_dir) -prune -o ) \) -name '*.cpp'))
 
 # Create object file names by replacing .cpp with .o and adding OBJDIR prefix
 #OBJ_FILES = $(patsubst %.cpp,$(OBJDIR)/%.o,$(notdir $(SRC_FILES)))
-########################################################################################################################
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+#define __RELEASE__
+//#define __DEBUG__
+
+
+#if defined(__RELEASE__)
+    #define __UTILIZE__BRANCHPREDICTION__
+    #define __RUNTIME__MULTITHREADING__
+    //#define __LOADTIME__MULTITHREADING__
+#elif defined(__DEBUG__)
+    #define __SINGLETHREADING__
+#endif
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        //#define __DELETE__BUFFER__
+        #ifdef __DELETE__BUFFER__
+        if(_indiciesData!=nullptr)
+        {
+            delete[] _indiciesData;
+        }
+        #endif
+
+
+        //#define __DELETE__BUFFER__
+        #ifdef __DELETE__BUFFER__
+        if (_verticiesData != nullptr)
+        {
+            delete[] _verticiesData;
+        }
+        #endif
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

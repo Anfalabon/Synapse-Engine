@@ -7,7 +7,8 @@ obj/scene/Scene.o: ../src/scene/Scene.cpp ../src/scene/Scene.hpp \
   ../src/renderer/Texture.hpp ../src/scene/ModelLoader.hpp \
   ../src/physics/PhysicsEngine.hpp ../src/camera/Camera.hpp \
   ../src/window/Window.hpp ../src/core/RunParallel.hpp \
-  ../src/math/Transformation.hpp ../src/core/MemoryManager.hpp
+  ../src/math/Transformation.hpp ../src/core/MemoryManager.hpp \
+  ../src/core/Benchmark.hpp ../src/core/Timer.hpp
 ../src/scene/Scene.hpp:
 ../src/scene/Entities.hpp:
 ../vendor/glad/include/glad/glad.hpp:
@@ -27,3 +28,5 @@ obj/scene/Scene.o: ../src/scene/Scene.cpp ../src/scene/Scene.hpp \
 ../src/core/RunParallel.hpp:
 ../src/math/Transformation.hpp:
 ../src/core/MemoryManager.hpp:
+../src/core/Benchmark.hpp:
+../src/core/Timer.hpp:

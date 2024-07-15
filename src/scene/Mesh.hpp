@@ -13,6 +13,9 @@
 namespace Synapse
 {
 
+
+#undef __DEBUG__
+
 class Mesh
 {
 public:

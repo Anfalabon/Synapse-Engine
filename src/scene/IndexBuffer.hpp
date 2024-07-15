@@ -13,6 +13,10 @@
 namespace Synapse
 {
 
+
+//#undef __DEBUG__
+
+
 class IndexBuffer
 {
 public:
@@ -31,13 +35,6 @@ public:
     {
         DEBUG("Running IndexBuffer destructor!");
         glDeleteBuffers(1, &_EBO);
-        //#define __DELETE__BUFFER__
-        #ifdef __DELETE__BUFnFER__
-        if(_indiciesData!=nullptr)
-        {
-            delete[] _indiciesData;
-        }
-        #endif
         DEBUG("Completed running IndexBuffer destructor!");
     }
 

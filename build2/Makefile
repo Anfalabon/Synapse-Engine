@@ -94,7 +94,7 @@ SRC_FILES = $(shell find $(SRC_DIR) -name '*.cpp')
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 DEP_FILES = $(patsubst $(SRC_DIR)/%.cpp,$(DEP_DIR)/%.d,$(SRC_FILES))
 
-$(info DEP FILES are $(DEP_FILES))
+#$(info DEP FILES are $(DEP_FILES))
 
 VENDOR_SRC_FILES = $(shell find $(VENDOR_SRC_DIR) -name '*.cpp')
 OBJ_FILES += $(patsubst $(VENDOR_SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(VENDOR_SRC_FILES))

@@ -4,6 +4,7 @@
 #include "core/RunParallel.hpp"
 #include "math/Transformation.hpp"
 #include "core/MemoryManager.hpp"
+#include "core/Benchmark.hpp"
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -14,17 +15,6 @@
 #include <random>
 
 
-#define __RELEASE__
-//#define __DEBUG__
-
-
-#if defined(__RELEASE__)
-    #define __UTILIZE__BRANCHPREDICTION__
-    #define __RUNTIME__MULTITHREADING__
-    //#define __LOADTIME__MULTITHREADING__
-#elif defined(__DEBUG__)
-    #define __SINGLETHREADING__
-#endif
 
 
 namespace Synapse
@@ -33,12 +23,13 @@ namespace Synapse
 
 void Scene::Init()
 {
+
     m_modelLoader = new Synapse::ModelLoader();
     m_modelLoader->SetModelsDataMap();
     m_physics = new Synapse::Physics();
 
-    //SetModelsMapData();
     this->LoadInitialRenderableObjects();
+
 }
 
 
@@ -180,7 +171,7 @@ void Scene::LoadInitialRenderableObjects()
 
 //    minX = -20.0f;
 //    maxX = 180.0f;
-//
+
 //    minZ = -20.0f;
 //    maxX = 180.0f;
 
