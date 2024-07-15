@@ -18,6 +18,16 @@ void Physics::CalculateDeltaTime()
     m_lastFrame = currentFrame;
 }
 
+
+
+void Physics::Accelerate(glm::vec3 &position, glm::vec3 &velocity, const float deltaTime, const float gravity)
+{
+    position += velocity * deltaTime;
+    velocity += gravity * deltaTime;
+}
+
+
+
 void Physics::SetCurrentObjectInfo(const glm::vec3 &objectMaxSize, const glm::vec3 &objectMinSize)
 {
     //initialize the max and min object range
@@ -317,6 +327,29 @@ void Physics::Projectile(glm::vec3 &position, glm::vec3 &velocity, const float d
 
 
 
+void Physics::KeepUnderBoundry(const glm::vec3 &boundryMinLimit, const glm::vec3 &boundryMaxLimit, glm::vec3 &pos, glm::vec3 &velocity)
+{
+    bool isInsideGroundRegion = false;
+    if(pos.x >= boundryMinLimit.x && pos.x <= boundryMaxLimit.x &&
+       pos.y >= boundryMinLimit.y && pos.y <= boundryMaxLimit.y &&
+       pos.z >= boundryMinLimit.z && pos.z <= boundryMaxLimit.z)
+    {
+        //S_PAUSE_FOR_READING();
+        DEBUG("Inside the Ground Region!");
+        isInsideGroundRegion = true;
+    }
+
+    if(!isInsideGroundRegion)
+    {
+        //may add collision to keep objects under boundry
+        //this->Accelerate(pos, velocity);
+        pos.y += velocity.y * PHYSICAL_CONSTANTS::DELTATIME;
+        velocity.y += PHYSICAL_CONSTANTS::GRAVITY * PHYSICAL_CONSTANTS::DELTATIME;
+    }
+}
+
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -350,9 +383,6 @@ void Physics::Apply(const std::vector<Synapse::RenderableObject*> &renderableObj
             //break;
         }
     }
-
-
-
 
 
 //    if(renderableObjects.size() >= 3 && glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)

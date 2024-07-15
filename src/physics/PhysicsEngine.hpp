@@ -17,7 +17,7 @@ public:
     struct PHYSICAL_CONSTANTS
     {
         static constexpr float PI = 3.14159f;
-        static constexpr float GRAVITY = 0.1f;
+        static constexpr float GRAVITY = -0.1f;
         static constexpr float DELTATIME = 0.27f;
     };
 
@@ -25,6 +25,8 @@ public:
     //virtual ~Physics() = default;
 
     void CalculateDeltaTime();
+    void Accelerate(glm::vec3 &position, glm::vec3 &velocity, const float deltaTime = PHYSICAL_CONSTANTS::DELTATIME,
+                    const float gravity = PHYSICAL_CONSTANTS::GRAVITY);
     void SetCurrentObjectInfo(const glm::vec3 &objectMaxSize, const glm::vec3 &objectMinSize);
     void Reset(){}
     bool WasCollided();
@@ -34,6 +36,7 @@ public:
     void OrbitAround(glm::vec3 &renderableObjectsPosition, const glm::vec3 &positionToOrbit, float &g_theta);
     void Bounce(glm::vec3 &velocity, glm::vec3 &initialVelocity, bool enableRandomMovement);
     void Projectile(glm::vec3 &position, glm::vec3 &velocity, const float deltaTime, glm::vec3 &initialVelocity, bool addBouncing, bool enableRandomMovement, float groundVerticalDistance);
+    void KeepUnderBoundry(const glm::vec3 &boundryMinLimit, const glm::vec3 &boundryMaxLimit, glm::vec3 &pos, glm::vec3 &velocity);
     void Apply(const std::vector<Synapse::RenderableObject*> &renderableObjects);
 
 

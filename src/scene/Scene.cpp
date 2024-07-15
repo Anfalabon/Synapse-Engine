@@ -13,6 +13,7 @@
 #include <vector>
 #include <math.h>
 #include <random>
+#include <climits>
 
 
 
@@ -491,32 +492,52 @@ void Scene::SelectRenderableObjectTemp(GLFWwindow *window, Synapse::Camera *came
 
 void Scene::KeepRenderableObjectsUnderBoundry()
 {
+//    for(std::size_t i=0; i<m_renderableObjects.size(); ++i)
+//    {
+//        if(i != m_firstCameraIndex + 0 && i != m_firstCameraIndex + 1 && i != m_firstCameraIndex + 2)
+//        {
+//            glm::vec3 pos = m_renderableObjects[i]->m_position;
+//            bool isInsideGroundRegion = false;
+//            if(pos.x >= -20.0f && pos.x <= 180.0f &&
+//               pos.z >= -20.0f && pos.z <= 180.0f)
+//            {
+//                //S_PAUSE_FOR_READING();
+//                DEBUG("Inside the Ground Region!");
+//                isInsideGroundRegion = true;
+//            }
+//
+//            if(!isInsideGroundRegion)
+//            {
+//                float gravity = -0.1f;
+//                float deltaTime = 0.27f;
+//                m_renderableObjects[i]->m_position.y += m_renderableObjects[i]->m_velocity.y * deltaTime;
+//                m_renderableObjects[i]->m_velocity.y += gravity * deltaTime;
+//            }
+//        }
+//    }
+
+
     for(std::size_t i=0; i<m_renderableObjects.size(); ++i)
     {
         if(i != m_firstCameraIndex + 0 && i != m_firstCameraIndex + 1 && i != m_firstCameraIndex + 2)
         {
-            glm::vec3 pos = m_renderableObjects[i]->m_position;
-            bool isInsideGroundRegion = false;
-            if(pos.x >= -20.0f && pos.x <= 180.0f &&
-               pos.z >= -20.0f && pos.z <= 180.0f)
-            {
-                //S_PAUSE_FOR_READING();
-                DEBUG("Inside the Ground Region!");
-                isInsideGroundRegion = true;
-            }
-
-            if(!isInsideGroundRegion)
-            {
-                float gravity = -0.1f;
-                float deltaTime = 0.27f;
-                m_renderableObjects[i]->m_position.y += m_renderableObjects[i]->m_velocity.y * deltaTime;
-                m_renderableObjects[i]->m_velocity.y += gravity * deltaTime;
-            }
+            m_physics->KeepUnderBoundry(glm::vec3(-20.0f, -1000000000, -20.0f),
+                                        glm::vec3(180.0f, 1000000000, 180.0f),
+                                        m_renderableObjects[i]->m_position,
+                                        m_renderableObjects[i]->m_velocity);
         }
     }
 
 }
 
+
+
+__ALWAYS__INLINE__ static bool IsInsideBoundry(const glm::vec3 &pos, const glm::vec3 &boundryMinLimit, const glm::vec3 &boundryMaxLimit)
+{
+    return (pos.x >= boundryMinLimit.x && pos.x <= boundryMaxLimit.x &&
+            pos.y >= boundryMinLimit.y && pos.y <= boundryMaxLimit.y &&
+            pos.z >= boundryMinLimit.z && pos.z <= boundryMaxLimit.z);
+}
 
 
 //void Scene::Update(GLFWwindow *window, const glm::vec3 &currentCameraTargetPos, const glm::vec3 &cameraPos, float yaw, float pitch, float deltaTime)
@@ -539,7 +560,7 @@ void Scene::Update(GLFWwindow *window, Synapse::Camera *camera, std::size_t curr
     this->SelectRenderableObjectTemp(window, camera, 'c');
 #endif
 
-    //this->KeepRenderableObjectsUnderBoundry();
+    this->KeepRenderableObjectsUnderBoundry();
 
 
     //m_scriptingEngine->AddData<float>();
@@ -569,7 +590,10 @@ void Scene::Update(GLFWwindow *window, Synapse::Camera *camera, std::size_t curr
     {
         if(i != m_firstCameraIndex + 0 && i != m_firstCameraIndex + 1 && i != m_firstCameraIndex + 2)
         {
-            m_physics->Projectile(m_renderableObjects[i]->m_position, m_renderableObjects[i]->m_velocity, deltaTime2, m_renderableObjects[i]->m_initialVelocity, true, true, groundVerticalDistance);
+            if(IsInsideBoundry(m_renderableObjects[i]->m_position, glm::vec3(-20.0f, -1000000000, -20.0f) , glm::vec3(180.0f, 1000000000, 180.0f)))
+            {
+                m_physics->Projectile(m_renderableObjects[i]->m_position, m_renderableObjects[i]->m_velocity, deltaTime2, m_renderableObjects[i]->m_initialVelocity, true, true, groundVerticalDistance);
+            }
         }
         //physics->OrbitAround(m_renderableObjects[i]->m_position, m_renderableObjects[0]->m_position, m_theta);    //right now it's orbiting the origin
         //m_renderableObjects[i]->Rotate(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
