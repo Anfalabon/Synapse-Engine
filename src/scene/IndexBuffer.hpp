@@ -4,6 +4,7 @@
 
 #include "scene/Buffer.hpp"
 #include "debug/LOG.hpp"
+#include "core/Macros.hpp"
 
 #include <iostream>
 #include <array>
@@ -16,9 +17,15 @@ class IndexBuffer
 {
 public:
     IndexBuffer() = default;
-    IndexBuffer(GLuint totalIndicies, GLuint *indiciesData)
-    :   _totalIndicies(totalIndicies),
-        _indiciesData(indiciesData){}
+
+    IndexBuffer(const std::vector<unsigned int> &indiciesData)
+    :   _indiciesData(indiciesData){}
+
+
+//    IndexBuffer(GLuint totalIndicies, GLuint *indiciesData)
+//    :   _totalIndicies(totalIndicies),
+//        _indiciesData(indiciesData){}
+
 
     ~IndexBuffer()
     {
@@ -39,13 +46,16 @@ public:
     void Bind();
     void Unbind();
     GLuint &GetEBO(){return _EBO;}
-    GLuint GetTotalIndicies(){return _totalIndicies;}
-    GLuint *GetIndiciesData(){return _indiciesData;}
+    //GLuint GetTotalIndicies(){return _totalIndicies;}
+    //GLuint *GetIndiciesData(){return _indiciesData;}
+    __ALWAYS__INLINE__ std::size_t GetTotalIndicies(){return _indiciesData.size();}
+    __ALWAYS__INLINE__ std::vector<unsigned int> GetIndiciesData(){return _indiciesData;}
 
 //private:
     GLuint _EBO;
     GLuint _totalIndicies;
-    GLuint *_indiciesData = nullptr;    //not initializing this pointer to nullptr caused an error
+    std::vector<unsigned int> _indiciesData;
+    //GLuint *_indiciesData = nullptr;    //not initializing this pointer to nullptr caused an error
 };
 
 

@@ -102,7 +102,8 @@ void Kinematics::ApplyVerticalMotions()
     {
         if (m_pos.y >= 1.2f)
         {
-            InitVelocity(glm::vec3(0.0f, -0.49f, 0.0f));
+            m_velocity.y = -0.49f;
+            //InitVelocity(glm::vec3(0.0f, -0.49f, 0.0f));
             //initVelocity(Tensor::Vector3(0.0f, -0.49f, 0.0f));
 
             m_timeElapsed = 0.455f;

@@ -1,4 +1,4 @@
-#includle "RunParallel.hpp"
+#include "RunParallel.hpp"
 
 
 namespace Synapse

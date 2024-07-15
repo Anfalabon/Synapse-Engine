@@ -4,10 +4,34 @@
 #include "core/Macros.hpp"
 
 #include <stdio.h>
+#include <functional>
 
 
 namespace Synapse
 {
+
+
+class Benchmark
+{
+public:
+//    static void S_START_BENCHMARKING();
+//    static void S_END_BENCHMARKING();
+//    static void S_PRINT_BENCHMARKING_RESULT();
+//    static void S_SHUTDOWN_BENCHMARKER();
+
+    template<typename RETURN_TYPE, typename PARAMETER_TYPE>
+    static __ALWAYS__INLINE__ void S_BENCHMARK(const std::function<RETURN_TYPE(PARAMETER_TYPE)> &codeBlock)
+    {
+        Synapse::Timer benchmark;
+        benchmark.Start();
+        codeBlock;
+        benchmark.ShutDown();
+        benchmark.PrintResult();
+    }
+
+private:
+    //std::uint64_t m_benchmarkingData;
+};
 
 
 #if 0

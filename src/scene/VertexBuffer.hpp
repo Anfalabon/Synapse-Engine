@@ -15,10 +15,15 @@ namespace Synapse
 class VertexBuffer
 {
 public:
+
     VertexBuffer() = default;
-    VertexBuffer(GLuint totalVerticies, float *verticiesData)
-    :   _totalVerticies(totalVerticies),
-        _verticiesData(verticiesData){}
+
+    VertexBuffer(const std::vector<float> &verticiesData)
+    :   _verticiesData(verticiesData){}
+
+//    VertexBuffer(GLuint totalVerticies, float *verticiesData)
+//    :   _totalVerticies(totalVerticies),
+//        _verticiesData(verticiesData){}
 
     ~VertexBuffer()
     {
@@ -39,14 +44,16 @@ public:
     void Bind();
     void Unbind();
     GLuint &GetVBO(){return _VBO;}
-    GLuint GetTotalVerticies(){return _totalVerticies;}
-    float *GetVerticiesData(){return _verticiesData;}
+    //GLuint GetTotalVerticies(){return _totalVerticies;}
+    //float *GetVerticiesData(){return _verticiesData;}
+    __ALWAYS__INLINE__ std::size_t GetTotalVerticies(){return _verticiesData.size();}
+    __ALWAYS__INLINE__ std::vector<float> GetVerticiesData(){return _verticiesData;}
 
 //private:
     GLuint _VBO;
     GLuint _totalVerticies;
-    //std::vector<float> _verticiesData;
-    float *_verticiesData = nullptr;    //not initializing this pointer to nullptr caused an error
+    std::vector<float> _verticiesData;
+    //float *_verticiesData = nullptr;    //not initializing this pointer to nullptr caused an error
 };
 
 

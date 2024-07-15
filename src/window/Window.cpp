@@ -1,4 +1,4 @@
-#include "../renderer/FrameBuffer.hpp"  //here including it before the 'Window.hpp' becuase glad should be included before any(or here GLFW) header
+#include "renderer/FrameBuffer.hpp"  //here including it before the 'Window.hpp' becuase glad should be included before any(or here GLFW) header
 #include "Window.hpp"
 
 namespace Synapse

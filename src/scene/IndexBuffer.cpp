@@ -8,7 +8,7 @@ namespace Synapse
 void IndexBuffer::SetIndicies(GLuint totalIndicies, GLuint *indiciesData)
 {
     _totalIndicies = totalIndicies;
-    _indiciesData = std::move(indiciesData);
+    //_indiciesData = std::move(indiciesData);
 }
 
 void IndexBuffer::Gen()
@@ -19,7 +19,8 @@ void IndexBuffer::Gen()
 void IndexBuffer::Bind()
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*_totalIndicies, _indiciesData, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * _indiciesData.size(), &_indiciesData[0], GL_STATIC_DRAW);
+    //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*_totalIndicies, _indiciesData, GL_STATIC_DRAW);
 }
 
 void IndexBuffer::Unbind()

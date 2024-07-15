@@ -88,6 +88,7 @@ void Scene::LoadInitialRenderableObjects()
 
 
 
+
     for(std::size_t i=0; i<initialSceneObjects; ++i) [[likely]]
     {
         DEBUG("Initializing the initial scene objects...");

@@ -8,7 +8,7 @@ namespace Synapse
 class KeyboardEvents
 {
 public:
-    KeyboardEvents(const GLFWwindow *windowID)
+    KeyboardEvents(GLFWwindow *windowID)
     : m_windowID(windowID){}
     ~KeyboardEvents() = default;
 

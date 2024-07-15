@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/Engine.hpp"
-
+#include "core/Macros.hpp"
 
 #define PLATFORM
 
@@ -9,7 +9,7 @@ namespace Synapse
 {
 
 
-class [[nodiscard]] PLATFORM Application
+class __DONT__DISCARD__ PLATFORM Application
 {
 public:
     Application() = default;
@@ -21,10 +21,10 @@ public:
         return application;
     }
 
-    [[nodiscard]] bool IsWindowRunning();
-    [[nodiscard]] bool IsRestart();
+    __DONT__DISCARD__ bool IsWindowRunning();
+    __DONT__DISCARD__ bool IsRestart();
 
-    [[nodiscard]] bool Init();
+    __DONT__DISCARD__ bool Init();
     void Run();
     void ShutDown();
 

@@ -19,26 +19,22 @@ namespace Synapse
 
 static bool g_applicationIsRunning = true;
 
-int Main()   //will place 'main.cpp' in the 'Engine' directory instead of 'Engine/src/core'
+int Main()   //will place 'main.cpp' any other directory instead of 'core' directory
 {
     while(g_applicationIsRunning)
     {
         //Application &application = Application::getApplication();
         Application *application = new Application();
         S_NULL_ASSERT(application, "Application is NULL!");
-
-
         S_BENCHMARK
         (
             S_CORE_INITIALIZATION_ASSERT(application->Init(), "Failed to Initialize Application!");
             std::cout << "Ready to run the Engine..." << '\n';
         );
-
-        S_PAUSE_FOR_READING();
-
-
+        //Benchmark::S_BENCHMARK(S_CORE_INITIALIZATION_ASSERT(application->Init(), "Failed to Initialize Application!"));
+        //S_PAUSE_FOR_READING();
         application->Run();
-        if(!application->IsRestart())
+        if(!application->IsRestart())   //You can simply restart with 'Ctrl+Alt+R'
         {
             g_applicationIsRunning = false;
             application->ShutDown();

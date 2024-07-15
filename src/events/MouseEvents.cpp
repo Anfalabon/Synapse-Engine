@@ -14,12 +14,12 @@ void MouseEvents::MouseInput(GLFWwindow *window, double xpos, double ypos)
 {
 
 
-    if (cursor.m_movedMouseForTheFirstTime)
+    if (cursor.m_movedForTheFirstTime)
     {
         cursor.m_lastX = xpos;
         cursor.m_lastY = ypos;
 
-        cursor.m_movedMouseForTheFirstTime = false;
+        cursor.m_movedForTheFirstTime = false;
     }
 
     float Xoffset = xpos - cursor.m_lastX;

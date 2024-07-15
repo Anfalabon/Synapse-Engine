@@ -36,7 +36,10 @@ public:
          _indiciesData(&indiciesData[0]), _totalIndicies(indiciesData.size()),
          _texture(textureFilePath){}
 
-#else
+#endif
+
+
+#if 0
 
     Mesh(float *verticiesData, unsigned int totalVerticies, unsigned int *indiciesData, unsigned int totalIndicies, const char *textureFilePath = "")
     :    _VB(totalVerticies, verticiesData),
@@ -70,12 +73,38 @@ public:
         DEBUG("Constructing Mesh...");
     }
 
-
-
 #endif
+
+
+
+    Mesh(const std::vector<float> &verticiesData,
+         const std::vector<unsigned int> &indiciesData,
+         const char *textureFilePath = "")
+    :   _VB(verticiesData),
+        _EB(indiciesData),
+        _texture(textureFilePath)
+    {
+        DEBUG("Constructing Mesh(With New Texture)...");
+        //S_PAUSE_FOR_READING();
+    }
+
+
+
+    Mesh(const std::vector<float> &verticiesData,
+         const std::vector<unsigned int> &indiciesData,
+         const Texture &texture)
+    :   _VB(verticiesData),
+        _EB(indiciesData),
+        _texture(texture.m_imageData, texture.m_width, texture.m_height, texture.m_nrChannels)
+    {
+        DEBUG("Constructing Mesh(With Old Texture)...");
+        //S_PAUSE_FOR_READING();
+    }
+
 
     void LoadVerticies(const std::string &filePath);
     void LoadIndicies(const std::string &filePath);
+
 
     ~Mesh() = default;
 
@@ -88,10 +117,10 @@ public:
 //    unsigned int _totalIndicies = 0;
 
 
-    VertexArray    _VA;
-    VertexBuffer   _VB;
-    IndexBuffer    _EB;
-    Texture        _texture;
+    Synapse::VertexArray    _VA;
+    Synapse::VertexBuffer   _VB;
+    Synapse::IndexBuffer    _EB;
+    Synapse::Texture        _texture;    //will make it an std::vector<Texture> if needed
 
 };
 

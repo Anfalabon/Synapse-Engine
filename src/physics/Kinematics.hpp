@@ -15,11 +15,10 @@ public:
     Kinematics() = default;
     ~Kinematics() = default;
 
+    void FallDown();
+    void Jump();
+    void ApplyVerticalMotions();
 
-
-    void FallDown() override;
-    void Jump() override;
-    void ApplyVerticalMotions() override;
 private:
 };
 

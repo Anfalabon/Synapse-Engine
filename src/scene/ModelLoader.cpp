@@ -1,6 +1,7 @@
-#include "scene/ModelLoader.hpp"
+#include "ModelLoader.hpp"
 #include "scene/ModelsDataVector.hpp"
 //#include "ModelsData.hpp"
+
 
 #include <iostream>
 #include <fstream>
@@ -38,6 +39,7 @@ void ModelLoader::CreateFrequentlyLoadedTextures()
     m_modelsMap["Ground"] = Mesh(groundVerticiesData, groundIndiciesData, groundTexture);
     m_modelsMap["Sphere"] = Mesh(sphereVerticiesData, sphereIndiciesData, sphereTexture);
     m_modelsMap["Bullet"] = Mesh(bulletVerticiesData, cylinderIndiciesData, "");
+
 }
 
 
@@ -88,6 +90,9 @@ void ModelLoader::SetModelsDataMap()
     //                            doorIndiciesData, roofIndiciesData, wallIndiciesData, groundIndiciesData,
     //                            "doorTexture.jpg", "roofTexture.jpg", "wallTexture.jpg", "groundTexture.jpg");
 
+
+    //S_PAUSE_FOR_READING();
+
 #else
 
     //not calling the default constructor results in memory error
@@ -115,6 +120,22 @@ std::pair<std::string, Mesh> ModelLoader::GetModel(const std::string &modelName)
     }
     return {modelName, Mesh()};
 }
+
+
+void ModelLoader::ProcessNode(aiNode *node, const aiScene *scene)
+{}
+void ModelLoader::ProcessMesh(aiMesh *mesh, const aiScene *scene)
+{}
+
+
+void ModelLoader::LoadUsingAssimp(const std::string &filePath)
+{
+    Assimp::Importer import;
+    const aiScene *scene = import.ReadFile(filePath, aiProcess_Triangulate | aiProcess_FlipUVs);
+
+}
+
+
 
 
 

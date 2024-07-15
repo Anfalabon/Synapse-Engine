@@ -2928,3 +2928,38 @@ bool SceneRenderer::WasShaderFileModified(const std::string &filePathStr)
 #obj/vertexObjects.o: ../src/scene/vertexObjects.cpp ../src/scene/vertexObjects.hpp
 #		$(CXX) $(CXXFLAGS) -c $< -o $@
 
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+#SRC_FILES = $(foreach dir, $(SRCDIRS), $(shell find $(dir) -name '*.cpp'))
+#OBJ_FILES = $(patsubst %.cpp,$(OBJDIR)/%.o,$(notdir $(SRC_FILES)))
+
+#SRC_FILES = $(foreach dir, $(SRCDIRS), $(shell find $(dir) -name '*.cpp'))
+#OBJ_FILES = $(foreach file, $(SRC_FILES), $(OBJDIR)/$(patsubst %.cpp, %.o, $(notdir $(file))))
+
+#EXTERNAL_SOURCE_FILE = ../../vendor/glad/src/glad.cpp
+#OBJ_FILES += $(patsubst $(VENDOR_GLADDIR)/%.cpp,$(OBJDIR)/%.o,$(EXTERNAL_SOURCE_FILE))
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+########################################################################################################################
+# Find all source files recursively from multiple directories, excluding specified directories
+#SRC_FILES = $(foreach dir, $(SRCDIRS), $(shell find $(dir) -type d \( $(foreach ex_dir, $(EXCLUDE_DIRS), -path $(ex_dir) -prune -o ) \) -name '*.cpp'))
+
+# Create object file names by replacing .cpp with .o and adding OBJDIR prefix
+#OBJ_FILES = $(patsubst %.cpp,$(OBJDIR)/%.o,$(notdir $(SRC_FILES)))
+########################################################################################################################

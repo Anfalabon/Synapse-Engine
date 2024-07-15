@@ -14,8 +14,8 @@ public:
     Collision() = default;
     ~Collision() = default;
 
-    void SetCurrentObjectInfo(const glm::vec3 &objectMaxSize, const glm::vec3 &objectMinSize) override;
-    bool WasCollided() override ;
+    void SetCurrentObjectInfo(const glm::vec3 &objectMaxSize, const glm::vec3 &objectMinSize);
+    bool WasCollided();
 private:
 };
 
