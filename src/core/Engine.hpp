@@ -60,6 +60,9 @@ public:
 
     void                 ShutDown();
 
+
+    void CalculateDeltaTime();
+
 private:
 
     Synapse::Window          *m_window;
@@ -77,8 +80,12 @@ private:
     unsigned short       m_currentCameraIndex;
 public:
     bool                 m_engineRestart : 1;   //using bit fields for decreasing the size of a bool from 1 byte to 1 bit
+    float                m_deltaTime = 0.0f;
+    float                m_lastFrame = 0.0f;
 private:
     //Synapse::Renderer      *m_renderer;
+
+    std::unordered_map<int8_t, int8_t> m_cameraIndexMap;
 
 };
 

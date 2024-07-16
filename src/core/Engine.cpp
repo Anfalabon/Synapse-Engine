@@ -33,6 +33,8 @@ extern "C"{
     //__attribute__((visibility("default")))
 }
 
+
+
 namespace Synapse
 {
 
@@ -87,18 +89,6 @@ void Engine::LoadScene()
     std::cout << "Initialized initial scene" << '\n';
     m_scene = new Scene();
     m_scene->Init();
-
-    //m_scene->GetRenderableObject(2)->GetShader().UseProgram();
-//    m_scene->GetRenderableObject(1)->GetShader().UseProgram();
-//    m_scene->GetRenderableObject(2)->GetShader().UseProgram();
-
-    //m_scene->GetRenderableObject(0)->GetShader().SendMatrix4ToGPU("model", m_scene->GetRenderableObject(0)->m_model);
-//    m_scene->GetRenderableObject(1)->GetShader().SendMatrix4ToGPU("model", m_scene->GetRenderableObject(1)->m_model);
-//    m_scene->GetRenderableObject(2)->GetShader().SendMatrix4ToGPU("model", m_scene->GetRenderableObject(2)->m_model);
-
-    //m_scene->GetRenderableObject(2)->GetShader().UseProgram();
-
-
 }
 
 
@@ -115,7 +105,7 @@ void Engine::LoadCameras()
     std::size_t totalCameras = 3;
     for(std::size_t i=0; i<totalCameras; ++i)
     {
-        m_cameras.push_back(new Camera(i));
+        m_cameras.push_back(new Camera(i, Camera::PROJECTION_TYPES::PERSPECTIVE));
     }
 
     std::cout << "pushed cameras to the std::vector!" << '\n';
@@ -140,7 +130,8 @@ void Engine::LoadCameras()
     {
         for(std::size_t i=0; i<m_renderer->GetTotalShaders(); ++i)
         {
-            m_cameras[j]->AddShaderProgramID(m_renderer->GetShader(i).GetProgramID());
+            //m_cameras[j]->AddShaderProgramID(m_renderer->GetShader(i).GetProgramID());
+            m_cameras[j]->AddShader(m_renderer->GetShader(i));
         }
     }
 
@@ -204,7 +195,6 @@ int8_t Engine::Init()
     this->LoadGLFW();
     this->LoadWindow(); //not loading the 'Window' causes uninitialization of GLAD too!
     this->LoadGLAD();
-    //this->SetViewPort();
     this->LoadAudioEngine();
     this->LoadScene();
     this->LoadRenderer();
@@ -254,6 +244,8 @@ void Engine::SelectCamera()
     }
 
 
+
+
     //DEBUG::__LOG__MANAGER__::LOG("Current Camera running: ");
     std::cout << "Current Camera running: " << m_currentCameraIndex << '\n';
 }
@@ -298,6 +290,15 @@ void Engine::Update()
 
 
 
+void Engine::CalculateDeltaTime()
+{
+    float currentFrame = static_cast<float>(glfwGetTime());
+    m_deltaTime = currentFrame - m_lastFrame;
+    m_lastFrame = currentFrame;
+}
+
+
+
 
 void Engine::Run()
 {
@@ -307,8 +308,6 @@ void Engine::Run()
 
     //m_scene->GetRenderableObject(0)->GetShader().UseProgram();
 
-    float deltaTime = 0.0f;
-    float lastFrame = 0.0f;
 
     //once it starts to play it won't stop (even for the entire life of the program)
     //will make a function called 'Stop()' or 'Pause()' to stop it.
@@ -319,11 +318,9 @@ void Engine::Run()
     //core Engine loop
     while(m_window->IsRunning())
     {
-        float currentFrame = static_cast<float>(glfwGetTime());
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
 
-        std::cout << "Delta time is: " << deltaTime << '\n';
+        Engine::CalculateDeltaTime();
+        std::cout << "Delta time is: " << m_deltaTime << '\n';
 
         //this should be inside 'm_window->GetKeyboardInput();'
         if(this->Restart())
@@ -343,16 +340,16 @@ void Engine::Run()
         m_window->GetKeyboardInput();
 
         this->SelectCamera();
-        m_cameras[m_currentCameraIndex]->GetKeyboardInput(m_window->WindowAddress());
+        m_cameras[m_currentCameraIndex]->GetKeyboardInput(m_window->WindowAddress(), m_deltaTime);
         //m_scriptingEngine->UpdateScene(m_scene);
-        m_scene->Update(m_window->WindowAddress(), m_cameras[m_currentCameraIndex], m_currentCameraIndex, deltaTime);
+        m_scene->Update(m_window->WindowAddress(), m_cameras[m_currentCameraIndex], m_deltaTime);
 
         m_renderer->Render(m_scene);
-        Cursor::g_cameraIndex = m_currentCameraIndex;
-        m_cameras[m_currentCameraIndex]->Update(m_scene->GetRenderableObjects());
+
+        m_cameras[m_currentCameraIndex]->Update(m_scene->GetRenderableObjects(), m_deltaTime);
 
         //this is definately not for benchmarking
-        renderingInfo::FramesPerSecond();
+        renderingInfo::FramesPerSecond(m_deltaTime);
 
         //m_window->SwapBuffers();
         m_frameBuffer->SwapBuffers(m_window->WindowAddress());

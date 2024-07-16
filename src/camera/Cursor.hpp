@@ -13,7 +13,8 @@ namespace Synapse
 namespace Cursor
 {
 
-class CursorData
+//will make it 'struct CursorData'
+struct CursorData
 {
 public:
     CursorData() = default;
@@ -34,7 +35,7 @@ public:
 
 //definately using global variables are bad in this case where other good alternatives can be used instead
 //Will remove these global variables and work with a safer one
-inline std::vector<CursorData> g_cursorsData;
+inline std::vector<struct CursorData> g_cursorsData;
 inline std::size_t g_cameraIndex;
 
 
@@ -79,11 +80,11 @@ static void mouseInput(GLFWwindow *window, double xpos, double ypos)
         g_cursorsData[g_cameraIndex].m_pitch = -89.0f;
     }
 
-    glm::vec3 frontVector;  //using this is maybe waste of memory when everytime mouse is moved
-    frontVector.x = glm::cos(glm::radians(g_cursorsData[g_cameraIndex].m_yaw)) * glm::cos(glm::radians(g_cursorsData[g_cameraIndex].m_pitch));
-    frontVector.y = glm::sin(glm::radians(g_cursorsData[g_cameraIndex].m_pitch));
-    frontVector.z = glm::sin(glm::radians(g_cursorsData[g_cameraIndex].m_yaw)) * glm::cos(glm::radians(g_cursorsData[g_cameraIndex].m_pitch));
-    g_cursorsData[g_cameraIndex].m_frontVector = glm::normalize(frontVector);
+//    glm::vec3 frontVector;  //using this is maybe waste of memory when everytime mouse is moved
+//    frontVector.x = glm::cos(glm::radians(g_cursorsData[g_cameraIndex].m_yaw)) * glm::cos(glm::radians(g_cursorsData[g_cameraIndex].m_pitch));
+//    frontVector.y = glm::sin(glm::radians(g_cursorsData[g_cameraIndex].m_pitch));
+//    frontVector.z = glm::sin(glm::radians(g_cursorsData[g_cameraIndex].m_yaw)) * glm::cos(glm::radians(g_cursorsData[g_cameraIndex].m_pitch));
+//    g_cursorsData[g_cameraIndex].m_frontVector = glm::normalize(frontVector);
 
 }
 

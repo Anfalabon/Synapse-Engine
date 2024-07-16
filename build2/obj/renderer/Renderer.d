@@ -7,9 +7,9 @@ obj/renderer/Renderer.o: ../src/renderer/Renderer.cpp \
   ../src/scene/IndexBuffer.hpp ../src/renderer/VertexArray.hpp \
   ../src/renderer/Texture.hpp ../src/scene/ModelLoader.hpp \
   ../src/physics/PhysicsEngine.hpp ../src/camera/Camera.hpp \
-  ../src/renderer/shader/Shader.hpp ../src/core/Filesystem.hpp \
-  ../src/core/RunParallel.hpp ../src/core/Timer.hpp \
-  ../src/core/Benchmark.hpp
+  ../src/renderer/shader/Shader.hpp ../src/math/Projection.hpp \
+  ../src/core/Filesystem.hpp ../src/core/RunParallel.hpp \
+  ../src/core/Timer.hpp ../src/core/Benchmark.hpp
 ../src/renderer/Renderer.hpp:
 ../vendor/glad/include/glad/glad.hpp:
 ../vendor/glad/include/KHR/khrplatform.h:
@@ -27,6 +27,7 @@ obj/renderer/Renderer.o: ../src/renderer/Renderer.cpp \
 ../src/physics/PhysicsEngine.hpp:
 ../src/camera/Camera.hpp:
 ../src/renderer/shader/Shader.hpp:
+../src/math/Projection.hpp:
 ../src/core/Filesystem.hpp:
 ../src/core/RunParallel.hpp:
 ../src/core/Timer.hpp:

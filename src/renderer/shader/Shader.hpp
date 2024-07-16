@@ -23,6 +23,9 @@ public:
     }ShaderFile;
 
      Shader() = default;
+     Shader(const Shader &) = default;  //Copy Constructor
+     Shader &operator=(const Shader &) = default;   //Copy assignment operator
+
      Shader(const std::string &vertexShaderPath, const std::string &fragmentShaderPath)
         :
        m_vertexShaderID(glCreateShader(GL_VERTEX_SHADER)),

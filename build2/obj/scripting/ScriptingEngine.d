@@ -11,7 +11,8 @@ obj/scripting/ScriptingEngine.o: ../src/scripting/ScriptingEngine.cpp \
   ../src/scene/IndexBuffer.hpp ../src/renderer/VertexArray.hpp \
   ../src/renderer/Texture.hpp ../src/scene/Scene.hpp \
   ../src/scene/ModelLoader.hpp ../src/physics/PhysicsEngine.hpp \
-  ../src/camera/Camera.hpp ../src/core/Filesystem.hpp
+  ../src/camera/Camera.hpp ../src/renderer/shader/Shader.hpp \
+  ../src/math/Projection.hpp ../src/core/Filesystem.hpp
 ../src/scripting/ScriptingEngine.hpp:
 ../vendor/LuaScriptingLibs/lua.hpp:
 ../vendor/LuaScriptingLibs/lua.h:
@@ -33,4 +34,6 @@ obj/scripting/ScriptingEngine.o: ../src/scripting/ScriptingEngine.cpp \
 ../src/scene/ModelLoader.hpp:
 ../src/physics/PhysicsEngine.hpp:
 ../src/camera/Camera.hpp:
+../src/renderer/shader/Shader.hpp:
+../src/math/Projection.hpp:
 ../src/core/Filesystem.hpp:

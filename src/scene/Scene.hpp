@@ -37,7 +37,7 @@ public:
     void SelectRenderableObject(GLFWwindow *window, Synapse::Camera *camera);
     void SelectRenderableObjectTemp(GLFWwindow *window, Synapse::Camera *camera, const char &);
     void KeepRenderableObjectsUnderBoundry();
-    void Update(GLFWwindow *window, Synapse::Camera *camera, std::size_t currentCameraIndex, float deltaTime);  //make the camera parameter const
+    void Update(GLFWwindow *window, Synapse::Camera *camera, float deltaTime);  //make the camera parameter const
     void Clear();
 
 
