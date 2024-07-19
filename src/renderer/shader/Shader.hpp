@@ -45,7 +45,7 @@ public:
      void ReadSources();
      [[nodiscard]] GLuint ProgramID(){return m_shaderProgramID;}
      template<typename T> void SetupSuccessLog(T __STATUS__, GLuint shaderID);
-     inline unsigned int GetProgramID(){return m_shaderProgramID;}
+     __ALWAYS__INLINE__ unsigned int GetProgramID(){return m_shaderProgramID;}
      void Compile();
      unsigned int Compile(unsigned int type, const char *shaderSource);
      void AttachAndLink();

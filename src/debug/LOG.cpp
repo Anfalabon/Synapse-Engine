@@ -1,16 +1,3 @@
-#include "LOG.hpp"
-
-
-namespace Synapse
-{
-
-extern void lm();
-
-//#define __debug__
-//#ifdef __debug__
-//    #define DEBUG(__debug__message__) std::cout << "In FILE: " << __FILE__ << ", FUNCTION: " << __func__ << ", LINE: " << __LINE__ << " ==> " \
-//                                            << "\e[31m" << __debug__message__ << "\e[0m" << '\n'
-//#else
-//    #define DEBUG(__debug__message__)
-//#endif
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:fac7f640326bf57e1ff6adcb553a36d2e975273c253e3c8e6ebbc4ef3cf2deaf
+size 403

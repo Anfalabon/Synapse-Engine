@@ -1,11 +1,3 @@
-#include <iostream>
-
-extern "C"{
-    int add(int x, int y);
-}
-
-int main(int argc, char **argv)
-{
-    std::cout << add(1, 2) << '\n';
-    return 0;
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:c3f5d911b450895e33afd40fbf9a51e7d46b15da9488f15d14c905f18cb18277
+size 148

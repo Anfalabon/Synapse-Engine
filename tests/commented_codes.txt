@@ -3917,3 +3917,282 @@ std::size_t currentCameraIndex,
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+            //Cursor::g_cursorsData[M_CAMERA_INDEX_ID].m_frontVector *= m_physics->m_speedCoefficient;
+            //m_physics->m_pos = m_physics->m_pos + Cursor::g_cursorsData[M_CAMERA_INDEX_ID].m_frontVector;
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//static void FrameBufferSizeCallback(GLFWwindow *window, int WIDTH, int HEIGHT);
+    //[[nodiscard]] bool IsRunning() __attribute__((always_inline)); //inlining this can lead to error
+
+//bool Window::IsRunning()
+//{
+////    if(glfwWindowShouldClose(m_windowAddress))
+////    {
+////        return false;
+////    }
+////    return true;
+//
+//    return (glfwWindowShouldClose(m_windowAddress)) ? false : true;
+//}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    void AddShader(const Shader &shader);
+
+    Shader      m_shader;
+
+
+void SceneCamera::AddShader(const Shader &shader)
+{
+    m_shader = shader;
+}
+
+
+
+    for(std::size_t j=0; j<m_cameras.size(); ++j)
+    {
+        for(std::size_t i=0; i<m_renderer->GetTotalShaders(); ++i)
+        {
+            //m_cameras[j]->AddShaderProgramID(m_renderer->GetShader(i).GetProgramID());
+            //m_cameras[j]->AddShader(m_renderer->GetShader(i));
+        }
+    }
+
+
+
+//    for(std::size_t i=0; i<m_scene->GetTotalSceneObjects(); ++i)
+//    {
+//        m_cameras[i]->AddShaderProgramID(m_renderer->GetShader(0).GetProgramID());
+//    }
+
+
+
+#ifdef __LOADTIME__MULTITHREADING__
+    omp_set_num_threads(4);
+    #pragma omp parallel for
+#endif
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    //we need multiple of these
+    //right now we can't as it is a static function
+    //Camera::SetupMouse(m_window->WindowAddress());
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        // std::cout << "Initialized the Camera" << '\n';
+
+
+        std::cout << "Total Scene shaders: " << m_renderer->GetTotalShaders() << '\n';
+        std::cout << "Total Scene objects: " << m_scene->GetTotalSceneObjects() << '\n';
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+#define __RUN__ENGINE__
+#ifdef __UPDATE__ENGINE__
+    void                 Update();
+#elif defined(__RUN__ENGINE__)
+    void                 Run();
+#endif
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+#ifdef __UPDATE__ENGINE__
+
+void Engine::Update()
+{
+    m_renderer->SetBackGround(0.2f, 0.3f, 0.3f, 1.0f);
+    m_renderer->UseZbuffer();
+
+    //m_renderer->_zBufferBg(0.2f, 0.3f, 0.3f, 1.0f);
+    //will use 'event' systems for these two bad boys
+    m_window->GetKeyboardInput();
+    this->SelectCamera();
+    m_cameras[m_currentCameraIndex]->GetKeyboardInput(m_window->WindowAddress());
+
+    m_scene->Update(m_window->WindowAddress());
+    m_renderer->Render(m_scene);
+    m_cameras[m_currentCameraIndex]->Update();
+
+    //this is definately not for benchmarking
+    renderingInfo::FramesPerSecond();
+
+    m_window->SwapBuffers();
+    m_window->PollEvents();
+}
+
+#elif defined(__RUN__ENGINE__)
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+//#define __APPLY__PHYSICS__
+#ifdef __APPLY__PHYSICS__
+
+
+    std::cout << "Radius of rotation: " << glm::length(m_renderableObjects[6]->m_position) << '\n';
+
+    //Quaternions(90.0f, glm::vec3(1.0f, 0.0f, 0.0f), m_renderableObjects[7]->m_position);
+
+
+    float deltaTime2 = 0.27f;    //here made an approximate delta time for this device. will calculate deltaTime
+
+    //float groundVerticalDistance = m_renderableObjects[1]->m_position.y;
+    float groundVerticalDistance = 0.0f;
+    //#pragma omp parallel for
+    for (std::size_t i = 6; i < m_renderableObjects.size(); ++i)
+    {
+        if(i != m_firstCameraIndex + 0 && i != m_firstCameraIndex + 1 && i != m_firstCameraIndex + 2)
+        {
+            if(IsInsideBoundry(m_renderableObjects[i]->m_position, glm::vec3(-20.0f, -1000000000, -20.0f) , glm::vec3(180.0f, 1000000000, 180.0f)))
+            {
+                m_physics->Projectile(m_renderableObjects[i]->m_position, m_renderableObjects[i]->m_velocity,
+                                      deltaTime2,
+                                      m_renderableObjects[i]->m_initialVelocity,
+                                      true,
+                                      true,
+                                      groundVerticalDistance);
+            }
+        }
+        //physics->OrbitAround(m_renderableObjects[i]->m_position, m_renderableObjects[0]->m_position, m_theta);    //right now it's orbiting the origin
+        //m_renderableObjects[i]->Rotate(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+        //m_renderableObjects[i]->Rotate(1.0f, true, false, true);
+        //TransformComponent::Translate(m_renderableObjects[i], glm::vec3(0.0, 10.0f, 0.0f));
+    }
+
+    //m_renderableObjects[10]->Rotate(1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+
+
+
+    //m_theta += 0.01f;
+
+
+#endif
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+//void Scene::KeepRenderableObjectsUnderBoundry()
+//{
+//    for(std::size_t i=0; i<m_renderableObjects.size(); ++i)
+//    {
+//        if(i != m_firstCameraIndex + 0 && i != m_firstCameraIndex + 1 && i != m_firstCameraIndex + 2)
+//        {
+//            m_physics->KeepUnderBoundry(glm::vec3(-20.0f, -1000000000, -20.0f),
+//                                        glm::vec3(180.0f, 1000000000, 180.0f),
+//                                        m_renderableObjects[i]->m_position,
+//                                        m_renderableObjects[i]->m_velocity);
+//        }
+//    }
+//}
+
+
+__ALWAYS__INLINE__ static bool IsInsideBoundry(const glm::vec3 &pos, const glm::vec3 &boundryMinLimit, const glm::vec3 &boundryMaxLimit)
+{
+    return (pos.x >= boundryMinLimit.x && pos.x <= boundryMaxLimit.x &&
+            pos.y >= boundryMinLimit.y && pos.y <= boundryMaxLimit.y &&
+            pos.z >= boundryMinLimit.z && pos.z <= boundryMaxLimit.z);
+
+     //return (pos >= boundryMinLimit && pos <= boundryMaxLimit);
+}
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+#if defined(__RELEASE__)
+    #undef __RELEASE__
+    #undef __UTILIZE__BRANCHPREDICTION__
+    #undef __RUNTIME__MULTITHREADING__
+    //#undef __LOADTIME__MULTITHREADING__
+#elif defined(__DEBUG__)
+    #undef __DEBUG__
+    #undef __SINGLETHREADING__
+#endif
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//static void Quaternions(float theta, const glm::vec3 &axisOfRotation, glm::vec3 &position)
+//{
+//    theta = glm::radians(theta);
+//
+//    float w = glm::cos(theta/2);
+//    float x = axisOfRotation.x * glm::sin(theta/2);
+//    float y = axisOfRotation.y * glm::sin(theta/2);
+//    float z = axisOfRotation.z * glm::sin(theta/2);
+//
+//    glm::vec4 qPosition = glm::vec4(0, position.x , position.y, position.z);
+//    glm::vec4 q = glm::vec4(w, x, y, z);
+//    glm::vec4 qDash = glm::vec4(w, -1.0f*x, -1.0f*y, -1.0f*z);
+//
+//    glm::vec4 rotatedPoint = q * qPosition * qDash;
+//
+//    position.x = rotatedPoint.x;
+//    position.y = rotatedPoint.y;
+//    position.z = rotatedPoint.z;
+//}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//                m_physics->Projectile(scene->GetRenderableObject(i)->m_position, scene->GetRenderableObject(i)->m_velocity,
+//                                      deltaTime2,
+//                                      scene->GetRenderableObject(i)->m_initialVelocity,
+//                                      true,
+//                                      true,
+//                                      groundVerticalDistance);
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    //m_renderableObjects[i]->Rotate(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+    //m_renderableObjects[i]->Rotate(1.0f, true, false, true);
+    //TransformComponent::Translate(m_renderableObjects[i], glm::vec3(0.0, 10.0f, 0.0f));

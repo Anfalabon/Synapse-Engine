@@ -21,6 +21,7 @@ namespace Synapse
 #define __ALLOW_PACKING__ __attribute__((packing))
 #define __declspecUnix() __attribute__((visibility("default")))
 #define __DONT__DISCARD__ [[nodiscard]]
+#define __DEFAULT__CAMERA__INDEX__ID__ 0x0
 
 
 }

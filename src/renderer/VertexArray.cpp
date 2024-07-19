@@ -1,35 +1,3 @@
-#include "VertexArray.hpp"
-
-
-namespace Synapse
-{
-
-void VertexArray::Gen()
-{
-    glGenVertexArrays(1, &_VAO);
-}
-
-void VertexArray::Bind()
-{
-    glBindVertexArray(_VAO);
-}
-
-void VertexArray::Unbind()
-{
-    glBindVertexArray(0);
-}
-
-void VertexArray::EnableVertexAttribute(unsigned short vertexAttributeNo, unsigned short objectsInCurrentAttribute, unsigned short objectsInSingleVertex)
-{
-    glVertexAttribPointer(vertexAttributeNo, objectsInCurrentAttribute, GL_FLOAT, GL_FALSE, objectsInSingleVertex * sizeof(GLfloat), (void*)(3*vertexAttributeNo * sizeof(GLfloat)));
-    glEnableVertexAttribArray(vertexAttributeNo);
-}
-
-
-void VertexArray::SetVertexLayout(unsigned short vertexAttributeNo, unsigned short objectsInCurrentAttribute, unsigned short objectsInSingleVertex)
-{
-    glVertexAttribPointer(vertexAttributeNo, objectsInCurrentAttribute, GL_FLOAT, GL_FALSE, objectsInSingleVertex * sizeof(GLfloat), (void*)(3*vertexAttributeNo * sizeof(GLfloat)));
-    glEnableVertexAttribArray(vertexAttributeNo);
-}
-
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:e4d5dfc6c7b686f8546906254f90aa046f82de31a57b0517db3b70335a304da7
+size 1007

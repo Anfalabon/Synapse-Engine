@@ -1,33 +1,3 @@
-#include "IndexBuffer.hpp"
-
-
-namespace Synapse
-{
-
-
-void IndexBuffer::SetIndicies(GLuint totalIndicies, GLuint *indiciesData)
-{
-    _totalIndicies = totalIndicies;
-    //_indiciesData = std::move(indiciesData);
-}
-
-void IndexBuffer::Gen()
-{
-    glGenBuffers(1, &_EBO);
-}
-
-void IndexBuffer::Bind()
-{
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * _indiciesData.size(), &_indiciesData[0], GL_STATIC_DRAW);
-    //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*_totalIndicies, _indiciesData, GL_STATIC_DRAW);
-}
-
-void IndexBuffer::Unbind()
-{
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-}
-
-
-
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:e72c843daebf8ff7f16f9f66559c6b25c98cd37b84c66f87dc72d95f5274e2f0
+size 660

@@ -3,7 +3,8 @@
 #include "scene/Entities.hpp"
 #include "scene/ModelLoader.hpp"
 #include "physics/PhysicsEngine.hpp"
-#include "camera/Camera.hpp"
+//#include "camera/Camera.hpp"
+#include "scene/editor/SceneCamera.hpp"
 #include "core/Macros.hpp"
 
 #include <GLFW/glfw3.h>
@@ -29,15 +30,15 @@ public:
 
     void Init();
     void LoadInitialRenderableObjects();
-    void CreateRenderableObject(Synapse::Camera *camera);   //make the camera parameter const
-    void LoadRenderableObjectDynamically(GLFWwindow *window, Synapse::Camera *camera);  //make the camera parameter const
+    void CreateRenderableObject(Synapse::SceneCamera *camera);   //make the camera parameter const
+    void LoadRenderableObjectDynamically(GLFWwindow *window, Synapse::SceneCamera *camera);  //make the camera parameter const
     void RemoveRenderableObjectDynamically(GLFWwindow *window);
     void RenderableObjectKeyboardMovement(GLFWwindow *window, std::size_t index);
-    int64_t RenderableObjectCameraLookingAt(Synapse::Camera *camera);
-    void SelectRenderableObject(GLFWwindow *window, Synapse::Camera *camera);
-    void SelectRenderableObjectTemp(GLFWwindow *window, Synapse::Camera *camera, const char &);
+    int64_t RenderableObjectCameraLookingAt(Synapse::SceneCamera *camera);
+    void SelectRenderableObject(GLFWwindow *window, Synapse::SceneCamera *camera);
+    void SelectRenderableObjectTemp(GLFWwindow *window, Synapse::SceneCamera *camera, const char &);
     void KeepRenderableObjectsUnderBoundry();
-    void Update(GLFWwindow *window, Synapse::Camera *camera, float deltaTime);  //make the camera parameter const
+    void Update(GLFWwindow *window, Synapse::SceneCamera *camera, float deltaTime);  //make the camera parameter const
     void Clear();
 
 
@@ -51,7 +52,7 @@ public:
 
     [[nodiscard]] __ALWAYS__INLINE__ RenderableObject* GetRenderableObject(std::size_t index)
     {
-        return (index<0) ? nullptr : m_renderableObjects[index];
+        return ((index<0) || (index>m_renderableObjects.size()-1)) ? nullptr : m_renderableObjects[index];
     }
 
     [[nodiscard]] __ALWAYS__INLINE__ std::vector<Synapse::RenderableObject*> &GetRenderableObjects(){return m_renderableObjects;}
@@ -73,17 +74,18 @@ private:
 
 
     Synapse::ModelLoader *m_modelLoader;
-    Synapse::Physics *m_physics;
+    //Synapse::Physics *m_physics;
+
+public:
+    std::size_t m_firstCameraIndex               = 0;
+private:
 
     //temp member data's
-    std::size_t m_firstCameraIndex = 0;
-    bool m_dynamicRenderableObjectLoaderRunning = false;
+    bool m_dynamicRenderableObjectLoaderRunning  = false;
     bool m_dynamicRenderableObjectDeleterRunning = false;
-    bool m_rotatorKeyPressed = false;
-    float m_theta = 0.0f;   //this will be inside the 'Physics' class
-
-
-    bool lookingAtRenderableObject = false;
+    bool m_rotatorKeyPressed                     = false;
+    float m_theta                                = 0.0f;   //this will be inside the 'Physics' class
+    bool lookingAtRenderableObject               = false;
 
 
     bool m_wasClearMethodCalled = false;    //this is for preventing double free(once in 'Clear()' method and again in the destructor)

@@ -51,12 +51,18 @@ public:
        }
     }
 
-    void AddShader(const std::string &vertexShaderPath, const std::string &fragmentShaderPath)
+
+    static __ALWAYS__INLINE__ void GLDraw(const unsigned int totalMeshIndicies)
+    {
+        glDrawElements(GL_TRIANGLES, totalMeshIndicies, GL_UNSIGNED_INT, 0);
+    }
+
+    __ALWAYS__INLINE__ void AddShader(const std::string &vertexShaderPath, const std::string &fragmentShaderPath)
     {
         m_sceneShaders.push_back(Shader(vertexShaderPath, fragmentShaderPath));
     }
 
-    void SetShader(std::size_t index = 0)
+    __ALWAYS__INLINE__ void SetShader(std::size_t index = 0)
     {
         std::size_t lastIndex = m_sceneShaders.size() - 1;
         m_sceneShaders[lastIndex].Compile();
@@ -64,20 +70,20 @@ public:
         m_sceneShaders[lastIndex].RemoveShaders();
     }
 
-    Shader& GetShader(std::size_t index)
+    __ALWAYS__INLINE__ Shader& GetShader(std::size_t index)
     {
         return m_sceneShaders[index];
         //return (index >= m_sceneShaders.size() || index < 0) ? Shader() : m_sceneShaders[index];
     }
 
-    std::size_t GetTotalShaders()
+    __ALWAYS__INLINE__ std::size_t GetTotalShaders()
     {
         return m_sceneShaders.size();
     }
 
     void Render() override;
     static void RenderScenePartially(Scene *scene, std::vector<Shader> &sceneShaders, std::size_t first, std::size_t last);   //this is for the Parallelism
-    void Render(Scene *scene, Shader *sceneShaders = new Shader());  //will add std::vector<Shader> sceneShaders
+    void Render(Scene *scene, const Shader &sceneShaders = Shader());  //will add std::vector<Shader> sceneShaders
 
 #if defined(__UTILIZE__STANDARDCXX__THREADING___)
     void renderEntitiesPartially(std::size_t start, std::size_t end);

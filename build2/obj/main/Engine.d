@@ -1,15 +1,16 @@
-obj/core/main.o: ../src/core/main.cpp ../src/core/Application.hpp \
-  ../src/core/Engine.hpp ../vendor/glad/include/glad/glad.hpp \
+obj/main/Engine.o: ../src/main/Engine.cpp ../src/main/Engine.hpp \
+  ../vendor/glad/include/glad/glad.hpp \
   ../vendor/glad/include/KHR/khrplatform.h ../src/window/Window.hpp \
-  ../src/core/Macros.hpp ../src/debug/LOG.hpp ../src/camera/Camera.hpp \
-  ../src/physics/PhysicsEngine.hpp ../src/scene/Entities.hpp \
-  ../src/scene/Mesh.hpp ../src/scene/VertexBuffer.hpp \
-  ../src/scene/Buffer.hpp ../src/scene/IndexBuffer.hpp \
-  ../src/renderer/VertexArray.hpp ../src/renderer/Texture.hpp \
-  ../src/renderer/shader/Shader.hpp ../src/math/Projection.hpp \
-  ../src/scene/Scene.hpp ../src/scene/ModelLoader.hpp \
-  ../src/renderer/Renderer.hpp ../src/core/Filesystem.hpp \
-  ../src/audio/Audio.hpp \
+  ../src/core/Macros.hpp ../src/debug/LOG.hpp \
+  ../src/scene/SceneViewers.hpp ../src/scene/editor/SceneCamera.hpp \
+  ../src/scene/editor/Camera.hpp ../src/physics/PhysicsEngine.hpp \
+  ../src/scene/Entities.hpp ../src/scene/Mesh.hpp \
+  ../src/scene/VertexBuffer.hpp ../src/scene/Buffer.hpp \
+  ../src/scene/IndexBuffer.hpp ../src/renderer/VertexArray.hpp \
+  ../src/renderer/Texture.hpp ../src/renderer/shader/Shader.hpp \
+  ../src/math/Projection.hpp ../src/scene/Scene.hpp \
+  ../src/scene/ModelLoader.hpp ../src/renderer/Renderer.hpp \
+  ../src/core/Filesystem.hpp ../src/audio/Audio.hpp \
   ../src/audio/../../vendor/irrKlang/include/irrKlang.h \
   ../src/audio/../../vendor/irrKlang/include/ik_irrKlangTypes.h \
   ../src/audio/../../vendor/irrKlang/include/ik_vec3d.h \
@@ -35,17 +36,19 @@ obj/core/main.o: ../src/core/main.cpp ../src/core/Application.hpp \
   ../vendor/LuaScriptingLibs/lua.hpp ../vendor/LuaScriptingLibs/lua.h \
   ../vendor/LuaScriptingLibs/luaconf.h \
   ../vendor/LuaScriptingLibs/luaconf-x86_64.h \
-  ../vendor/LuaScriptingLibs/lualib.h ../src/renderer/FrameBuffer.hpp \
-  ../src/core/Asserts.hpp ../src/core/Benchmark.hpp \
-  ../src/core/Timer.hpp
-../src/core/Application.hpp:
-../src/core/Engine.hpp:
+  ../vendor/LuaScriptingLibs/lualib.h \
+  ../src/scene/animation/Animation.hpp ../src/renderer/FrameBuffer.hpp \
+  ../src/debug/RenderingInfoLog.hpp ../src/core/MemoryManager.hpp \
+  ../src/camera/Cursor.hpp ../src/scene/animation/BouncingAnimation.hpp
+../src/main/Engine.hpp:
 ../vendor/glad/include/glad/glad.hpp:
 ../vendor/glad/include/KHR/khrplatform.h:
 ../src/window/Window.hpp:
 ../src/core/Macros.hpp:
 ../src/debug/LOG.hpp:
-../src/camera/Camera.hpp:
+../src/scene/SceneViewers.hpp:
+../src/scene/editor/SceneCamera.hpp:
+../src/scene/editor/Camera.hpp:
 ../src/physics/PhysicsEngine.hpp:
 ../src/scene/Entities.hpp:
 ../src/scene/Mesh.hpp:
@@ -88,7 +91,9 @@ obj/core/main.o: ../src/core/main.cpp ../src/core/Application.hpp \
 ../vendor/LuaScriptingLibs/luaconf.h:
 ../vendor/LuaScriptingLibs/luaconf-x86_64.h:
 ../vendor/LuaScriptingLibs/lualib.h:
+../src/scene/animation/Animation.hpp:
 ../src/renderer/FrameBuffer.hpp:
-../src/core/Asserts.hpp:
-../src/core/Benchmark.hpp:
-../src/core/Timer.hpp:
+../src/debug/RenderingInfoLog.hpp:
+../src/core/MemoryManager.hpp:
+../src/camera/Cursor.hpp:
+../src/scene/animation/BouncingAnimation.hpp:

@@ -1,34 +1,3 @@
-#include "Audio.hpp"
-
-namespace Synapse
-{
-
-
-void Audio::Play(const char *audioFilePath)
-{
-#define __ADD__AUDIO__
-#ifdef __ADD__AUDIO__
-
-    //using namespace irrklang;
-    //m_soundEngine = createIrrKlangDevice();
-    m_soundEngine->play2D(audioFilePath, true);
-
-#endif
-}
-
-
-void Audio::Pause(const char *audioFilePath)
-{
-    //Will add code for pausing the current audio
-}
-
-void Audio::Stop(const char *audioFilePath)
-{
-    //Will add code for stoping the current audio
-}
-
-
-
-
-}
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:ba8d551a4eb7243a4bd6fb0cffb4c8177a2fee74c7cd040f07d51d6c770c0996
+size 479

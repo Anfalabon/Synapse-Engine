@@ -16,6 +16,11 @@
 #include <vector>
 
 
+//we can't use this if the Shader() constructor is explicit
+//Shader m_shader = Shader("../src/shader/GLSL/vertexShader1.vert", "../src/shader/GLSL/fragmentShader1.frag");
+
+
+
 namespace Synapse
 {
 
@@ -25,30 +30,35 @@ class RenderableObject
 {
 public:
 
-    RenderableObject() = delete;
     //explicit RenderableObject(const std::pair<std::string, Mesh> &model, const char *textureImageFilePath);
-    explicit RenderableObject(const std::pair<std::string, Mesh> &model);
     //explicit RenderableObject(const std::vector<Mesh> &meshes);
+    RenderableObject() = delete;
+
+    explicit RenderableObject(const std::pair<std::string, Mesh> &model);
+    explicit RenderableObject(const RenderableObject &) = default;
+    RenderableObject &operator=(const RenderableObject &) = default;
+
     ~RenderableObject();
 
     void LoadMeshes();
 
 
-    [[nodiscard]] inline unsigned int GetTotalIndiciesOfMesh(std::size_t index)
+    [[nodiscard]] __ALWAYS__INLINE__ unsigned int GetTotalIndiciesOfMesh(std::size_t index)
     {
         return (index < 0) ? 0 : m_meshes[index]._EB.GetTotalIndicies();
     }
 
-    [[nodiscard]] inline Mesh& GetMesh(std::size_t index)
+    [[nodiscard]] __ALWAYS__INLINE__ Mesh& GetMesh(std::size_t index)
     {
         //return (index < 0) ? Mesh() : m_meshes[index];
         return m_meshes[index];
     }
 
-    [[nodiscard]] inline glm::mat4& GetModelMatrix(){return m_model;}
+    [[nodiscard]] __ALWAYS__INLINE__ glm::mat4& GetModelMatrix(){return m_model;}
 
-    void SetPosition(const glm::vec3 &position){m_position = position;}
-    [[nodiscard]] inline auto GetPosition()->glm::vec3
+    __ALWAYS__INLINE__ void SetPosition(const glm::vec3 &position){m_position = position;}
+
+    [[nodiscard]] __ALWAYS__INLINE__ glm::vec3 GetPosition()
     {
         glm::mat4 inverseModelMatrix = glm::inverse(m_model);
         glm::vec3 position = std::move(inverseModelMatrix[3]);
@@ -71,8 +81,6 @@ private:
     const char* m_name;
     GLuint      m_ID;
 
-    //we can't use this if the Shader() constructor is explicit
-    //Shader m_shader = Shader("../src/shader/GLSL/vertexShader1.vert", "../src/shader/GLSL/fragmentShader1.frag");
 private:
 
     std::vector<Synapse::Mesh> m_meshes;

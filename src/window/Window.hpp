@@ -25,19 +25,18 @@ public:
 
 
     [[nodiscard]] int8_t Init();
-    //static void FrameBufferSizeCallback(GLFWwindow *window, int WIDTH, int HEIGHT);
     void Resize();
     void ExitOnEscape();
-    void KeyPressedLog(){ DEBUG::__LOG__MANAGER__::LOG("key pressed!"); }
     void GetKeyboardInput();
-    void SwapBuffers();
-    void ShutDown();    //this is right now same as 'Terminate()'
-    void PollEvents();
 
-    [[nodiscard]] bool IsRunning() __attribute__((always_inline)); //inlining this can lead to error
-    [[nodiscard]] inline GLFWwindow *WindowAddress() __attribute__((always_inline)) {return m_windowAddress;}
-    [[nodiscard]] inline GLfloat WIDTH(){ return m_WIDTH; }
-    [[nodiscard]] inline GLfloat HEIGHT(){ return m_HEIGHT; }
+    __ALWAYS__INLINE__ void SwapBuffers(){glfwSwapBuffers(m_windowAddress);}
+    __ALWAYS__INLINE__ void ShutDown(){glfwTerminate();}    //this is right now same as 'Terminate()'
+    __ALWAYS__INLINE__ void PollEvents(){glfwPollEvents();}
+
+    [[nodiscard]] __ALWAYS__INLINE__ bool IsRunning(){return (glfwWindowShouldClose(m_windowAddress)) ? false : true;};
+    [[nodiscard]] __ALWAYS__INLINE__ GLFWwindow *WindowAddress(){return m_windowAddress;}
+    [[nodiscard]] __ALWAYS__INLINE__ GLfloat WIDTH(){ return m_WIDTH; }
+    [[nodiscard]] __ALWAYS__INLINE__ GLfloat HEIGHT(){ return m_HEIGHT; }
 
 private:
 

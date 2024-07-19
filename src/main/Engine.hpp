@@ -1,17 +1,17 @@
 #pragma once
 
-//#include "../../Synapse.hpp"
-
-
 #include <glad/glad.hpp>
 
 #include "window/Window.hpp"
-#include "camera/Camera.hpp"
+#include "scene/SceneViewers.hpp"
+//#include "camera/Camera.hpp"
+#include "scene/editor/SceneCamera.hpp"
 #include "scene/Scene.hpp"
 #include "renderer/Renderer.hpp"
 #include "physics/PhysicsEngine.hpp"
 #include "audio/Audio.hpp"
 #include "scripting/ScriptingEngine.hpp"
+#include "scene/animation/Animation.hpp"
 #include "renderer/FrameBuffer.hpp"
 
 
@@ -31,6 +31,18 @@ public:
           m_engineRestart(false){}
     ~Engine();
 
+public:
+
+    [[nodiscard]] int8_t Init();
+
+    void    Run();
+    bool    Restart();
+    void    ShutDown();
+
+    Synapse::Window* GetWindow(){return m_window;}   //will remove this cause window will be inside 'Application' anyway
+
+private:
+
     int8_t LoadGLFW();
     void   LoadWindow();
     int8_t LoadGLAD();
@@ -40,44 +52,32 @@ public:
     void   LoadNetworkEngine(){}
     void   LoadAIEngine(){}
     void   LoadScene();
+    void   LoadAnimator();
     void   LoadCameras();
+    void   LoadSceneViewers();
     void   LoadRenderer();
 
-
-    bool   Restart();
     void   SelectCamera();
-
-    Synapse::Window* GetWindow(){return m_window;}   //will remove this cause window will be inside 'Application' anyway
-
-    [[nodiscard]] int8_t Init();
-
-#define __RUN__ENGINE__
-#ifdef __UPDATE__ENGINE__
-    void                 Update();
-#elif defined(__RUN__ENGINE__)
-    void                 Run();
-#endif
-
-    void                 ShutDown();
-
-
-    void CalculateDeltaTime();
+    void   CalculateDeltaTime();
 
 private:
 
     Synapse::Window          *m_window;
-    Synapse::Camera          *m_camera;
+    Synapse::SceneViewers    *m_sceneViewer;
+    //Synapse::Camera          *m_camera;
     Synapse::Scene           *m_scene;
     Synapse::SceneRenderer   *m_renderer;
     Synapse::Physics         *m_physics;
     Synapse::Audio           *m_audio;
     Synapse::ScriptingEngine *m_script;
+    Synapse::Animation       *m_animator;
     Synapse::FrameBuffer     *m_frameBuffer;
 
     //Synapse::Editor          *m_editor;
 
-    std::vector<Synapse::Camera*> m_cameras;
+    std::vector<Synapse::SceneCamera*> m_cameras;
     unsigned short       m_currentCameraIndex;
+
 public:
     bool                 m_engineRestart : 1;   //using bit fields for decreasing the size of a bool from 1 byte to 1 bit
     float                m_deltaTime = 0.0f;

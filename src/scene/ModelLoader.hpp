@@ -23,9 +23,6 @@ public:
     ModelLoader() = default;
     ~ModelLoader() = default;
 
-    std::vector<float> &LoadVerticiesData(const std::string &filePath);
-    std::vector<unsigned int> &LoadIndiciesData(const std::string &filePath);
-
     void CreateFrequentlyLoadedTextures();
     void SetModelsDataMap();
     std::pair<std::string, Synapse::Mesh> GetModel(const std::string &modelName);

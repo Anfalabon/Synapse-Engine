@@ -25,7 +25,7 @@ public:
     //virtual ~Physics() = default;
 
     void CalculateDeltaTime();
-    void Accelerate(glm::vec3 &position, glm::vec3 &velocity, const float deltaTime = PHYSICAL_CONSTANTS::DELTATIME,
+    void Accelerate(float &positionDirection, float &velocityDirection, const float deltaTime = PHYSICAL_CONSTANTS::DELTATIME,
                     const float gravity = PHYSICAL_CONSTANTS::GRAVITY);
     void SetCurrentObjectInfo(const glm::vec3 &objectMaxSize, const glm::vec3 &objectMinSize);
     void Reset(){}

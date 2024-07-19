@@ -6,10 +6,11 @@ obj/renderer/Renderer.o: ../src/renderer/Renderer.cpp \
   ../src/debug/LOG.hpp ../src/core/Macros.hpp \
   ../src/scene/IndexBuffer.hpp ../src/renderer/VertexArray.hpp \
   ../src/renderer/Texture.hpp ../src/scene/ModelLoader.hpp \
-  ../src/physics/PhysicsEngine.hpp ../src/camera/Camera.hpp \
-  ../src/renderer/shader/Shader.hpp ../src/math/Projection.hpp \
-  ../src/core/Filesystem.hpp ../src/core/RunParallel.hpp \
-  ../src/core/Timer.hpp ../src/core/Benchmark.hpp
+  ../src/physics/PhysicsEngine.hpp ../src/scene/editor/SceneCamera.hpp \
+  ../src/scene/editor/Camera.hpp ../src/renderer/shader/Shader.hpp \
+  ../src/math/Projection.hpp ../src/core/Filesystem.hpp \
+  ../src/core/RunParallel.hpp ../src/core/Asserts.hpp \
+  ../src/core/Benchmark.hpp ../src/core/Timer.hpp
 ../src/renderer/Renderer.hpp:
 ../vendor/glad/include/glad/glad.hpp:
 ../vendor/glad/include/KHR/khrplatform.h:
@@ -25,10 +26,12 @@ obj/renderer/Renderer.o: ../src/renderer/Renderer.cpp \
 ../src/renderer/Texture.hpp:
 ../src/scene/ModelLoader.hpp:
 ../src/physics/PhysicsEngine.hpp:
-../src/camera/Camera.hpp:
+../src/scene/editor/SceneCamera.hpp:
+../src/scene/editor/Camera.hpp:
 ../src/renderer/shader/Shader.hpp:
 ../src/math/Projection.hpp:
 ../src/core/Filesystem.hpp:
 ../src/core/RunParallel.hpp:
-../src/core/Timer.hpp:
+../src/core/Asserts.hpp:
 ../src/core/Benchmark.hpp:
+../src/core/Timer.hpp:

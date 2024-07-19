@@ -30,7 +30,7 @@ void main()
 
     //vec4(vertexColor, textCoord)
 
-    //gl_FragColor = vec4(vertexColor, 1.0f);
+    vec4 vertexC = vec4(vertexColor, textCoord);
 
     gl_FragColor = texture(textureSampler, textCoord) * vec4(vertexColor, textCoord);
 }
