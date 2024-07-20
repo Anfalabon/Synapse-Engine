@@ -23,9 +23,11 @@ void main()
     //gl_Position = vec4(aPosition, 1.0f);
 
 
+    //mat4 localToClip = projection * view * model;
+    //gl_Position = localToClip * vec4(aPosition + position, 1.0f);
 
-    mat4 localToCamera = projection * view * model;
-    gl_Position = localToCamera * vec4(aPosition + position, 1.0f);
+
+    gl_Position = projection * view * model * vec4(aPosition + position, 1.0f);
 
 
     vertexColor = aColor;

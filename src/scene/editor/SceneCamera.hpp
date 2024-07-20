@@ -38,7 +38,7 @@ public:
 
     explicit SceneCamera(const std::size_t &cameraIndexID = 0, const PROJECTION_TYPES &cameraProjectionType = PROJECTION_TYPES::PERSPECTIVE)
     : m_physics(new Physics()),
-      m_projectionData({45.0f, 1920.0f / 1080.0f, 0.1f, 1000.0f}),
+      m_projectionData({45.0f, 1920.0f / 1080.0f, 0.1f, 2000.0f}),
       m_cameraProjectionType(cameraProjectionType),
       m_cameraMode(CAMERA_MODES::INSPECTION_MODE),
       m_cameraIndexID(cameraIndexID)
@@ -62,6 +62,12 @@ public:
     __ALWAYS__INLINE__ glm::vec3   GetPos() const {return m_position;}
     __ALWAYS__INLINE__ glm::vec3   GetTargetPos() const {return m_targetPos;}
     __ALWAYS__INLINE__ glm::vec3   GetFrontVector() const {return m_frontVector;}    //Cursor::g_cursorsData[m_cameraIndexID].m_frontVector;
+    __ALWAYS__INLINE__ glm::vec3   GetTranslatedFrontVector() const
+    {
+        glm::vec3 frontVector = m_frontVector;
+        frontVector += m_position;
+        return frontVector;
+    }
 
 private:
 
@@ -69,8 +75,8 @@ private:
     void UpdateViewMatrix();
     void UpdateProjectionMatrix();
     void UpdateSpeed(const float deltaTime){}   //for now ResetSpeed() and IncreaseSpeed() will do the job
-    void ResetSpeed(const float deltaTime);
     bool IncreaseSpeed(GLFWwindow *window);
+    void ResetSpeed(const float deltaTime);
     void EnableJumpingInput(GLFWwindow *window);
     void ApplyZoomEffect(GLFWwindow *window);
     void ApplyMovement(GLFWwindow *window);

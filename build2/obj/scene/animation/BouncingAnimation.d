@@ -10,8 +10,12 @@ obj/scene/animation/BouncingAnimation.o: \
   ../src/renderer/Texture.hpp ../src/scene/ModelLoader.hpp \
   ../src/physics/PhysicsEngine.hpp ../src/scene/editor/SceneCamera.hpp \
   ../src/scene/editor/Camera.hpp ../src/renderer/shader/Shader.hpp \
-  ../src/math/Projection.hpp ../src/core/RunParallel.hpp \
-  ../src/core/Asserts.hpp
+  ../src/math/Projection.hpp ../src/scripting/ScriptingEngine.hpp \
+  ../vendor/LuaScriptingLibs/lua.hpp ../vendor/LuaScriptingLibs/lua.h \
+  ../vendor/LuaScriptingLibs/luaconf.h \
+  ../vendor/LuaScriptingLibs/luaconf-x86_64.h \
+  ../vendor/LuaScriptingLibs/lualib.h ../src/core/Filesystem.hpp \
+  ../src/core/RunParallel.hpp ../src/core/Asserts.hpp
 ../src/scene/animation/BouncingAnimation.hpp:
 ../src/scene/animation/Animation.hpp:
 ../src/scene/Scene.hpp:
@@ -32,5 +36,12 @@ obj/scene/animation/BouncingAnimation.o: \
 ../src/scene/editor/Camera.hpp:
 ../src/renderer/shader/Shader.hpp:
 ../src/math/Projection.hpp:
+../src/scripting/ScriptingEngine.hpp:
+../vendor/LuaScriptingLibs/lua.hpp:
+../vendor/LuaScriptingLibs/lua.h:
+../vendor/LuaScriptingLibs/luaconf.h:
+../vendor/LuaScriptingLibs/luaconf-x86_64.h:
+../vendor/LuaScriptingLibs/lualib.h:
+../src/core/Filesystem.hpp:
 ../src/core/RunParallel.hpp:
 ../src/core/Asserts.hpp:

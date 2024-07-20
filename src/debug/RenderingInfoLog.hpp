@@ -32,7 +32,8 @@ inline void FramesPerSecond(const float deltaTime = 0.0f)
     ++m_count;
 
 
-    std::clog << "FPS:      " << 1 / deltaTime << '\n';
+    //std::clog << "FPS:      " << 1 / deltaTime << '\n';
+    std::clog << "FPS:                                  " << 1 / deltaTime << '\n';
 }
 
 }

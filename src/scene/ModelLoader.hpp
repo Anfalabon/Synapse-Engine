@@ -20,6 +20,7 @@ namespace Synapse
 class ModelLoader
 {
 public:
+
     ModelLoader() = default;
     ~ModelLoader() = default;
 

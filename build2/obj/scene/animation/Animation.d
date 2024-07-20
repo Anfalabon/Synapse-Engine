@@ -8,7 +8,11 @@ obj/scene/animation/Animation.o: ../src/scene/animation/Animation.cpp \
   ../src/renderer/Texture.hpp ../src/scene/ModelLoader.hpp \
   ../src/physics/PhysicsEngine.hpp ../src/scene/editor/SceneCamera.hpp \
   ../src/scene/editor/Camera.hpp ../src/renderer/shader/Shader.hpp \
-  ../src/math/Projection.hpp
+  ../src/math/Projection.hpp ../src/scripting/ScriptingEngine.hpp \
+  ../vendor/LuaScriptingLibs/lua.hpp ../vendor/LuaScriptingLibs/lua.h \
+  ../vendor/LuaScriptingLibs/luaconf.h \
+  ../vendor/LuaScriptingLibs/luaconf-x86_64.h \
+  ../vendor/LuaScriptingLibs/lualib.h ../src/core/Filesystem.hpp
 ../src/scene/animation/Animation.hpp:
 ../src/scene/Scene.hpp:
 ../src/scene/Entities.hpp:
@@ -28,3 +32,10 @@ obj/scene/animation/Animation.o: ../src/scene/animation/Animation.cpp \
 ../src/scene/editor/Camera.hpp:
 ../src/renderer/shader/Shader.hpp:
 ../src/math/Projection.hpp:
+../src/scripting/ScriptingEngine.hpp:
+../vendor/LuaScriptingLibs/lua.hpp:
+../vendor/LuaScriptingLibs/lua.h:
+../vendor/LuaScriptingLibs/luaconf.h:
+../vendor/LuaScriptingLibs/luaconf-x86_64.h:
+../vendor/LuaScriptingLibs/lualib.h:
+../src/core/Filesystem.hpp:

@@ -17,7 +17,7 @@ class Window
 public:
 
     Window() = default;
-    Window(GLfloat WIDTH, GLfloat HEIGHT, const char *TITLE);
+    Window(float WIDTH, float HEIGHT, const char *TITLE);
     ~Window()
     {
         //glfwTerminate();
@@ -26,6 +26,7 @@ public:
 
     [[nodiscard]] int8_t Init();
     void Resize();
+    bool Restart();
     void ExitOnEscape();
     void GetKeyboardInput();
 
@@ -35,14 +36,14 @@ public:
 
     [[nodiscard]] __ALWAYS__INLINE__ bool IsRunning(){return (glfwWindowShouldClose(m_windowAddress)) ? false : true;};
     [[nodiscard]] __ALWAYS__INLINE__ GLFWwindow *WindowAddress(){return m_windowAddress;}
-    [[nodiscard]] __ALWAYS__INLINE__ GLfloat WIDTH(){ return m_WIDTH; }
-    [[nodiscard]] __ALWAYS__INLINE__ GLfloat HEIGHT(){ return m_HEIGHT; }
+    [[nodiscard]] __ALWAYS__INLINE__ float WIDTH(){ return m_WIDTH; }
+    [[nodiscard]] __ALWAYS__INLINE__ float HEIGHT(){ return m_HEIGHT; }
 
 private:
 
     GLFWwindow *m_windowAddress;
-    GLfloat     m_WIDTH;
-    GLfloat     m_HEIGHT;
+    float     m_WIDTH;
+    float     m_HEIGHT;
     const char *m_TITLE;
 };
 

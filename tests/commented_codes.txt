@@ -4196,3 +4196,409 @@ __ALWAYS__INLINE__ static bool IsInsideBoundry(const glm::vec3 &pos, const glm::
     //m_renderableObjects[i]->Rotate(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
     //m_renderableObjects[i]->Rotate(1.0f, true, false, true);
     //TransformComponent::Translate(m_renderableObjects[i], glm::vec3(0.0, 10.0f, 0.0f));
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    //    velocity.x = (velocity.x - initialVelocity.x) * materialConstant;
+    //    velocity.y = Synapse::FastAbs((velocity.y - initialVelocity.y) * materialConstant);
+    //    velocity.z = (velocity.z - initialVelocity.z) * materialConstant;
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+    //            if(position.x >= -20.0f && position.x <= 100.0f && position.z >= -20.0f && position.z <= 100.0f) //&& position.y > groundVerticalPosition
+    //            {
+    //                this->Bounce(velocity, initialVelocity, enableRandomMovement);
+    //            }
+    //            else
+    //            {
+    //                velocity.y += gravity * deltaTime;
+    //            }
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+int64_t Scene::RenderableObjectCameraLookingAt(Synapse::SceneCamera *camera)
+{
+    std::size_t currentRenderableObjectIndex = 0;
+
+    glm::vec3 distanceVector = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 directionVector = 3.0f * camera->GetFrontVector();    //here directionVector length will be always '3.0f'
+    glm::vec3 cameraPos = camera->GetPos();
+
+
+    float minDistance = glm::length(cameraPos - m_renderableObjects[0]->m_position);
+
+
+    //find the renderable object which distance vector length is minimum
+    for(std::size_t i=0; i<m_renderableObjects.size(); ++i)
+    {
+        distanceVector = cameraPos - m_renderableObjects[i]->m_position;
+        float distanceLength = glm::length(distanceVector);
+        if(distanceLength < minDistance)
+        {
+            minDistance = distanceLength;
+            currentRenderableObjectIndex = i;
+        }
+    }
+
+    float length2 = glm::length(directionVector);
+    //directionVector += camera->GetPos();
+
+    if((glm::dot(distanceVector, directionVector) == minDistance * length2) || (minDistance <= length2))
+    {
+        lookingAtRenderableObject = true;
+        return (int64_t)currentRenderableObjectIndex;
+    }
+
+    return -1;
+}
+
+
+
+void Scene::SelectRenderableObject(GLFWwindow *window, Synapse::SceneCamera *camera)
+{
+    bool holdingLeftMouseButton = false;
+    int64_t index = -1;
+
+    if(!keepingLeftMouseButtonHolding(window))
+    {
+        lookingAtRenderableObject = false;
+    }
+    else
+    {
+        holdingLeftMouseButton = true;
+        index = this->RenderableObjectCameraLookingAt(camera);
+        std::cout << "Selected Renderable Object Index: " << index << '\n';
+        if(index < 0)
+        {
+            lookingAtRenderableObject = false;
+        }
+    }
+
+    if(holdingLeftMouseButton && lookingAtRenderableObject)
+    {
+        glm::vec3 translatedDirectionVector = 3.0f * camera->GetFrontVector();
+        translatedDirectionVector += camera->GetPos();
+        m_renderableObjects[index]->m_position = std::move(translatedDirectionVector);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+#pragma once
+
+
+#include <glad/glad.hpp>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/ext.hpp>
+
+
+namespace Synapse
+{
+
+
+
+struct TransformComponent
+{
+    TransformComponent() = default;
+    ~TransformComponent() = default;
+
+//    void Translate(glm::vec3 &model, glm::vec3 translationVec)
+//    {
+//        model = glm::translate(model, translationVec);
+//    }
+//
+//    void Rotate(glm::mat4 &model, float angleToRotateDegrees, glm::vec3 rotationVec)
+//    {
+//        model = glm::rotate(model, glm::radians(angleToRotateDegrees), rotationVec);
+//    }
+//
+//    void Scale(glm::mat4 &model, glm::vec3 scaleVec)
+//    {
+//        model = glm::scale(model, scaleVec);
+//    }
+
+};
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+#else
+
+    //not calling the default constructor results in memory error
+    //will fix this (later: struct VertexArray, struct VertexBuffer, struct IndexBuffer caused the crash!)
+    //m_modelsMap[""] = Mesh();
+
+    m_modelsMap["Cube"] = Mesh(cubeVerticiesData, cubeTotalVerticies, cubeIndiciesData, cubeTotalIndicies);
+    m_modelsMap["Ground"] = Mesh(groundVerticiesData, groundTotalVerticies, groundIndiciesData, groundTotalIndicies);
+    m_modelsMap["Trapizoid"] = Mesh(trapizoidVerticiesData, trapizoidTotalVerticies, trapizoidIndiciesData, trapizoidTotalIndicies);
+    m_modelsMap["Pyramid"] = Mesh(pyramidVerticesData,  pyramidTotalVerticies, pyramidIndicesData, pyramidTotalIndicies);
+    m_modelsMap["Cylinder"] = Mesh(cylinderVerticiesData, cylinderTotalVerticies, cylinderIndiciesData, cylinderTotalIndicies);
+    m_modelsMap["Icosphere"] = Mesh(icosphereVerticiesData, icosphereTotalVerticies, icosphereIndiciesData, icosphereTotalIndicies);
+    m_modelsMap["Sphere"] = Mesh(sphereVerticiesData, sphereTotalVerticies, sphereIndiciesData, sphereTotalIndicies);
+
+#endif
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+//    std::unordered_map<std::string, Texture> textureCacheMap;
+//    textureCacheMap["../vendor/imageLoader/images/clearRoadTexture.jpg"] = texture.m_imageData;
+
+    //initialize the frequently used or loaded textures for performence
+//    Texture groundTexture("../vendor/imageLoader/images/clearRoadTexture.jpg");
+//    groundTexture.Load();
+//
+//    Texture sphereTexture("../vendor/imageLoader/images/basketballTexture.jpg");
+//    sphereTexture.Load();
+
+
+//    m_modelsMap["Ground"] = Mesh(groundVerticiesData, groundIndiciesData,
+//                                 groundTexture.m_imageData, groundTexture.m_width, groundTexture.m_height, groundTexture.m_nrChannels);
+
+//    m_modelsMap["Sphere"] = Mesh(sphereVerticiesData, sphereIndiciesData,
+//                                 sphereTexture.m_imageData, sphereTexture.m_width, sphereTexture.m_height, sphereTexture.m_nrChannels);
+
+
+//    m_modelsMap["Ground"] = Mesh(groundVerticiesData, groundIndiciesData, groundTexture);
+//    m_modelsMap["Sphere"] = Mesh(sphereVerticiesData, sphereIndiciesData, sphereTexture);
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    //m_shader.SendMatrix4ToGPU("view", m_view);
+    //m_shader.SendMatrix4ToGPU("projection", m_projection);
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    void KeepRenderableObjectsUnderBoundry();
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+            //m_cameras[m_currentCameraIndex]->GetKeyboardInput(m_window->WindowAddress(), m_deltaTime);
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    //m_modelsMap["House"] = Mesh(doorVerticiesData, roofVerticiesData, wallVerticiesData, groundVerticiesData,
+    //                            doorIndiciesData, roofIndiciesData, wallIndiciesData, groundIndiciesData,
+    //                            "doorTexture.jpg", "roofTexture.jpg", "wallTexture.jpg", "groundTexture.jpg");
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+static std::size_t SelectObjectByIndex(GLFWwindow *window)
+{
+
+    for(std::size_t i=0; i<10; ++i)
+    {
+        if(glfwGetKey(window, GLFW_KEY_0 + i) == GLFW_PRESS)
+        {
+            return (GLFW_KEY_0 + i);
+        }
+    }
+
+}
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+ //void   LoadCameras();
+
+
+ //void Engine::LoadCameras()
+ //{
+ //    std::cout << "Going to initialize the Camera" << '\n';
+ //
+ //    std::size_t totalCameras = 3;
+ //    for(std::size_t cameraIndexID = 0; cameraIndexID < totalCameras; ++cameraIndexID)
+ //    {
+ //        m_cameras.push_back(new SceneCamera(cameraIndexID, SceneCamera::PROJECTION_TYPES::PERSPECTIVE));
+ //    }
+ //
+ //    std::cout << "pushed cameras to the std::vector!" << '\n';
+ //
+ //    for(std::size_t i=0; i<m_cameras.size(); ++i)
+ //    {
+ //        m_cameras[i]->SetupMouse(m_window->WindowAddress());
+ //    }
+ //
+ //    std::cout << "Initialized the Camera" << '\n';
+ //
+ //}
+
+
+ //this->LoadCameras();
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+//void   SelectCamera();
+
+
+//void Engine::SelectCamera()
+//{
+//#if 0
+//    bool exit = false;
+//    auto getCamera = [&exit, this](unsigned short cameraNum)->void
+//    {
+//        std::cout << "Running Camera selector!" << '\n';
+//        if(exit)
+//        {
+//            return;
+//        }
+//        else if(glfwGetKey(m_window->WindowAddress(), GLFW_KEY_F1 + cameraNum) == GLFW_PRESS)    //290
+//        {
+//            m_currentCameraIndex = cameraNum;
+//            exit = true;
+//        }
+//    };
+//    for(unsigned short i=0; i<m_cameras.size() && !exit; ++i) [[likely]]
+//    {
+//        getCamera(i);
+//    }
+//#endif
+//
+//    //Will use an Map for this
+//
+//    if(glfwGetKey(m_window->WindowAddress(), GLFW_KEY_F1) == GLFW_PRESS)    //290
+//    {
+//        m_currentCameraIndex = 0;
+//    }
+//    else if(glfwGetKey(m_window->WindowAddress(), GLFW_KEY_F2) == GLFW_PRESS)
+//    {
+//        m_currentCameraIndex = 1;
+//    }
+//    else if(glfwGetKey(m_window->WindowAddress(), GLFW_KEY_F3) == GLFW_PRESS)
+//    {
+//        m_currentCameraIndex = 2;
+//    }
+//
+//
+//    //DEBUG::__LOG__MANAGER__::LOG("Current Camera running: ");
+//    std::cout << "Current Camera running: " << m_currentCameraIndex << '\n';
+//    //DEBUG("Current Camera running: ");
+//
+
+
+
+
+//this->SelectCamera();
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+        //m_scene->Update(m_window->WindowAddress(), m_cameras[m_currentCameraIndex], m_deltaTime);

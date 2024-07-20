@@ -39,7 +39,8 @@ obj/main/Engine.o: ../src/main/Engine.cpp ../src/main/Engine.hpp \
   ../vendor/LuaScriptingLibs/lualib.h \
   ../src/scene/animation/Animation.hpp ../src/renderer/FrameBuffer.hpp \
   ../src/debug/RenderingInfoLog.hpp ../src/core/MemoryManager.hpp \
-  ../src/camera/Cursor.hpp ../src/scene/animation/BouncingAnimation.hpp
+  ../src/camera/Cursor.hpp ../src/scene/animation/BouncingAnimation.hpp \
+  ../src/scene/animation/RotationAnimation.hpp
 ../src/main/Engine.hpp:
 ../vendor/glad/include/glad/glad.hpp:
 ../vendor/glad/include/KHR/khrplatform.h:
@@ -97,3 +98,4 @@ obj/main/Engine.o: ../src/main/Engine.cpp ../src/main/Engine.hpp \
 ../src/core/MemoryManager.hpp:
 ../src/camera/Cursor.hpp:
 ../src/scene/animation/BouncingAnimation.hpp:
+../src/scene/animation/RotationAnimation.hpp:

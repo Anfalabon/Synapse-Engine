@@ -34,10 +34,7 @@ public:
     void LoadRenderableObjectDynamically(GLFWwindow *window, Synapse::SceneCamera *camera);  //make the camera parameter const
     void RemoveRenderableObjectDynamically(GLFWwindow *window);
     void RenderableObjectKeyboardMovement(GLFWwindow *window, std::size_t index);
-    int64_t RenderableObjectCameraLookingAt(Synapse::SceneCamera *camera);
-    void SelectRenderableObject(GLFWwindow *window, Synapse::SceneCamera *camera);
-    void SelectRenderableObjectTemp(GLFWwindow *window, Synapse::SceneCamera *camera, const char &);
-    void KeepRenderableObjectsUnderBoundry();
+    void SelectRenderableObject(GLFWwindow *window, Synapse::SceneCamera *camera, const std::size_t renderableObjectIndex = 2);
     void Update(GLFWwindow *window, Synapse::SceneCamera *camera, float deltaTime);  //make the camera parameter const
     void Clear();
 
@@ -60,6 +57,7 @@ public:
 
 private:
 
+    //__ALWAYS__INLINE__ void AddRenderableObject(const std::string &modelName, const glm::vec3 &pos, const float rotationAngle, const float scale)
     __ALWAYS__INLINE__ void AddRenderableObject(const std::string &modelName)
     {
         m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel(modelName)));
@@ -72,9 +70,7 @@ private:
     std::vector<Synapse::RenderableObject*> m_renderableObjects;
 #endif
 
-
     Synapse::ModelLoader *m_modelLoader;
-    //Synapse::Physics *m_physics;
 
 public:
     std::size_t m_firstCameraIndex               = 0;
@@ -83,9 +79,7 @@ private:
     //temp member data's
     bool m_dynamicRenderableObjectLoaderRunning  = false;
     bool m_dynamicRenderableObjectDeleterRunning = false;
-    bool m_rotatorKeyPressed                     = false;
-    float m_theta                                = 0.0f;   //this will be inside the 'Physics' class
-    bool lookingAtRenderableObject               = false;
+    bool m_lookingAtRenderableObject               = false;
 
 
     bool m_wasClearMethodCalled = false;    //this is for preventing double free(once in 'Clear()' method and again in the destructor)
