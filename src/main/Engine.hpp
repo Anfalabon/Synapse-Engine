@@ -25,9 +25,9 @@ namespace Synapse
 class Engine
 {
 public:
+
     Engine()
         :
-          //m_currentCameraIndex(0),
           m_engineRestart(false){}
     ~Engine();
 

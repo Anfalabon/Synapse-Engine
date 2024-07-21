@@ -3,7 +3,6 @@
 namespace Synapse
 {
 
-
 class SynapseMath
 {
 public:
@@ -13,8 +12,5 @@ public:
     static float FastInverseSqrt(float value);
 
 };
-
-
-
 
 }

@@ -5,8 +5,9 @@
 #include <glm/glm.hpp>
 
 #include "scene/editor/Camera.hpp"
-#include "physics/PhysicsEngine.hpp"
-#include "scene/Entities.hpp"
+#include "debug/Log.hpp"
+//#include "physics/PhysicsEngine.hpp"
+//#include "scene/Entities.hpp"
 #include "renderer/shader/Shader.hpp"
 #include "math/Projection.hpp"
 //#include "../events/MouseEvents.hpp"
@@ -37,8 +38,7 @@ public:
     SceneCamera() = default;
 
     explicit SceneCamera(const std::size_t &cameraIndexID = 0, const PROJECTION_TYPES &cameraProjectionType = PROJECTION_TYPES::PERSPECTIVE)
-    : m_physics(new Physics()),
-      m_projectionData({45.0f, 1920.0f / 1080.0f, 0.1f, 2000.0f}),
+    : m_projectionData({45.0f, 1920.0f / 1080.0f, 0.1f, 2000.0f}),
       m_cameraProjectionType(cameraProjectionType),
       m_cameraMode(CAMERA_MODES::INSPECTION_MODE),
       m_cameraIndexID(cameraIndexID)
@@ -74,31 +74,28 @@ private:
     void CalculateFrontVector(float yaw, float pitch);
     void UpdateViewMatrix();
     void UpdateProjectionMatrix();
-    void UpdateSpeed(const float deltaTime){}   //for now ResetSpeed() and IncreaseSpeed() will do the job
-    bool IncreaseSpeed(GLFWwindow *window);
-    void ResetSpeed(const float deltaTime);
-    void EnableJumpingInput(GLFWwindow *window);
+    void UpdateVelocity(const float deltaTime){}   //for now ResetSpeed() and IncreaseSpeed() will do the job
+    bool IncreaseVelocity(GLFWwindow *window);
+    void ResetVelocity(const float deltaTime);
     void ApplyZoomEffect(GLFWwindow *window);
-    void ApplyMovement(GLFWwindow *window);
-    void ApplyMultipleDirectionMovement(GLFWwindow *window);
+    void ApplyMovement(GLFWwindow *window, const float deltaTime);
+    void ApplyMultipleDirectionMovement(GLFWwindow *window, const float deltaTime);
     void SetCursorData();
     void GetCursorData();
 
 private:
 
     glm::vec3 m_position    = glm::vec3(3.0f, 0.0f, 3.0f);
-    glm::vec3 m_velocity    = glm::vec3(0.0f, 0.774f, 0.0f);
+    glm::vec3 m_velocity    = glm::vec3(0.0f, 0.0f, 0.0f);
 
     glm::vec3 m_targetPos   = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 m_upVector    = glm::vec3(0.0f, 1.0f, 0.0f);   //camera up vector is arbitary
+    glm::vec3 m_upVector    = glm::vec3(0.0f, 1.0f, 0.0f);   //camera up vector is arbitary when initializing
     glm::vec3 m_frontVector = glm::vec3(0.0f, 0.0f, 0.0f);
 
     glm::mat4 m_projection  = glm::mat4(0.0f);
     glm::mat4 m_view        = glm::mat4(1.0f);
 
 
-    float                 m_speedCoefficient;
-    Physics              *m_physics;
     bool                  m_changedFov = false;
     struct ProjectionData m_projectionData;
 

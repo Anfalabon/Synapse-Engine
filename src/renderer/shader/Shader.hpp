@@ -42,25 +42,30 @@ public:
          //glDeleteProgram(m_shaderProgramID);
      }
 
-     void ReadSources();
-     [[nodiscard]] GLuint ProgramID(){return m_shaderProgramID;}
-     template<typename T> void SetupSuccessLog(T __STATUS__, GLuint shaderID);
-     __ALWAYS__INLINE__ unsigned int GetProgramID(){return m_shaderProgramID;}
+     template<typename T> void SetupSuccessLog(T __STATUS__, GLuint shaderID) const;
      void Compile();
-     unsigned int Compile(unsigned int type, const char *shaderSource);
-     void AttachAndLink();
-     void UseProgram();
-     void RemoveShaders();
-     void RemoveProgram();
+     unsigned int Compile(unsigned int type, const char *shaderSource) const;
+     void AttachAndLink() const;
+     void UseProgram() const;
+     void RemoveShaders() const;
+     void RemoveProgram() const;
+
+
+     __ALWAYS__INLINE__ unsigned int GetProgramID() const {return m_shaderProgramID;}
+     __ALWAYS__INLINE__ std::string  GetVertexShaderFilePath() const {return m_vertexShader.path;}
+     __ALWAYS__INLINE__ std::string  GetFragmentShaderFilePath() const {return m_fragmentShader.path;}
+
+     __ALWAYS__INLINE__ void SetShader()
+     {
+         this->Compile();
+         this->AttachAndLink();
+         this->RemoveShaders();
+     }
+
 
      void SetMatrix4vf(const char *uniformMatrixName, glm::mat4 &model);
      void SendMatrix4ToGPU(const char *uniformMatrixName, glm::mat4 &model);
      void SendVector3ToGPU(const char *uniformVectorName, glm::vec3 &vector);
-
-     __ALWAYS__INLINE__ std::string GetVertexShaderFilePath() const {return m_vertexShader.path;}
-     __ALWAYS__INLINE__ std::string GetFragmentShaderFilePath() const {return m_fragmentShader.path;}
-
-
 
 
 private:

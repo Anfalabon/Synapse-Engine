@@ -26,6 +26,14 @@ public:
 
     //void ApplyBouncingAnimation(Synapse::Scene *scene);
 
+    static __ALWAYS__INLINE__ void UpdateAnimations(const std::vector<Synapse::Animation*> &animators, Synapse::Scene *scene, const float deltaTime)
+    {
+        for(auto animator : animators) [[likely]]
+        {
+            animator->ApplyAnimation(scene, deltaTime);
+        }
+    }
+
 protected:
 
     Synapse::Physics         *m_physics;
@@ -35,3 +43,25 @@ protected:
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//m_animator->ApplyAnimation(m_scene, m_deltaTime);
+//if(glfwGetKey(m_window->WindowAddress(), GLFW_KEY_ENTER) != GLFW_PRESS)
+//{
+//    for(auto animator : m_animator) [[likely]]
+//    {
+//        animator->ApplyAnimation(m_scene, m_deltaTime);
+//    }
+//}

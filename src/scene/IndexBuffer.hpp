@@ -3,7 +3,7 @@
 #include <glad/glad.hpp>
 
 #include "scene/Buffer.hpp"
-#include "debug/LOG.hpp"
+#include "debug/Log.hpp"
 #include "core/Macros.hpp"
 
 #include <iostream>

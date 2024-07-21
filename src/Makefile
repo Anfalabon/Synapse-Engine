@@ -13,7 +13,7 @@ obj/glad.o: ../vendor/glad/src/glad.cpp ../vendor/glad/include/glad/glad.hpp
 
 
 
-obj/LOG.o: ../src/debug/LOG.cpp ../src/debug/LOG.hpp
+obj/LOG.o: debug/Log.cpp debug/Log.hpp
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
@@ -61,7 +61,7 @@ obj/Transformation.o: ../src/math/Transformation.cpp ../src/math/Transformation.
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
-obj/Shader.o: ../src/renderer/shader/Shader.cpp	../src/renderer/shader/Shader.hpp ../src/debug/LOG.hpp ../src/renderer/shader/GLSL/vertexShader1.vert ../src/renderer/shader/GLSL/fragmentShader1.frag
+obj/Shader.o: ../src/renderer/shader/Shader.cpp	../src/renderer/shader/Shader.hpp debug/Log.hpp ../src/renderer/shader/GLSL/vertexShader1.vert ../src/renderer/shader/GLSL/fragmentShader1.frag
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
@@ -77,7 +77,7 @@ obj/Renderer.o: ../src/renderer/Renderer.cpp ../src/renderer/Renderer.hpp ../src
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
-obj/Window.o: ../src/window/Window.cpp ../src/window/Window.hpp ../src/debug/LOG.hpp
+obj/Window.o: ../src/window/Window.cpp ../src/window/Window.hpp debug/Log.hpp
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
@@ -95,7 +95,7 @@ obj/Benchmark.o: ../src/core/Benchmark.cpp ../src/core/Benchmark.hpp ../src/core
 
 
 
-obj/Camera.o: ../src/camera/Camera.cpp	../src/camera/Camera.hpp ../src/debug/LOG.hpp ../src/debug/RenderingInfoLog.hpp ../src/physics/PhysicsEngine.hpp ../src/camera/Cursor.hpp
+obj/Camera.o: ../src/camera/Camera.cpp	../src/camera/Camera.hpp debug/Log.hpp ../src/debug/RenderingInfoLog.hpp ../src/physics/PhysicsEngine.hpp ../src/camera/Cursor.hpp
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
@@ -103,7 +103,7 @@ obj/ScriptingEngine.o: ../src/scripting/ScriptingEngine.cpp ../src/scripting/Scr
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
-obj/Engine.o: ../src/core/Engine.cpp ../src/core/Engine.hpp ../src/debug/LOG.hpp ../src/scene/Scene.hpp ../src/debug/RenderingInfoLog.hpp ../src/renderer/shader/Shader.hpp ../src/renderer/Renderer.hpp ../src/core/RunParallel.hpp ../src/audio/Audio.hpp ../src/scripting/ScriptingEngine.hpp
+obj/Engine.o: ../src/core/Engine.cpp ../src/core/Engine.hpp debug/Log.hpp ../src/scene/Scene.hpp ../src/debug/RenderingInfoLog.hpp ../src/renderer/shader/Shader.hpp ../src/renderer/Renderer.hpp ../src/core/RunParallel.hpp ../src/audio/Audio.hpp ../src/scripting/ScriptingEngine.hpp
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 

@@ -4,7 +4,7 @@
 #include "scene/IndexBuffer.hpp"
 #include "renderer/VertexArray.hpp"
 #include "renderer/Texture.hpp"
-#include "debug/LOG.hpp"
+#include "debug/Log.hpp"
 
 #include <string>
 #include <vector>

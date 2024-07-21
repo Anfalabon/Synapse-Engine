@@ -4602,3 +4602,336 @@ static std::size_t SelectObjectByIndex(GLFWwindow *window)
 
 
         //m_scene->Update(m_window->WindowAddress(), m_cameras[m_currentCameraIndex], m_deltaTime);
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+ float                 m_speedCoefficient;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+         //in game mode it can freely move in the ground plane only(x, z plane) but It can't move vertically.
+         //and in inspection mode it can move in anywhere freely.
+ //        if (m_cameraMode == CAMERA_MODES::GAME_MODE && !m_physics->m_collided && false)
+ //        {
+ //            //if the camera collided with any object then it can't move further.
+ //            //doing action on collision detection like this has a lot of problems
+ //            //wil fix it.
+ //            m_position.x += m_velocity.x * m_frontVector.x;
+ //            m_position.z += m_velocity.z * m_frontVector.z;
+ //        }
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+//m_physics(new Physics()),
+//Physics              *m_physics;
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//void EnableJumpingInput(GLFWwindow *window);
+
+
+
+//void SceneCamera::EnableJumpingInput(GLFWwindow *m_window)
+//{
+//    //&& !m_collided
+//    if(glfwGetKey(m_window, GLFW_KEY_SPACE) == GLFW_PRESS &&
+//       !m_physics->m_jumped &&
+//       m_cameraMode == CAMERA_MODES::GAME_MODE)
+//    {
+//        m_physics->m_jumped = true;
+//        m_physics->m_initialHeight = m_position.y;
+//    }
+//}
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+//    this->SetCameraMode(CAMERA_MODES::GAME_MODE);
+//    if (m_cameraMode == CAMERA_MODES::GAME_MODE)
+//{
+//    m_physics->m_pos = m_position;
+//    m_physics->m_velocity = m_velocity;
+//
+//    m_physics->Apply(renderableObjects); //this doesn't check Camera mode and just simply applies physics regarding of cameras actual mode
+//
+//    m_position = m_physics->m_pos;
+//    m_velocity = m_physics->m_velocity;
+//}
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+void Render() override;
+
+
+
+
+
+
+
+#if defined(__UTILIZE__STANDARDCXX__THREADING___)
+//this was for multithreading using std::thread or std::future+std::async
+void EntityRenderer::renderEntitiesPartially(std::size_t start, std::size_t end)
+{
+    for(std::size_t i=start; i<end; ++i)
+    {
+        glBindVertexArray(m_entitiesVAO[i]);
+        glDrawElements(GL_TRIANGLES, m_entitiesTotalIndicies[i], GL_UNSIGNED_INT, 0);
+    }
+}
+#endif
+
+
+
+
+
+void SceneRenderer::Render()
+{
+#if defined(__MULTITHREADING__RENDERER__)
+
+    //this somehow causes rendering only the first entitty in the 'm_entities' contianer in 'Engine' class.
+    //it's probably because of 'race condition'.
+    //will fix it.
+    unsigned short threadsToUtilize = 0x4;
+    Threading::S_pragma_omp_parallel_loop<void, std::size_t>(0, m_totalEntities, threadsToUtilize,
+    [this](auto i)->void
+    {
+          //#pragma omp critical
+          glBindVertexArray(m_entitiesVAO[i]);
+          glDrawElements(GL_TRIANGLES, m_entitiesTotalIndicies[i], GL_UNSIGNED_INT, 0);
+    });
+#else
+//    for(std::size_t i=0; i<m_totalEntities; ++i)
+//    {
+//          glBindVertexArray(m_entitiesVAO[i]);
+//          glDrawElements(GL_TRIANGLES, m_entitiesTotalIndicies[i], GL_UNSIGNED_INT, 0);
+//    }
+#endif
+}
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+static void RenderScenePartially(Scene *scene, std::vector<Shader> &sceneShaders, std::size_t first, std::size_t last);   //this is for the Parallelism
+
+
+
+
+
+
+void SceneRenderer::RenderScenePartially(Scene *scene, std::vector<Shader> &sceneShaders, std::size_t first, std::size_t last)
+{
+    for(std::size_t i=first; i<last; ++i)
+    {
+        //glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, scene->GetRenderableObject(i)->GetMesh(0)._texture.GetTextureID());
+        scene->GetRenderableObject(i)->GetMesh(0)._VA.Bind();
+
+        sceneShaders[0].SendMatrix4ToGPU("model", scene->GetRenderableObject(i)->m_model);
+        sceneShaders[0].SendVector3ToGPU("position", scene->GetRenderableObject(i)->m_position);
+
+        //render every object
+        glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->GetTotalIndiciesOfMesh(0), GL_UNSIGNED_INT, 0);
+    }
+}
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+#endif
+
+//    std::thread sceneRendererThread1(RenderScenePartially, scene, m_sceneShaders, 0, scene->GetTotalSceneObjects()/2);
+//    std::thread sceneRendererThread2(RenderScenePartially, scene, m_sceneShaders, scene->GetTotalSceneObjects()/2, scene->GetTotalSceneObjects());
+//
+//
+//    sceneRendererThread1.join();
+//    sceneRendererThread2.join();
+
+#endif
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+#if 1
+
+
+
+
+
+#if defined(__MULTITHREADING__RENDERER__)
+    auto ThreadsToUtilize = [=]()->unsigned short
+    {
+        //there maybe an threshold in the number of scene objects for which a the threads to utilize for rendering would be set
+        //right now the threshold is 1000
+        return (scene->GetTotalSceneObjects() > 1000) ? 0x4 : 0x1;
+    };
+    //using this causes weird rendering(it only renders the first renderable object in the scene)
+    unsigned short threadsToUtilize = 0x3;
+    Threading::S_pragma_omp_parallel_loop<void, std::size_t>(0, scene->GetTotalSceneObjects(), ThreadsToUtilize(),
+    [&scene](auto i)->void
+    {
+         #pragma omp critical
+         glBindVertexArray(scene->GetRenderableObject(i)->GetVertexObjects().GetVAO());
+         glDrawElements(GL_TRIANGLES, scene->GetRenderableObject(i)->TotalIndicies(), GL_UNSIGNED_INT, 0);
+    });
+#else
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+#if defined(__UTILIZE__STANDARDCXX__THREADING___)
+    void renderEntitiesPartially(std::size_t start, std::size_t end);
+#endif
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+//    __ALWAYS__INLINE__ void SetShader(std::size_t index = 0)
+//    {
+//        std::size_t lastIndex = m_sceneShaders.size() - 1;
+//        //m_sceneShaders[lastIndex].Compile();
+//        //m_sceneShaders[lastIndex].AttachAndLink();
+//        //m_sceneShaders[lastIndex].RemoveShaders();
+//
+//        m_sceneShaders[lastIndex].SetShader();
+//    }
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+void ReadSources();
+
+
+
+void Shader::ReadSources()
+{
+    if(m_vertexShader.path == "" || m_fragmentShader.path == "")
+    {
+        std::cout << "Shader files are or file is empty!" << '\n';
+        return;
+    }
+
+    std::ifstream vertexShaderFile(m_vertexShader.path);
+    std::ifstream fragmentShaderFile(m_fragmentShader.path);
+
+#if 0
+     SYSTEM_LOG("if test -e /shader/GLSL/vertesShaderSource.glslv; then\n"
+                "    echo \"File or directory exists.\"\n"
+                "else\n"
+                "    echo \"File or directory does not exist.\"\n"
+                "fi");
+#endif
+
+     if(vertexShaderFile.fail())
+     {
+         std::cout << "didn't find vertex shader file!" << '\n';
+         std::cout << "Vertex Shader File name: " << m_vertexShader.path << '\n';
+         std::cin.get();    //this is definately bad for doing
+         return;
+     }
+
+     if(fragmentShaderFile.fail())
+     {
+         std::cout << "didn't find fragment shader file!" << '\n';
+         std::cout << "Fragment Shader File name: " << m_fragmentShader.path << '\n';
+         std::cin.get();    //this is definately bad for doing
+         return;
+     }
+
+     std::cout << "Vertex Shader file: " << m_vertexShader.path << '\n';
+     std::cout << "Fragment Shader file: " << m_fragmentShader.path << '\n';
+
+     std::string vertexLine;
+     while ( std::getline(vertexShaderFile, vertexLine) )
+         m_vertexShader.source += vertexLine + '\n';
+
+     std::string fragmentLine;
+     while ( std::getline(fragmentShaderFile, fragmentLine) )
+         m_fragmentShader.source += fragmentLine + '\n';
+
+     if(m_vertexShader.source == "" || m_fragmentShader.source == "")
+     {
+         return;
+     }
+
+     vertexShaderFile.close();
+     fragmentShaderFile.close();
+}

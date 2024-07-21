@@ -1,7 +1,7 @@
 #pragma once
 
 #include <core/Macros.hpp>
-#include "debug/LOG.hpp"
+#include "debug/Log.hpp"
 
 //#include "../debug/LOG.hpp"
 

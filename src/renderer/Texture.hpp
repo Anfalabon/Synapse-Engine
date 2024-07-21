@@ -1,6 +1,7 @@
 #pragma once
 
-#include "debug/LOG.hpp"
+#include "core/Macros.hpp"
+#include "debug/Log.hpp"
 
 #include <iostream>
 #include <memory.h>
@@ -61,7 +62,7 @@ public:
     void CreateTextureAndGenerateMipMap();
     void Free();
 
-    [[nodiscard]] inline unsigned int GetTextureID(){return m_textureID;}
+    [[nodiscard]] __ALWAYS__INLINE__ unsigned int GetTextureID(){return m_textureID;}
 
     void Load();
 
@@ -71,7 +72,9 @@ public:
     int m_width;
     int m_height;
     int m_nrChannels;
+
 private:
+
     unsigned int m_textureID;
     const char *m_filePath = nullptr;   //relative to the build directory(where the Makefile is kept)
 };

@@ -2,15 +2,15 @@ obj/main/Application.o: ../src/main/Application.cpp \
   ../src/main/Application.hpp ../src/main/Engine.hpp \
   ../vendor/glad/include/glad/glad.hpp \
   ../vendor/glad/include/KHR/khrplatform.h ../src/window/Window.hpp \
-  ../src/core/Macros.hpp ../src/debug/LOG.hpp \
+  ../src/core/Macros.hpp ../src/debug/Log.hpp \
   ../src/scene/SceneViewers.hpp ../src/scene/editor/SceneCamera.hpp \
-  ../src/scene/editor/Camera.hpp ../src/physics/PhysicsEngine.hpp \
+  ../src/scene/editor/Camera.hpp ../src/renderer/shader/Shader.hpp \
+  ../src/math/Projection.hpp ../src/scene/Scene.hpp \
   ../src/scene/Entities.hpp ../src/scene/Mesh.hpp \
   ../src/scene/VertexBuffer.hpp ../src/scene/Buffer.hpp \
   ../src/scene/IndexBuffer.hpp ../src/renderer/VertexArray.hpp \
-  ../src/renderer/Texture.hpp ../src/renderer/shader/Shader.hpp \
-  ../src/math/Projection.hpp ../src/scene/Scene.hpp \
-  ../src/scene/ModelLoader.hpp ../src/renderer/Renderer.hpp \
+  ../src/renderer/Texture.hpp ../src/scene/ModelLoader.hpp \
+  ../src/physics/PhysicsEngine.hpp ../src/renderer/Renderer.hpp \
   ../src/core/Filesystem.hpp ../src/audio/Audio.hpp \
   ../src/audio/../../vendor/irrKlang/include/irrKlang.h \
   ../src/audio/../../vendor/irrKlang/include/ik_irrKlangTypes.h \
@@ -45,11 +45,13 @@ obj/main/Application.o: ../src/main/Application.cpp \
 ../vendor/glad/include/KHR/khrplatform.h:
 ../src/window/Window.hpp:
 ../src/core/Macros.hpp:
-../src/debug/LOG.hpp:
+../src/debug/Log.hpp:
 ../src/scene/SceneViewers.hpp:
 ../src/scene/editor/SceneCamera.hpp:
 ../src/scene/editor/Camera.hpp:
-../src/physics/PhysicsEngine.hpp:
+../src/renderer/shader/Shader.hpp:
+../src/math/Projection.hpp:
+../src/scene/Scene.hpp:
 ../src/scene/Entities.hpp:
 ../src/scene/Mesh.hpp:
 ../src/scene/VertexBuffer.hpp:
@@ -57,10 +59,8 @@ obj/main/Application.o: ../src/main/Application.cpp \
 ../src/scene/IndexBuffer.hpp:
 ../src/renderer/VertexArray.hpp:
 ../src/renderer/Texture.hpp:
-../src/renderer/shader/Shader.hpp:
-../src/math/Projection.hpp:
-../src/scene/Scene.hpp:
 ../src/scene/ModelLoader.hpp:
+../src/physics/PhysicsEngine.hpp:
 ../src/renderer/Renderer.hpp:
 ../src/core/Filesystem.hpp:
 ../src/audio/Audio.hpp:

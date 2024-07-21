@@ -32,7 +32,7 @@ public:
     void SetBackGround(float r, float g, float b, float w);
 
     virtual void Render() = 0;
-//    void Render(Scene *scene);
+
 };
 
 
@@ -51,23 +51,9 @@ public:
        }
     }
 
-
-    static __ALWAYS__INLINE__ void GLDraw(const unsigned int totalMeshIndicies)
-    {
-        glDrawElements(GL_TRIANGLES, totalMeshIndicies, GL_UNSIGNED_INT, 0);
-    }
-
     __ALWAYS__INLINE__ void AddShader(const std::string &vertexShaderPath, const std::string &fragmentShaderPath)
     {
         m_sceneShaders.push_back(Shader(vertexShaderPath, fragmentShaderPath));
-    }
-
-    __ALWAYS__INLINE__ void SetShader(std::size_t index = 0)
-    {
-        std::size_t lastIndex = m_sceneShaders.size() - 1;
-        m_sceneShaders[lastIndex].Compile();
-        m_sceneShaders[lastIndex].AttachAndLink();
-        m_sceneShaders[lastIndex].RemoveShaders();
     }
 
     __ALWAYS__INLINE__ Shader& GetShader(std::size_t index)
@@ -76,27 +62,23 @@ public:
         //return (index >= m_sceneShaders.size() || index < 0) ? Shader() : m_sceneShaders[index];
     }
 
-    __ALWAYS__INLINE__ std::size_t GetTotalShaders()
-    {
-        return m_sceneShaders.size();
-    }
+    __ALWAYS__INLINE__ std::size_t GetTotalShaders() const {return m_sceneShaders.size();}
 
-    void Render() override;
-    static void RenderScenePartially(Scene *scene, std::vector<Shader> &sceneShaders, std::size_t first, std::size_t last);   //this is for the Parallelism
+
+    void Render() override{}
     void Render(Scene *scene, const Shader &sceneShaders = Shader());  //will add std::vector<Shader> sceneShaders
-
-#if defined(__UTILIZE__STANDARDCXX__THREADING___)
-    void renderEntitiesPartially(std::size_t start, std::size_t end);
-#endif
-
 
 private:
 
-    Synapse::Scene               *m_scene;
+    static __ALWAYS__INLINE__ void GLDraw(const unsigned int totalMeshIndicies)
+    {
+        glDrawElements(GL_TRIANGLES, totalMeshIndicies, GL_UNSIGNED_INT, 0);
+    }
+
+private:
+
     std::vector<Synapse::Shader>  m_sceneShaders;
     Synapse::Filesystem           m_fileWatcher;
-
-    std::time_t lastModificationTime = 0;
 
     //std::vector<Camera*> m_cameras;
 
@@ -119,6 +101,25 @@ public:
 private:
     std::vector <uint64_t> pixels;
 };
+
+
+
+
+
+class FontRenderer : public Renderer
+{
+public:
+    FontRenderer() = default;
+    ~FontRenderer() = default;
+
+    void Render() override;
+
+private:
+
+};
+
+
+
 
 
 }

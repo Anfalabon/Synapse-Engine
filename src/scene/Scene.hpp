@@ -18,7 +18,6 @@
 #endif
 
 
-
 namespace Synapse
 {
 
@@ -31,8 +30,8 @@ public:
     void Init();
     void LoadInitialRenderableObjects();
     void CreateRenderableObject(Synapse::SceneCamera *camera);   //make the camera parameter const
-    void LoadRenderableObjectDynamically(GLFWwindow *window, Synapse::SceneCamera *camera);  //make the camera parameter const
-    void RemoveRenderableObjectDynamically(GLFWwindow *window);
+    void LoadRenderableObjectDynamically(GLFWwindow *window, Synapse::SceneCamera *camera, const bool delay = true);  //make the camera parameter const
+    void RemoveRenderableObjectDynamically(GLFWwindow *window, const bool delay = true);
     void RenderableObjectKeyboardMovement(GLFWwindow *window, std::size_t index);
     void SelectRenderableObject(GLFWwindow *window, Synapse::SceneCamera *camera, const std::size_t renderableObjectIndex = 2);
     void Update(GLFWwindow *window, Synapse::SceneCamera *camera, float deltaTime);  //make the camera parameter const
@@ -47,13 +46,13 @@ public:
 
 
 
-    [[nodiscard]] __ALWAYS__INLINE__ RenderableObject* GetRenderableObject(std::size_t index)
+    [[nodiscard]] __ALWAYS__INLINE__ RenderableObject* GetRenderableObject(std::size_t index) const
     {
         return ((index<0) || (index>m_renderableObjects.size()-1)) ? nullptr : m_renderableObjects[index];
     }
 
     [[nodiscard]] __ALWAYS__INLINE__ std::vector<Synapse::RenderableObject*> &GetRenderableObjects(){return m_renderableObjects;}
-    [[nodiscard]] __ALWAYS__INLINE__ std::size_t GetTotalSceneObjects(){return m_renderableObjects.size();};
+    [[nodiscard]] __ALWAYS__INLINE__ std::size_t GetTotalSceneObjects() const {return m_renderableObjects.size();};
 
 private:
 
@@ -61,7 +60,11 @@ private:
     __ALWAYS__INLINE__ void AddRenderableObject(const std::string &modelName)
     {
         m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel(modelName)));
+        //m_renderableObjects.back()->LoadMeshes();
     }
+
+
+private:
 
 #if defined (__ENTITY__COMPONENT_SYSTEM__)
     class UUID; //later define if want to add 'ECS'
@@ -79,12 +82,9 @@ private:
     //temp member data's
     bool m_dynamicRenderableObjectLoaderRunning  = false;
     bool m_dynamicRenderableObjectDeleterRunning = false;
-    bool m_lookingAtRenderableObject               = false;
+    bool m_lookingAtRenderableObject             = false;
 
-
-    bool m_wasClearMethodCalled = false;    //this is for preventing double free(once in 'Clear()' method and again in the destructor)
-
-
+    bool m_wasClearMethodCalled                  = false;    //this is for preventing double free(once in 'Clear()' method and again in the destructor)
 
 };
 
