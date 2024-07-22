@@ -13,6 +13,7 @@ namespace Synapse
 class EulerAngle
 {
 public:
+
     EulerAngle() = default;
     ~EulerAngle() = default;
 

@@ -5,13 +5,12 @@
 #include <glm/glm.hpp>
 
 #include "scene/editor/Camera.hpp"
-#include "debug/Log.hpp"
-//#include "physics/PhysicsEngine.hpp"
-//#include "scene/Entities.hpp"
 #include "renderer/shader/Shader.hpp"
 #include "math/Projection.hpp"
 //#include "../events/MouseEvents.hpp"
 
+//#include "physics/PhysicsEngine.hpp"
+//#include "scene/Entities.hpp"
 
 
 namespace Synapse
@@ -38,15 +37,15 @@ public:
     SceneCamera() = default;
 
     explicit SceneCamera(const std::size_t &cameraIndexID = 0, const PROJECTION_TYPES &cameraProjectionType = PROJECTION_TYPES::PERSPECTIVE)
-    : m_projectionData({45.0f, 1920.0f / 1080.0f, 0.1f, 2000.0f}),
+    : m_projectionData({45.0f, 1920.0f / 1080.0f, 0.1f, 1000.0f}),
       m_cameraProjectionType(cameraProjectionType),
       m_cameraMode(CAMERA_MODES::INSPECTION_MODE),
       m_cameraIndexID(cameraIndexID)
     {
         switch(cameraProjectionType)
         {
-            case PROJECTION_TYPES::PERSPECTIVE :  m_projection = Projection::Perspective(m_projectionData); break;
-            case PROJECTION_TYPES::ORTHOGRAPHIC :  m_projection = Projection::Orthographic(0.0f, 1920.0f, 0.0f, 1080.0f, -1.0f, 1.0f); break;
+            case PROJECTION_TYPES::PERSPECTIVE  :  m_projection = Projection::Perspective(45.0f, 1920.0f / 1080.0f, 0.1f, 2000.0f); break;
+            case PROJECTION_TYPES::ORTHOGRAPHIC :  m_projection = Projection::Orthographic(0.0f, 1920.0f, 0.0f, 1080.0f, 0.1f, 1000.0f); break;
         }
     }
 
@@ -62,11 +61,26 @@ public:
     __ALWAYS__INLINE__ glm::vec3   GetPos() const {return m_position;}
     __ALWAYS__INLINE__ glm::vec3   GetTargetPos() const {return m_targetPos;}
     __ALWAYS__INLINE__ glm::vec3   GetFrontVector() const {return m_frontVector;}    //Cursor::g_cursorsData[m_cameraIndexID].m_frontVector;
+
     __ALWAYS__INLINE__ glm::vec3   GetTranslatedFrontVector() const
     {
         glm::vec3 frontVector = m_frontVector;
         frontVector += m_position;
         return frontVector;
+    }
+
+    __ALWAYS__INLINE__ glm::vec3   GetRightVector() const
+    {
+        return glm::normalize(glm::cross(m_frontVector, m_upVector));
+        //return glm::vec3(m_view[0][0], m_view[1][0], m_view[2][0]);
+        //return m_rightVector;
+    }
+
+    __ALWAYS__INLINE__ glm::vec3   GetLeftVector() const
+    {
+        return (-1.0f)*this->GetRightVector();
+        //return (-1.0f)*glm::vec3(m_view[0][0], m_view[1][0], m_view[2][0]);
+        //return m_leftVector;
     }
 
 private:
@@ -85,25 +99,30 @@ private:
 
 private:
 
+    //Tensor Values
     glm::vec3 m_position    = glm::vec3(3.0f, 0.0f, 3.0f);
     glm::vec3 m_velocity    = glm::vec3(0.0f, 0.0f, 0.0f);
 
     glm::vec3 m_targetPos   = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 m_upVector    = glm::vec3(0.0f, 1.0f, 0.0f);   //camera up vector is arbitary when initializing
     glm::vec3 m_frontVector = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 m_rigthVector = glm::vec3(0.0f, 0.0f, 0.0f);
 
     glm::mat4 m_projection  = glm::mat4(0.0f);
     glm::mat4 m_view        = glm::mat4(1.0f);
 
+private:
 
     bool                  m_changedFov = false;
     struct ProjectionData m_projectionData;
-
 
     PROJECTION_TYPES      m_cameraProjectionType;
     CAMERA_MODES          m_cameraMode;
     const std::size_t     m_cameraIndexID = 0;  //this is initialized here because of the default constructor
 
+private:
+
+    //data's which might be used in the future
 
     //GLFWwindow *window;
     //MouseEvents mouseEvents;

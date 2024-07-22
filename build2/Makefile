@@ -1,13 +1,14 @@
 #############################################---ALL PRIMARY FLAGS---####################################################
 
-CXX = clang++
-CXXVERSION = -std=c++17
-CXX_AGGRESSIVE_WARNINGS = -Werror
-CXX_WARNING_FLAGS = -Wall -Wextra
-CXX_MEMORY_DEBUGGER = -fsanitize=address
-CXX_DEBUGGING_FLAGS = -g
-CXX_OPTIMIZATION_LEVEL = -Ofast
-CXX_DEPENDENCIES_FLAGS = -MMD -MP
+CXX 						= clang++
+CXXVERSION 					= -std=c++17
+CXX_AGGRESSIVE_WARNINGS 	= -Werror
+CXX_WARNING_FLAGS 			= -Wall -Wextra
+CXX_MEMORY_DEBUGGER 		= -fsanitize=address
+CXX_DEBUGGING_FLAGS 		= -g
+CXX_OPTIMIZATION_LEVEL 		= -Ofast
+CXX_MULTITHREADING_FLAGS 	= -fopenmp	#this is prebuilt on my Machine but maybe we need to install it on some other Machine
+CXX_DEPENDENCIES_FLAGS 		= -MMD -MP
 
 
 #############################################---INCLUDE FLAGS---########################################################
@@ -15,18 +16,10 @@ CXX_DEPENDENCIES_FLAGS = -MMD -MP
 VENDOR_DIR = GLFW glad/include glm imageLoader irrKlang LuaScriptingLibs assimp
 
 
-#define ex_include_flags
-#		@if ["$(1)" = "glad"]
-#			-I../vendor/$(1)/include
-#		else
-#			-I../vendor/$(1)
-#		fi
-#endef
-
 
 #also including the custom include flags allows us to include headers with ' <> ' than just ' "" '
-CXX_CUSTOM_INCLUDE_FLAGS = -I../src
-CXX_EXTERNAL_INCLUDE_FLAGS = $(foreach directory, $(VENDOR_DIR), -I../vendor/$(directory))
+CXX_CUSTOM_INCLUDE_FLAGS 	= -I../src
+CXX_EXTERNAL_INCLUDE_FLAGS 	= $(foreach directory, $(VENDOR_DIR), -I../vendor/$(directory))
 
 #$(info $(CXX_EXTERNAL_INCLUDE_FLAGS))
 
@@ -40,35 +33,34 @@ CXX_INCLUDE_FLAGS += $(CXX_EXTERNAL_INCLUDE_FLAGS)
 #############################################---MERGE ALL CXX FLAGS---##################################################
 
 
-CXXFLAGS += $(CXXVERSION)
-CXXFLAGS += $(CXX_WARNING_FLAGS)
-CXXFLAGS += $(CXX_DEBUGGING_FLAGS)
-CXXFLAGS += $(CXX_OPTIMIZATION_LEVEL)
+CXXLDFLAGS 	 = -fopenmp
 
-CXXLDFLAGS = -fopenmp
-CXXFLAGS += $(CXX_DEPENDENCIES_FLAGS)
-CXXFLAGS += $(CXXLDFLAGS)
-CXXFLAGS += $(CXX_INCLUDE_FLAGS)
+CXXFLAGS 	+= $(CXXVERSION)
+CXXFLAGS 	+= $(CXX_WARNING_FLAGS)
+CXXFLAGS 	+= $(CXX_DEBUGGING_FLAGS)
+CXXFLAGS 	+= $(CXX_OPTIMIZATION_LEVEL)
+CXXFLAGS 	+= $(CXX_DEPENDENCIES_FLAGS)
+CXXFLAGS 	+= $(CXX_MULTITHREADING_FLAGS)
+CXXFLAGS 	+= $(CXX_INCLUDE_FLAGS)
 
 
 ##############################################---LINKING LIBRARY FLAGS---###############################################
 
 
-EXTERNAL_LIBRARY_DIRS = GLFW glad imageLoader irrKlang LuaScriptingLibs
-
-COMPILER_SUPPORTED_LIBRARY_LINKS = -fopenmp
-EXTERNAL_LIBRARY_LINKS = -lglfw -lGL -lstbimage -lIrrKlang -llua
+EXTERNAL_LIBRARY_DIRS 				= GLFW glad imageLoader irrKlang LuaScriptingLibs
+COMPILER_SUPPORTED_LIBRARY_LINKS 	= -fopenmp
+EXTERNAL_LIBRARY_LINKS 				= -lglfw -lGL -lstbimage -lIrrKlang -llua
 
 #CXXLDFLAGS = $(foreach library, $(EXTERNAL_LIBRARY_DIRS), -L../vendor/)
 
 # Will also automate this
-LDFLAGS=-L../vendor/GLFW/lib -lglfw \
-		-L../vendor/glad/lib -lGL \
-		-L../vendor/imageLoader/lib -lstbimage -Wl, -rpath ../vendor/imageLoader/lib \
-		-L../vendor/irrKlang/bin/linux-gcc-64 -lIrrKlang -Wl, -rpath ../vendor/irrKlang/bin/linux-gcc-64 \
-		-L../vendor/irrKlang/lib -lIrrKlang \
-		-L../vendor/LuaScriptingLibs -llua \
-		-L../vendor/assimp -lassimp
+LDFLAGS  =	-L../vendor/GLFW/lib -lglfw \
+			-L../vendor/glad/lib -lGL \
+			-L../vendor/imageLoader/lib -lstbimage -Wl, -rpath ../vendor/imageLoader/lib \
+			-L../vendor/irrKlang/bin/linux-gcc-64 -lIrrKlang -Wl, -rpath ../vendor/irrKlang/bin/linux-gcc-64 \
+			-L../vendor/irrKlang/lib -lIrrKlang \
+			-L../vendor/LuaScriptingLibs -llua \
+			-L../vendor/assimp -lassimp
 
 
 #################################################---SET DIRECTORIES---##################################################
@@ -76,33 +68,32 @@ LDFLAGS=-L../vendor/GLFW/lib -lglfw \
 
 # Directories
 #SRC_DIR = audio  camera  core  debug  editor  events  main  Makefile  math  physics  renderer  scene  scripting  ui  utils  window
-SRC_DIR = ../src
-VENDOR_SRC_DIR = ../vendor/glad
-OBJ_DIR = obj
-DEP_DIR = dep
+SRC_DIR 			= ../src
+VENDOR_SRC_DIR 		= ../vendor/glad
+OBJ_DIR 			= obj
+DEP_DIR 			= dep
 
 
 #########################################---GENERATE OBJ FILES FROM SRC FILES---########################################
 
 #SRC_FILES = $(foreach directory, $(SRC_DIR), $(wildcard ../src/$(directory)/*.cpp))
 
-SRC_FILES = $(shell find $(SRC_DIR) -name '*.cpp')
+SRC_FILES 	= $(shell find $(SRC_DIR) -name '*.cpp')
 
 # Print things out
 #$(info SRC Files are $(SRC_FILES))
 
-OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
-DEP_FILES = $(patsubst $(SRC_DIR)/%.cpp,$(DEP_DIR)/%.d,$(SRC_FILES))
+OBJ_FILES 	= $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
+DEP_FILES 	= $(patsubst $(SRC_DIR)/%.cpp,$(DEP_DIR)/%.d,$(SRC_FILES))
 
-#$(info DEP FILES are $(DEP_FILES))
 
-VENDOR_SRC_FILES = $(shell find $(VENDOR_SRC_DIR) -name '*.cpp')
-OBJ_FILES += $(patsubst $(VENDOR_SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(VENDOR_SRC_FILES))
+VENDOR_SRC_FILES 	 =  $(shell find $(VENDOR_SRC_DIR) -name '*.cpp')
+OBJ_FILES			+= $(patsubst $(VENDOR_SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(VENDOR_SRC_FILES))
 
 ###########################################---DEFINE MAIN EXECUTABLE FILE---############################################
 
 
-EXECUTABLE = bin/start_game_engine
+EXECUTABLE 		 = bin/start_game_engine
 
 
 ################################################---LINK OBJ FILES---####################################################
@@ -153,11 +144,11 @@ $(info CurrentOS: $(OS))
 
 # Platform-specific settings
 ifeq ($(OS), Windows_NT)
-		MKDIR = mkdir
-		RM = del
+		MKDIR 	= mkdir
+		RM 		= del
 else
-		MKDIR = mkdir -p
-		RM = rm -rf
+		MKDIR 	= mkdir -p
+		RM 		= rm -rf
 endif
 
 

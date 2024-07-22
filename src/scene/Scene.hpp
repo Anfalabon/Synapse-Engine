@@ -57,10 +57,12 @@ public:
 private:
 
     //__ALWAYS__INLINE__ void AddRenderableObject(const std::string &modelName, const glm::vec3 &pos, const float rotationAngle, const float scale)
-    __ALWAYS__INLINE__ void AddRenderableObject(const std::string &modelName)
+    __ALWAYS__INLINE__ void AddRenderableObject(const std::string &modelName, const glm::vec3 &initialPosition = glm::vec3(0.0f, 0.0f, 0.0f))
     {
         m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel(modelName)));
-        //m_renderableObjects.back()->LoadMeshes();
+        std::size_t lastEntityIndex = m_renderableObjects.size() - 1;
+        m_renderableObjects[lastEntityIndex]->m_position = initialPosition;
+        m_renderableObjects[lastEntityIndex]->LoadMeshes();
     }
 
 
