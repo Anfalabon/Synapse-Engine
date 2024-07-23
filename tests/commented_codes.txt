@@ -5010,3 +5010,339 @@ void Shader::ReadSources()
             //m_renderableObjects[10]->m_position.z -= 10.0f;
             m_renderableObjects[10]->Rotate(90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
             m_renderableObjects[10]->Scale(glm::vec3(1.0f, 1.0f, 1.0f));
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+    std::cout << "Black Hole x pos: " << scene->GetRenderableObject(5)->GetPosition().x << '\n';
+    std::cout << "Black Hole z pos: " << scene->GetRenderableObject(5)->GetPosition().z << '\n';
+    std::cout << "Angle: " << m_theta << '\n';
+
+    std::cout << "Lenght of Black Hole's rotation vector: " << glm::length(scene->GetRenderableObject(5)->m_position) << '\n';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+    m_renderableObjects[6]->m_position = glm::vec3(0.0f, -1.0f, 0.0f);
+    m_renderableObjects[6]->m_rotation = glm::vec3(0.0f, 1.0f, 0.0f);   //no rotation
+    m_renderableObjects[6]->m_rotationAngle = 0.0f;
+    m_renderableObjects[6]->m_scaling = glm::vec3(1.0f, 1.0f, 1.0f);
+
+
+    m_renderableObjects[7]->m_position = glm::vec3(-14.86f, -1.0f, 10.0f);
+    m_renderableObjects[7]->m_rotation = glm::vec3(0.0f, 1.0f, 0.0f);   //90 degree rotation
+    m_renderableObjects[7]->m_rotationAngle = 0.0f;
+    m_renderableObjects[7]->m_scaling = glm::vec3(1.0f, 1.0f, 1.0f);
+
+
+    m_renderableObjects[8]->m_position = glm::vec3(0.0f, -1.0f, 20.0f);
+    m_renderableObjects[8]->m_rotation = glm::vec3(1.0f, 1.0f, 1.0f);   //no rotation
+    m_renderableObjects[8]->m_rotationAngle = 0.0f;
+    m_renderableObjects[8]->m_scaling = glm::vec3(1.0f, 1.0f, 1.0f);
+
+
+    m_renderableObjects[9]->m_position = glm::vec3(0.0f, -1.0f, 100.0f);
+    m_renderableObjects[9]->m_rotation = glm::vec3(1.0f, 0.0f, 0.0f);   //no rotation
+    m_renderableObjects[9]->m_rotationAngle = 0.0f;
+    m_renderableObjects[9]->m_scaling = glm::vec3(1.0f, 1.0f, 1.0f);
+
+
+
+
+    m_renderableObjects[10]->m_position = glm::vec3(-14.86f, -1.0f, -10.0f);
+    m_renderableObjects[10]->m_rotation = glm::vec3(0.0f, 1.0f, 0.0f);   //90 degree rotation
+    m_renderableObjects[10]->m_rotationAngle = 0.0f;
+    m_renderableObjects[10]->m_scaling = glm::vec3(1.0f, 1.0f, 1.0f);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+void RenderableObjectKeyboardMovement(GLFWwindow *window, std::size_t index);
+
+
+
+void Scene::RenderableObjectKeyboardMovement(GLFWwindow *window, std::size_t index)
+{
+    //index = SelectObjectByIndex(window);
+
+    if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+    {
+        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(0.0f, 1.0f/10.0f, 0.0f));
+        m_renderableObjects[index]->m_position.y += 1.0f/10.0f;
+    }
+
+    if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+    {
+        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(0.0f, -1.0f/10.0f, 0.0f));
+        m_renderableObjects[index]->m_position.y -= 1.0f/10.0f;
+    }
+
+    if(glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+    {
+        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(1.0f/10.0f, 0.0f, 0.0f));
+        m_renderableObjects[index]->m_position.x += 1.0f/10.0f;
+    }
+
+    if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+    {
+        //m_renderableObjects[lastEntityIndex]->Translate(glm::vec3(-1.0f/10.0f, 0.0f, 0.0f));
+        m_renderableObjects[index]->m_position.x -= 1.0f/10.0f;
+    }
+}
+
+
+
+this->RenderableObjectKeyboardMovement(window, lastEntityIndex);
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    //float tempZ = scene->GetRenderableObject(index)->m_position.x;
+    //m_theta = glm::radians(m_theta);
+    //scene->GetRenderableObject(5)->m_position.x = glm::cos(m_theta)*scene->GetRenderableObject(5)->m_position.x - glm::sin(m_theta)*scene->GetRenderableObject(5)->m_position.z;
+    //scene->GetRenderableObject(5)->m_position.z = glm::sin(m_theta)*tempZ + glm::cos(m_theta)*scene->GetRenderableObject(5)->m_position.z;
+    //m_theta += 1.0f;
+
+
+    //if the direction of rotation is same as the renderable objects position it will rotate on it's own axis
+    //scene->GetRenderableObject(index)->Rotate(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+    //glm::yaw(glm::vec3(0.0f, 0.0f, 0.f), 1.0f);
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+#elif defined(__SINGLETHREADING__)
+    for (std::size_t i = 135; i < scene->GetTotalSceneObjects(); ++i)
+    {
+        glm::vec3 &pos = scene->GetRenderableObject(i)->m_position;
+        glm::vec3 &velocity = scene->GetRenderableObject(i)->m_velocity;
+        glm::vec3 &initialVelocity = scene->GetRenderableObject(i)->m_initialVelocity;
+
+        if(i != scene->m_firstCameraIndex + 0 && i != scene->m_firstCameraIndex + 1 && i != scene->m_firstCameraIndex + 2)
+        {
+            if(IsInsideBoundry(pos, glm::vec3(-20.0f, -1000000000, -20.0f), glm::vec3(180.0f, 1000000000, 180.0f)))
+            {
+                m_physics->Projectile(pos, velocity, deltaTime2, initialVelocity, true, true, groundVerticalDistance);
+            }
+            else
+            {
+                m_physics->Accelerate(pos.y, velocity.y);
+            }
+        }
+        //m_physics->OrbitAround(pos, scene->GetRenderableObject(5)->m_position, m_theta);    //right now it's orbiting the origin
+    }
+#endif
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+    __PARALLEL__FOR__(12, scene->GetTotalSceneObjects(); ++i)
+    {
+        glm::vec3 &pos = scene->GetRenderableObject(i)->m_position;
+        glm::vec3 &velocity = scene->GetRenderableObject(i)->m_velocity;
+        glm::vec3 &initialVelocity = scene->GetRenderableObject(i)->m_initialVelocity;
+
+        if(i != scene->m_firstCameraIndex + 0 && i != scene->m_firstCameraIndex + 1 && i != scene->m_firstCameraIndex + 2)
+        {
+            if(IsInsideBoundry(pos, minRange, maxRange)) [[likely]]
+            {
+                m_physics->Projectile(pos, velocity, deltaTime2, initialVelocity, true, true, groundVerticalDistance);
+            }
+            else [[unlikely]]
+            {
+                m_physics->Accelerate(pos.y, velocity.y);
+            }
+        }
+    }
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+        //m_renderableObjects[m_firstCameraIndex + camera->GetIndex()]->m_position.x = offset * camera->GetFrontVector().x;
+        //m_renderableObjects[m_firstCameraIndex + camera->GetIndex()]->m_position.y = camera->GetFrontVector().y;
+        //m_renderableObjects[m_firstCameraIndex + camera->GetIndex()]->m_position.z = offset * camera->GetFrontVector().z;
+
+        //m_renderableObjects[m_firstCameraIndex + camera->GetIndex()]->m_position.x += camera->GetPos().x;
+        //m_renderableObjects[m_firstCameraIndex + camera->GetIndex()]->m_position.y += camera->GetPos().y;
+        //m_renderableObjects[m_firstCameraIndex + camera->GetIndex()]->m_position.z += camera->GetPos().z;
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+    void Translate(const glm::vec3 &translationVec);
+    void Rotate(float angleToRotateDegrees, bool x, bool y, bool z);
+    void Rotate(float angleToRotateDegrees, const glm::vec3 &rotationVec);
+    void Scale(const glm::vec3 &scaleVec);
+
+
+
+
+
+
+
+
+
+
+
+void RenderableObject::Translate(const glm::vec3 &translationVec)
+{
+    m_model = glm::translate(m_model, translationVec);
+}
+
+
+void RenderableObject::Rotate(float angleToRotateDegrees, const glm::vec3 &rotationVec)
+{
+    m_model = glm::rotate(m_model, glm::radians(angleToRotateDegrees), rotationVec);
+}
+
+
+static void RotateAroundTwoAxis(float &firstAxisPos, float &secondAxisPos, float m_theta)
+{
+    float tempZ = firstAxisPos;
+    firstAxisPos = glm::cos(m_theta)*firstAxisPos - glm::sin(m_theta)*secondAxisPos;
+    secondAxisPos = glm::sin(m_theta)*tempZ + glm::cos(m_theta)*secondAxisPos;
+}
+
+
+void RenderableObject::Rotate(float angleToRotateDegrees, bool x, bool y, bool z)
+{
+    //float m_theta = glm::radians(angleToRotateDegrees);
+
+    if(x && y)
+        RotateAroundTwoAxis(m_position.x, m_position.y, glm::radians(angleToRotateDegrees));
+    if(x && z)
+        RotateAroundTwoAxis(m_position.x, m_position.z, glm::radians(angleToRotateDegrees));
+    if(y && z)
+        RotateAroundTwoAxis(m_position.y, m_position.z, glm::radians(angleToRotateDegrees));
+
+
+}
+
+
+void RenderableObject::Scale(const glm::vec3 &scaleVec)
+{
+    m_model = glm::scale(m_model, scaleVec);
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

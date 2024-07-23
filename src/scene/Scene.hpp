@@ -32,7 +32,6 @@ public:
     void CreateRenderableObject(Synapse::SceneCamera *camera);   //make the camera parameter const
     void LoadRenderableObjectDynamically(GLFWwindow *window, Synapse::SceneCamera *camera, const bool delay = true);  //make the camera parameter const
     void RemoveRenderableObjectDynamically(GLFWwindow *window, const bool delay = true);
-    void RenderableObjectKeyboardMovement(GLFWwindow *window, std::size_t index);
     void SelectRenderableObject(GLFWwindow *window, Synapse::SceneCamera *camera, const std::size_t renderableObjectIndex = 2);
     void Update(GLFWwindow *window, Synapse::SceneCamera *camera, float deltaTime);  //make the camera parameter const
     void Clear();
@@ -57,11 +56,11 @@ public:
 private:
 
     //__ALWAYS__INLINE__ void AddRenderableObject(const std::string &modelName, const glm::vec3 &pos, const float rotationAngle, const float scale)
-    __ALWAYS__INLINE__ void AddRenderableObject(const std::string &modelName, const glm::vec3 &initialPosition = glm::vec3(0.0f, 0.0f, 0.0f))
+    __ALWAYS__INLINE__ void AddRenderableObject(const std::string &modelName)   //const glm::vec3 &initialPosition = glm::vec3(0.0f, 0.0f, 0.0f)
     {
         m_renderableObjects.push_back(new RenderableObject(m_modelLoader->GetModel(modelName)));
         std::size_t lastEntityIndex = m_renderableObjects.size() - 1;
-        m_renderableObjects[lastEntityIndex]->m_position = initialPosition;
+        //m_renderableObjects[lastEntityIndex]->m_position = initialPosition;
         m_renderableObjects[lastEntityIndex]->LoadMeshes();
     }
 

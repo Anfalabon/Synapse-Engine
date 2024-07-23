@@ -23,6 +23,7 @@ namespace Synapse
 #define __DONT__DISCARD__ [[nodiscard]]
 #define __DEFAULT__CAMERA__INDEX__ID__ 0x0
 
+//#define __PARALLEL__LOOP(iteratorFirst, iteratorSecond, iteratorIncreament) \
 
 }
 

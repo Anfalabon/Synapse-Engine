@@ -8,7 +8,7 @@ out vec3 vertexColor;
 out vec2 textCoord;
 
 
-uniform vec3 position;  //this should be 'translate' but for now let's keep it like this
+//uniform vec3 position;  //this should be 'translate' but for now let's keep it like this
 //uniform vec3 translate;
 
 
@@ -27,7 +27,7 @@ void main()
     //gl_Position = localToClip * vec4(aPosition + position, 1.0f);
 
 
-    gl_Position = projection * view * model * vec4(aPosition + position, 1.0f);
+    gl_Position = projection * view * model * vec4(aPosition, 1.0f);    // + position
 
 
     vertexColor = aColor;

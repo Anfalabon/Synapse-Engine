@@ -109,7 +109,7 @@ $(EXECUTABLE): $(OBJ_FILES)
 # Compile Source Codes
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 		@mkdir -p $(dir $@)
-		$(CXX) $(CXXFLAGS) -c $< -o $@
+		$(CXX) $(CXXFLAGS) -c $< -o $@	#-D __MULTITHREADING__
 
 
 # Compile Vendor Source codes

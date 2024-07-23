@@ -42,6 +42,7 @@ public:
 
     void LoadMeshes();
 
+    [[nodiscard]] __ALWAYS__INLINE__ std::string GetName(){return m_name;}
 
     [[nodiscard]] __ALWAYS__INLINE__ unsigned int GetTotalIndiciesOfMesh(std::size_t index)
     {
@@ -60,25 +61,22 @@ public:
 
     [[nodiscard]] __ALWAYS__INLINE__ glm::vec3 GetPosition()
     {
-        glm::mat4 inverseModelMatrix = glm::inverse(m_model);
-        glm::vec3 position = std::move(inverseModelMatrix[3]);
-        position.x *= -1.0f;
-        position.y *= -1.0f;
-        position.z *= -1.0f;
-        return position;
+        //glm::mat4 inverseModelMatrix = glm::inverse(m_model);
+        //glm::vec3 position = std::move(inverseModelMatrix[3]);
+        //position.x *= -1.0f;
+        //position.y *= -1.0f;
+        //position.z *= -1.0f;
+        return m_position;
     }
 
 
-    void Translate(const glm::vec3 &translationVec);
-    void Rotate(float angleToRotateDegrees, bool x, bool y, bool z);
-    void Rotate(float angleToRotateDegrees, const glm::vec3 &rotationVec);
-    void Scale(const glm::vec3 &scaleVec);
 
     void Update();
 
 private:
 
-    const char* m_name;
+    //const char* m_name;
+    std::string m_name;
     GLuint      m_ID;
 
 private:
@@ -86,10 +84,16 @@ private:
     std::vector<Synapse::Mesh> m_meshes;
 
 public:
+
     glm::vec3 m_position = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 m_rotationAngles = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 m_rotation = glm::vec3(1.0f, 1.0f, 1.0f);
+    glm::vec3 m_scaling  = glm::vec3(1.0f, 1.0f, 1.0f);
     glm::vec3 m_velocity = glm::vec3(1.0f, 0.0f, 1.0f); //the initial velocities will be
     glm::vec3 m_initialVelocity = m_velocity;
     glm::mat4 m_model = glm::mat4(1.0f);
+
+    float m_rotationAngle = 0.0f;
 
 };
 

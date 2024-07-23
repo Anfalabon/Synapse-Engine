@@ -57,10 +57,19 @@ public:
     void Update(GLFWwindow *window, Shader &shader, const float deltaTime);    //const std::vector<Synapse::RenderableObject*> &renderableObjects,
     void SetupMouse(GLFWwindow *window);
 
+
+    __ALWAYS__INLINE__ void SetPos(const glm::vec3 &pos){m_position = pos;}
+    __ALWAYS__INLINE__ void SetVelocity(const glm::vec3 &velocity){m_velocity = velocity;}
+
     __ALWAYS__INLINE__ std::size_t GetIndex() const {return m_cameraIndexID;}
     __ALWAYS__INLINE__ glm::vec3   GetPos() const {return m_position;}
+    __ALWAYS__INLINE__ glm::vec3   GetVelocity() const {return m_velocity;}
     __ALWAYS__INLINE__ glm::vec3   GetTargetPos() const {return m_targetPos;}
     __ALWAYS__INLINE__ glm::vec3   GetFrontVector() const {return m_frontVector;}    //Cursor::g_cursorsData[m_cameraIndexID].m_frontVector;
+    __ALWAYS__INLINE__ glm::mat4   GetViewMatrix() const {return m_view;}
+    __ALWAYS__INLINE__ glm::mat4   GetProjectionMatrix() const {return m_projection;}
+    __ALWAYS__INLINE__ float       GetYaw(){return m_yaw;}
+    __ALWAYS__INLINE__ float       GetPitch(){return m_pitch;}
 
     __ALWAYS__INLINE__ glm::vec3   GetTranslatedFrontVector() const
     {
@@ -101,7 +110,7 @@ private:
 
     //Tensor Values
     glm::vec3 m_position    = glm::vec3(3.0f, 0.0f, 3.0f);
-    glm::vec3 m_velocity    = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 m_velocity    = glm::vec3(1.0f, 1.0f, 1.0f);
 
     glm::vec3 m_targetPos   = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 m_upVector    = glm::vec3(0.0f, 1.0f, 0.0f);   //camera up vector is arbitary when initializing
@@ -113,6 +122,8 @@ private:
 
 private:
 
+    float                 m_yaw = 0.0f;
+    float                 m_pitch = 0.0f;
     bool                  m_changedFov = false;
     struct ProjectionData m_projectionData;
 
