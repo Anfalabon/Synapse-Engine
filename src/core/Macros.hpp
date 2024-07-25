@@ -12,6 +12,11 @@ namespace Synapse
                                             std::cin.get()
 
 
+//#define DEBUG_PAUSE(log_message) \
+//        DEBUG(log_message);      \
+//        S_PAUSE_FOR_READING()    \
+
+
 #if defined(_MSC_VER)
     #define __ALWAYS__INLINE__ __forceinline
 #elif defined(__linux__) || defined(__unix__)

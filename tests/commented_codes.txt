@@ -5346,3 +5346,416 @@ void RenderableObject::Scale(const glm::vec3 &scaleVec)
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+#if 0
+    if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+    {
+        m_renderableObjects[11]->m_rotation = glm::vec3(0.0f, 1.0f, 0.0f);
+        //m_renderableObjects[10]->m_rotationAngle = 0.0f;
+        g_rotating = true;
+    }
+
+    if(g_rotating)
+    {
+        if(m_renderableObjects[13]->m_rotationAngle > 180.0f)
+        {
+            g_rotating = false;
+            //m_renderableObjects[13]->m_rotationAngle = 90.0f;
+        }
+        else
+        {
+            m_renderableObjects[13]->m_rotationAngle += 1.0f;
+        }
+    }
+#endif
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    m_renderableObjects[7]->Rotate(90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+//    m_renderableObjects[7]->Scale(glm::vec3(1.0f, 1.0f, 1.0f));
+
+    //m_renderableObjects[9]->Rotate(90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+    //m_renderableObjects[9]->Scale(glm::vec3(1.0f, 1.0f, 1.0f));
+
+    DEBUG("Walls loading...");
+
+    //this->AddRenderableObject("Wall", glm::vec3(0.0f, -1.0f, 0.0f));
+    //this->AddRenderableObject("Wall", glm::vec3(-14.86f, -1.0f, 10.0f));
+    //this->AddRenderableObject("Wall", glm::vec3(0.0f, -1.0f, 20.0f));
+    //this->AddRenderableObject("Wall", glm::vec3(1.0f, 100.0f, 0.0f));
+    //this->AddRenderableObject("Door", glm::vec3(-14.86f, -1.0f, -10.0f));
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    //ak_47
+    //m_renderableObjects.push_back(new RenderableObject());
+    //m_firstCameraIndex = lastEntityIndex;
+    ////m_renderableObjects[lastEntityIndex]->LoadModel("../vendor/ak_47/scene.gltf");
+    //m_renderableObjects[lastEntityIndex]->LoadModel("../vendor/canon_at-1_retro_camera/scene.gltf");
+    //m_renderableObjects[lastEntityIndex]->LoadMeshes();
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+#if 0
+
+
+    this->AddRenderableObject("Camera");
+    {
+        std::size_t lastEntityIndex = m_renderableObjects.size()-1;
+        m_firstCameraIndex = lastEntityIndex;
+    }
+    this->AddRenderableObject("Camera");
+    this->AddRenderableObject("Camera");
+
+    //m_renderableObjects[m_firstCameraIndex]->m_rotationAngles = glm::vec3(0.0f, 90.0f*2.0f, 0.0f);
+    //m_renderableObjects[m_firstCameraIndex + 1]->m_rotationAngles = glm::vec3(0.0f, 90.0f*2.0f, 0.0f);
+    //m_renderableObjects[m_firstCameraIndex + 2]->m_rotationAngles = glm::vec3(0.0f, 90.0f*2.0f, 0.0f);
+
+
+
+
+//    for(RenderableObject *renderableObject: m_renderableObjects) [[likely]]
+//    {
+//        renderableObject->LoadMeshes();
+//        //renderableObject->LoadVertexObjects(8, true); //if we add texture then it will be 8
+//        //renderableObject->LoadTexture();
+//    }
+
+#endif
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+std::vector<float> LoadVerticiesData(const std::string &filePath)
+{
+    return {};
+}
+
+
+std::vector<unsigned int> LoadIndiciesData(const std::string &filePath)
+{
+    return {};
+}
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+    //m_meshes = model;
+    //m_name = model.first;
+    //m_meshes.push_back(model.second);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#if 0
+        //Extract the verticies
+        //#pragma omp parallel for
+        for(unsigned int i = 0; i < mesh->mNumVertices; ++i)
+        {
+            //Position
+            currentMesh._VB.AddVertex(mesh->mVertices[i].x);
+            currentMesh._VB.AddVertex(mesh->mVertices[i].y);
+            currentMesh._VB.AddVertex(mesh->mVertices[i].z);
+
+
+            //Color
+            float x = 0.5f * (1.0f + glm::sin(i));
+
+            currentMesh._VB.AddVertex(x);
+            currentMesh._VB.AddVertex(x);
+            currentMesh._VB.AddVertex(x);
+
+            //Texture
+            currentMesh._VB.AddVertex(1.0f);
+            currentMesh._VB.AddVertex(1.0f);
+
+        }
+
+
+        //meshes[m]._texture = Texture("");
+
+        //Extract the indicies
+        //#pragma omp parallel for
+        for(unsigned int i = 0; i < mesh->mNumFaces; ++i)
+        {
+            aiFace face = mesh->mFaces[i];
+            for(unsigned int j = 0; j < face.mNumIndices; ++j)
+            {
+                currentMesh._EB.AddIndex(face.mIndices[j]);
+            }
+        }
+
+#endif
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+ void LoadModel(const std::string &filePath);
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+     float length = 6.0f;
+
+     m_renderableObjects[11]->m_position.z = 100.0f;
+
+     m_renderableObjects[11]->m_position.x -= 0.5f * length;
+     m_renderableObjects[11]->m_model = glm::rotate(m_renderableObjects[11]->m_model, glm::radians(g_theta), glm::vec3(0.0f, 1.0f, 0.0f));
+     m_renderableObjects[11]->m_position.x += 0.5f * length;
+     m_renderableObjects[11]->m_position.z += 0.5f * length * glm::sin(g_theta);
+
+
+     g_theta += 0.01f;
+
+     //std::cout << g_theta << '\n';
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    Mesh(const std::string &verticiesFilePath, const std::string &indiciesFilePath){}
+
+
+
+
+#if 0
+
+    Mesh(float *verticiesData, unsigned int totalVerticies, unsigned int *indiciesData, unsigned int totalIndicies, const char *textureFilePath = "")
+    :    _verticiesData(verticiesData), _totalVerticies(totalVerticies),
+         _indiciesData(indiciesData), _totalIndicies(totalIndicies),
+         _texture(textureFilePath)
+    {
+        std::cout << "Initializing the mesh!" << '\n';
+    }
+
+    Mesh(std::vector<float> &verticiesData, std::vector<unsigned int> &indiciesData, const char *textureFilePath = "")
+    :    _verticiesData(&verticiesData[0]), _totalVerticies(verticiesData.size()),
+         _indiciesData(&indiciesData[0]), _totalIndicies(indiciesData.size()),
+         _texture(textureFilePath){}
+
+#endif
+
+
+#if 0
+
+    Mesh(float *verticiesData, unsigned int totalVerticies, unsigned int *indiciesData, unsigned int totalIndicies, const char *textureFilePath = "")
+    :    _VB(totalVerticies, verticiesData),
+         _EB(totalIndicies, indiciesData),
+         _texture(textureFilePath)
+    {
+
+    }
+
+    Mesh(std::vector<float> &verticiesData, std::vector<unsigned int> &indiciesData, const char *textureFilePath = "")
+    :    _VB(verticiesData.size(), &verticiesData[0]),
+         _EB(indiciesData.size(), &indiciesData[0]),
+         _texture(textureFilePath)
+    {
+        DEBUG("Constructing Mesh...");
+    }
+
+    Mesh(std::vector<float> &verticiesData, std::vector<unsigned int> &indiciesData, unsigned char *imageData, int width, int height, int nrChannels)
+    :    _VB(verticiesData.size(), &verticiesData[0]),
+         _EB(indiciesData.size(), &indiciesData[0]),
+         _texture(imageData, width, height, nrChannels)
+    {
+        DEBUG("Constructing Mesh...");
+    }
+
+    Mesh(std::vector<float> &verticiesData, std::vector<unsigned int> &indiciesData, const Texture &texture)
+            :    _VB(verticiesData.size(), &verticiesData[0]),
+                 _EB(indiciesData.size(), &indiciesData[0]),
+                 _texture(texture.m_imageData, texture.m_width, texture.m_height, texture.m_nrChannels)
+    {
+        DEBUG("Constructing Mesh...");
+    }
+
+#endif
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+//private:
+
+//    float *_verticiesData = nullptr;
+//    unsigned int _totalVerticies = 0;
+//    unsigned int *_indiciesData = nullptr;
+//    unsigned int _totalIndicies = 0;
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+//    m_renderableObjects[m_firstCameraIndex + camera->GetIndex()]->m_position.x = offset * camera->GetFrontVector().x;
+//    m_renderableObjects[m_firstCameraIndex + camera->GetIndex()]->m_position.z = offset * camera->GetFrontVector().z;
+//
+//    m_renderableObjects[m_firstCameraIndex + camera->GetIndex()]->m_position.x += camera->GetPos().x;
+//    m_renderableObjects[m_firstCameraIndex + camera->GetIndex()]->m_position.z += camera->GetPos().z;
+

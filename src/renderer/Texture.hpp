@@ -66,6 +66,9 @@ public:
 
     void Load();
 
+
+public:
+
     bool m_loaded = false;
 
     unsigned char *m_imageData = nullptr;

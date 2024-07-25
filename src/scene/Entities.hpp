@@ -32,9 +32,9 @@ public:
 
     //explicit RenderableObject(const std::pair<std::string, Mesh> &model, const char *textureImageFilePath);
     //explicit RenderableObject(const std::vector<Mesh> &meshes);
-    RenderableObject() = delete;
+    RenderableObject() = default;
 
-    explicit RenderableObject(const std::pair<std::string, Mesh> &model);
+    explicit RenderableObject(const std::pair<std::string, std::vector<Synapse::Mesh>> &model);
     explicit RenderableObject(const RenderableObject &) = default;
     RenderableObject &operator=(const RenderableObject &) = default;
 
@@ -46,10 +46,16 @@ public:
 
     [[nodiscard]] __ALWAYS__INLINE__ unsigned int GetTotalIndiciesOfMesh(std::size_t index)
     {
-        return (index < 0) ? 0 : m_meshes[index]._EB.GetTotalIndicies();
+        //return (index < 0) ? 0 : m_meshes[index]._EB.GetTotalIndicies();
+        return (index < 0) ? 0 : m_meshes[index].GetTotalIndicies();
     }
 
-    [[nodiscard]] __ALWAYS__INLINE__ Mesh& GetMesh(std::size_t index)
+    [[nodiscard]] __ALWAYS__INLINE__ std::size_t GetTotalMeshes()
+    {
+        return m_meshes.size();
+    }
+
+    [[nodiscard]] __ALWAYS__INLINE__ Mesh &GetMesh(std::size_t index)
     {
         //return (index < 0) ? Mesh() : m_meshes[index];
         return m_meshes[index];

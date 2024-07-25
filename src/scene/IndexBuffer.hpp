@@ -39,19 +39,24 @@ public:
     }
 
     void SetIndicies(GLuint totalIndicies, GLuint *indiciesData);
+
     void Gen();
     void Bind();
     void Unbind();
-    GLuint &GetEBO(){return _EBO;}
+
+    GLuint GetEBO() const {return _EBO;}
+    __ALWAYS__INLINE__ std::size_t GetTotalIndicies() const {return _indiciesData.size();}
+    __ALWAYS__INLINE__ std::vector<unsigned int> GetIndiciesData() const {return _indiciesData;}
+    __ALWAYS__INLINE__ void AddIndex(unsigned int index){_indiciesData.push_back(index);}
     //GLuint GetTotalIndicies(){return _totalIndicies;}
     //GLuint *GetIndiciesData(){return _indiciesData;}
-    __ALWAYS__INLINE__ std::size_t GetTotalIndicies(){return _indiciesData.size();}
-    __ALWAYS__INLINE__ std::vector<unsigned int> GetIndiciesData(){return _indiciesData;}
 
-//private:
+private:
+
     GLuint _EBO;
-    GLuint _totalIndicies;
     std::vector<unsigned int> _indiciesData;
+
+    //GLuint _totalIndicies;
     //GLuint *_indiciesData = nullptr;    //not initializing this pointer to nullptr caused an error
 };
 

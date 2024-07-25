@@ -14,7 +14,8 @@ public:
     ~RotationAnimation() = default;
 
     void ApplyAnimation(Synapse::Scene *scene, const float deltaTime) override;
-    void ApplyRotationAnimation(Synapse::Scene *scene, const float deltaTime);
+    void ApplyBallProjectileRotation(Synapse::Scene *scene, const float deltaTime);
+    void ApplyDoorOpenAnimation(Synapse::Scene *scene, const float deltaTime);
 
 private:
 
