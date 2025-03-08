@@ -16,7 +16,9 @@ public:
     ~BouncingAnimation() = default;
 
     void ApplyAnimation(Synapse::Scene *scene, const float deltaTime) override;
+    void ApplyProjectileAnimation(Synapse::Scene *scene, const float deltaTime);
     void ApplyBouncingAnimation(Synapse::Scene *scene, const float deltaTime);
+
 
 private:
 

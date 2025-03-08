@@ -20,7 +20,7 @@ template<class T> class Ref
 
 
 
-
+//extreamly bad to do specially in a header file
 inline bool g_wasShutDownMethodCalled = false;
 
 

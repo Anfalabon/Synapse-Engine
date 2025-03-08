@@ -37,14 +37,14 @@ public:
     SceneCamera() = default;
 
     explicit SceneCamera(const std::size_t &cameraIndexID = 0, const PROJECTION_TYPES &cameraProjectionType = PROJECTION_TYPES::PERSPECTIVE)
-    : m_projectionData({45.0f, 1920.0f / 1080.0f, 0.1f, 1000.0f}),
+    : m_projectionData({45.0f, 1920.0f / 1080.0f, 0.1f, 2000.0f}),
       m_cameraProjectionType(cameraProjectionType),
       m_cameraMode(CAMERA_MODES::INSPECTION_MODE),
       m_cameraIndexID(cameraIndexID)
     {
         switch(cameraProjectionType)
         {
-            case PROJECTION_TYPES::PERSPECTIVE  :  m_projection = Projection::Perspective(45.0f, 1920.0f / 1080.0f, 0.1f, 2000.0f); break;
+            case PROJECTION_TYPES::PERSPECTIVE  :  m_projection = Projection::Perspective(m_projectionData); break;
             case PROJECTION_TYPES::ORTHOGRAPHIC :  m_projection = Projection::Orthographic(0.0f, 1920.0f, 0.0f, 1080.0f, 0.1f, 1000.0f); break;
         }
     }
@@ -68,8 +68,10 @@ public:
     __ALWAYS__INLINE__ glm::vec3   GetFrontVector() const {return m_frontVector;}    //Cursor::g_cursorsData[m_cameraIndexID].m_frontVector;
     __ALWAYS__INLINE__ glm::mat4   GetViewMatrix() const {return m_view;}
     __ALWAYS__INLINE__ glm::mat4   GetProjectionMatrix() const {return m_projection;}
-    __ALWAYS__INLINE__ float       GetYaw(){return m_yaw;}
-    __ALWAYS__INLINE__ float       GetPitch(){return m_pitch;}
+    __ALWAYS__INLINE__ float       GetYaw() const {return m_yaw;}
+    __ALWAYS__INLINE__ float       GetPitch() const {return m_pitch;}
+    __ALWAYS__INLINE__ float       GetNearPlane() const {return m_projectionData.m_zNear;}
+    __ALWAYS__INLINE__ float       GetFarPlane() const {return m_projectionData.m_zFar;}
 
     __ALWAYS__INLINE__ glm::vec3   GetTranslatedFrontVector() const
     {

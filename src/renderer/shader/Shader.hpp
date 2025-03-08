@@ -9,13 +9,13 @@
 #include <string.h>
 #include <unordered_map>
 
-
 namespace Synapse
 {
 
 class Shader
 {
 public:
+
     typedef struct ShaderFile
     {
         std::string source;

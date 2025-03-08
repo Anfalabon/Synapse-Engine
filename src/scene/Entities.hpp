@@ -50,10 +50,7 @@ public:
         return (index < 0) ? 0 : m_meshes[index].GetTotalIndicies();
     }
 
-    [[nodiscard]] __ALWAYS__INLINE__ std::size_t GetTotalMeshes()
-    {
-        return m_meshes.size();
-    }
+    [[nodiscard]] __ALWAYS__INLINE__ std::size_t GetTotalMeshes() const {return m_meshes.size();}
 
     [[nodiscard]] __ALWAYS__INLINE__ Mesh &GetMesh(std::size_t index)
     {
@@ -65,7 +62,7 @@ public:
 
     __ALWAYS__INLINE__ void SetPosition(const glm::vec3 &position){m_position = position;}
 
-    [[nodiscard]] __ALWAYS__INLINE__ glm::vec3 GetPosition()
+    [[nodiscard]] __ALWAYS__INLINE__ glm::vec3 GetPosition() const
     {
         //glm::mat4 inverseModelMatrix = glm::inverse(m_model);
         //glm::vec3 position = std::move(inverseModelMatrix[3]);
@@ -75,31 +72,32 @@ public:
         return m_position;
     }
 
-
-
     void Update();
 
 private:
 
-    //const char* m_name;
-    std::string m_name;
-    GLuint      m_ID;
+    std::string     m_name;
+    unsigned int    m_ID;
 
-private:
+    //this is useful for collision deltection and stuffs like that
+    glm::vec3       m_minSize;
+    glm::vec3       m_maxSize;
 
     std::vector<Synapse::Mesh> m_meshes;
 
 public:
 
-    glm::vec3 m_position = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 m_rotationAngles = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 m_rotation = glm::vec3(1.0f, 1.0f, 1.0f);
-    glm::vec3 m_scaling  = glm::vec3(1.0f, 1.0f, 1.0f);
-    glm::vec3 m_velocity = glm::vec3(1.0f, 0.0f, 1.0f); //the initial velocities will be
+    glm::vec3 m_position        = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 m_rotationAngles  = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 m_rotation        = glm::vec3(1.0f, 1.0f, 1.0f);
+    glm::vec3 m_scaling         = glm::vec3(1.0f, 1.0f, 1.0f);
+    glm::vec3 m_velocity        = glm::vec3(1.0f, 0.0f, 1.0f); //the initial velocities will be
     glm::vec3 m_initialVelocity = m_velocity;
-    glm::mat4 m_model = glm::mat4(1.0f);
+    glm::mat4 m_model           = glm::mat4(1.0f);
 
-    float m_rotationAngle = 0.0f;
+    float m_rotationAngle       = 0.0f;
+
+
 
 };
 

@@ -3,7 +3,6 @@
 #include "scene/Entities.hpp"
 #include "scene/ModelLoader.hpp"
 #include "physics/PhysicsEngine.hpp"
-//#include "camera/Camera.hpp"
 #include "scene/editor/SceneCamera.hpp"
 #include "core/Macros.hpp"
 
@@ -28,6 +27,10 @@ public:
     ~Scene();
 
     void Init();
+    void LoadCameras();
+    void LoadRandomObjects();
+    void LoadHouse();
+    void LoadGround();
     void LoadInitialRenderableObjects();
     void CreateRenderableObject(Synapse::SceneCamera *camera);   //make the camera parameter const
     void LoadRenderableObjectDynamically(GLFWwindow *window, Synapse::SceneCamera *camera, const bool delay = true);  //make the camera parameter const

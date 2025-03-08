@@ -109,7 +109,7 @@ $(EXECUTABLE): $(OBJ_FILES)
 # Compile Source Codes
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 		@mkdir -p $(dir $@)
-		$(CXX) $(CXXFLAGS) -c $< -o $@	#-D __MULTITHREADING__
+		$(CXX) $(CXXFLAGS) -c $< -o $@	#-D __MULTITHREADING__ here we could define a macro in the place of compilation command
 
 
 # Compile Vendor Source codes
@@ -135,6 +135,10 @@ clearAll:
 
 # run program
 run:
+		./$(EXECUTABLE)
+
+
+run_make_only_if_compiles: $(EXECUTABLE)
 		./$(EXECUTABLE)
 
 #############################################---DEFINE OS SPECIFIC COMMANDS---#############################################

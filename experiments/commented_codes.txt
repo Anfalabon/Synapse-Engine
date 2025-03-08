@@ -5759,3 +5759,43 @@ std::vector<unsigned int> LoadIndiciesData(const std::string &filePath)
 //    m_renderableObjects[m_firstCameraIndex + camera->GetIndex()]->m_position.x += camera->GetPos().x;
 //    m_renderableObjects[m_firstCameraIndex + camera->GetIndex()]->m_position.z += camera->GetPos().z;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                        ///first Condition
+//        if(glm::length(camera->GetPos() - renderableObject->GetPosition()) >= camera->GetFarPlane())
+//        {
+//            continue;
+//        }
+
+
+
+                        //second Condition
+//
+//        float angleRadians = glm::acos(glm::dot(camera->GetFrontVector(), distanceVector)/
+//                     (glm::length(camera->GetPos())*glm::length(renderableObject->GetPosition())));
+//
+//        if(glm::degrees(angle) > camera->GetFOV())
+//        {
+//            continue;
+//        }

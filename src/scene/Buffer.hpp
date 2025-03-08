@@ -18,7 +18,7 @@ public:
     virtual void Bind();
     virtual void Unbind();
     virtual float* GetBufferData(){return m_data;}
-    virtual size_t GetBufferSize(){return m_size;}
+    virtual std::size_t GetBufferSize(){return m_size;}
 
 private:
     float *m_data;

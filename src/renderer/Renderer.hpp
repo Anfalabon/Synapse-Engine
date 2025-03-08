@@ -49,6 +49,11 @@ public:
        {
            m_sceneShaders[i].RemoveProgram();
        }
+
+//       for(const Shader &sceneShader : m_sceneShaders)
+//       {
+//           sceneShader.RemoveProgram();
+//       }
     }
 
     __ALWAYS__INLINE__ void AddShader(const std::string &vertexShaderPath, const std::string &fragmentShaderPath)
@@ -66,7 +71,7 @@ public:
 
 
     void Render() override{}
-    void Render(Scene *scene, const Shader &sceneShaders = Shader());  //will add std::vector<Shader> sceneShaders
+    void Render(Scene *scene, const SceneCamera &camera, const Shader &sceneShaders = Shader());  //will add std::vector<Shader> sceneShaders
 
 private:
 

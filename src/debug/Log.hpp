@@ -8,10 +8,8 @@
 #include <iostream>
 #include <stdio.h>
 
-
 namespace Synapse
 {
-
 
 #define __DEBUG__
 //#define __debug__

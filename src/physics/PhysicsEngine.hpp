@@ -27,20 +27,16 @@ public:
     void CalculateDeltaTime();
     void Accelerate(float &positionDirection, float &velocityDirection, const float deltaTime = PHYSICAL_CONSTANTS::DELTATIME,
                     const float gravity = PHYSICAL_CONSTANTS::GRAVITY);
+    bool WasCollided(const glm::vec3 &pos, const glm::vec3 &objectMaxSize, const glm::vec3 &objectMinSize);
     void SetCurrentObjectInfo(const glm::vec3 &objectMaxSize, const glm::vec3 &objectMinSize);
-    void Reset(){}
     bool WasCollided();
-    void FallDown();
-    void Jump();
-    void ApplyVerticalMotions();
     void OrbitAround(glm::vec3 &renderableObjectsPosition, const glm::vec3 &positionToOrbit, float &g_theta);
     void Bounce(glm::vec3 &velocity, glm::vec3 &initialVelocity, bool enableRandomMovement);
-    void Projectile(glm::vec3 &position, glm::vec3 &velocity, const float deltaTime, glm::vec3 &initialVelocity, bool addBouncing, bool enableRandomMovement, float groundVerticalDistance);
-    void KeepUnderBoundry(const glm::vec3 &boundryMinLimit, const glm::vec3 &boundryMaxLimit, glm::vec3 &pos, glm::vec3 &velocity);
-    void Apply(const std::vector<Synapse::RenderableObject*> &renderableObjects);
+    void Projectile(glm::vec3 &position, glm::vec3 &velocity, const float deltaTime);
 
 
 
+    //void Projectile(glm::vec3 &position, glm::vec3 &velocity, const float deltaTime, glm::vec3 &initialVelocity, bool addBouncing, bool enableRandomMovement, float groundVerticalDistance);
 
 
 //protected:

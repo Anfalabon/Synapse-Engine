@@ -35,9 +35,9 @@ public:
 private:
 
     //we need fast insertion, deletion and access of any camera that we want
-    //std::unordered_map<SceneCamera, unsigned int> m_sceneCamerasMap;
 
     //will use std::unordererd_map rather than std::vector for scene cameras
+    //std::unordered_map<SceneCamera, std::size_t>    m_sceneCamerasMap;
     std::vector<SceneCamera>            m_sceneCameras;
     unsigned int                        m_currentCameraIndex;
     std::unordered_map<int8_t, int8_t>  m_cameraIndexMap;
